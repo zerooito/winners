@@ -6,11 +6,13 @@
 	require 'classes/pagina_site.class.php';
 	require 'classes/postagens_blog_site.class.php';
 	require 'classes/pagina_home_site.class.php';
+	require 'classes/pagina_quem_somos_site';
 
 	$user = new user();
 	$pagina_site = new pagina_site();
 	$postagens_blog_site = new postagens_blog_site();
 	$pagina_home_site = new pagina_home_site();
+	$pagina_quem_somos_site = new pagina_quem_somos_site();
 	
 	$acao = $_POST['acao'];
 
@@ -141,6 +143,16 @@
 			$pagina = 'quem_somos';
 
 			$new = $pagina_site->editar_dados_pagina_site($title_quem_somos,$description_quem_somos,$keywords_quem_somos,$empresa_quem_somos,$id_usuario,$pagina);
+
+			$x = json_encode($new);
+			echo $x;
+		break;
+		case 'atualizar_texto_quem_somos':
+			$titulo_1 = $_POST['titulo_1'];
+			$texto_1 = $_POST['texto_1'];
+			$id_usuario = base64_decode($_POST['id_usuario']);
+
+			$new = $pagina_quem_somos_site->editar_pagina_quem_somos_site($titulo_1, $texto_1, $id_usuario);
 
 			$x = json_encode($new);
 			echo $x;

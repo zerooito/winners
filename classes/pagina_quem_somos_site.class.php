@@ -9,7 +9,39 @@
 
 		}
 
-		function editar_pagina_quem_somos_site($id_usuario){
+		function editar_pagina_quem_somos_site($titulo, $texto1, $id_usuario){
+			$this->Titulo_texto1 = $titulo;
+			$this->Texto1 = $texto1;
+			$this->Id_usuario = $id_usuario;
+
+			$qr = "SELECT * FROM pagina_quem_somos_site WHERE id_usuario = ?" or die(mysql_error());
+			$stmt = BD::conn()->prepare($qr);
+			$stmt->execute(array($this->Id_usuario));
+
+			if($stmt->rowCount() >= 1){
+				$qr = "UPDATE pagina_quem_somos_site SET
+													titulo_texto_1 = ?,
+													texto1 = ?
+													WHERE id_usuario = ?" or die(mysql_error());
+				$stmt = BD::conn()->prepare($qr);
+				$stmt->execute(array($this->Titulo_texto1,$this->Texto1,$this->Id_usuario));
+
+				if($stmt == true){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				$qr = "INSERT INTO pagina_quem_somos_site (titulo_texto_1,texto1,id_usuario) VALUES (?,?,?)" or die(mysql_error());
+				$stmt = BD::conn()->prepare($qr);
+				$stmt->execute(array($this->Titulo_texto1,$this->Texto1,$this->Id_usuario));
+
+				if($stmt == true){
+					return true;
+				}else{
+					return false;
+				}
+			}
 
 		}
 

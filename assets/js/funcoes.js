@@ -251,6 +251,7 @@ $(document).ready(function(){
 				}
 		});
 	});
+
 	$("#atualizar_dados_quem_somos").click(function(){
 		var acao = 'atualizar_dados_pagina_quem_somos';
 		var title_quem_somos = $("input[name=title_quem_somos]").val();
@@ -279,6 +280,31 @@ $(document).ready(function(){
 				success: function(x){
 					$("#quem_somos").removeClass("panel panel-primary").addClass("panel panel-success");
 					$("#atualizar_dados_quem_somos").removeClass("btn btn-primary").addClass("btn btn-success");
+				}
+		});
+	});
+	$("#bt_texto_quem_somos").click(function(){
+		var acao = 'atualizar_texto_quem_somos';
+		var titulo_1 = $("input[name=titulo_quem_somos]").val();
+		var texto_1 = $("input[name=texto_quem_somos]").val();
+		var id_usuario = $("input[name=id_usuario]").val();
+
+		$.ajax({
+				type: "post",
+				dataType: "json",
+				url: "../requisicoes.php",
+				async: true,
+				data: {acao: acao,
+					   titulo_1: titulo_1,
+					   texto_1: texto_1,
+					   id_usuario: id_usuario
+					},				
+				error: function(x){
+					console.log(x);
+					alert("Ocorreu algum erro, se persistir chame o suporte");
+				},
+				success: function(x){
+					alert("Alterações feitas com sucesso");
 				}
 		});
 	});

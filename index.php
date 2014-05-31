@@ -42,7 +42,7 @@
 
 //		print_r($user->meus_dados(1));
 		$cifrao = "$";
-		print_r($user->meus_dados_email('jr.design_2010@hotmail.com','grafic79'));
+		//print_r($user->meus_dados_email('jr.design_2010@hotmail.com','grafic79'));
 
 
 			$titulo_1 = 'asdfasdf';

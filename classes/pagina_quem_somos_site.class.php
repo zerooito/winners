@@ -17,8 +17,8 @@
 			$qr = "SELECT * FROM pagina_quem_somos_site WHERE id_usuario = ?" or die(mysql_error());
 			$stmt = BD::conn()->prepare($qr);
 			$stmt->execute(array($this->Id_usuario));
-
-			if($stmt->rowCount() >= 1){
+			$cont = $stmt->rowCount();
+			if($cont >= 1){
 				$qr = "UPDATE pagina_quem_somos_site SET
 													titulo_texto_1 = ?,
 													texto1 = ?

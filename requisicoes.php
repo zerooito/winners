@@ -6,7 +6,7 @@
 	require 'classes/pagina_site.class.php';
 	require 'classes/postagens_blog_site.class.php';
 	require 'classes/pagina_home_site.class.php';
-	require 'classes/pagina_quem_somos_site';
+	require 'classes/pagina_quem_somos_site.class.php';
 
 	$user = new user();
 	$pagina_site = new pagina_site();

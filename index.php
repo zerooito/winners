@@ -13,8 +13,10 @@
 	  include 'configs/config.php';
 	  require 'classes/BD.class.php';
 	  require 'classes/user.class.php';
+	  require 'classes/pagina_quem_somos_site.class.php';
 
 	  $user = new user();
+	  $pagina_quem_somos_site = new pagina_quem_somos_site();
 
 		$smarty->assign('titulo', 'Bem Vindo, Logue na sua conta user');
 		$smarty->assign('h1', 'Faça o Cadastro, Grátis !');
@@ -40,7 +42,17 @@
 
 //		print_r($user->meus_dados(1));
 		$cifrao = "$";
-		//print_r($user->meus_dados_email('jr.design_2010@hotmail.com','grafic79'));
+		print_r($user->meus_dados_email('jr.design_2010@hotmail.com','grafic79'));
+
+
+			$titulo_1 = 'asdfasdf';
+			$texto_1 = 'asdf';
+			$id_usuario = '33';
+
+			echo 'teste: '.$pagina_quem_somos_site->editar_pagina_quem_somos_site($titulo_1, $texto_1, $id_usuario);
+
+
+
 		$smarty->assign('script',"<!--Start of Zopim Live Chat Script--><script type='text/javascript'>
     window.".$cifrao."zopim||(function(d,s){var z=".$cifrao."zopim=function(c){z._.push(c)},".$cifrao."=z.s=
     d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.

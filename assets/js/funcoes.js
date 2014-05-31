@@ -286,7 +286,7 @@ $(document).ready(function(){
 	$("#bt_texto_quem_somos").click(function(){
 		var acao = 'atualizar_texto_quem_somos';
 		var titulo_1 = $("input[name=titulo_quem_somos]").val();
-		var texto_1 = $("input[name=texto_quem_somos]").val();
+		var texto_1 = $("#texto_quem_somos").val();
 		var id_usuario = $("input[name=id_usuario]").val();
 
 		$.ajax({

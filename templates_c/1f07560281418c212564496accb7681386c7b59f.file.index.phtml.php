@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.16, created on 2014-05-25 17:18:25
+<?php /* Smarty version Smarty-3.1.16, created on 2014-05-31 03:08:01
          compiled from "templates\index.phtml" */ ?>
 <?php /*%%SmartyHeaderCode:1271532f2569d00de5-88659007%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1f07560281418c212564496accb7681386c7b59f' => 
     array (
       0 => 'templates\\index.phtml',
-      1 => 1401038233,
+      1 => 1401323051,
       2 => 'file',
     ),
   ),
@@ -65,7 +65,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
             <span class="element-divider"></span>
             <a class="element brand" href="#"><span class="icon-printer">Downloads</span></a>     
             <span class="element-divider"></span>
-            <a class="element brand" href="#"><span class="icon-printer">Suporte</span></a>     
+            <a class="element brand" href="#" onclick="javascript:$zopim.livechat.window.toggle();"><span class="icon-printer">Suporte</span></a>     
             <span class="element-divider"></span>
             <a class="element brand" href="#"><span class="icon-printer">Compra Agora</span></a>     
             <span class="element-divider"></span>

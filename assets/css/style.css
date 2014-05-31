@@ -142,12 +142,12 @@ div#menu2 img{
 
 @media screen and (max-width: 360px){ 
   div.tcycle{
-     width: 345px;
-     height: 200px;
+     width: 320px;
+     height: 180px;
      position: relative;
      top: 20px;
      float: left;
-     left: 5px;
+     left: 10px;
      margin-right: 10px;
      border-radius: 10px;
      box-shadow: 3px 10px 20px 0px;
@@ -178,4 +178,34 @@ div#menu2 img{
     left: 20px;
     background: #fff;
   }
+    
+div#conteudo {
+position: absolute;
+top: 1530px;
+left: 20px;
+width: 320;
+}
+div#menu2 ul{
+  padding:0px;
+  margin:0px;
+  list-style:none;
+  position: absolute;
+top: 1770px;
+left: 60px;
+padding: 10px;
+}
+div#menu2 ul li{
+  padding: 2px 10px;
+  display: inline-block;
+ 
+  /* visual do link */
+  color: #333;
+  text-decoration: none;
+  border-bottom:3px solid #EDEDED;
+}
+div#menu2 img{
+  border-radius: 40px;
+  box-shadow: 3px 10px 20px 0px;
+}
+
 }

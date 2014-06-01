@@ -94,7 +94,9 @@ table.tablesorter thead tr th:hover {
 @media (min-width:768px) {
 
   /* Wrappers */
-
+iframe{
+  width: 100%;
+}
 
   #wrapper {
 	padding-left: 5px;

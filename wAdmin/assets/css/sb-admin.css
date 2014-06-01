@@ -11,13 +11,20 @@ For more info and more free Bootstrap 3 HTML themes, visit http://startbootstrap
 /* Global Styles */
 
 body {
-  margin-top: 50px;
+  margin-top: 13px;
+  overflow-y: none;
 }
 
 #wrapper {
   padding-left: 0;
 }
 
+iframe {
+position: absolute;
+left: 222px;
+width: 83.58%;
+height: 100%;
+}
 #page-wrapper {
   width: 100%;
   padding: 5px 15px;
@@ -88,8 +95,9 @@ table.tablesorter thead tr th:hover {
 
   /* Wrappers */
 
+
   #wrapper {
-	padding-left: 225px;
+	padding-left: 5px;
   }
 
   #page-wrapper {

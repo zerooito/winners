@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{$description_pagina}">
+    <meta name="author" content="Reginaldo Luis de Luna Junior">
+
+    <title>{$title_pagina}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/business-casual.css" rel="stylesheet">
+    <link rel="stylesheet" href="{$estilophp}" type="text/css" />
+</head>
+
+<body>
+
+    <div class="brand">{$nome_empresa_pagina}</div>
+    <div class="address-bar">{$bairro} | {$rua}. | {$cidade}, {$estado} | {$telefone}</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">{$nome_empresa_pagina}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.php?id={$id_usuario}">Home</a>
+                    </li>
+                    <li><a href="about.php?id={$id_usuario}">Quem Somos</a>
+                    </li>
+                    <li><a href="blog.php?id={$id_usuario}">Blog</a>
+                    </li>
+                    <li><a href="contact.php?id={$id_usuario}">Fale Conosco</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Localidade <strong>{$nome_empresa_pagina}</strong>
+                    </h2>
+                    <hr>
+                </div>
+                <div class="col-md-8">
+                    <!-- Embedded Google Map using an iframe - to select your location find it on Google maps and paste the link as the iframe src. If you want to use the Google Maps API instead then have at it! -->
+                    <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?hl=en&amp;ie=UTF8&amp;ll={$latitude},{$longitude}&amp;spn=56.506174,79.013672&amp;t=m&amp;z=4&amp;output=embed"></iframe>
+                </div>
+                <div class="col-md-4">
+                    <p>Telefone: <strong>{$telefone}</strong>
+                    </p>
+                    <p>Email: <strong>{$email}</strong>
+                    </p>
+                    <p>Endereço: <strong>{$bairro} <br>{$rua}.<br>{$cidade}, {$estado}</strong>
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Formulario de <strong>Contato</strong>
+                    </h2>
+                    <hr>
+                    
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label>Nome</label>
+                                <input type="text" class="form-control" name="nome">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Email</label>
+                                <input type="email" class="form-control" name="email_remetente">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Telefone</label>
+                                <input type="tel" class="form-control" name="telefone">
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-lg-12">
+                                <label>Mensagem</label>
+                                <textarea class="form-control" rows="6" id="mensagem"></textarea>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <input type="hidden" name="email_destinario" value="{$email}">
+                                <button type="submit" class="btn btn-default" id="enviar_email">Enviar</button>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; {$nome_empresa_pagina} 2013</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="../assets/js/funcoes.js"></script>
+
+</body>
+
+</html>

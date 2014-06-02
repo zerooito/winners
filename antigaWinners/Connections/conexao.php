@@ -10,7 +10,7 @@
 /*	$host = "mysql17.000webhost.com";
 	$bd = "a1769871_winners";
 	$user = "a1769871_winners";
-	$pass = "grafic79";
+	$pass = "";
 
 */
 	$conexao = mysql_connect($host,$user,$pass);

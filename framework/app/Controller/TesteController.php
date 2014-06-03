@@ -1,6 +1,8 @@
 <?php
 class TesteController extends AppController{
 	function index(){
+		$teste = $this->TesteModel->find('all');
+		$this->set('teste', $teste);
 		echo 'index';
 	}
 

@@ -7,10 +7,15 @@ class TesteController extends AppController{
 	}
 
 	function listar(){
+		$this->layout = 'teste';
 		echo 'listar';
 	}
 
 	function cadastrar(){
 		echo 'cadastrar';
+	}
+
+	function salvar_cadastro(){
+
 	}
 }

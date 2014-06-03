@@ -4,9 +4,6 @@ class TesteController extends AppController{
 		//$teste = $this->TesteModel->find('all');
 		//$this->set('teste', $teste);
 
-		$array = array('teste1','teste2','teste3');
-
-		echo $array[0];
 		echo 'index';
 	}
 

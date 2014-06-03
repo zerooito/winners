@@ -1,17 +1,18 @@
-<!doctype HTML>
-<html>
-<head>
-	<title>Teste Cake</title>
-</head>
-<body>
-	<form name="cadastrar" method="post">
-		<p>Teste Form Cake</p>
-		<label>Nome:</label>
-		<input type="text" placeholder="nome" name="nome"/>
-		<label>Email:</label>
-		<input type="text" placeholder="email" name="email" />
-		<br><br>
-		<input type="submit" name="cadastrar" />
-	</form>
-</body>
-</html>
+<!DOCTYPE html>
+<div id="formulariocadastro">
+	<input type="text" name="nome" required placeholder="Nome" /><br>
+	<input type="email" name="email" required placeholder="Email" /><br>
+	<input type="password" name="senha" required placeholder="Senha" /><br><br>
+</div>
+<table>
+	<thead>
+		<th>Teste view Cake</th>
+		<th>Acoes</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>View1</td>
+			<td>Excluir | Editar | Enviar E-mail</td>
+		<tr>
+	</tbody>
+</table>

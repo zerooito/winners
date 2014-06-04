@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <div id="formulariocadastro">
+<form name="cadastro" method="post">
 	<input type="text" name="nome" required placeholder="Nome" /><br>
 	<input type="email" name="email" required placeholder="Email" /><br>
 	<input type="password" name="senha" required placeholder="Senha" /><br><br>
+	<input type="submit" value="Cadastrar" />
+</form>
 </div>
 <table>
 	<thead>

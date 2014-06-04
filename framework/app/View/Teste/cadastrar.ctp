@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <div id="formulariocadastro">
-<form name="cadastro" method="post">
+<form action="http://localhost/novoWinners/framework/teste/cadastrar" name="cadastro" method="POST">
 	<input type="text" name="nome" required placeholder="Nome" /><br>
 	<input type="email" name="email" required placeholder="Email" /><br>
 	<input type="password" name="senha" required placeholder="Senha" /><br><br>

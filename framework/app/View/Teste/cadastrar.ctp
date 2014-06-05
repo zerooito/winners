@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <div id="formulariocadastro">
-<form action="teste/cadastrar" name="cadastro" method="POST">
-	<input type="text" name="nome" required placeholder="Nome" /><br>
-	<input type="email" name="email" required placeholder="Email" /><br>
-	<input type="password" name="senha" required placeholder="Senha" /><br><br>
-	<input type="submit" value="Cadastrar" />
+<form action="cadastrar" name="cadastro" method="POST">
+	<input type="text" name="cadastro[nome]" required placeholder="Nome" /><br>
+	<input type="email" name="cadastro[email]" required placeholder="Email" /><br>
+	<input type="password" name="cadastro[senha]" required placeholder="Senha" /><br><br>
+	<input type="submit" value="cadastrar" name="cadastro[cadastrar]" />
 </form>
 </div>
 <table>

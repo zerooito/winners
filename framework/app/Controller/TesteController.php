@@ -17,6 +17,7 @@ class TesteController extends AppController{
 
 	function cadastrar(){
 		$this->request->data['cadastro']['cadastrar'] == null;
+		
 		if($this->request->data['cadastro']['cadastrar'] == 'cadastrar'){
 			echo $this->request->data['cadastro']['nome']."\n";
 			echo $this->request->data['cadastro']['email']."\n";

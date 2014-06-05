@@ -11,9 +11,14 @@ class TesteController extends AppController{
 		$this->layout = 'teste';
 		echo $this->request->query['id_user'];
 		echo $this->request->query['nome_user'];
+		$pessoa = $this->Session->read('Pessoa.nome');
+		
+			$this->Session->write('Person.eyeColor', 'Green');
+		$green = $this->Session->read('Person.eyeColor');
 
 		//dados da sessao
-		echo 'Sessaão pessoa: '. $this->Session->read('Pessoa.nome');
+		echo 'Sessaão pessoa: '. $pessoa;
+		echo ' cor:'. $green;
 		
 		echo 'listar';
 	}

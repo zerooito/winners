@@ -7,37 +7,40 @@ class TesteController extends AppController{
 		echo 'index';
 	}
 
+	function abre_session($email,$senha){
+		$email_ver = 'jr.design_2010@hotmail.com';
+		$senha_ver = 'grafic79';
+
+		if($email == $email_ver){
+			if($senha == $senha_ver){
+				return 'dados corretos';
+			}else{
+				return 'senha incorreta';
+			}
+		}else{
+			return 'email incorreto';
+		}
+	}
+
 	function listar(){
 		$this->layout = 'teste';
 		echo $this->request->query['id_user'];
 		echo $this->request->query['nome_user'];
 		$pessoa = $this->Session->read('Pessoa.nome');
 		
-			$this->Session->write('Person.eyeColor', 'Green');
-		$green = $this->Session->read('Person.eyeColor');
-
-		//dados da sessao
-		echo 'Sessaão pessoa: '. $pessoa;
-		echo ' cor:'. $green;
-		
 		echo 'listar';
 	}
 
 	function cadastrar(){
-		//$this->request->data['cadastro']['cadastrar'] = null;
-
 		if($this->request->data['cadastro']['cadastrar'] == 'cadastrar'){
 			$this->Session->write('Pessoa.nome', $this->request->data['cadastro']['nome']);
-			echo $this->Session->read('Pessoa.nome');
+			$nome = $this->Session->read('Pessoa.nome');
 			$this->Session->write('Pessoa.email',$this->request->data['cadastro']['email']);
-			echo $this->Session->read('Pessoa.email');
+			$email = $this->Session->read('Pessoa.email');
 			$this->Session->write('Pessoa.senha',$this->request->data['cadastro']['senha']);
-			echo $this->Session->read('Pessoa.senha');
-			if($this->Session->read('Pessoa.nome') == 'teste'){
-				echo 'teste ok';
-			}else{
-				echo 'ainda nao';
-			}
+			$senha = $this->Session->read('Pessoa.senha');
+
+			echo $this->abre_session($email,$senha);
 		}
 
 		echo 'cadastrar';

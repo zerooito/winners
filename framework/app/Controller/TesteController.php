@@ -22,10 +22,12 @@ class TesteController extends AppController{
 
 				return 'Session contruida com sucesso, '.print_r($this->Session->read());
 			}else{
-				return 'senha incorreta';
+				$this->Session->destroy(); 
+				return 'senha incorreta '.print_r($this->Session->read());
 			}
 		}else{
-			return 'email incorreto';
+			$this->Session->destroy(); 
+			return 'email incorreto '.print_r($this->Session->read());
 		}
 	}
 
@@ -48,6 +50,7 @@ class TesteController extends AppController{
 		}
 
 		echo 'cadastrar';
+		echo $this->Usuario->find('all');
 	}
 
 	function salvar_cadastro(){

@@ -34,7 +34,7 @@ $(document).ready(function(){
 			$.ajax({
 				type: "post",
 				dataType: "json",
-				url: "requisicoes.php",
+				url: "usuario/novo_cadastro",
 				async: true,
 				data: {
 					acao: 'inserir',
@@ -125,7 +125,7 @@ $(document).ready(function(){
 			$.ajax({
 				type: "post",
 				dataType: "json",
-				url: "requisicoes.php",
+				url: "usuario/novo_cadastro",
 				async: true,
 				data: {acao: acao, email: email},				
 				error: function(x){

@@ -80,15 +80,15 @@ $(document).ready(function(){
 
 	$("#logar").click(function(){
 		//passa os dados para as variaveis
-		var email = $("input[name=login_email]").val();
-		var senha = $("input[name=login_senha]").val();
+		var email = $("#login_email").val();
+		var senha = $("#login_senha").val();
 		var acao = 'logar';
 
 		if(email != '' && email.indexOf("@") >= 0 && senha != '' && senha.length > 5){
 			$.ajax({
 				type: "post",
 				dataType: "json",
-				url: "requisicoes.php",
+				url: "usuario/login",
 				async: true,
 				data: {acao: acao, email: email, senha: senha},				
 				error: function(x){
@@ -111,8 +111,8 @@ $(document).ready(function(){
 				}
 			});
 		}else{
-			$("input[name=login_email]").attr('placeholder','Email invalido').css("border-color","#069").val("");
-			$("input[name=login_senha]").attr('placeholder','Senha invalida').css("border-color","#069").val("");
+			$("#login_email").attr('placeholder','Email invalido').css("border-color","#069").val("");
+			$("#login_senha").attr('placeholder','Senha invalida').css("border-color","#069").val("");
 		}
 	});
 

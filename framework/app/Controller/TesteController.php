@@ -1,10 +1,12 @@
 <?php
 class TesteController extends AppController{
 	function index(){
-		//$teste = $this->TesteModel->find('all');
-		//$this->set('teste', $teste);
+		$this->loadModel('Teste');
+		$teste = $this->Teste->find('all', array('conditions' => array('Teste.id' => '2')));
+		$this->set('teste', $teste);
 
 		echo 'index';
+		echo print_r($teste);
 	}
 
 	function abre_session($nome,$email,$senha){
@@ -53,7 +55,7 @@ class TesteController extends AppController{
 		echo $this->Usuario->find('all');
 	}
 
-	function salvar_cadastro(){
+	function pasta(){
 
 	}
 }

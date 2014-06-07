@@ -64,10 +64,10 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' => 'mysql17.000webhost.com',
-		'login' => 'a1769871_winners',
-		'password' => 'grafic79',
-		'database' => 'a1769871_winners',
+		'host' => 'localhost',
+		'login' => 'root',
+		'password' => '',
+		'database' => 'winners',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);

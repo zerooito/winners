@@ -1,4 +1,6 @@
 <?php
+App::uses('AppModel', 'Model');
+
 class TesteModel extends AppModel{
-	var $teste = 'Teste variavel';
+	public $teste = 'TesteModel';
 }

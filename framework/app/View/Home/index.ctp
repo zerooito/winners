@@ -46,9 +46,9 @@
       <div class="panel-heading">Faça seu Cadastro</div>
         <div class="panel-body">
                  <form action="index.php"  method="post">
-                    <label>Nome: </label><input class="form-control" data-role="input-control" type="text" name="nome" placeholder="Digite seu nome" required />
-                    <label>Email: </label><input class="form-control" data-role="input-control" type="text" name="email" placeholder="Digite seu email" required />
-                    <label>Senha: </label><input class="form-control" data-role="input-control" type="password" name="senha" placeholder="Digite sua senha" required />
+                    <label>Nome: </label><input class="form-control" id="nome_cadastro" data-role="input-control" type="text" name="nome" placeholder="Digite seu nome" required />
+                    <label>Email: </label><input class="form-control" id="email_cadastro" data-role="input-control" type="text" name="email" placeholder="Digite seu email" required />
+                    <label>Senha: </label><input class="form-control" id="senha_cadastro" data-role="input-control" type="password" name="senha" placeholder="Digite sua senha" required />
                     <label>Escolha seus produtos</label>
                     <div class="input-control checkbox">
                         <label>

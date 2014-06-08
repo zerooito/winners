@@ -3,9 +3,9 @@ $(document).ready(function(){
 	//cadastrar instituicao
 	$("#enviar").click(function(){
 		//pega os dados dos input para passa na viariavel
-		var nome  = $("input[name=nome]").val();
-		var email = $("input[name=email]").val();
-		var senha = $("input[name=senha]").val();
+		var nome  = $("#nome_cadastro").val();
+		var email = $("#email_cadastro").val();
+		var senha = $("#senha_cadastro").val();
 		var erp = '';
 		var ead = '';
 		var site = '';
@@ -55,12 +55,13 @@ $(document).ready(function(){
 						//aplicar o resultado no formulario se o retorno for verdadeiro
 						$("#enviar").html("Sucesso !").css("background","green");
 						$("#enviar").prop('disabled', true);
-						$("input[name=nome]").prop('disabled', true);
-						$("input[name=email]").prop('disabled', true);
-						$("input[name=senha]").prop('disabled', true);
+						$("#nome_cadastro").prop('disabled', true);
+						$("#email_cadastro").prop('disabled', true);
+						$("#senha_cadastro").prop('disabled', true);
 
 						$("#sucesso").fadeIn("slow",function(){
 							$(this).css("display","block");
+							$(this).css("position","fixed");
 							$(".conteudo_alert").append("Verique seu e-mail!");
 
 						});
@@ -72,9 +73,9 @@ $(document).ready(function(){
 				}
 			});
 		}else{
-			$("input[name=nome]").attr('placeholder','Insira seu nome').css("border-color","#069").val();
-			$("input[name=email]").attr('placeholder','Email invalido').css("border-color","#069").val();
-			$("input[name=senha]").attr('placeholder','Sua senha precisa de 6 caracteres ou mais').css("border-color","#069").val();
+			$("#nome_cadastro").attr('placeholder','Insira seu nome').css("border-color","#069").val();
+			$("#email_cadastro").attr('placeholder','Email invalido').css("border-color","#069").val();
+			$("#senha_cadastro").attr('placeholder','Sua senha precisa de 6 caracteres ou mais').css("border-color","#069").val();
 		}
 	});
 
@@ -118,14 +119,14 @@ $(document).ready(function(){
 
 	//funções diversas
 	//função que verifica email
-	$("input[name=email]").bind("input keyup paste", function(){
+	$("#email_cadastro").bind("input keyup paste", function(){
 		var acao = 'verifica_email';
 		var email = $(this).val();
 
 			$.ajax({
 				type: "post",
 				dataType: "json",
-				url: "usuario/novo_cadastro",
+				url: "usuario/verificar_email_ajax",
 				async: true,
 				data: {acao: acao, email: email},				
 				error: function(x){
@@ -134,10 +135,10 @@ $(document).ready(function(){
 				},
 				success: function(x){
 					console.log(x);
-					if(x == true){
+					if(x == false){
 
 					}else{						
-						$("input[name=email]").attr('placeholder','Email Já Cadastrado').val("");
+						$("#email_cadastro").attr('placeholder','Email Já Cadastrado').val("");
 					}
 				}
 			});

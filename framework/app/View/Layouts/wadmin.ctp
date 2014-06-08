@@ -94,13 +94,13 @@
               </ul>
             </li-->
             <li class="dropdown user-dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {$nome} <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $this->Session->read('Usuario.email'); ?> <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <!--li><a href="#"><i class="fa fa-user"></i> Perfil</a></li>
                 <li><a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge">7</span></a></li-->
                 <li><a href="#"><i class="fa fa-gear"></i> Configurações</a></li>
                 <li class="divider"></li>
-                <li><a href="index.php?acao=logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                <li><a href="usuario/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
               </ul>
             </li>
           </ul>

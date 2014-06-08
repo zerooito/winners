@@ -26,7 +26,7 @@ class UsuarioController extends AppController{
 	}
 
 	function logout(){
-		return $this->Session->Destroy();
+		$this->Session->Destroy();
 	}
 
 	//autentica email verifica se o email e senha existem para efetuar o login, ou outra acao.

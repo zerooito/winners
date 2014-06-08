@@ -15,6 +15,13 @@ class UsuarioController extends AppController{
 		}
 	}
 
+	function iniciar_session($email,$senha){
+		$this->Session->write('Usuario.email', $email);
+		$this->Session->write('Usuario.senha', $senha);
+
+		return print_r($this->Session->read());
+	}
+
 	//autentica email verifica se o email e senha existem para efetuar o login, ou outra acao.
 	function autentica_email($email,$senha){
 		$this->loadModel('Usuario');

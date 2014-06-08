@@ -34,8 +34,9 @@
       <div class="panel-body">
         <form action="index.php" method="post">
             <label>Email: </label><input class="form-control" data-role="input-control" type="text" name="login[login_email]" id="login_email" placeholder="Digite seu email" required />
-            <label>Senha: </label><input class="form-control" data-role="input-control" type="password" name="login[login_senha]" id="login_senha" placeholder="Digite sua senha" required /><br/><br/>
-            <button type="button" class="btn btn-primary" id="logar">Cadastrar</button>
+            <label>Senha: </label><input class="form-control" data-role="input-control" type="password" name="login[login_senha]" id="login_senha" placeholder="Digite sua senha" required />
+            <a href="#">Esqueceu sua senha ?</a><br>
+            <button type="button" class="btn btn-primary" id="logar">Logar</button>
         </form>
       </div>
     </div>

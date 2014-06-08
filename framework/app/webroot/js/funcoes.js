@@ -6,28 +6,10 @@ $(document).ready(function(){
 		var nome  = $("#nome_cadastro").val();
 		var email = $("#email_cadastro").val();
 		var senha = $("#senha_cadastro").val();
-		var erp = '';
-		var ead = '';
-		var site = '';
-		
-		if($("#erp").is(":checked")){
-			erp = $("#erp").val();
-		}else{
-			site = 0;
-		}
-
-		if($("#ead").is(":checked")){
-			ead = $("#ead").val();
-		}else{
-			site = 0;
-		}
-
-		if($("#site").is(":checked")){
-			site = $("#site").val();
-		}else{
-			site = 0;
-		}
-
+		var erp = $("#erp").val();
+		var ead = $("#ead").val()
+		var site = $("#site").val();
+		alert(site);
 		//verificar as variaveis digitadadas
 		if(nome != '' && senha != '' && senha.length > 5 && email.indexOf("@") >= 0 && email.indexOf(".") >= 0){
 			//da o comando post

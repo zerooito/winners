@@ -50,27 +50,23 @@
                     <label>Email: </label><input class="form-control" id="email_cadastro" data-role="input-control" type="text" name="email" placeholder="Digite seu email" required />
                     <label>Senha: </label><input class="form-control" id="senha_cadastro" data-role="input-control" type="password" name="senha" placeholder="Digite sua senha" required />
                     <label>Escolha seus produtos</label>
-                    <div class="input-control checkbox">
-                        <label>
-                            <input type="checkbox" name="ead" id="ead" value="1" />
-                            <span class="check"></span>
-                            EAD
-                        </label>
-                    </div>
-                    <div class="input-control checkbox">
-                        <label>
-                            <input type="checkbox" name="erp" id="erp" value="1" />
-                            <span class="check"></span>
-                            ERP
-                        </label>
-                    </div>
-                    <div class="input-control checkbox">
-                        <label>
-                            <input type="checkbox" name="site" id="site" value="1" />
-                            <span class="check"></span>
-                            Site Pronto
-                        </label>
-                    </div>
+                    <div class="input-control">
+                        <label>EAD</label>
+                        <select class="form-control" id="ead">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                        <label>ERP</label>
+                        <select class="form-control" id="erp">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                        <label>Site dinâmico + CMS</label>
+                        <select class="form-control" id="site">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div><br>
                     <button type="button" class="btn btn-primary" id="enviar">Cadastrar</button>
                   </form>
         </div>

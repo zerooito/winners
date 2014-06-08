@@ -62,14 +62,15 @@ class UsuarioController extends AppController{
 	function novo_cadastro(){
 		$this->layout = 'ajax';
 
-		$nome = $this->request->data['nome'];
+		$nome  = $this->request->data['nome'];
 		$email = $this->request->data['email'];
 		$senha = sha1($this->request->data['senha']);
-		$erp = 0;//$this->request->data['erp'];
-		$ead = 0;//$this->request->data['ead'];
-		$site = 0;//$this->request->data['site'];
+		$erp   = $this->request->data['erp'];
+		$ead   = $this->request->data['ead'];
+		$site  = $this->request->data['site'];
+
 		if($this->verificar_email($email) == false){
-			$data = array('nome' => $nome, 'email' => $email, 'senha' => $senha, 'erp_situacao' => $erp, 'ead' => $ead, 'site' => $site);
+			$data = array('nome' => $nome, 'email' => $email, 'senha' => $senha, 'erp_situacao' => $erp, 'ead_situacao' => $ead, 'site_situacao' => $site, 'usuario_ativo' => 1);
 			if($this->Usuario->save($data)){
 				echo true;
 			}else{

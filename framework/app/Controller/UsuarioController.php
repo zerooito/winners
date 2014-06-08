@@ -1,6 +1,9 @@
 <?php
 
 class UsuarioController extends AppController{
+	public $emailSession;
+	public $senhaSession;
+
 	//faz o login no sistema, com a função autentica_email
 	function login(){
 		$this->layout = 'ajax';
@@ -9,17 +12,21 @@ class UsuarioController extends AppController{
 		$login_senha = $this->request->data['senha'];
 
 		if($this->autentica_email($login_email,$login_senha)){
+			$this->Session->Destroy();
+
+			$this->Session->write('Usuario.email',$login_email);
+			$this->emailSession = $this->Session->read('Usuario.email');
+			$this->Session->write('Usuario.senha',$login_senha);
+			$this->senhaSession = $this->Session->read('Usuario.senha');
+
 			echo json_encode(true);
 		}else{
 			echo json_encode(false);
 		}
 	}
 
-	function iniciar_session($email,$senha){
-		$this->Session->write('Usuario.email', $email);
-		$this->Session->write('Usuario.senha', $senha);
-
-		return print_r($this->Session->read());
+	function logout(){
+		return $this->Session->Destroy();
 	}
 
 	//autentica email verifica se o email e senha existem para efetuar o login, ou outra acao.

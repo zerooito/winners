@@ -52,7 +52,7 @@ class TesteController extends AppController{
 		}
 
 		echo 'cadastrar';
-		echo $this->Usuario->find('all');
+		//echo $this->Usuario->find('all');
 	}
 
 	function pasta(){

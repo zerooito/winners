@@ -12,6 +12,14 @@ class UsuarioController extends AppController{
 		$login_senha = $this->request->data['senha'];
 
 		if($this->autentica_email($login_email,$login_senha)){
+			$array = $this->recuperar_dados($login_email,sha1($login_senha));
+
+			foreach($array as $key => $value) {
+				$nome = $key['nome'];
+				$email = $key['email'];
+				$senha = $key['senha'];
+			}
+			
 			$this->Session->Destroy();
 
 			$this->Session->write('Usuario.email',$login_email);
@@ -27,6 +35,8 @@ class UsuarioController extends AppController{
 
 	function logout(){
 		$this->Session->Destroy();
+
+		echo '<script>location.href="/winners/framework/"</script>';
 	}
 
 	//autentica email verifica se o email e senha existem para efetuar o login, ou outra acao.
@@ -70,6 +80,18 @@ class UsuarioController extends AppController{
 		$email = $this->request->data['email'];
 
 		echo  json_encode($this->verificar_email($email));
+	}
+
+	function recuperar_dados($email,$senha){
+		$this->loadModel('Usuario');
+		$resposta = $this->Usuario->find('all', 
+								array('conditions' => array('AND' => array('Usuario.email' => $email, 'Usuario.senha' => sha1($senha))
+										)
+									)
+								);
+		$this->set('resposta', $resposta);
+
+		return $resposta;
 	}
 
 	//efetua um novo cadastro via ajax com os dados passados pelo metodo postS

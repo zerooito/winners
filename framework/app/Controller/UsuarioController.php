@@ -12,14 +12,10 @@ class UsuarioController extends AppController{
 		$login_senha = $this->request->data['senha'];
 
 		if($this->autentica_email($login_email,$login_senha)){
-			$array = $this->recuperar_dados($login_email,sha1($login_senha));
-
-			foreach($array as $key => $value) {
-				$nome = $key['nome'];
-				$email = $key['email'];
-				$senha = $key['senha'];
-			}
-			
+			$dados = $this->recuperar_dados($login_email,$login_senha);
+			//foreach ($dados as $key => $value) {
+			//	$nome = $value['nome'];
+			//}
 			$this->Session->Destroy();
 
 			$this->Session->write('Usuario.email',$login_email);
@@ -89,6 +85,7 @@ class UsuarioController extends AppController{
 										)
 									)
 								);
+
 		$this->set('resposta', $resposta);
 
 		return $resposta;

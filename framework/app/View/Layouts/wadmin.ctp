@@ -56,6 +56,14 @@
                 <li><a href="#">Title</a></li>
               </ul>
             </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i><span class="glyphicon glyphicon-saved"> </span> NF-e<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Emissão</a></li>
+                <li><a href="#">Configuração</a></li>
+              </ul>
+            </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">

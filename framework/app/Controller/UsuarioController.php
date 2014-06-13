@@ -6,26 +6,29 @@ class UsuarioController extends AppController{
 
 	//faz o login no sistema, com a função autentica_email
 	function login(){
-		$this->layout = 'ajax';
+		$this->layout = 'ajax';//chama o layout para executar uma função ajax
 
-		$login_email = $this->request->data['email'];
-		$login_senha = $this->request->data['senha'];
+		$login_email = $this->request->data['email'];//recebe o post email
+		$login_senha = $this->request->data['senha'];//recebe o post senha
 
 		if($this->autentica_email($login_email,$login_senha)){
-			$dados = $this->recuperar_dados($login_email,$login_senha);
-			//foreach ($dados as $key => $value) {
-			//	$nome = $value['nome'];
-			//}
+			//recebe o array com os dados do usuario usando os parametros de email e senha
+			$resposta = $this->recuperar_dados($login_email,$login_senha);	
+			//destroe alguma session criada anteriomente
 			$this->Session->Destroy();
-
-			$this->Session->write('Usuario.email',$login_email);
-			$this->emailSession = $this->Session->read('Usuario.email');
-			$this->Session->write('Usuario.senha',$login_senha);
-			$this->senhaSession = $this->Session->read('Usuario.senha');
-
-			echo json_encode(true);
+			//faz o foreach com o array de dados do usuario
+			foreach($resposta as $valor) {
+				//escreve a sessao do usuario
+				$this->Session->write('Usuario.nome', $valor['Usuario']['nome']);//nome do usuario
+				$this->Session->write('Usuario.email',$valor['Usuario']['email']);//email do usuario
+				$this->Session->write('Usuario.senha',$valor['Usuario']['senha']);//senha do usuario criptografada
+				$this->Session->write('Usuario.erp',  $valor['Usuario']['erp_situacao']);//situacao ativa(1) ou nao(0) no erp
+				$this->Session->write('Usuario.ead',  $valor['Usuario']['ead_situacao']);//situacao ativa(1) ou nao(0) no ead
+				$this->Session->write('Usuario.site', $valor['Usuario']['site_situacao']);//situacao ativa(1) ou nao(0) no site
+			}
+			echo json_encode(true);//retorna um true pois tudo ocorreu bem
 		}else{
-			echo json_encode(false);
+			echo json_encode(false);//retorna um false pois ocorreu algo errado, ou os dados de login estava incorretos
 		}
 	}
 

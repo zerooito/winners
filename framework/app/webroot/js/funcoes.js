@@ -267,28 +267,33 @@ $(document).ready(function(){
 		});
 	});
 	$("#bt_texto_quem_somos").click(function(){
+		$("#oculta").css("display","block");
+
 		var acao = 'atualizar_texto_quem_somos';
 		var titulo_1 = $("input[name=titulo_quem_somos]").val();
 		var texto_1 = $("#texto_quem_somos").val();
 		var id_usuario = $("input[name=id_usuario]").val();
-
-		$.ajax({
-				type: "post",
-				dataType: "json",
-				url: "../requisicoes.php",
-				async: true,
-				data: {acao: acao,
-					   titulo_1: titulo_1,
-					   texto_1: texto_1,
-					   id_usuario: id_usuario
-					},				
-				error: function(x){
-					console.log(x);
-					alert("Ocorreu algum erro, se persistir chame o suporte");
-				},
-				success: function(x){
-					alert("Alterações feitas com sucesso");
-				}
+		if(acao == ''){
+			
+		}else{
+			$.ajax({
+					type: "post",
+					dataType: "json",
+					url: "../requisicoes.php",
+					async: true,
+					data: {acao: acao,
+						   titulo_1: titulo_1,
+						   texto_1: texto_1,
+						   id_usuario: id_usuario
+						},				
+					error: function(x){
+						console.log(x);
+						alert("Ocorreu algum erro, se persistir chame o suporte");
+					},
+					success: function(x){
+						alert("Alterações feitas com sucesso");
+					}
+			}
 		});
 	});
 	$("#atualizar_dados_contato").click(function(){

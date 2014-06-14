@@ -2,17 +2,7 @@
 class HomeController extends AppController{
 	function index(){
 		$this->layout = 'winners';
-$produtos = array(array('nome' => 'produto1', 'id_produto' => '442'));
 
-print_r($produtos);
-
-array_push($produtos, array('nome' => 'produto7', 'id_produto' => '542'));
-
-print_r($produtos);
-
-foreach($produtos as $valor){
-	echo 'Nome produto: '. $valor['nome'].'<br>';
-}
 	}
 
 	function requisicoes(){
@@ -27,5 +17,20 @@ foreach($produtos as $valor){
 
 	function tema(){
 		$this->layout = 'winners';
+	}
+
+	function teste_arrays(){
+		$produtos = array();
+
+		for($cont = 0; $cont<9; $cont++){
+			$array = array('Produtos' => array('nome' => 'produto'.$cont , 'id_produto' => $cont*2));
+			array_push($produtos, $array);
+		}
+		print_r($produtos);
+
+		foreach($produtos as $valor){
+			echo 'Nome produto: '. $valor['Produtos']['nome'].'<br>';
+			echo 'ID_Prod'.$valor['Produtos']['id_produto'].'<br>';
+		}
 	}
 }

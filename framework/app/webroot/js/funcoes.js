@@ -141,16 +141,16 @@ $(document).ready(function(){
 	$("#atualizar_dados_home").click(function(){
 
 		var acao = 'atualizar_dados_pagina_home';
-		var title_home = $("input[name=title_home]").val();
-		var description_home = $("input[name=description_home]").val();
-		var keywords_home = $("input[name=keywords_home]").val();
-		var empresa_home = $("input[name=empresa_home]").val();
-		var id_usuario = $("input[name=id_usuario]").val();
+		var title_home = $("#title_home").val();
+		var description_home = $("#description_home").val();
+		var keywords_home = $("#keywords_home").val();
+		var empresa_home = $("#empresa_home").val();
+		var id_usuario = $("#id_usuario").val();
 
 		$.ajax({
 				type: "post",
 				dataType: "json",
-				url: "../requisicoes.php",
+				url: "atualizar_dados_home",
 				async: true,
 				data: {acao: acao,
 					   title_home: title_home,
@@ -273,9 +273,7 @@ $(document).ready(function(){
 		var titulo_1 = $("input[name=titulo_quem_somos]").val();
 		var texto_1 = $("#texto_quem_somos").val();
 		var id_usuario = $("input[name=id_usuario]").val();
-		if(acao == ''){
-			
-		}else{
+
 			$.ajax({
 					type: "post",
 					dataType: "json",
@@ -293,7 +291,6 @@ $(document).ready(function(){
 					success: function(x){
 						alert("Alterações feitas com sucesso");
 					}
-			}
 		});
 	});
 	$("#atualizar_dados_contato").click(function(){

@@ -19,6 +19,7 @@ class UsuarioController extends AppController{
 			//faz o foreach com o array de dados do usuario
 			foreach($resposta as $valor) {
 				//escreve a sessao do usuario
+				$this->Session->write('Usuario.id',   $valor['Usuario']['id_usuario']);
 				$this->Session->write('Usuario.nome', $valor['Usuario']['nome']);//nome do usuario
 				$this->Session->write('Usuario.email',$valor['Usuario']['email']);//email do usuario
 				$this->Session->write('Usuario.senha',$valor['Usuario']['senha']);//senha do usuario criptografada

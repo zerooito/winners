@@ -29,20 +29,21 @@
                 <div class="panel-body">
 
                   <div class="form-group">
+                  <form action="" method="POST" name="home">
                     <label>Title</label>
-                    <input class="form-control" placeholder="Title que vai está nesta pagina" name="title_home">
+                    <input class="form-control" placeholder="Title que vai está nesta pagina" id="title_home" name="home[title_home]">
                     <label>Description</label>
-                    <input class="form-control" placeholder="Description que vai está nesta pagina" name="description_home">
+                    <input class="form-control" placeholder="Description que vai está nesta pagina" id="descrition_home" name="home[description_home]">
                     <label>Keywords</label>
-                    <input class="form-control" placeholder="Keywords que vai está nesta pagina" name="keywords_home">
+                    <input class="form-control" placeholder="Keywords que vai está nesta pagina" id="keywords_home" name="home[keywords_home]">
                     <label>Nome da empresa</label>
-                    <input class="form-control" placeholder="Nome da empresa que vai está nesta pagina" name="empresa_home">
-                    <input type="hidden" value="{$id_usuario}" name="id_usuario">
+                    <input class="form-control" id="empresa_home" placeholder="Nome da empresa que vai está nesta pagina" name="home[empresa_home]">
+                    <input type="hidden" id="id_usuario" value="<?php echo $this->Session->read('Usuario.id'); ?>" name="home[id_usuario]">
                     <br/>
                     <button type="button" class="btn btn-default" id="atualizar_dados_home">Atualizar dados</button>
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modal_home">Atualizar Texto da Home</button>
                   </div>
-
+                </form>
                 </div>
               </div>
 

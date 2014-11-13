@@ -26,4 +26,8 @@ class ClienteController extends AppController{
 		return true;
 	}
 
+	function listar_cadastros() {
+		$this->layout = 'layout';
+	}
+
 }

@@ -295,9 +295,6 @@
     <!--script src="js/plugins/metisMenu/metisMenu.min.js"></script-->
 
     <!-- Morris Charts JavaScript -->
-    <?php echo $this->Html->script('plugins/morris/raphael.min'); ?>
-    <?php echo $this->Html->script('plugins/morris/morris.min'); ?>
-    <?php echo $this->Html->script('plugins/morris/morris-data'); ?>
     <!--script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
     <script src="js/plugins/morris/morris-data.js"></script-->
@@ -309,6 +306,13 @@
     <!-- DataTables JavaScript -->
     <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
     <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-cliente').dataTable();
+    });
+    </script>
 
 </body>
 

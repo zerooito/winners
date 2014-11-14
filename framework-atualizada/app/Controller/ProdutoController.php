@@ -6,7 +6,7 @@ class ProdutoController extends AppController{
 	public $preco;
 	public $estoque;
 	
-	function cadastrar(){
+	function adicionar_produto(){
 		return true;
 	}
 

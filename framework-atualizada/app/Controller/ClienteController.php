@@ -11,16 +11,10 @@ class ClienteController extends AppController{
 	}
 
 	function s_adicionar_cliente() {
-		$dados = $this->request->data;
-		pr($dados);
-		if ($this->Cliente->save($dados['dados'])) {
-			echo 'oila';
-			exit();
-		} else {
-			echo 'oila2';
-			exit();
-		}
+		$array = array('nome1' => 'Teste', 'nome2' => 'teste');
+		pr($array);
 		exit();
+		$this->Cliente->Save($array
 	}
 
 	function listar_cadastros() {

@@ -1,6 +1,9 @@
 <?php
-App::user('AppModel','Model');
 
-class UsuarioModel extends AppModel{
+class Usuario extends AppModel{
 	public $usuario = 'UsuarioModel';
+
+	function teste(){
+		echo 'teste';
+	}
 }

@@ -117,4 +117,8 @@ class UsuarioController extends AppController{
 			echo false;
 		}
 	}
+
+	function existe_usuario() {
+		echo 'oila';
+	}
 }

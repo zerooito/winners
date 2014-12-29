@@ -1,7 +1,6 @@
 <?php
 
 class ClienteController extends AppController{
-
 	function home() {
 		$this->layout = 'wadmin';
 	}
@@ -12,7 +11,9 @@ class ClienteController extends AppController{
 
 	function s_adicionar_cliente() {
 		$dados = $this->request->data('dados');
-
+		$dados['ativo'] = 1;
+		$dados['id_instancia'] = '';
+		debug($dados);
 		if ($this->Cliente->save($dados)) {
 			$this->Session->setFlash('Cliente salvo com sucesso!');
             return $this->redirect('/cliente/listar_cadastros');
@@ -46,8 +47,6 @@ class ClienteController extends AppController{
 				)
 			)
 		);
-
-		pr($this->Session);
 	}
 
 	function editar_cliente() {
@@ -66,12 +65,9 @@ class ClienteController extends AppController{
 
 	function s_editar_cliente() {
 		$dados = $this->request->data('dados');
-		$id = $this->request->data('id');
-		pr($id);
+		$this->Cliente->id = $this->request->data('id');
 
-		$parametros = array('id' => $id);
-
-		if ($this->Cliente->updateAll($dados,$parametros)) {
+		if ($this->Cliente->save($dados)) {
 			$this->Session->setFlash('Cliente editado com sucesso!');
             return $this->redirect('/cliente/listar_cadastros');
 		} else {

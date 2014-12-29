@@ -1241,4 +1241,5 @@ class Controller extends Object implements CakeEventListener {
 		return new $viewClass($this);
 	}
 
+
 }

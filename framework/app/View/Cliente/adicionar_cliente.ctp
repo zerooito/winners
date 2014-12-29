@@ -7,7 +7,7 @@
                     Dados do Cliente
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="/cliente/s_editar_cliente" method="post">
+                    <form role="form" action="/cliente/s_adicionar_cliente" method="post">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">

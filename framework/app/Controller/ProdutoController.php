@@ -6,20 +6,7 @@ class ProdutoController extends AppController{
 	public $preco;
 	public $estoque;
 	
-	function adicionar_produto(){
-		return true;
+	function listar_cadastros() {
+		$this->layout = 'wadmin';
 	}
-
-	function editar($codigo) {
-		return true;
-	}
-
-	function excluir($codigo) {
-		return true;
-	}
-
-	function consultar($codigo) {
-		return true;
-	}
-
 }

@@ -19,6 +19,9 @@
                 <a href="/cliente/listar_cadastros"><i class="fa fa-user fa-fw"></i> Cliente</a>
             </li>
             <li>
+                <a href="/produto/listar_cadastros"><i class="fa fa-edit fa-fw"></i> Produtos</a>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Vendas<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -32,9 +35,6 @@
             </li>
             <li>
                 <a href="tables.html"><i class="fa fa-table fa-fw"></i> Marketing</a>
-            </li>
-            <li>
-                <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Produtos</a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Funcionarios<span class="fa arrow"></span></a>

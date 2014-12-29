@@ -10,27 +10,27 @@ class UsuarioController extends AppController{
 
 		$login_email = $this->request->data['email'];//recebe o post email
 		$login_senha = $this->request->data['senha'];//recebe o post senha
-
-		if($this->autentica_email($login_email,$login_senha)){
-			//recebe o array com os dados do usuario usando os parametros de email e senha
-			$resposta = $this->recuperar_dados($login_email,$login_senha);	
-			//destroe alguma session criada anteriomente
-			$this->Session->Destroy();
-			//faz o foreach com o array de dados do usuario
-			foreach($resposta as $valor) {
-				//escreve a sessao do usuario
-				$this->Session->write('Usuario.id',   $valor['Usuario']['id_usuario']);
-				$this->Session->write('Usuario.nome', $valor['Usuario']['nome']);//nome do usuario
-				$this->Session->write('Usuario.email',$valor['Usuario']['email']);//email do usuario
-				$this->Session->write('Usuario.senha',$valor['Usuario']['senha']);//senha do usuario criptografada
-				$this->Session->write('Usuario.erp',  $valor['Usuario']['erp_situacao']);//situacao ativa(1) ou nao(0) no erp
-				$this->Session->write('Usuario.ead',  $valor['Usuario']['ead_situacao']);//situacao ativa(1) ou nao(0) no ead
-				$this->Session->write('Usuario.site', $valor['Usuario']['site_situacao']);//situacao ativa(1) ou nao(0) no site
-			}
-			echo json_encode(true);//retorna um true pois tudo ocorreu bem
-		}else{
-			echo json_encode(false);//retorna um false pois ocorreu algo errado, ou os dados de login estava incorretos
-		}
+		echo json_encode(true);
+		// if($this->autentica_email($login_email,$login_senha)){
+		// 	//recebe o array com os dados do usuario usando os parametros de email e senha
+		// 	$resposta = $this->recuperar_dados($login_email,$login_senha);	
+		// 	//destroe alguma session criada anteriomente
+		// 	$this->Session->Destroy();
+		// 	//faz o foreach com o array de dados do usuario
+		// 	foreach($resposta as $valor) {
+		// 		//escreve a sessao do usuario
+		// 		$this->Session->write('Usuario.id',   $valor['Usuario']['id_usuario']);
+		// 		$this->Session->write('Usuario.nome', $valor['Usuario']['nome']);//nome do usuario
+		// 		$this->Session->write('Usuario.email',$valor['Usuario']['email']);//email do usuario
+		// 		$this->Session->write('Usuario.senha',$valor['Usuario']['senha']);//senha do usuario criptografada
+		// 		$this->Session->write('Usuario.erp',  $valor['Usuario']['erp_situacao']);//situacao ativa(1) ou nao(0) no erp
+		// 		$this->Session->write('Usuario.ead',  $valor['Usuario']['ead_situacao']);//situacao ativa(1) ou nao(0) no ead
+		// 		$this->Session->write('Usuario.site', $valor['Usuario']['site_situacao']);//situacao ativa(1) ou nao(0) no site
+		// 	}
+		// 	echo json_encode(true);//retorna um true pois tudo ocorreu bem
+		// }else{
+		// 	echo json_encode(false);//retorna um false pois ocorreu algo errado, ou os dados de login estava incorretos
+		// }
 	}
 
 	function logout(){

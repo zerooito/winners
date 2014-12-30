@@ -1,6 +1,8 @@
 <?php
 
-class ClienteController extends AppController{
+class ClienteController extends AppController{	
+	public $helpers = array('Excel');
+
 	function home() {
 		$this->layout = 'wadmin';
 	}
@@ -75,5 +77,10 @@ class ClienteController extends AppController{
             return $this->redirect('/cliente/listar_cadastros');
 		}
 	}		
+
+	function exportar_clientes() {
+        $this->layout = 'ajax'; 
+        $this->set('event', $this->Cliente->findById(4)); 
+	}
 
 }

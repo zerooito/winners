@@ -63,6 +63,9 @@
                 <div class="panel-body">
                     <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/cliente/adicionar_cliente" style="color: #FFF;"> Adicionar Cliente</a></i>
                 </div>
+                <div class="panel-body">
+                    <button type="button" class="btn btn-info"><i class="fa fa-export"><a href="/cliente/exportar_cliente" style="color: #FFF;"> Exportar Clientes</a></i>
+                </div>
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->

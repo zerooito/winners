@@ -80,7 +80,7 @@ class ClienteController extends AppController{
 
 	function exportar_clientes() {
         $this->layout = 'ajax'; 
-        $this->set('event', $this->Cliente->findById(4)); 
+        $this->set('event', $this->Cliente->find('all')); 
 	}
 
 }

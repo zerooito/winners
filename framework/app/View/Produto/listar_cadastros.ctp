@@ -30,14 +30,14 @@
                             <?php
                             foreach ($produtos as $indice => $produto) {
                             ?>             
-                                <tr class="odd gradeX" id="<?php echo $produto['produto']['id'] ?>">
-                                    <td><?php echo $produto['produto']['nome1'] ?></td>
-                                    <td><?php echo $produto['produto']['nome2'] ?></td>
-                                    <td><?php echo $indice ?></td>
-                                    <td class="center"><?php echo $produto['produto']['documento1'] ?></td>
+                                <tr class="odd gradeX" id="<?php echo $produto['Produto']['id'] ?>">
+                                    <td><?php echo $produto['Produto']['id_alias'] ?></td>
+                                    <td><?php echo $produto['Produto']['nome'] ?></td>
+                                    <td><?php echo $produto['Produto']['preco'] ?></td>
+                                    <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>
                                     <td class="center">
-                                        <button onclick="remover_produto(<?php echo $produto['produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_produto(<?php echo $produto['produto']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <button onclick="remover_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="editar_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
                                     </td>
                                 </tr>   
                             <?php
@@ -61,7 +61,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/produto/adicionar_produto" style="color: #FFF;"> Adicionar produto</a></i>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i>
                 </div>
                 <!-- /.panel-body -->
             </div>

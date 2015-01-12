@@ -75,7 +75,7 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "/produto/excluir_produto",
+            url: "/produto/excluir_cadastro",
             async: true,
             data: {id: id},
             error: function(x){
@@ -87,6 +87,6 @@
         });
     }
     function editar_produto(id) {
-        window.location.href = "/produto/editar_produto/"+id;
+        window.location.href = "/produto/editar_cadastro/"+id;
     }
 </script>

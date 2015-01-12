@@ -15,7 +15,7 @@ class ClienteController extends AppController{
 		$dados = $this->request->data('dados');
 		$dados['ativo'] = 1;
 		$dados['id_instancia'] = '';
-		debug($dados);
+
 		if ($this->Cliente->save($dados)) {
 			$this->Session->setFlash('Cliente salvo com sucesso!');
             return $this->redirect('/cliente/listar_cadastros');

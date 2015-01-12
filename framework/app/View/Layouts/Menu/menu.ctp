@@ -28,7 +28,7 @@
                         <a href="flot.html">Ecommerce</a>
                     </li>
                     <li>
-                        <a href="morris.html">Fisico</a>
+                        <a href="/venda/pdv/">PDV</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

@@ -28,11 +28,54 @@ class ProdutoController extends AppController{
 		$dados['id_alias'] = $this->id_alias();
 
 		if($this->Produto->save($dados)) {
-			$this->Session->setFlash('Cliente salvo com sucesso!');
+			$this->Session->setFlash('Produto salvo com sucesso!');
             return $this->redirect('/produto/listar_cadastros');
 		} else {
-			$this->Session->setFlash('Ocorreu um erro ao salva o cliente!');
+			$this->Session->setFlash('Ocorreu um erro ao salva o produto!');
             return $this->redirect('/produto/listar_cadastros');
+		}
+	}
+
+	public function editar_cadastro() {
+		$this->layout = 'wadmin';
+
+		$id = $this->params->pass[0];
+
+		$this->set('produto', $this->Produto->find('all', 
+				array('conditions' => 
+					array('ativo' => 1,
+						  'id' => $id
+					)
+				)
+			)
+		);
+	}
+
+	public function s_editar_cadastro() {
+		$dados = $this->request->data('dados');
+		$this->Produto->id = $this->request->data('id');
+		
+		if ($this->Produto->save($dados)) {
+			$this->Session->setFlash('Produto editado com sucesso!','default','good');
+            return $this->redirect('/produto/listar_cadastros');
+		} else {
+			$this->Session->setFlash('Ocorreu um erro ao editar o produto!','default','good');
+            return $this->redirect('/produto/listar_cadastros');
+		}
+	}
+
+	public function excluir_cadastro() {
+		$this->layout = 'ajax';
+
+		$id = $this->request->data('id');
+
+		$dados = array ('ativo' => '0');
+		$parametros = array ('id' => $id);
+
+		if ($this->Produto->updateAll($dados,$parametros)) {
+			echo json_encode(true);
+		} else {
+			echo json_encode(false);
 		}
 	}
 

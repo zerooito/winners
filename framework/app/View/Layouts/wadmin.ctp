@@ -45,7 +45,6 @@
 </head>
 
 <body>
-
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -277,9 +276,12 @@
         </nav>
 
         <!-- Conteudo -->
+
+        <?php echo $this->Session->flash(); ?>
         <?php echo $this->fetch('content'); ?>
 
     </div>
+    
     <!-- /#wrapper -->
 
     <!-- jQuery Version 1.11.0 -->

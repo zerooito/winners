@@ -1166,6 +1166,7 @@ a.text-success:hover {
 }
 .text-info {
   color: #31708f;
+  font-weight: bolder;/*amor eu te amo eu também*/
 }
 a.text-info:hover {
   color: #245269;
@@ -6201,3 +6202,117 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+/** Notices and Errors **/
+.message {
+z-index: 1000;
+position: absolute;
+clear: both;
+font-size: 140%;
+font-weight: bold;
+margin: 0 0 1em 0;
+float: right;
+background: #ffcc00;
+background-repeat: repeat-x;
+background-image: -moz-linear-gradient(top, #ffcc00, #E6B800);
+background-image: -ms-linear-gradient(top, #ffcc00, #E6B800);
+background-image: -webkit-gradient(linear, left top, left bottom, from(#ffcc00), to(#E6B800));
+background-image: -webkit-linear-gradient(top, #00FF17, #71FF00);
+background-image: -o-linear-gradient(top, #ffcc00, #E6B800);
+background-image: linear-gradient(top, #ffcc00, #E6B800);
+text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+border: 1px solid rgba(0, 0, 0, 0.2);
+margin-bottom: 18px;
+padding: 7px 14px;
+color: #404040;
+text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+right: 30px;
+top: 80px;
+}
+
+.success,
+.message,
+.cake-error,
+.cake-debug,
+.notice,
+p.error,
+.error-message {
+  background: #ffcc00;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffcc00, #E6B800);
+  background-image: -ms-linear-gradient(top, #ffcc00, #E6B800);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffcc00), to(#E6B800));
+  background-image: -webkit-linear-gradient(top, #ffcc00, #E6B800);
+  background-image: -o-linear-gradient(top, #ffcc00, #E6B800);
+  background-image: linear-gradient(top, #ffcc00, #E6B800);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 18px;
+  padding: 7px 14px;
+  color: #404040;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.success,
+.message,
+.cake-error,
+p.error,
+.error-message {
+  clear: both;
+  color: #fff;
+  background: #c43c35;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ee5f5b, #c43c35);
+  background-image: -ms-linear-gradient(top, #ee5f5b, #c43c35);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ee5f5b), to(#c43c35));
+  background-image: -webkit-linear-gradient(top, #ee5f5b, #c43c35);
+  background-image: -o-linear-gradient(top, #ee5f5b, #c43c35);
+  background-image: linear-gradient(top, #ee5f5b, #c43c35);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+.success {
+  clear: both;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background: #3B8230;
+  background-repeat: repeat-x;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#76BF6B), to(#3B8230));
+  background-image: -webkit-linear-gradient(top, #76BF6B, #3B8230);
+  background-image: -moz-linear-gradient(top, #76BF6B, #3B8230);
+  background-image: -ms-linear-gradient(top, #76BF6B, #3B8230);
+  background-image: -o-linear-gradient(top, #76BF6B, #3B8230);
+  background-image: linear-gradient(top, #76BF6B, #3B8230);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+p.error {
+  font-family: Monaco, Consolas, Courier, monospace;
+  font-size: 120%;
+  padding: 0.8em;
+  margin: 1em 0;
+}
+p.error em {
+  font-weight: normal;
+  line-height: 140%;
+}
+.notice {
+  color: #000;
+  display: block;
+  font-size: 120%;
+  padding: 0.8em;
+  margin: 1em 0;
+}
+.success {
+  color: #fff;
+}

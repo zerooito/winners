@@ -1,8 +1,8 @@
 ﻿<?php
 class HomeController extends AppController{
+
 	function index(){
 		$this->layout = 'winners';
-
 	}
 
 	function requisicoes(){
@@ -13,6 +13,10 @@ class HomeController extends AppController{
 			echo 'ainda não';
 			echo $this->request->data['login']['login_email'];
 		}
+	}
+
+	function login() {
+		$this->layout = 'login';
 	}
 
 	function tema(){

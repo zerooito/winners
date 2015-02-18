@@ -33,6 +33,41 @@ class UsuarioController extends AppController{
 		// }
 	}
 
+	public function processar_login() {
+		//destroe alguma session criada anteriomente
+		$this->Session->Destroy();
+
+		$dados = $this->request->data('dados');
+		$this->loadModel('Usuario');
+		$resposta = $this->Usuario->find('all',
+			array('conditions' => 
+				array('Usuario.email' => $dados['email'], 
+					  'Usuario.senha' => sha1($dados['senha'])
+				)
+			)
+		);
+
+		if (count($resposta) < 1) {
+			$this->Session->setFlash('Ocorreu um erro ao logar na sua conta, verifique seus dados!');
+            return $this->redirect('/home/login');
+		}
+
+		//faz o foreach com o array de dados do usuario
+		foreach($resposta as $valor) {
+			//escreve a sessao do usuario
+			$this->Session->write('Usuario.id',   $valor['Usuario']['id']);
+			$this->Session->write('Usuario.nome', $valor['Usuario']['nome']);//nome do usuario
+			$this->Session->write('Usuario.email',$valor['Usuario']['email']);//email do usuario
+			$this->Session->write('Usuario.senha',$valor['Usuario']['senha']);//senha do usuario criptografada
+			$this->Session->write('Usuario.erp',  $valor['Usuario']['erp']);//situacao ativa(1) ou nao(0) no erp
+			$this->Session->write('Usuario.ead',  $valor['Usuario']['ead']);//situacao ativa(1) ou nao(0) no ead
+			$this->Session->write('Usuario.site', $valor['Usuario']['site']);//situacao ativa(1) ou nao(0) no site
+		}
+
+		$this->Session->setFlash('Bem vindo, '.$this->Session->read('Usuario.nome').'!');
+        return $this->redirect('/dashboard/home');
+	}
+
 	function logout(){
 		$this->Session->Destroy();
 

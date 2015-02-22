@@ -1,43 +1,25 @@
 <?php
 /**
- * Application level Controller
- *
- * This file is application-wide controller file. You can put all
- * application-wide controller-related methods here.
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Controller
- * @since         CakePHP(tm) v 0.2.9
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
+* Controller principal da aplicação
+**/
 
 App::uses('Controller', 'Controller');
 
-/**
- * Application Controller
- *
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
- *
- * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
- */
 class AppController extends Controller {
 	public $modulos = array();
 
+	/*
+	* Metodo que funciona como construct para setar os modulos da instancia logada
+	*/
 	public function beforeFilter(){
 		$this->verificar_acesso();
     	$this->set('modulos', $this->modulos);
    	}
 
+   	/*
+   	* Metodo que verificar o acesso do usuario e chama os metodos adicionais para setar os 
+   	* modulos ativos e configurações
+   	*/
 	function verificar_acesso() {
 		$dados = $this->Session->Read('Usuario');
 
@@ -50,6 +32,9 @@ class AppController extends Controller {
 		return true;
 	}
 
+	/*
+	*	Metodo que verifica as configurações e modulos do usuario logado
+	*/
 	function verificar_modulos($id_usuario) {
 		$this->loadModel('ModuloRelacionaUsuario');
 
@@ -69,6 +54,10 @@ class AppController extends Controller {
 		return $this->modulos;
 	}
 
+	/*
+	* Metodo que verifica se determinado modulo está ativo
+	* @param modulo
+	*/
 	function verificar_modulo_ativo($modulo) {
 		$retorno = in_array($modulo, $this->modulos);
 		return $retorno;

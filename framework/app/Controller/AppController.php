@@ -31,13 +31,23 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+	public $modulos = array();
+
+	public function beforeFilter(){
+		$this->verificar_acesso();
+    	$this->set('modulos', $this->modulos);
+   	}
 
 	function verificar_acesso() {
 		$dados = $this->Session->Read('Usuario');
-		debug($dados);
-		if (count($dados) > 1) {
-			$this->verificar_modulos($dados['id']);
+
+		if (count($dados) < 1) {
+			return false;
 		}
+
+		$this->verificar_modulos($dados['id']);
+
+		return true;
 	}
 
 	function verificar_modulos($id_usuario) {
@@ -45,13 +55,23 @@ class AppController extends Controller {
 
 		$registros = $this->ModuloRelacionaUsuario->find('all',
 			array('conditions' => 
-				array('Usuario.id' => $id_usuario, 
+				array('ModuloRelacionaUsuario.id_usuario' => $id_usuario, 
 					  'ModuloRelacionaUsuario.ativo' => 1,
 					  'Modulo.ativo' => 1
 					)
 				)
 			);
-		debug($registros);
+
+		foreach ($registros as $indice => $modulo) {
+			$this->modulos[$indice] = $modulo['Modulo']['modulo'];
+		}
+		
+		return $this->modulos;
+	}
+
+	function verificar_modulo_ativo($modulo) {
+		$retorno = in_array($modulo, $this->modulos);
+		return $retorno;
 	}
 
 }

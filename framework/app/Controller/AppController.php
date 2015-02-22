@@ -31,7 +31,27 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	function teste() {
-		echo 'pinto';
+
+	function verificar_acesso() {
+		$dados = $this->Session->Read('Usuario');
+		debug($dados);
+		if (count($dados) > 1) {
+			$this->verificar_modulos($dados['id']);
+		}
 	}
+
+	function verificar_modulos($id_usuario) {
+		$this->loadModel('ModuloRelacionaUsuario');
+
+		$registros = $this->ModuloRelacionaUsuario->find('all',
+			array('conditions' => 
+				array('Usuario.id' => $id_usuario, 
+					  'ModuloRelacionaUsuario.ativo' => 1,
+					  'Modulo.ativo' => 1
+					)
+				)
+			);
+		debug($registros);
+	}
+
 }

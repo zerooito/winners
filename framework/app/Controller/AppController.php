@@ -1,7 +1,14 @@
 <?php
 /**
-* Controller principal da aplicação
-**/
+ * @package Framework Cakephp Adaptada para Winners Desenvolvimento de Sites e Sistemas
+ * @version 1.0
+ *
+ * @author Winners
+ * @link http://www.winnersdesenvolvimento.com.br
+ *
+ * @name Controller
+ *
+ */
 
 App::uses('Controller', 'Controller');
 
@@ -40,13 +47,13 @@ class AppController extends Controller {
 		$this->loadModel('ModuloRelacionaUsuario');
 
 		$registros = $this->ModuloRelacionaUsuario->find('all',
-			array('conditions' => 
-				array('ModuloRelacionaUsuario.id_usuario' => $id_usuario, 
-					  'ModuloRelacionaUsuario.ativo' => 1,
-					  'Modulo.ativo' => 1
-					)
+		array('conditions' => 
+			array('ModuloRelacionaUsuario.id_usuario' => $id_usuario, 
+				  'ModuloRelacionaUsuario.ativo' => 1,
+				  'Modulo.ativo' => 1
 				)
-			);
+			)
+		);
 
 		foreach ($registros as $indice => $modulo) {
 			$this->modulos[$indice]['modulo'] = $modulo['Modulo']['modulo'];
@@ -60,7 +67,7 @@ class AppController extends Controller {
 
 	/*
 	* Metodo que verifica se determinado modulo está ativo
-	* @param modulo
+	* @param array modulo
 	*/
 	function verificar_modulo_ativo($modulo) {
 		$retorno = in_array($modulo, $this->modulos);

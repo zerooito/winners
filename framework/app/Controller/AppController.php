@@ -22,9 +22,10 @@ class AppController extends Controller {
    	*/
 	function verificar_acesso() {
 		$dados = $this->Session->Read('Usuario');
-
+		
 		if (count($dados) < 1) {
-			return false;
+			$this->Session->setFlash('Você não tem acesso a esta area do sistema!');
+            return $this->redirect('/');
 		}
 
 		$this->verificar_modulos($dados['id']);

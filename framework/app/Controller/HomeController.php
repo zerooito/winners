@@ -1,6 +1,10 @@
 ﻿<?php
 class HomeController extends AppController{
 
+	public function beforeFilter(){
+		return true;
+   	}
+
 	function index(){
 		$this->layout = 'winners';
 	}

@@ -17,6 +17,8 @@ class AppController extends Controller {
 
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
+	* Toda vez que determinado controller não precisa de verificação de acesso o
+	* o mesmo precisa ter essa função rescrita somente com um return true
 	*/
 	public function beforeFilter(){
 		$this->verificar_acesso();

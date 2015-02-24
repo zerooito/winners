@@ -1,84 +1,185 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
 
+<!DOCTYPE html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="product" content="BlackBook EAD">
-    <meta name="description" content="">
-    <meta name="author" content="Reginaldo Luis">
-
-    <?php
-    	echo $this->Html->css('style');
-
-    	echo $this->Html->script('jquery');
-    	echo $this->Html->script('funcoes');
-    ?>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="http://malsup.github.com/jquery.tcycle.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
-    <!--Start of Zopim Live Chat Script--><script type='text/javascript'>
-    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
-    $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
-    type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
-    </script>
-    <!--End of Zopim Live Chat Script-->
-
-    <title>Winners Desenvolvimento de Sites e Sistemas</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extant - Free HTML5 Templates 2014</title>
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,200,300,600,700,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300,200' rel='stylesheet' type='text/css'>
+<?php
+    echo $this->Html->css('style');
+    echo $this->Html->css('font-awesome.min');
+    echo $this->Html->css('responsive');
+    echo $this->Html->script('sidr/stylesheets/jquery.sidr.dark');
+    echo $this->Html->script('jquery.min');
+    echo $this->Html->script('jquery.sidr.min');
+    echo $this->Html->script('smoothscroll');
+?>
 </head>
 
-    <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<body>
+  <div class="header">
       <div class="container">
-         <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Quem Somos</a></li>
-                <li><a href="#">Suporte</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Produtos <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">One more separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-              <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="O que procura ?">
+        <div class="logo-menu">
+            <div class="logo">
+                <h1><a href="#">Winners</a></h1>
+              </div>
+                <!--<a id="simple-menu" href="#sidr">Toggle menu</a>-->
+                <div id="mobile-header">
+                  <a class="responsive-menu-button" href="#"><img src="images/11.png"/></a>
                 </div>
-                <button type="submit" class="btn btn-default">Procure</button>
-              </form>
-              <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Por que usar ?</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">FAQ <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-      </div>
-    </nav>
+              <div class="menu" id="navigation">
+                <ul>
+                      <li><a href="#">Inicio</a></li>
+                        <li><a href="#features">Produtos</a></li>
+                        <li><a href="#stories">Métodos</a></li>
+                        <li><a href="#contact">Contato</a></li>
+                    </ul>
+              </div>
+          </div>
+        </div>
+    </div>
+    
+    <div class="banner">
+      <div class="container">
+          <div class="header-text">
+              <p class="big-text">Gestão Inovadora</p>
+                <h2>100% Customizavel</h2>
+                <p class="small-text">Aumente suas vendas com nosso sistema de gestão</p>
+                <div class="button-section">
+                  <ul>
+                      <li><a href="#" class="top-button white">Leia mais</a></li>
+                        <li><a href="#" class="top-button green">Cadastre-se Já</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="color-border">
+    </div>
+    
+    <div class="desc">
+      <div class="container">
+          <h2>Sistema de Gestão Inovador</h2>
+            <p>Tenha total controle de suas vendas, estoque, funcionarios e muito mais, faça seu cadastro grátis e aproveite a versão free. Sistema 100% customizavel, precisa de algo e não achou entre em contato com nossa equipe comercial e faça uma cotação.</p>
+        </div>
+    </div>
+    
+    <div class="features" id="features">
+      <div class="container">
+          <h3 class="text-head">Produtos</h3>
+          <div class="features-section">
+                <ul>
+                  <li>
+                      <div class="feature-icon icon1"></div>
+                      <h4>Sites Comporativos</h4>
+                        <p>O melhor cms de site corporativos da internet, com sistema de conteudo 100% amigavel podendo fazer posts de qualquer hora e lugar.</p>
+                     </li>
+                     <li>
+                      <div class="feature-icon icon2"></div>
+                      <h4>Tempo Livre</h4>
+                        <p>Sistema 100% na nuvem podendo ser acessado de qualquer dispositivo móvel, assim mantendo você totalmente atualizado do que acontece na sua empresa.</p>
+                     </li>
+                     <li>
+                      <div class="feature-icon icon3"></div>
+                      <h4>100% Customizavel</h4>
+                        <p>Trabalhamos com a melhor equipe de desenvolvedores do mercado, 100% aptos a qualquer tipo de customização no sistema desde um simples cadastro as varias integrações web.</p>
+                     </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="stories" id="stories">
+      <div class="container">
+          <h3 class="text-head">Métodos</h3>
+            <p class="box-desc">Como funciona os novos projetos.</p>
+          <div class="stories-section">
+              <ul>
+                  <li>
+                      <a href="#">
+                      <div class="story-img"><img src="images/story1.png"/></div>
+                          <div class="story-box">
+                              <h4>Você</h4>
+                              <p>Você cliente entra em contato conosco informando suas necessidades.</p>
+                            
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                      <div class="story-img"><img src="images/story2.png"/></div>
+                          <div class="story-box">
+                              <h4>Call Alinhamento</h4>
+                              <p>Call de alinhamento dos pontos necessários do projeto, assim mantendo os dois lados cientes do que vai ser feito.</p>                            
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                      <div class="story-img"><img src="images/story3.png"/></div>
+                          <div class="story-box">
+                              <h4>Contato comercial</h4>
+                              <p>Comercial entra em contato com você alinhado valores e prazos do projeto.</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="contact" id="contact">
+      <div class="container">
+          <h3 class="text-head">Contato</h3>
+            <p class="box-desc">Ainda ficou com dúvidas, não deixe de entrar em contato com nós !</p>
+              <div class="contact-section">
+                
+                    <form>
+                        <input type="text" name="Name" placeholder="Name" />
+                          <input type="email" name="email" placeholder="Email"/>
+                          <textarea placeholder="Message" rows="6"></textarea>
+                          <button type="submit" class="submit">Enviar Mensagem</button>
+                      </form>
+                  
+              </div>
+        </div>
+    </div>
+    <div class="color-border">
+    </div>
+    <div class="footer">
+          <div class="container">
+              <div class="infooter">
+                <p class="copyright">Copyright &copy; Winners Desenvolvimento de Sites e Sistemas <?php echo date('Y') ?></p>
+              </div>
+            <ul class="socialmedia">
+                <li><a href=""><i class="icon-twitter"></i></a></li>
+                <li><a href=""><i class="icon-facebook"></i></a></li>
+                <li><a href=""><i class="icon-dribbble"></i></a></li>
+                <li><a href=""><i class="icon-linkedin"></i></a></li>
+                <li><a href=""><i class="icon-instagram"></i></a></li>
+            </ul>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
+        <script type="text/javascript">   
+       $(document).ready(function() {
+        $('#simple-menu').sidr({
+        side: 'right'
+      });
+      });
+      $('.responsive-menu-button').sidr({
+        name: 'sidr-main',
+        source: '#navigation',
+        side: 'right'
 
-        <?php echo $this->fetch('content'); ?>
-    </body>
+        });
+      $(document).ready(
+      function() {
+      $("html").niceScroll({cursorborder:"0px solid #fff",cursorwidth:"5px",scrollspeed:"70"});
+      }
+      );
+    </script>
+</body>
 </html>

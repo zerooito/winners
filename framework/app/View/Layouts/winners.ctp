@@ -34,6 +34,7 @@
                         <li><a href="#features">Produtos</a></li>
                         <li><a href="#stories">Métodos</a></li>
                         <li><a href="#contact">Contato</a></li>
+                        <li><a href="/home/login">Login</a></li>
                     </ul>
               </div>
           </div>

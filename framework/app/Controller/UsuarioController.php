@@ -4,6 +4,10 @@ class UsuarioController extends AppController{
 	public $emailSession;
 	public $senhaSession;
 
+	public function beforeFilter(){
+		return true;
+   	}
+
 	//faz o login no sistema, com a função autentica_email
 	function login(){
 		$this->layout = 'ajax';//chama o layout para executar uma função ajax
@@ -26,7 +30,7 @@ class UsuarioController extends AppController{
 				)
 			)
 		);
-
+		
 		if (count($resposta) < 1) {
 			$this->Session->setFlash('Ocorreu um erro ao logar na sua conta, verifique seus dados!');
             return $this->redirect('/home/login');

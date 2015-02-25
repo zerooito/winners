@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extant - Free HTML5 Templates 2014</title>
+<title>Winners desenvolvimento de Sites e Sistemas</title>
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,200,300,600,700,800' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300,200' rel='stylesheet' type='text/css'>
 <?php
@@ -15,6 +15,16 @@
     echo $this->Html->script('jquery.sidr.min');
     echo $this->Html->script('smoothscroll');
 ?>
+
+<!--Start of Zopim Live Chat Script-->
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+$.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
+type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+</script>
+<!--End of Zopim Live Chat Script-->
 </head>
 
 <body>

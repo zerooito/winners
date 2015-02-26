@@ -240,10 +240,13 @@ if (!function_exists('pr')) {
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#pr
  */
-	function pr($var) {
+	function pr($var, $exit = false) {
 		if (Configure::read('debug') > 0) {
 			$template = php_sapi_name() !== 'cli' ? '<pre>%s</pre>' : "\n%s\n";
 			printf($template, print_r($var, true));
+			if ($exit) {
+				exit();
+			}
 		}
 	}
 

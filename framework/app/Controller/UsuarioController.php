@@ -52,6 +52,11 @@ class UsuarioController extends AppController{
         return $this->redirect('/dashboard/home');
 	}
 
+	public function processar_logout() {
+		$this->Session->Destroy();
+		return $this->redirect('/home/login');
+	}
+
 	function logout(){
 		$this->Session->Destroy();
 

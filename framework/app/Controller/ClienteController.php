@@ -14,7 +14,7 @@ class ClienteController extends AppController{
 	function s_adicionar_cliente() {
 		$dados = $this->request->data('dados');
 		$dados['ativo'] = 1;
-		$dados['id_instancia'] = '';
+		$dados['id_usuario'] = $this->instancia;
 
 		if ($this->Cliente->save($dados)) {
 			$this->Session->setFlash('Cliente salvo com sucesso!');
@@ -45,7 +45,9 @@ class ClienteController extends AppController{
 
 		$this->set('clientes', $this->Cliente->find('all', 
 				array('conditions' => 
-					array('ativo' => 1)
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
 				)
 			)
 		);

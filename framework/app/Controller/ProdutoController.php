@@ -1,17 +1,14 @@
 <?php
 
-class ProdutoController extends AppController{
-	public $codigo;
-	public $nome;
-	public $preco;
-	public $estoque;
-	
+class ProdutoController extends AppController{	
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';
 
 		$this->set('produtos', $this->Produto->find('all', 
 				array('conditions' => 
-					array('ativo' => 1)
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
 				)
 			)
 		);
@@ -23,10 +20,9 @@ class ProdutoController extends AppController{
 
 	public function s_adicionar_cadastro() {
 		$dados = $this->request->data('dados');
-		$dados['id_instancia'] = $this->Session->read('Usuario.id');
+		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
-
 		if($this->Produto->save($dados)) {
 			$this->Session->setFlash('Produto salvo com sucesso!');
             return $this->redirect('/produto/listar_cadastros');

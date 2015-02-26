@@ -14,6 +14,7 @@ App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
 	public $modulos = array();
+	public $instancia = 'winners';
 
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
@@ -37,26 +38,26 @@ class AppController extends Controller {
             return $this->redirect('/');
 		}
 
-		$this->verificar_modulos($dados['id']);
-
+		$this->instancia = $dados['id'];
+		$this->verificar_modulos();
 		return true;
 	}
 
 	/*
 	*	Metodo que verifica as configurações e modulos do usuario logado
 	*/
-	function verificar_modulos($id_usuario) {
+	function verificar_modulos() {
 		$this->loadModel('ModuloRelacionaUsuario');
 
 		$registros = $this->ModuloRelacionaUsuario->find('all',
 		array('conditions' => 
-			array('ModuloRelacionaUsuario.id_usuario' => $id_usuario, 
+			array('ModuloRelacionaUsuario.id_usuario' => $this->instancia, 
 				  'ModuloRelacionaUsuario.ativo' => 1,
 				  'Modulo.ativo' => 1
 				)
 			)
 		);
-
+		
 		foreach ($registros as $indice => $modulo) {
 			$this->modulos[$indice]['modulo'] = $modulo['Modulo']['modulo'];
 			$this->modulos[$indice]['funcao'] = $modulo['Modulo']['funcao'];

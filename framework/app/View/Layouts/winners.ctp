@@ -1,5 +1,5 @@
 
-<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
     echo $this->Html->css('responsive');
     echo $this->Html->script('sidr/stylesheets/jquery.sidr.dark');
     echo $this->Html->script('jquery.min');
-    echo $this->Html->script('jquery.sidr.min');
+    echo $this->Html->script('sidr/jquery.sidr.min');
     echo $this->Html->script('smoothscroll');
 ?>
 
@@ -174,23 +174,11 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
             </div>
         </div>
         <script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
-        <script type="text/javascript">   
-       $(document).ready(function() {
-        $('#simple-menu').sidr({
-        side: 'right'
-      });
-      });
-      $('.responsive-menu-button').sidr({
-        name: 'sidr-main',
-        source: '#navigation',
-        side: 'right'
-
-        });
-      $(document).ready(
-      function() {
-      $("html").niceScroll({cursorborder:"0px solid #fff",cursorwidth:"5px",scrollspeed:"70"});
-      }
-      );
-    </script>
+        <script>
+            $('#responsive-menu-button').sidr({
+              name: 'sidr-main',
+              source: '#navigation'
+            });
+        </script>
 </body>
 </html>

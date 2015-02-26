@@ -9,7 +9,9 @@ class VendaController extends AppController {
 
 		$this->set('produtos', $this->Produto->find('all', 
 				array('conditions' => 
-					array('ativo' => 1)
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
 				)
 			)
 		);

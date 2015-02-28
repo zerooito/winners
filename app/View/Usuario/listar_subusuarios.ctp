@@ -56,7 +56,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-success" style="margin-top: 10px;"><i class="fa fa-plus"><a href="/usuario/listar_subusuarios" style="color: #FFF;"> Usuarios</a></i>
+                    <button type="button" class="btn btn-success" style="margin-top: 10px;"><i class="fa fa-plus"><a href="/hieraquia/listar_subusuarios" style="color: #FFF;"> Usuarios</a></i>
                 </div>
                 <!-- /.panel-body -->
             </div>

@@ -29,7 +29,7 @@ Some Handy Links
 
 Get Support!
 ------------
-
+//test test
 [#cakephp](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake
 
 [Google Group](https://groups.google.com/group/cake-php) - Community mailing list and forum

@@ -2,7 +2,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Hieraquias - Listar Hieraquias</h1>
+            <h1 class="page-header">SubUsuarios - Listar SubUsuarios</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -11,7 +11,7 @@
         <div class="col-lg-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Listagem das Hieraquias
+                    Listagem das SubUsuarios
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -25,7 +25,7 @@
                             </thead>
                             <tbody>                   
                             <?php
-                            foreach ($hieraquias as $i => $hieraquia) {
+                            foreach ($SubUsuarios as $i => $hieraquia) {
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $hieraquia['Hieraquia']['id'] ?>">
                                     <td><?php echo $hieraquia['Hieraquia']['nome'] ?></td>
@@ -55,9 +55,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/hieraquia/adicionar_hieraquia" style="color: #FFF;"> Adicionar Hieraquia</a></i>
-
-                    <button type="button" class="btn btn-success" style="margin-top: 10px;"><i class="fa fa-plus"><a href="/usuario/listar_subusuarios" style="color: #FFF;"> Usuarios</a></i>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/hieraquia/adicionar_subusuario" style="color: #FFF;"> Adicionar SubUsuario</a></i>
                 </div>
                 <!-- /.panel-body -->
             </div>

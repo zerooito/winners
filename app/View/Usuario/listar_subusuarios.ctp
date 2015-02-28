@@ -20,6 +20,7 @@
                             <thead>
                                 <tr>
                                     <th>Nome</th>
+                                    <th>Email</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -55,8 +56,6 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/hieraquia/adicionar_hieraquia" style="color: #FFF;"> Adicionar Hieraquia</a></i>
-
                     <button type="button" class="btn btn-success" style="margin-top: 10px;"><i class="fa fa-plus"><a href="/usuario/listar_subusuarios" style="color: #FFF;"> Usuarios</a></i>
                 </div>
                 <!-- /.panel-body -->

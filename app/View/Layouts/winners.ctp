@@ -10,8 +10,10 @@
     echo $this->Html->css('style');
     echo $this->Html->css('font-awesome.min');
     echo $this->Html->css('responsive');
-    echo $this->Html->script('sidr/stylesheets/jquery.sidr.dark');
+    echo $this->Html->css('sidr/stylesheets/jquery.sidr.dark');
     echo $this->Html->script('jquery.min');
+    echo $this->Html->script('jquery.ninescroll.min');
+
     echo $this->Html->script('sidr/jquery.sidr.min');
     echo $this->Html->script('smoothscroll');
 ?>
@@ -147,10 +149,10 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
             <p class="box-desc">Ainda ficou com dúvidas, não deixe de entrar em contato com nós !</p>
               <div class="contact-section">
                 
-                    <form>
-                        <input type="text" name="Name" placeholder="Name" />
-                          <input type="email" name="email" placeholder="Email"/>
-                          <textarea placeholder="Message" rows="6"></textarea>
+                    <form action="/home/enviar_email" method="post">
+                        <input type="text" name="dados[name]" placeholder="Name" />
+                          <input type="email" name="dados[email]" placeholder="Email"/>
+                          <textarea placeholder="Message" name="dados[message]" rows="6"></textarea>
                           <button type="submit" class="submit">Enviar Mensagem</button>
                       </form>
                   
@@ -173,12 +175,23 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
             </ul>
             </div>
         </div>
-        <script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
-        <script>
-            $('#responsive-menu-button').sidr({
-              name: 'sidr-main',
-              source: '#navigation'
-            });
-        </script>
+        <script type="text/javascript">   
+       $(document).ready(function() {
+        $('#simple-menu').sidr({
+        side: 'right'
+      });
+      });
+      $('.responsive-menu-button').sidr({
+        name: 'sidr-main',
+        source: '#navigation',
+        side: 'right'
+
+        });
+      $(document).ready(
+      function() {
+      $("html").niceScroll({cursorborder:"0px solid #fff",cursorwidth:"5px",scrollspeed:"70"});
+      });
+    </script>
+</body>
 </body>
 </html>

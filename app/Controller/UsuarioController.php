@@ -1,9 +1,6 @@
 <?php
 
 class UsuarioController extends AppController{
-	public $emailSession;
-	public $senhaSession;
-
 	public function beforeFilter(){
 		return true;
    	}
@@ -97,15 +94,6 @@ class UsuarioController extends AppController{
 		}
 	}
 
-	//se o email estiver livre retorna false, senão retorna true
-	function verificar_email_ajax(){
-		$this->layout = 'ajax';
-
-		$email = $this->request->data['email'];
-
-		echo  json_encode($this->verificar_email($email));
-	}
-
 	function recuperar_dados($email,$senha){
 		$this->loadModel('Usuario');
 		$resposta = $this->Usuario->find('all', 
@@ -119,30 +107,22 @@ class UsuarioController extends AppController{
 		return $resposta;
 	}
 
-	//efetua um novo cadastro via ajax com os dados passados pelo metodo postS
-	function novo_cadastro(){
-		$this->layout = 'ajax';
+	public function novo_usuario() {
+		$dados = $this->request->data('dados');
+		$dados['senha'] = sha1($dados['senha']);
 
-		$nome  = $this->request->data['nome'];
-		$email = $this->request->data['email'];
-		$senha = sha1($this->request->data['senha']);
-		$erp   = $this->request->data['erp'];
-		$ead   = $this->request->data['ead'];
-		$site  = $this->request->data['site'];
-
-		if($this->verificar_email($email) == false){
-			$data = array('nome' => $nome, 'email' => $email, 'senha' => $senha, 'erp_situacao' => $erp, 'ead_situacao' => $ead, 'site_situacao' => $site, 'usuario_ativo' => 1);
-			if($this->Usuario->save($data)){
-				echo true;
-			}else{
-				echo false;
-			}
-		}else{
-			echo false;
+		if ($this->verificar_email($dados['email']) !== false) {
+			$this->Session->setFlash('Email já cadastrado no sistema!');
+			$this->redirect('/');
 		}
+
+		if ($this->Usuario->save($dados)) {
+			$this->Session->setFlash('Cadastrado com sucesso!');
+			$this->redirect('/');
+		}
+
+		$this->Session->setFlash('Ocorreu um erro, tente novamente!');
+		$this->redirect('/');
 	}
 
-	function existe_usuario() {
-		echo 'oila';
-	}
 }

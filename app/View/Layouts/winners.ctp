@@ -203,6 +203,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <form action="/usuario/novo_usuario" method="post">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -210,21 +211,20 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
             <h4 class="modal-title" id="myModalLabel">Informe seus Dados</h4>
           </div>
           <div class="modal-body">
-              <form action="/usuario/novo_usuario">
                   <label style="margin-bottom: -15px;">Nome </label>
-                  <input type="text" name="dados[email]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu nome"/>
+                  <input type="text" name="dados[nome]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu nome"/>
                   <label style="margin-bottom: -15px;">Email </label>
                   <input type="text" name="dados[email]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu e-mail" />
                   <label style="margin-bottom: -15px;">Senha </label>
                   <input type="password" name="dados[senha]" style="margin-left:0px;margin-bottom: 15px;"  placeholder="Digite sua senha"/>
-              </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary">Salvar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
           </div>
         </div>
       </div>
+      </form>
     </div>
 </body>
 </html>

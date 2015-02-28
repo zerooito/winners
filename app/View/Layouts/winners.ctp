@@ -27,6 +27,14 @@ $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
 type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
 </script>
 <!--End of Zopim Live Chat Script-->
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -34,7 +42,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
       <div class="container">
         <div class="logo-menu">
             <div class="logo">
-                <h1><a href="#">Winners</a></h1>
+                <h1 style="margin-top: 0px;"><a href="#">Winners</a></h1>
               </div>
                 <!--<a id="simple-menu" href="#sidr">Toggle menu</a>-->
                 <div id="mobile-header">
@@ -62,7 +70,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                 <div class="button-section">
                   <ul>
                       <li><a href="#" class="top-button white">Leia mais</a></li>
-                        <li><a href="#" class="top-button green">Cadastre-se Já</a></li>
+                        <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Cadastre-se Já</a></li>
                     </ul>
                 </div>
             </div>
@@ -78,7 +86,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
             <p>Tenha total controle de suas vendas, estoque, funcionarios e muito mais, faça seu cadastro grátis e aproveite a versão free. Sistema 100% customizavel, precisa de algo e não achou entre em contato com nossa equipe comercial e faça uma cotação.</p>
         </div>
     </div>
-    
+   
     <div class="features" id="features">
       <div class="container">
           <h3 class="text-head">Produtos</h3>
@@ -192,6 +200,31 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
       $("html").niceScroll({cursorborder:"0px solid #fff",cursorwidth:"5px",scrollspeed:"70"});
       });
     </script>
-</body>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Informe seus Dados</h4>
+          </div>
+          <div class="modal-body">
+              <form action="/usuario/novo_usuario">
+                  <label style="margin-bottom: -15px;">Nome </label>
+                  <input type="text" name="dados[email]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu nome"/>
+                  <label style="margin-bottom: -15px;">Email </label>
+                  <input type="text" name="dados[email]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu e-mail" />
+                  <label style="margin-bottom: -15px;">Senha </label>
+                  <input type="password" name="dados[senha]" style="margin-left:0px;margin-bottom: 15px;"  placeholder="Digite sua senha"/>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

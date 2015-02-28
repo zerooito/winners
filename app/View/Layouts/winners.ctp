@@ -149,10 +149,10 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
             <p class="box-desc">Ainda ficou com dúvidas, não deixe de entrar em contato com nós !</p>
               <div class="contact-section">
                 
-                    <form>
-                        <input type="text" name="Name" placeholder="Name" />
-                          <input type="email" name="email" placeholder="Email"/>
-                          <textarea placeholder="Message" rows="6"></textarea>
+                    <form action="/home/enviar_email" method="post">
+                        <input type="text" name="dados[name]" placeholder="Name" />
+                          <input type="email" name="dados[email]" placeholder="Email"/>
+                          <textarea placeholder="Message" name="dados[message]" rows="6"></textarea>
                           <button type="submit" class="submit">Enviar Mensagem</button>
                       </form>
                   

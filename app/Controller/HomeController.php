@@ -41,4 +41,9 @@ class HomeController extends AppController{
 			echo 'ID_Prod'.$valor['Produtos']['id_produto'].'<br>';
 		}
 	}
+
+	function enviar_email() {
+		$dados = $this->request->data('dados');
+		pr($dados);
+	}
 }

@@ -44,6 +44,13 @@ class HomeController extends AppController{
 	
 	function enviar_email() {
 		$dados = $this->request->data('dados');
-		pr($dados);
+
+		App::uses('CakeEmail', 'Network/Email');
+
+		$Email = new CakeEmail();
+		$Email->from(array('winnersdevelopers@gmail.com' => 'Winners'));
+		$Email->to($dados['email']);
+		$Email->subject('Contato Winners Desenvolvimento');
+		$Email->send('Muito obrigado');
 	}
 }

@@ -25,17 +25,17 @@
                             </thead>
                             <tbody>                   
                             <?php
-                            // foreach ($hieraquias as $i => $hieraquia) {
+                            foreach ($hieraquias as $i => $hieraquia) {
                             ?>             
-<!--                                 <tr class="odd gradeX" id="<?php echo $cliente['Cliente']['id'] ?>">
-                                    <td><?php echo $hieraquia['Cliente']['nome1'] ?></td>
+                                <tr class="odd gradeX" id="<?php echo $hieraquia['Hieraquia']['id'] ?>">
+                                    <td><?php echo $hieraquia['Hieraquia']['nome'] ?></td>
                                     <td class="center">
-                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <button onclick="remover_hieraquia(<?php echo $hieraquia['Hieraquia']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="editar(<?php echo $hieraquia['Hieraquia']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
                                     </td>
-                                </tr> -->   
+                                </tr>   
                             <?php
-                            // }// fim foreach
+                            }// fim foreach
                             ?>
                             </tbody>
                         </table>
@@ -56,6 +56,8 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/hieraquia/adicionar_hieraquia" style="color: #FFF;"> Adicionar Hieraquia</a></i>
+
+                    <button type="button" class="btn btn-success" style="margin-top: 10px;"><i class="fa fa-plus"><a href="/usuario/listar_subusuarios" style="color: #FFF;"> Usuarios</a></i>
                 </div>
                 <!-- /.panel-body -->
             </div>

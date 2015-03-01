@@ -164,13 +164,13 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
     <div class="contact" id="contact">
       <div class="container">
           <h3 class="text-head">Contato</h3>
-            <p class="box-desc">Ainda ficou com dúvidas, não deixe de entrar em contato com nós !</p>
+            <p class="box-desc">Ainda ficou com dúvidas? Não deixe de entrar em contato conosco!</p>
               <div class="contact-section">
                 
                     <form action="/home/enviar_email" method="post">
-                        <input type="text" name="dados[name]" placeholder="Name" />
+                        <input type="text" name="dados[name]" placeholder="Nome" />
                           <input type="email" name="dados[email]" placeholder="Email"/>
-                          <textarea placeholder="Message" name="dados[message]" rows="6"></textarea>
+                          <textarea placeholder="Mensagem" name="dados[message]" rows="6"></textarea>
                           <button type="submit" class="submit">Enviar Mensagem</button>
                       </form>
                   

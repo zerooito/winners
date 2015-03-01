@@ -529,3 +529,7 @@ ul.socialmedia li a {
 #mobile-header {
 display: none;
 }
+
+.button-section ul li :hover {
+	text-decoration: none;
+}

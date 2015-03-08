@@ -52,10 +52,16 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Entre com seus dados</h3>
+                        <h3 class="panel-title">Entre com seus dados
+                        <?php
+                            if ($admin) {
+                                echo '<b>FRAMEWORK</b>';
+                            }
+                        ?>
+                        </h3>
                     </div>
                     <div class="panel-body">
-                        <form action="/usuario/processar_login" role="form" id="form-login" method="post">
+                        <form <?php if ($admin) { echo 'action="/admin/processar_login"'; } else { echo 'action="/usuario/processar_login"'; }?> role="form" id="form-login" method="post">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="E-mail" name="dados[email]" type="email" autofocus>

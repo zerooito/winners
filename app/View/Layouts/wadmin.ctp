@@ -11,6 +11,13 @@
 
     <title>SW Esportes - ERP Administração</title>
 
+    <!-- jQuery Version 1.11.0 -->
+    <?php echo $this->Html->script('jquery-1.11.0'); ?>
+    <!--script src="js/jquery-1.11.0.js"></script-->
+
+    <!--Mascaras-->
+    <?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+
     <!-- Bootstrap Core CSS -->
     <?php echo $this->Html->css('bootstrap.min'); ?>
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
@@ -294,9 +301,6 @@
     
     <!-- /#wrapper -->
 
-    <!-- jQuery Version 1.11.0 -->
-    <?php echo $this->Html->script('jquery-1.11.0'); ?>
-    <!--script src="js/jquery-1.11.0.js"></script-->
 
     <!-- Bootstrap Core JavaScript -->
     <?php echo $this->Html->script('bootstrap.min'); ?>

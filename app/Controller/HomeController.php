@@ -10,6 +10,7 @@ class HomeController extends AppController{
 	}
 
 	function login() {
+		$this->set('admin', false);
 		$this->layout = 'login';
 	}
 

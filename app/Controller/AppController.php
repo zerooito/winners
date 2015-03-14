@@ -77,4 +77,20 @@ class AppController extends Controller {
 		return $retorno;
 	}
 
+	/*
+	* Metodo que verifica o pagamento
+	*/
+	function verificar_pagamento() {
+		$this->loadModel('Usuario');
+
+		$pagamento = $this->Usuario->find('all', 
+			array('conditions' => 
+				array('Usuario.id' => $this->instancia)
+			)
+		);
+
+		return $pagamento[0]['Usuario']['ativo'];
+	}
+
+
 }

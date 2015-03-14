@@ -8,7 +8,7 @@
             </div>
             <div class="jumbotron">
               <h1>Olá, seja bem vindo!</h1>
-              <p>Seja bem vindo ao seu sistema de gestão e cms, aqui você vai poder modificar seu site colocando banners
+              <p>Ao seu sistema de gestão e cms, aqui você vai poder modificar seu site colocando banners
               e também gerencia todo seu conteudo e otimizar seu fluxo de trabalho.
               </p>
             </div>

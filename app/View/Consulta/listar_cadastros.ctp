@@ -31,12 +31,12 @@
                             foreach ($consultas as $indice => $consulta) {
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $consulta['Consulta']['id'] ?>">
-                                    <td><?php echo $consulta['Consulta']['nome1'] ?></td>
+                                    <td><?php echo $consulta['Consulta']['nome'] ?></td>
                                     <td><?php echo $consulta['Consulta']['email'] ?></td>
                                     <td class="center"><?php echo $consulta['Consulta']['data'] ?></td>
                                     <td class="center"><?php echo $consulta['Consulta']['hora'] ?></td>
                                     <td class="center">
-                                        <button onclick="remover_consulta(<?php echo $consulta['Consulta']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="excluir_consulta(<?php echo $consulta['Consulta']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
                                         <button onclick="editar_consulta(<?php echo $consulta['Consulta']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
                                     </td>
                                 </tr>   
@@ -57,11 +57,11 @@
 </div>
 
 <script type="text/javascript">
-    function remover_cliente(id) {
+    function excluir_consulta(id) {
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "/cliente/excluir_cliente",
+            url: "/consulta/excluir_consulta",
             async: true,
             data: {id: id},
             error: function(x){
@@ -72,7 +72,7 @@
             }
         });
     }
-    function editar_cliente(id) {
-        window.location.href = "/cliente/editar_cliente/"+id;
+    function editar_consulta(id) {
+        window.location.href = "/consulta/editar_consulta/"+id;
     }
 </script>

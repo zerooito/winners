@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Listagem das Consultas/Visitas
+                    Listagem de Consultas/Visitas
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

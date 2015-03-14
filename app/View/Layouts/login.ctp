@@ -64,16 +64,16 @@
                         <form <?php if ($admin) { echo 'action="/admin/processar_login"'; } else { echo 'action="/usuario/processar_login"'; }?> role="form" id="form-login" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="dados[email]" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="dados[email]" type="email" autofocus required>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Senha" name="dados[senha]" type="password" value="">
+                                    <input class="form-control" placeholder="Senha" name="dados[senha]" type="password" value="" required>
                                 </div>
                                 <div class="checkbox">
                                     <a href="#">Esqueceu a sua senha ?</a>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="javascript:;" class="btn btn-lg btn-success btn-block" id="login">Login</a>
+                                <button type="submit" class="btn btn-lg btn-success btn-block" id="login">Login</a>
                             </fieldset>
                         </form>
                     </div>
@@ -83,11 +83,6 @@
     </div>
     <!-- jQuery Version 1.11.0 -->
     <?php echo $this->Html->script('jquery-1.11.0'); ?>
-    <script type="text/javascript">
-        $('#login').click(function(){
-            $('#form-login').submit();
-        });
-    </script>
 </body>
 
 </html>

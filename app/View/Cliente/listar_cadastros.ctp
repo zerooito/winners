@@ -33,7 +33,7 @@
                                 <tr class="odd gradeX" id="<?php echo $cliente['Cliente']['id'] ?>">
                                     <td><?php echo $cliente['Cliente']['nome1'] ?></td>
                                     <td><?php echo $cliente['Cliente']['nome2'] ?></td>
-                                    <td><?php echo $indice ?></td>
+                                    <td><?php echo $cliente['Cliente']['email'] ?></td>
                                     <td class="center"><?php echo $cliente['Cliente']['documento1'] ?></td>
                                     <td class="center">
                                         <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
@@ -64,7 +64,7 @@
                     <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/cliente/adicionar_cliente" style="color: #FFF;"> Adicionar Cliente</a></i>
                 </div>
                 <div class="panel-body">
-                    <button type="button" class="btn btn-info"><i class="fa fa-export"><a href="/cliente/exportar_cliente" style="color: #FFF;"> Exportar Clientes</a></i>
+                    <button type="button" class="btn btn-info"><i class="fa fa-export"><a href="/cliente/exportar_clientes" style="color: #FFF;"> Exportar Clientes</a></i>
                 </div>
                 <!-- /.panel-body -->
             </div>

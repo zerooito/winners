@@ -20,6 +20,10 @@
                                     <input class="form-control" name="dados[nome2]">
                                 </div>
                                 <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" name="dados[email]">
+                                </div>
+                                <div class="form-group">
                                     <label>CPF</label>
                                     <input class="form-control" name="dados[documento1]" id="cpf">
                                 </div>                                

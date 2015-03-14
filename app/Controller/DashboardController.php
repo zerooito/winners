@@ -3,8 +3,9 @@
 class DashboardController extends AppController{
 
 	function home() {
-		$modulos = $this->verificar_acesso();
-		$this->verificar_modulo_ativo('produto');
+		$pagamento = $this->verificar_pagamento();
+
+		$this->set('pagamento', $pagamento);
 		$this->layout = 'wadmin';
 	}
 

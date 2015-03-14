@@ -73,10 +73,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SW Esportes</a>
+                <a class="navbar-brand" href="/dashboard/home"><?php echo $this->Session->read('Usuario.nome'); ?></a>
             </div>
             <!-- /.navbar-header -->
-
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">

@@ -60,12 +60,13 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                 </div>
               <div class="menu" id="navigation">
                 <ul>
-                      <li><a href="#">Inicio</a></li>
-                        <li><a href="#features">Produtos</a></li>
-                        <li><a href="#stories">Métodos</a></li>
-                        <li><a href="#contact">Contato</a></li>
-                        <li><a href="/home/login">Login</a></li>
-                    </ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#features">Produtos</a></li>
+                    <li><a href="#stories">Métodos</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                    <li><a href="/home/login">Login</a></li>
+                    <li><a target="_blank" href="/blog">Blog</a></li>
+                </ul>
               </div>
           </div>
         </div>

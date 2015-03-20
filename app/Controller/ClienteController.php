@@ -16,6 +16,9 @@ class ClienteController extends AppController{
 		$dados['ativo'] = 1;
 		$dados['id_usuario'] = $this->instancia;
 
+		$endereco = $this->request->data('endereco');
+		//falta fazer o cadastro e relacionamento dos dados de endereco
+
 		if ($this->Cliente->save($dados)) {
 			$this->Session->setFlash('Cliente salvo com sucesso!');
             return $this->redirect('/cliente/listar_cadastros');

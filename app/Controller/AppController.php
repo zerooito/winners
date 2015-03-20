@@ -92,5 +92,15 @@ class AppController extends Controller {
 		return $pagamento[0]['Usuario']['ativo'];
 	}
 
+	public function verificar_acesso_admin() {
+		$verificar = $this->Session->read('Admin.logado');
+		if (!$verificar) {
+			$this->Session->setFlash('Você não possui acesso a está área do sistema');
+			$this->redirect('/admin/login');
+		}
+
+		return true;
+	}
+
 
 }

@@ -17,18 +17,24 @@ class AdminController extends AppController{
 		$retorno = $this->Admin->find('all',
 			array('conditions' => 
 				array('Admin.login' => $dados['email'], 
-					  'Admin.senha' => sha1($dados['senha']),
+					  'Admin.senha' => $dados['senha'],
 					  'Admin.ativo' => 1
 				)
 			)
 		);
 
-		if (empty($dados)) {
-			echo 'Ocorreu algum erro ao tentar logar tente novamente';
+		if (empty($retorno)) {
+			$this->Session->setFlash('Erro os dados inseridos não foram encotrados!');
+	        return $this->redirect('/admin/usuarios');
 		}
 
+		$this->Session->write('Admin.logado', true);
+
 		$this->Session->setFlash('Sucesso!');
-        return $this->redirect('/admin/instancias');
+        return $this->redirect('/admin/usuarios');
 	}
 
+	public function usuarios() {
+		$this->verificar_acesso_admin();
+	}
 }

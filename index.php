@@ -5,7 +5,7 @@
  *  This file collects requests if:
  *	- no mod_rewrite is available or .htaccess files are not supported
  *  - requires App.baseUrl to be uncommented in app/Config/core.php
- *	- app/webroot is not set as a document root.
+ *	- app/webro ot is not set as a document root.
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)

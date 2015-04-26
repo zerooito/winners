@@ -17,9 +17,18 @@ class ClienteController extends AppController{
 		$dados['id_usuario'] = $this->instancia;
 
 		$endereco = $this->request->data('endereco');
+		$endereco['uf'] = $endereco['estado'];
+		unset($endereco['estado']);
 		//falta fazer o cadastro e relacionamento dos dados de endereco
 
 		if ($this->Cliente->save($dados)) {
+			$endereco['id_usuario'] = $this->instancia;
+			$endereco['id_cliente'] = $this->Cliente->id;
+			$endereco['ativo']		= 1;
+
+			$this->loadModel('EnderecoClienteCadastro');
+			$this->EnderecoClienteCadastro->save($endereco);
+
 			$this->Session->setFlash('Cliente salvo com sucesso!');
             return $this->redirect('/cliente/listar_cadastros');
 		} else {

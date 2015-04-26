@@ -1,3 +1,8 @@
 <?php 
-    $this->Excel->generate($event['Cliente'], 'Relatorio'); 
+
+
+// View: 
+$this->Excel->createWorksheet(); 
+$this->Excel->setDefaultFont('Calibri', 12); 
+
 ?>

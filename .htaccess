@@ -4,6 +4,9 @@
    RewriteCond %{REQUEST_URI} ^/blog.*
    RewriteRule (.*) - [L]
 
+   RewriteCond %{REQUEST_URI} ^/phpmyadmin.*
+   RewriteRule (.*) - [L]
+
    RewriteRule    ^$ app/webroot/    [L]
    RewriteRule    (.*) app/webroot/$1 [L]
 </IfModule>

@@ -17,7 +17,7 @@ class HomeController extends AppController{
 	function enviar_email() {
 		$dados = $this->request->data('dados');
 
-
+		debug($dados);exit();
 		// Check for empty fields
 		if(empty($dados['name'])  		||
    			empty($dados['email']) 		||

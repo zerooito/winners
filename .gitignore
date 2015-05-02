@@ -8,6 +8,8 @@
 /build
 /dist
 /tags
+/phpmyadmin
+
 
 # OS generated files #
 ######################

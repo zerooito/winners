@@ -5,7 +5,6 @@
  * @package WordPress
  */
 
-	print_r(ABSPATH . WPINC . '/template-loader.php')
 if ( !isset($wp_did_header) ) {
 
 	$wp_did_header = true;

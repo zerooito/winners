@@ -1,0 +1,73 @@
+
+html {height: 100%}
+body {height: 100%; margin:0; padding:0; overflow-x:hidden; font: 10px verdana;}
+
+.ahc_main_container{
+	direction: rtl; /* ## */
+	padding: 60px 20px;
+}
+.rightPanelsContainer{float: right; /* ## */ margin: 0; padding: 0;}
+.leftPanelsContainer{float: left; /* ## */ margin: 0; padding: 0;}
+.cleaner{clear: both;}
+.panel, .panelcollapsed{
+	background: #eee;
+	margin: 10px 0px;
+	padding: 0px 0px 5px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+.panel h2, .panelcollapsed h2{
+	font-size: 18px;
+	font-weight: normal;
+	margin: 0px;
+	padding: 4px;
+	background: #FFF url(../images/arrow_up.png) no-repeat 1% 50%; /* ## */
+	border-bottom: 1px solid #CCC;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-top: 1px solid #FFF;
+	border-right: 1px solid #FFF;
+	border-left: 1px solid #FFF;
+}
+.panelcollapsed h2{
+	background: #FFF url(../images/arrow_down.png) no-repeat 1% 50%; /* ## */
+	border-color: #CCC;
+}
+.panelcontent{
+	padding: 10px;
+	background: #FFF;
+}
+.panelcollapsed .panelcontent {display: none;}
+.panelcontent td, .panelcontent th{font-size: 14px; font-weight: 0; padding: 5px;}
+.panelcontent td.values{text-align: center; color: #395A7C; font-size: 14px;}
+
+.fineFont{font-size: 12px !important}
+
+.lastVisitorsDetails{border-bottom: solid 1px #dad6ca; direction: ltr; padding: 5px;}
+.lastVisitorsDetails span{margin-right: 3px;}
+.lastVisitorsDetails img{vertical-align: middle;}
+.ipAddress{float: left; font-size: 14px; color: #3B9EF9; margin-bottom: 10px; margin-bottom: 10px;}
+.referingSite{color: #3B9EF9; margin-left: 5px; font-size: 12px;}
+.visitDateTime{float: right; color: #3B9EF9; font-size: 12px;}
+
+.lastSearchKeyWords, .visitorMarker{border-bottom: solid 1px #dad6ca; direction: ltr; padding: 5px;}
+.lastSearchKeyWords span, .countryMarker span{margin-right: 3px;}
+.lastSearchKeyWords img{vertical-align: middle;}
+.countryMarker{direction: ltr; padding: 5px;}
+.searchKeyWords{font-size: 14px;}
+
+.languageChanger{direction: ltr; /* ## */ font-size: 18px;}
+
+.countryMarker span.countryName, .visitorMarker span.ipAddress{margin-left: 5px;}
+
+.visitorMarker{border-bottom: dashed 1px #dad6ca;}
+.countryMarker span.countryName{font-size: 12px;}
+.countryMarker img{vertical-align: middle;}
+.visitorMarker span.ipAddress{font-size: 12px;}
+.visitorMarker span{float: left;}
+
+/* visitors graph begin */
+div.visitorsGraphContainer{float: right; width: 70%} /* ### */
+div.visitorsGraphContainer div.visitorsGraph{float: right; background-color: #82CE69; border-radius: 2px;}
+div.visitorsPercent{float: right; width: 25%; margin-right: 5px;} /* ### */
+/* visitors graph end */

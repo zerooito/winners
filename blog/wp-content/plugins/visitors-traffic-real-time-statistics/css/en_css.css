@@ -1,0 +1,119 @@
+body {font: 10px verdana; background:#F1F1F1 !important}
+
+
+
+
+.legendsContainer{min-height: 410px; border: solid 1px #CCCCCC; border-radius: 5px; width:200px !important;  padding: 10px; background-color: #F1F1F1;}
+.legendsContainer div.legend{float: left;display:inline;  height:auto; width:180px !important; margin: 0 10px 10px 0;}
+div.legend span{font-size: 12px; line-height: 0.9;}
+div.legend span.color{display: block; float: left; width: 15px; height: 95%; margin-right: 8px;}
+div.legend span.name{margin-right: 5px;}
+div.legend span.value{color: #D34E4E;}
+.panel{
+margin-left:20px	
+}
+
+.disabled_panel{
+background:#666;
+position:absolute
+	
+}
+
+.ahc_main_container{
+	direction: ltr; /* ## */
+	font-family:Verdana, Geneva, sans-serif; font-size:8px !important;
+	width:98%;
+}
+.ahc_main_container h1{
+font-size:20px;
+font-weight:normal;
+color:#657f97;
+	
+}
+.hitsLogo{
+background:url(../images/hitslogo.png) left no-repeat;
+height:55px;
+width:55px;
+display:inline;
+float:left;
+}
+.rightPanelsContainer{float: left; /* ## */ margin: 0; padding: 0;}
+.leftPanelsContainer{float: right; /* ## */ margin: 0; padding: 0;}
+.cleaner{clear: both;}
+.panel, .panelcollapsed{
+	background: #eee;
+	border:#dfdfdf solid 1px;
+	margin: 10px 0px;
+	padding: 0px 0px 5px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	
+}
+.panel h2, .panelcollapsed h2{
+	font-size: 12px  !important;
+	font-weight: normal  !important;
+	margin: 0px  !important;
+	padding: 4px  !important;
+	background: url(../images/headerbg.png) repeat-x  !important; /* ## */
+	border-bottom:#dfdfdf solid 1px  !important;;
+	-moz-border-radius: 3px  !important;
+	-webkit-border-radius: 3px  !important;
+	height:23px  !important;
+	background-color:#FFF  !important;
+	padding-top:10px  !important;
+	padding-left:7px  !important;
+	color: #657f97 !important;
+	font-weight:bold !important;
+}
+.panelcollapsed h2{
+	background: #FFF url(../images/arrow_down.png) no-repeat 99% 50%  !important;; /* ## */
+	border-color: #CCC  !important;;
+}
+.panelcontent{
+	padding: 10px;
+	background: #FFF;
+	min-height:400px;
+}
+.panelcollapsed .panelcontent {display: none;}
+.panelcontent th{font-size: 12px; color: #657f97; font-weight: 0; padding: 5px; text-align: left; border-bottom:#CCC solid 1px; }
+.panelcontent td, .panelcontent td.values{text-align: left; color:#000; font-size: 12px; font-weight: 0; padding: 5px; text-align: left; border-bottom:#EFEFEF solid 1px}
+.panelcontent tr:hover{
+background:#F5F5F5	
+}
+
+.fineFont{font-size: 10px !important}
+
+.lastVisitorsDetails{border-bottom: solid 1px #dad6ca; direction: ltr; padding: 5px;}
+.lastVisitorsDetails span{margin-right: 3px;}
+.lastVisitorsDetails img{vertical-align: middle;}
+.ipAddress{float: left; font-size: 14px; color: #3B9EF9; margin-bottom: 10px; margin-bottom: 10px;}
+.referingSite{color: #3B9EF9; margin-left: 5px; font-size: 12px;}
+.visitDateTime{float: right; color: #3B9EF9; font-size: 12px;}
+
+.lastSearchKeyWords, .visitorMarker{border-bottom: solid 1px #dad6ca; direction: ltr; padding: 5px;}
+.lastSearchKeyWords span, .countryMarker span{margin-right: 3px;}
+.lastSearchKeyWords img{vertical-align: middle;}
+.countryMarker{direction: ltr; padding: 5px;}
+.searchKeyWords{font-size: 14px;}
+
+.languageChanger{direction: rtl; /* ## */ font-size: 18px;}
+
+.countryMarker span.countryName, .visitorMarker span.ipAddress{margin-left: 5px;}
+
+.visitorMarker{border-bottom: dashed 1px #dad6ca;}
+.countryMarker span.countryName{font-size: 12px;}
+.countryMarker img{vertical-align: middle;}
+.visitorMarker span.ipAddress{font-size: 12px;}
+.visitorMarker span{float: left;}
+
+/* visitors graph begin */
+div.visitorsGraphContainer{float: left; width: 70%} /* ### */
+div.visitorsGraphContainer div.visitorsGraph{float: left; background-color: #82CE69; border-radius: 2px;}
+div.visitorsPercent{float: left; width: 25%; margin-left: 5px;} /* ### */
+/* visitors graph end */
+
+h2{
+	text-align:left !important;
+	font-size:14px !important;
+	height:30px !important;
+}

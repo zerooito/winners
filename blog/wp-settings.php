@@ -360,7 +360,7 @@ if ( is_multisite() ) {
 	}
 	unset($file);
 }
-
+echo 'oi';
 /**
  * This hook is fired once WP, all plugins, and the theme are fully loaded and instantiated.
  *

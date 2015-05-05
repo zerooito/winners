@@ -6,7 +6,6 @@ class HomeController extends AppController{
    	}
 
 	function index(){
-		$this->Session->setFlash('Seu e-mail foi enviado com sucesso em breve responderemos!');
 		$this->layout = 'winners';
 	}
 

@@ -32,6 +32,7 @@ A:HOVER { text-decoration: underline; color:#44E }
 --></style>
 </head>
 <body>
-<p><a href="<?php echo $url; ?>"><?php echo $message; ?></a></p>
+<!-- <p><a href="<?php echo $url; ?>"><?php echo $message; ?></a></p> -->
+<div class="alert alert-info" role="alert"><?php echo $message; ?></div>
 </body>
 </html>

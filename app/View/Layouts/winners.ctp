@@ -48,7 +48,9 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
 </head>
 
 <body>
-  <div class="alert alert-info" role="alert"><?php echo $this->Session->flash(); ?></div>
+  <?php if isset($this->Session->flash()) ?>
+    <div class="alert alert-info" role="alert"><?php echo $this->Session->flash(); ?></div>
+  <?php endif; ?>
   <div class="header">
       <div class="container">
         <div class="logo-menu">

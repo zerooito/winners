@@ -48,7 +48,6 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
 </head>
 
 <body>
-  <?php $this->Session->flash() ?>
   <div class="alert alert-info" role="alert"><?php echo $this->Session->flash(); ?></div>
   <div class="header">
       <div class="container">

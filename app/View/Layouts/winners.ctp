@@ -48,6 +48,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
 </head>
 
 <body>
+  <?php echo $this->Session->flash(); ?>
   <div class="header">
       <div class="container">
         <div class="logo-menu">

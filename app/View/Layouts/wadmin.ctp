@@ -62,6 +62,8 @@
 </head>
 
 <body>
+
+    <?php echo $this->Session->flash(); ?>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -103,8 +105,6 @@
         </nav>
 
         <!-- Conteudo -->
-
-        <?php echo $this->Session->flash(); ?>
         <?php echo $this->fetch('content'); ?>
 
     </div>

@@ -4847,6 +4847,7 @@ a.thumbnail.active {
 }
 a.list-group-item {
   color: #555;
+    min-height: 42px;
 }
 a.list-group-item .list-group-item-heading {
   color: #333;

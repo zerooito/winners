@@ -80,7 +80,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                 <p class="small-text">Aumente suas vendas com nosso sistema de gestão</p>
                 <div class="button-section">
                   <ul>
-                      <li><a href="#" class="top-button white">Leia mais</a></li>
+                      <li><a href="#" class="top-button white" data-toggle="modal" data-target="#valores">Valores</a></li>
                         <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Cadastre-se Já</a></li>
                     </ul>
                 </div>
@@ -237,5 +237,84 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
       </div>
       </form>
     </div>
+
+    <div class="modal fade" id="valores" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            Tabela de Valores Gestor Winners
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-4 list-group">
+                  <a href="#" class="list-group-item list-group-item-info">
+                    Basico
+                  </a>
+                  <a href="#" class="list-group-item">Venda</a>
+                  <a href="#" class="list-group-item">Produto</a>
+                  <a href="#" class="list-group-item">Fornecedor</a>
+                  <a href="#" class="list-group-item">Cliente</a>
+                  <a href="#" class="list-group-item">Fabricante</a>
+                  <a href="#" class="list-group-item">->
+                    <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </a>
+                  <a href="#" class="list-group-item">->
+                    <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </a>
+                  <a href="#" class="list-group-item">->
+                    <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </a>
+                  <a href="#" class="list-group-item">->
+                    <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-danger">R$ 49,99 (Mensais)</a>
+                </div>
+
+                <div class="col-md-4 list-group">
+                  <a href="#" class="list-group-item list-group-item-warning">
+                    Empresarial
+                  </a>
+                  <a href="#" class="list-group-item">Venda</a>
+                  <a href="#" class="list-group-item">Produto</a>
+                  <a href="#" class="list-group-item">Fornecedor</a>
+                  <a href="#" class="list-group-item">Cliente</a>
+                  <a href="#" class="list-group-item">Fabricante</a>
+                  <a href="#" class="list-group-item">NF-e</a>
+                  <a href="#" class="list-group-item">Transportadora</a>
+                  <a href="#" class="list-group-item">Compra</a>
+                  <a href="#" class="list-group-item">->
+                    <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-danger">R$ 99,99 (Mensais)</a>
+                </div>
+
+
+                <div class="col-md-4 list-group">
+                  <a href="#" class="list-group-item list-group-item-success">
+                    Full
+                  </a>
+                  <a href="#" class="list-group-item">Venda</a>
+                  <a href="#" class="list-group-item">PDV</a>
+                  <a href="#" class="list-group-item">Produto</a>
+                  <a href="#" class="list-group-item">Fornecedor</a>
+                  <a href="#" class="list-group-item">Cliente</a>
+                  <a href="#" class="list-group-item">Fabricante</a>
+                  <a href="#" class="list-group-item">NF-e</a>
+                  <a href="#" class="list-group-item">Transportadora</a>
+                  <a href="#" class="list-group-item">Compra</a>
+                  <a href="#" class="list-group-item list-group-item-danger">R$ 149,99 (Mensais)</a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
 </body>
 </html>

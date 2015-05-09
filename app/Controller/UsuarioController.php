@@ -117,8 +117,7 @@ class UsuarioController extends AppController{
 		}
 
 		if ($this->Usuario->save($dados)) {
-			$this->Session->setFlash('Cadastrado com sucesso!');
-			$this->redirect('/');
+			$this->processar_login();
 		}
 
 		$this->Session->setFlash('Ocorreu um erro, tente novamente!');

@@ -22,7 +22,7 @@ class NfeController extends AppController {
 		$sNFe = file_get_contents($filename);
 		//array vazio passado como referencia
 		$aResp = array();
-
+		debug($nfe->autoriza($sNFe, $lote, $aResp));
 		//enviar o lote
 		if ($resp = $nfe->autoriza($sNFe, $lote, $aResp)) {
 		    if ($aResp['bStat']) {
@@ -33,6 +33,7 @@ class NfeController extends AppController {
 		} else {
 		    echo "houve erro !!  $nfe->errMsg";
 		}
+		debug($nfe);
 		echo '<BR><BR><h1>DEBUG DA COMUNICAÇÕO SOAP</h1><BR><BR>';
 		echo '<PRE>';
 		echo htmlspecialchars($nfe->soapDebug);

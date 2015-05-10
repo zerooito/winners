@@ -7,8 +7,8 @@ class VendaController extends AppController {
 
 		$this->loadModel('Produto');
 
-		$this->set('produtos', $this->Produto->find('all', 
-				array('conditions' => 
+		$this->set('produtos', $this->Produto->find('all',
+				array('conditions' =>
 					array('ativo' => 1,
 						  'id_usuario' => $this->instancia
 					)
@@ -25,19 +25,32 @@ class VendaController extends AppController {
 		$this->loadModel('Produto');
 
 		$produto = $this->Produto->find('all',
-			array('conditions' => 
+			array('conditions' =>
 				array('ativo' => 1,
 					  'id_alias' => $dados['codigo_produto']
 				)
 			)
 		);
-		
+
 		if (empty($produto)) {
 			echo json_encode(false);
 			return false;
 		}
 
 		echo json_encode($produto);
-	} 
+	}
 
+	public function listar_cadastros() {
+		$this->layout = 'wadmin';
+
+		$this->set('vendas', $this->Venda->find('all',
+				array('conditions' =>
+					array(
+						'ativo' => 1,
+						'id_instancia' => $this->instancia
+					)
+				)
+			)
+		);
+	}
 }

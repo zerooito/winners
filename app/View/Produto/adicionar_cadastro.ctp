@@ -17,19 +17,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Preço</label>
-                                    <input class="form-control" name="dados[preco]">
+                                    <input class="form-control moeda" name="dados[preco]">
                                 </div>
                                 <div class="form-group">
                                     <label>Peso Bruto</label>
-                                    <input class="form-control" name="dados[peso_bruto]">
-                                </div>                                
+                                    <input class="form-control peso" name="dados[peso_bruto]">
+                                </div>
                                 <div class="form-group">
                                     <label>Peso Liquido</label>
-                                    <input class="form-control" name="dados[peso_liquido]">
+                                    <input class="form-control peso" name="dados[peso_liquido]">
                                 </div>
                                 <div class="form-group">
                                     <label>Estoque</label>
-                                    <input class="form-control" name="dados[estoque]">
+                                    <input type="number" class="form-control" name="dados[estoque]">
                                 </div>
                             </div>
                             <!-- /.col-lg-6 (nested) -->

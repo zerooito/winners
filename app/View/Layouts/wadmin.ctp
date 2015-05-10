@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SW Esportes - ERP Administração</title>
+    <title>Gestor Winners</title>
 
     <!-- jQuery Version 1.11.0 -->
     <?php echo $this->Html->script('jquery-1.11.0'); ?>
@@ -17,6 +17,8 @@
 
     <!--Mascaras-->
     <?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+    <?php echo $this->Html->script('jquery.maskMoney'); ?>
+    <?php echo $this->Html->script('mascaras'); ?>
 
     <!-- Bootstrap Core CSS -->
     <?php echo $this->Html->css('bootstrap.min'); ?>
@@ -108,7 +110,7 @@
         <?php echo $this->fetch('content'); ?>
 
     </div>
-    
+
     <!-- /#wrapper -->
 
 

@@ -1,4 +1,8 @@
 <?php
+
+header("Location: http://blog.winnersdesenvolvimento.com.br/blog");
+die();
+
 /**
  * Requests collector.
  *

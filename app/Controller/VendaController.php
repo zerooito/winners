@@ -47,7 +47,7 @@ class VendaController extends AppController {
 				array('conditions' =>
 					array(
 						'ativo' => 1,
-						'id_instancia' => $this->instancia
+						'id_usuario' => $this->instancia
 					)
 				)
 			)

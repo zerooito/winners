@@ -61,7 +61,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar venda</a></i>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/venda/adicionar_cadastro" style="color: #FFF;"> Adicionar venda</a></i>
                 </div>
                 <!-- /.panel-body -->
             </div>

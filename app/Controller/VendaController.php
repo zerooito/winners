@@ -53,4 +53,8 @@ class VendaController extends AppController {
 			)
 		);
 	}
+
+	public function adicionar_cadastro() {
+		$this->layout = 'wadmin';
+	}
 }

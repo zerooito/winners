@@ -15,6 +15,17 @@ class VendaController extends AppController {
 				)
 			)
 		);
+
+		$this->loadModel('Cliente');
+
+		$this->set('clientes', $this->Cliente->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
 	}
 
 	function recuperar_dados_venda_ajax() {
@@ -56,5 +67,27 @@ class VendaController extends AppController {
 
 	public function adicionar_cadastro() {
 		$this->layout = 'wadmin';
+
+		$this->loadModel('Cliente');
+
+		$this->set('clientes', $this->Cliente->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+
+		$this->loadModel('Produto');
+		
+		$this->set('produtos', $this->Produto->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
 	}
 }

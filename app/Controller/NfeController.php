@@ -6,6 +6,24 @@ class NfeController extends AppController {
 		return true;
    	}
 
+   	public function gerar_danfe() {
+   		require_once('nfephp/libs/DanfeNFePHP.class.php');
+
+		move_uploaded_file($_FILES["nota"]["tmp_name"],$_FILES["nota"]["name"]);
+		$arq = $_FILES["nota"]["name"];
+
+		if ( is_file($arq) ){
+		$docxml = file_get_contents($arq);
+		$danfe = new DanfeNFePHP($docxml, 'P', 'A4','../images/logo.jpg','I','');
+		$id = $danfe->montaDANFE();
+		$teste = $danfe->printDANFE($id.'.pdf','I');
+		}
+
+		unlink($arq);
+
+		echo 'oi';exit();
+   	}
+
 	public function teste() {
 		/*
 		 * Exemplo de envio de Nfe já assinada e validada

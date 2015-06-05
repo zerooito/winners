@@ -80,7 +80,7 @@ class VendaController extends AppController {
 		);
 
 		$this->loadModel('Produto');
-		
+
 		$this->set('produtos', $this->Produto->find('all',
 				array('conditions' =>
 					array('ativo' => 1,
@@ -90,4 +90,14 @@ class VendaController extends AppController {
 			)
 		);
 	}
+
+	public function s_adicionar_cadastro() {
+		$dados_venda 	 	= $this->request->data('venda');
+		$dados_lancamento	= $this->request->data('lancamento');
+		$dados_produto 		= $this->request->data('produto');
+
+		pr($dados_produto);
+		exit();
+	}
+
 }

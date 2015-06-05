@@ -2,6 +2,7 @@
 class HomeController extends AppController{
 
 	public function beforeFilter(){
+		$this->verificar_dominio();
 		return true;
    	}
 

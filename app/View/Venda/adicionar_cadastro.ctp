@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Valor</label>
-                                    <input class="form-control moeda" name="venda[valor]">
+                                    <input class="form-control moeda" name="venda[valor]" id="valor_venda" value="0.00">
                                 </div>
                                 <div class="form-group">
                                     <label>Custo Medio</label>
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Selecione o valor Pago</label>
-                                        <input class="form-control" name="lancamento[valor]">
+                                        <input class="form-control moeda" name="lancamento[valor]">
                                         <!-- <p class="help-block">Example block-level help text here.</p> -->
                                     </div>
                                 </div>
@@ -65,48 +65,41 @@
                                     <table class="table">
                                         <thead>
                                             <th>#</th>
-                                            <th>SKU</th>
                                             <th>Nome Produto</th>
                                             <th>Preço</th>
                                             <th>Quantidade</th>
+                                            <th>Total</th>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>1</td>
-                                                <td>1</td>
-                                                <td>1</td>
-                                                <td>1</td>
-                                            </tr>
+                                        <tbody id="produtos">
+
                                         </tbody>
                                     </table>
 
 
                                     <div class="panel-footer">
                                         <div class="row">
-                                            <form>
 
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Produto</label>
-                                                        <select class="form-control">
-                                                            <?php foreach ($produtos as $produto): ?>
-                                                                <option value="<?php echo $produto['Produto']['id'] ?>"><?php echo $produto['Produto']['nome'] ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Produto</label>
+                                                    <select class="form-control" id="produto_item">
+                                                        <?php foreach ($produtos as $produto): ?>
+                                                            <option value="<?php echo $produto['Produto']['id'] ?>"><?php echo $produto['Produto']['nome'] ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Quantidade</label>
+                                                    <input class="form-control" id="quantidade_produto">
+                                                    <!-- <p class="help-block">Example block-level help text here.</p> -->
                                                 </div>
 
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Quantidade</label>
-                                                        <input class="form-control" name="lancamento[valor]">
-                                                        <!-- <p class="help-block">Example block-level help text here.</p> -->
-                                                    </div>
+                                                <a href="javascript:;" class="btn btn-primary" id="adicionar_item" onclick="adicionar_produto();">Adicionar Item</a>
+                                            </div>
 
-                                                    <button type="submit" class="btn btn-primary">Adicionar Item</button>
-                                                </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -125,3 +118,38 @@
         <!-- /.col-lg-12 -->
     </div>
 </div>
+<script type="text/javascript">
+    function adicionar_produto() {
+        var produto_item        = $('#produto_item').val();
+        var quantidade_produto  = $('#quantidade_produto').val();
+        var valor_venda_atual   = $('#valor_venda').val();
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "/produto/carregar_dados_venda_ajax",
+            data: {
+                id:  produto_item,
+                qnt: quantidade_produto
+            },
+            success: function(data){
+                var html = '';
+                
+                html += '<tr>';
+                html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][id_produto]" value="' + data['Produto']['id'] + '"/>';
+                html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][quantidade]" value="' + quantidade_produto + '"/>';
+                html +=    '<td>' + data['Produto']['id'] + '</td>';
+                html +=    '<td>' + data['Produto']['nome'] + '</td>';
+                html +=    '<td>' + data['Produto']['preco'] + '</td>';
+                html +=    '<td>' + quantidade_produto + '</td>';
+                html +=    '<td>' + data['Produto']['total'] + '</td>';
+                html += '</tr>';
+
+                $('#produtos').append(html);
+
+                var novo_valor_venda = parseFloat(valor_venda_atual) + parseFloat(data['Produto']['total']);
+                $('#valor_venda').val(number_format(novo_valor_venda, 2, ',', '.'));
+            }
+        });
+    }
+</script>

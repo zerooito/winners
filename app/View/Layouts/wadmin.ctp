@@ -20,6 +20,10 @@
     <?php echo $this->Html->script('jquery.maskMoney'); ?>
     <?php echo $this->Html->script('mascaras'); ?>
 
+
+    <?php echo $this->Html->script('funcoes'); ?>
+
+
     <!-- Bootstrap Core CSS -->
     <?php echo $this->Html->css('bootstrap.min'); ?>
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->

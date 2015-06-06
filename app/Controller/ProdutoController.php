@@ -85,4 +85,53 @@ class ProdutoController extends AppController{
 		return $id_alias['Produto']['id_alias'] + 1;
 	}
 
+	public function carregar_dados_venda_ajax() {
+		$this->layout = 'ajax';
+
+		$retorno = $this->Produto->find('first', 
+			array('conditions' => 
+				array('Produto.ativo' => 1,
+					  'Produto.id_usuario' => $this->instancia,
+					  'Produto.id' => $this->request->data('id')
+				)
+			)
+		);
+
+		if (!$this->validar_estoque($retorno)) {
+			return false;
+		}
+
+		$retorno['Produto']['total'] = $this->calcular_preco_produto_venda($retorno['Produto']['preco'], $this->request->data('qnt'));
+
+		$retorno['Produto']['preco'] = number_format($retorno['Produto']['preco'], 2, ',', '.');
+		
+		echo json_encode($retorno);
+	}
+
+	public function validar_estoque($produto) {
+		if (empty($produto) && !isset($produto)) {
+			return false;
+		}
+
+		if ($produto['Produto']['estoque'] <= 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function calcular_preco_produto_venda($preco, $qnt) {
+		if (empty($preco) || !isset($preco)) {
+			return false;
+		}
+
+		if (!is_numeric($qnt)) {
+			return false;
+		}
+
+		$retorno = $preco * $qnt;
+
+		return number_format($retorno, 2, ',', '.');
+	}
+
 }

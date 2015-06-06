@@ -7,8 +7,19 @@ class VendaController extends AppController {
 
 		$this->loadModel('Produto');
 
-		$this->set('produtos', $this->Produto->find('all', 
-				array('conditions' => 
+		$this->set('produtos', $this->Produto->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+
+		$this->loadModel('Cliente');
+
+		$this->set('clientes', $this->Cliente->find('all',
+				array('conditions' =>
 					array('ativo' => 1,
 						  'id_usuario' => $this->instancia
 					)
@@ -25,19 +36,68 @@ class VendaController extends AppController {
 		$this->loadModel('Produto');
 
 		$produto = $this->Produto->find('all',
-			array('conditions' => 
+			array('conditions' =>
 				array('ativo' => 1,
 					  'id_alias' => $dados['codigo_produto']
 				)
 			)
 		);
-		
+
 		if (empty($produto)) {
 			echo json_encode(false);
 			return false;
 		}
 
 		echo json_encode($produto);
-	} 
+	}
+
+	public function listar_cadastros() {
+		$this->layout = 'wadmin';
+
+		$this->set('vendas', $this->Venda->find('all',
+				array('conditions' =>
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+	}
+
+	public function adicionar_cadastro() {
+		$this->layout = 'wadmin';
+
+		$this->loadModel('Cliente');
+
+		$this->set('clientes', $this->Cliente->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+
+		$this->loadModel('Produto');
+
+		$this->set('produtos', $this->Produto->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+	}
+
+	public function s_adicionar_cadastro() {
+		$dados_venda 	 	= $this->request->data('venda');
+		$dados_lancamento	= $this->request->data('lancamento');
+		$dados_produto 		= $this->request->data('produto');
+
+		pr($dados_produto);
+		exit();
+	}
 
 }

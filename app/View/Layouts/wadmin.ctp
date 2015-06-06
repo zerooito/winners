@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SW Esportes - ERP Administração</title>
+    <title>Gestor Winners</title>
 
     <!-- jQuery Version 1.11.0 -->
     <?php echo $this->Html->script('jquery-1.11.0'); ?>
@@ -17,6 +17,12 @@
 
     <!--Mascaras-->
     <?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+    <?php echo $this->Html->script('jquery.maskMoney'); ?>
+    <?php echo $this->Html->script('mascaras'); ?>
+
+
+    <?php echo $this->Html->script('funcoes'); ?>
+
 
     <!-- Bootstrap Core CSS -->
     <?php echo $this->Html->css('bootstrap.min'); ?>
@@ -58,7 +64,14 @@
     type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
     </script>
     <!--End of Zopim Live Chat Script-->
-
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('select').select2();
+        });
+    </script>
 </head>
 
 <body>
@@ -75,8 +88,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/dashboard/home"><?php echo $this->Session->read('Usuario.nome'); ?></a>
+                <a class="navbar-brand" href="/dashboard/home">
+                <?php 
+                    if ($this->Session->read('Usuario') != "") {
+                        echo $this->Session->read('Usuario.nome'); 
+                    } else {
+                        echo "Winners Desenvolvimento";                
+                    }
+                ?>
+                </a>
             </div>
+            <?php if ($this->Session->read('Usuario') != "") { ?>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
                 <!-- /.dropdown -->
@@ -98,6 +120,7 @@
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
+            <?php } ?>
 
             <!-- Inclui o menu -->
             <?php include('Menu/menu.ctp'); ?>
@@ -108,7 +131,7 @@
         <?php echo $this->fetch('content'); ?>
 
     </div>
-    
+
     <!-- /#wrapper -->
 
 

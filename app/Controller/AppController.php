@@ -16,14 +16,23 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 
+	public $debug = true;
+
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
 	* Toda vez que determinado controller não precisa de verificação de acesso o
 	* o mesmo precisa ter essa função rescrita somente com um return true
 	*/
 	public function beforeFilter(){
+		if ($this->debug) {
+			return true;
+		}
+
+		$this->verificar_dominio();
+
 		$this->verificar_acesso();
     	$this->set('modulos', $this->modulos);
+
    	}
 
    	/*
@@ -102,5 +111,25 @@ class AppController extends Controller {
 		return true;
 	}
 
+	public function verificar_dominio() {
+		$dominios_winners = array (
+			'winners.local',
+			'www.winnersdesenvolvimento.com.br',
+			'winnersdesenvolvimento.com.br',
+			'blog.winnersdesenvolvimento.com.br'
+		);
+
+		$dominio = $_SERVER['SERVER_NAME'];
+
+		if (array_search($dominio, $dominios_winners) !== false) {
+			return true;
+		}
+
+		require(APP . 'Config/Domain/' . $dominio . '.php');
+		$objDomain = new domain();
+		$domain = $objDomain->domain();
+
+		$this->redirect(array('controller' => 'odontoclinicpimentas', 'action' => 'home'));
+	}
 
 }

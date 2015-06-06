@@ -21,8 +21,8 @@ class NfeController extends AppController {
             return $this->redirect('/nfe/gerar_danfe');			
    		}
 
-		move_uploaded_file($_FILES["nota"]["tmp_name"], $_FILES["nota"]["name"]);
 		$arq = $_FILES["nota"]["name"];
+
 		if ( is_file($arq) ){
 			$docxml = file_get_contents($arq);
 			$danfe = new DanfeNFePHP($docxml, 'P', 'A4','../images/logo.jpg','I','');

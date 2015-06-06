@@ -21,10 +21,10 @@ class NfeController extends AppController {
             return $this->redirect('/nfe/gerar_danfe');			
    		}
 
-   		pr($_FILES);
-		move_uploaded_file($_FILES["nota"]["tmp_name"], 'nfephp/uploads/' . $_FILES["nota"]["name"]);
-		$arq = 'nfephp/uploads/' . $_FILES["nota"]["name"];
-		echo $arq;
+   		// pr($_FILES);
+		// move_uploaded_file($_FILES["nota"]["tmp_name"], 'nfephp/uploads/' . $_FILES["nota"]["name"]);
+		$arq = $_FILES["nota"]["tmp_name"];
+		// echo $arq;
 
 		if ( is_file($arq) ){
 			$docxml = file_get_contents($arq);

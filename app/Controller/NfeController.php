@@ -16,14 +16,14 @@ class NfeController extends AppController {
    	public function danfe() {
    		require_once('nfephp/libs/NFe/DanfeNFePHP.class.php');
 
-   		if ($_FILES['nota']['type'] != "text/xml") {
-			$this->Session->setFlash('O arquivo deve ser do tipo xml! ', 'default');
-            return $this->redirect('/nfe/gerar_danfe');			
-   		}
+   // 		if ($_FILES['nota']['type'] != "text/xml") {
+			// $this->Session->setFlash('O arquivo deve ser do tipo xml! ', 'default');
+   //          return $this->redirect('/nfe/gerar_danfe');			
+   // 		}
 
 		move_uploaded_file($_FILES["nota"]["tmp_name"], $_FILES["nota"]["name"]);
 		$arq = $_FILES["nota"]["name"];
-   		
+   		echo 'oi';exit();
 		if ( is_file($arq) ){
 			$docxml = file_get_contents($arq);
 			$danfe = new DanfeNFePHP($docxml, 'P', 'A4','../images/logo.jpg','I','');

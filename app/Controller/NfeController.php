@@ -15,7 +15,7 @@ class NfeController extends AppController {
 
    	public function danfe() {
    		require_once('nfephp/libs/NFe/DanfeNFePHP.class.php');
-
+   		echo 'oi';exit();
    		if ($_FILES['nota']['type'] != "text/xml") {
 			$this->Session->setFlash('O arquivo deve ser do tipo xml! ', 'default');
             return $this->redirect('/nfe/gerar_danfe');			

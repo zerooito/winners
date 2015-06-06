@@ -14,6 +14,7 @@ class NfeController extends AppController {
    	}
 
    	public function danfe() {
+   		phpinfo();
    		require_once('nfephp/libs/NFe/DanfeNFePHP.class.php');
 
    // 		if ($_FILES['nota']['type'] != "text/xml") {

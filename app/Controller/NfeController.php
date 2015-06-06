@@ -20,10 +20,11 @@ class NfeController extends AppController {
 			$this->Session->setFlash('O arquivo deve ser do tipo xml! ', 'default');
             return $this->redirect('/nfe/gerar_danfe');			
    		}
-
+   		pr($_FILES);
 		move_uploaded_file($_FILES["nota"]["tmp_name"], $_FILES["nota"]["name"]);
 		$arq = $_FILES["nota"]["name"];
-   		
+   		pr($arq);
+   		exit();
 		if ( is_file($arq) ){
 			$docxml = file_get_contents($arq);
 			$danfe = new DanfeNFePHP($docxml, 'P', 'A4','../images/logo.jpg','I','');

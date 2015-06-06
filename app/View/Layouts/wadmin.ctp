@@ -88,8 +88,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/dashboard/home"><?php echo $this->Session->read('Usuario.nome'); ?></a>
+                <a class="navbar-brand" href="/dashboard/home">
+                <?php 
+                    if ($this->Session->read('Usuario') != "") {
+                        echo $this->Session->read('Usuario.nome'); 
+                    } else {
+                        echo "Winners Desenvolvimento";                
+                    }
+                ?>
+                </a>
             </div>
+            <?php if ($this->Session->read('Usuario') != "") { ?>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
                 <!-- /.dropdown -->
@@ -111,6 +120,7 @@
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
+            <?php } ?>
 
             <!-- Inclui o menu -->
             <?php include('Menu/menu.ctp'); ?>

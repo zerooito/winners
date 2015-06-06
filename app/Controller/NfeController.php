@@ -7,21 +7,31 @@ class NfeController extends AppController {
    	}
 
    	public function gerar_danfe() {
-   		require_once('nfephp/libs/DanfeNFePHP.class.php');
+   		$modulos = array();
+   		$this->set('modulos', $modulos);
 
-		move_uploaded_file($_FILES["nota"]["tmp_name"],$_FILES["nota"]["name"]);
+		$this->layout = 'wadmin';   		
+   	}
+
+   	public function danfe() {
+   		require_once('nfephp/libs/NFe/DanfeNFePHP.class.php');
+
+   		if ($_FILES['nota']['type'] != "text/xml") {
+			$this->Session->setFlash('O arquivo deve ser do tipo xml! ', 'default');
+            return $this->redirect('/nfe/gerar_danfe');			
+   		}
+
+		move_uploaded_file($_FILES["nota"]["tmp_name"], $_FILES["nota"]["name"]);
 		$arq = $_FILES["nota"]["name"];
-
+   		
 		if ( is_file($arq) ){
-		$docxml = file_get_contents($arq);
-		$danfe = new DanfeNFePHP($docxml, 'P', 'A4','../images/logo.jpg','I','');
-		$id = $danfe->montaDANFE();
-		$teste = $danfe->printDANFE($id.'.pdf','I');
+			$docxml = file_get_contents($arq);
+			$danfe = new DanfeNFePHP($docxml, 'P', 'A4','../images/logo.jpg','I','');
+			$id = $danfe->montaDANFE();
+			$imprime_danfe = $danfe->printDANFE($id . '.pdf','I');
 		}
 
 		unlink($arq);
-
-		echo 'oi';exit();
    	}
 
 	public function teste() {

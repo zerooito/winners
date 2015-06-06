@@ -16,16 +16,23 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 
+	public $debug = true;
+
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
 	* Toda vez que determinado controller não precisa de verificação de acesso o
 	* o mesmo precisa ter essa função rescrita somente com um return true
 	*/
 	public function beforeFilter(){
+		if ($this->debug) {
+			return true;
+		}
+
 		$this->verificar_dominio();
 
 		$this->verificar_acesso();
     	$this->set('modulos', $this->modulos);
+
    	}
 
    	/*

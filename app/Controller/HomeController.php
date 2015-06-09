@@ -1,8 +1,7 @@
 <?php
-class HomeController extends AppController{
-
+class HomeController extends AppController{	
+	
 	public function beforeFilter(){
-		$this->verificar_dominio();
 		return true;
    	}
 

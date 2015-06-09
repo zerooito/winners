@@ -1,7 +1,6 @@
 <?php
 
 class OdontoclinicpimentasController extends AppController {
-	
 	public function beforeFilter(){
 		return true;
    	}

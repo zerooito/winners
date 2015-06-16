@@ -11,28 +11,18 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-		<!-- // <script src="js/jquery.min.js"></script> -->
-    	<?php echo $this->Html->script('jquery.min'); ?>
-
-		<!-- // <script src="js/jquery.dropotron.min.js"></script> -->
-		<?php echo $this->Html->script('odontoclinicpimentas/js/jquery.dropotron.min'); ?>
-		<!-- // <script src="js/skel.min.js"></script> -->
-		<?php echo $this->Html->script('odontoclinicpimentas/js/skel.min'); ?>
-		<!-- // <script src="js/skel-layers.min.js"></script> -->
-		<?php echo $this->Html->script('odontoclinicpimentas/js/skel-layers.min.js'); ?>
-		<!-- // <script src="js/init.js"></script> -->
-		<?php echo $this->Html->script('odontoclinicpimentas/js/init'); ?>
-		<!-- // <script src="js/jquery.jcarousel.min.js"></script> -->
-		<?php echo $this->Html->script('odontoclinicpimentas/js/jquery.jcarousel.min'); ?>
+		<script src="/app/webroot/odontoclinicpimentas/js/jquery.min.js"></script>
+    	
+		<script src="/app/webroot/odontoclinicpimentas/js/jquery.dropotron.min.js"></script>
+		<script src="/app/webroot/odontoclinicpimentas/js/skel.min.js"></script>
+		<script src="/app/webroot/odontoclinicpimentas/js/skel-layers.min.js"></script>
+		<script src="/app/webroot/odontoclinicpimentas/js/init.js"></script>
+		<script src="/app/webroot/odontoclinicpimentas/js/jquery.jcarousel.min.js"></script>
 		
-		<noscript>
-			<!-- <link rel="stylesheet" href="css/skel.css" /> -->
-			<?php echo $this->Html->css('odontoclinicpimentas/css/skel'); ?>
-			<!-- <link rel="stylesheet" href="css/style.css" /> -->
-			<?php echo $this->Html->css('odontoclinicpimentas/css/style'); ?>
-			<!-- <link rel="stylesheet" href="css/style-desktop.css" /> -->
-			<?php echo $this->Html->css('odontoclinicpimentas/css/style-desktop'); ?>
-		</noscript>
+		<link rel="stylesheet" href="/app/webroot/odontoclinicpimentas/css/skel.css" />
+		<link rel="stylesheet" href="/app/webroot/odontoclinicpimentas/css/style.css" />
+		<link rel="stylesheet" href="/app/webroot/odontoclinicpimentas/css/style-desktop.css" />
+		<link rel="stylesheet" href="/app/webroot/odontoclinicpimentas/css/font-awesome.min.css" />
 
 		<!-- Bosstrap -->
 		<!-- Latest compiled and minified CSS -->
@@ -47,13 +37,11 @@
 
 		<!-- Galeria Boostrap -->
 		<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
-		<!-- <link rel="stylesheet" href="css/bootstrap-image-gallery.min.css"> -->
-		<?php echo $this->Html->css('odontoclinicpimentas/css/bootstrap-image-gallery.min'); ?>
+		<link rel="stylesheet" href="/app/webroot/odontoclinicpimentas/css/bootstrap-image-gallery.min.css">
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-		<!-- // <script src="js/bootstrap-image-gallery.min.js"></script> -->
-		<?php echo $this->Html->script('odontoclinicpimentas/js/bootstrap-image-gallery.min'); ?>
+		<script src="/app/webroot/odontoclinicpimentas/js/bootstrap-image-gallery.min.js"></script>
 		
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 
@@ -76,7 +64,7 @@
 				
 					<!-- Logo -->
 						<div id="logo">
-							<img src="images/logo.png" />
+							<img src="/app/webroot/odontoclinicpimentas/images/logo.png" />
 							<!-- <span>by HTML5 UP</span> -->
 						</div>
 					
@@ -103,7 +91,7 @@
 								</li>
 								<li><a href="#">Tratametos</a></li>
 								<li><a href="#">Diferenciais</a></li>
-								<li><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"><img src="images/scheduled_tasks.png" style="width: 32px; margin-right: 10px;" />Agende sua Visita</button></li>
+								<li><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"><img src="/app/webroot/odontoclinicpimentas/images/scheduled_tasks.png" style="width: 32px; margin-right: 10px;" />Agende sua Visita</button></li>
 							</ul>
 						</nav>
 					
@@ -121,12 +109,12 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
     <div class="item active">
-      <img src="images/banner.jpg" alt="...">
+      <img src="/app/webroot/odontoclinicpimentas/images/banner.jpg" alt="...">
       <div class="carousel-caption">
       </div>
     </div>
     <div class="item">
-      <img src="images/banner2.jpg" alt="...">
+      <img src="/app/webroot/odontoclinicpimentas/images/banner2.jpg" alt="...">
       <div class="carousel-caption">
       </div>
     </div>
@@ -149,7 +137,7 @@
 						
 							<!-- Box -->
 								<section class="box feature">
-									<a href="#" class="image featured"><img src="images/bannezinho.jpeg" alt="" /></a>
+									<a href="#" class="image featured"><img src="/app/webroot/odontoclinicpimentas/images/bannezinho.jpeg" alt="" /></a>
 									<div class="inner">
 										<header>
 											<h2>Clinica Geral</h2>
@@ -166,7 +154,7 @@
 						
 							<!-- Box -->
 								<section class="box feature">
-									<a href="#" class="image featured"><img src="images/bannerzinho2.jpg" alt="" /></a>
+									<a href="#" class="image featured"><img src="/app/webroot/odontoclinicpimentas/images/bannerzinho2.jpg" alt="" /></a>
 									<div class="inner">
 										<header>
 											<h2>Clinica Geral</h2>
@@ -183,7 +171,7 @@
 						
 							<!-- Box -->
 								<section class="box feature last">
-									<a href="#" class="image featured"><img src="images/banner3.jpg" alt="" /></a>
+									<a href="#" class="image featured"><img src="/app/webroot/odontoclinicpimentas/images/banner3.jpg" alt="" /></a>
 									<div class="inner">
 										<header>
 											<h2>Clinica Geral</h2>
@@ -213,48 +201,48 @@
 										<div class="grid">
 											<div class="row no-collapse half">
 												<div id="links">
-												    <a href="images/pic06.jpg" title="Title" data-gallery>
-												        <img src="images/pic06.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/pic06.jpg" title="Title" data-gallery>
+												        <img src="/app/webroot/odontoclinicpimentas/images/pic06.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/pic06.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/pic06.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/pic06.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/pic06.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img1.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img1.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img1.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img1.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img2.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img2.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img2.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img2.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img3.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img3.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img3.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img3.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img1.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img1.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img1.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img1.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img2.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img2.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img2.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img2.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img3.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img3.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img3.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img3.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 												<div id="links">
-												    <a href="images/img1.jpg" title="Title" data-gallery>
-												        <img class="img-cicle" src="images/img1.jpg" width="150" height="100" alt="Title">
+												    <a href="/app/webroot/odontoclinicpimentas/images/img1.jpg" title="Title" data-gallery>
+												        <img class="img-cicle" src="/app/webroot/odontoclinicpimentas/images/img1.jpg" width="150" height="100" alt="Title">
 												    </a>
 												</div>
 											</div>

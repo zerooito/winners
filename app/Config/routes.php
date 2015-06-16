@@ -53,26 +53,26 @@
  * Função para verificar se o dominio pentece ao site, caso não pertença redireciona ao site correto 
  */
 	function verificar_dominio() {
-		$dominios_winners = array (
+		$dominiosWinners = array (
 			'winners.local',
 			'www.winnersdesenvolvimento.com.br',
 			'winnersdesenvolvimento.com.br',
 			'blog.winnersdesenvolvimento.com.br'
 		);
 
-		$dominio = $_SERVER['SERVER_NAME'];
-		if (array_search($dominio, $dominios_winners) !== false) {
-			return $retorno['is_winners'] = true;
+		$varDominio = $_SERVER['SERVER_NAME'];
+		if (array_search($varDominio, $dominiosWinners) !== false) {
+			$retorno['is_winners'] = true;
+
+			return $retorno;
 		}
 
-		require(APP . 'Config/Domain/' . $dominio . '.php');
-		$objDomain = new domain();
-		$domain = $objDomain->domain();
+		require(APP . 'Config/Domain/' . $varDominio . '.php');
 
 		$retorno['is_winners'] = false;
-		$retorno['id_usuario'] = $domain['id_usuario'];
-		$retorno['controller'] = $domain['controller'];
-		$retorno['funcao']	   = $domain['funcao'];
+		$retorno['id_usuario'] = $dominio['id_usuario'];
+		$retorno['controller'] = $dominio['controller'];
+		$retorno['funcao']	   = $dominio['funcao'];
 
 		return $retorno;
 	}

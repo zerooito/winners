@@ -19,7 +19,10 @@ class ProdutoController extends AppController{
 	}
 
 	public function s_adicionar_cadastro() {
-		$dados = $this->request->data('dados');
+		$dados  = $this->request->data('dados');
+		$image  = $_FILES['imagem'];
+		pr($image);
+		pr($dados,1);
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();

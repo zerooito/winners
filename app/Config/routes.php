@@ -29,7 +29,14 @@
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-	Router::connect('/', array('controller' => 'home', 'action' => 'index'));
+	
+	$dominio = verificar_dominio();
+	if ($dominio['is_winners']) {
+		Router::connect('/', array('controller' => 'home', 'action' => 'index'));
+	} else {
+		Router::connect('/', array('controller' => $dominio['controller'], 'action' => $dominio['funcao']));
+	}
+
 	
 /**
  * Load all plugin routes. See the CakePlugin documentation on
@@ -42,3 +49,30 @@
  * the built-in default routes.
  */
 	require CAKE . 'Config' . DS . 'routes.php';
+/**
+ * Função para verificar se o dominio pentece ao site, caso não pertença redireciona ao site correto 
+ */
+	function verificar_dominio() {
+		$dominiosWinners = array (
+			'winners.local',
+			'www.winnersdesenvolvimento.com.br',
+			'winnersdesenvolvimento.com.br',
+			'blog.winnersdesenvolvimento.com.br'
+		);
+
+		$varDominio = $_SERVER['SERVER_NAME'];
+		if (array_search($varDominio, $dominiosWinners) !== false) {
+			$retorno['is_winners'] = true;
+
+			return $retorno;
+		}
+
+		require(APP . 'Config/Domain/' . $varDominio . '.php');
+
+		$retorno['is_winners'] = false;
+		$retorno['id_usuario'] = $dominio['id_usuario'];
+		$retorno['controller'] = $dominio['controller'];
+		$retorno['funcao']	   = $dominio['funcao'];
+
+		return $retorno;
+	}

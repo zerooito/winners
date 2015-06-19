@@ -1,16 +1,10 @@
 <?php
+require 'SiteController.php';
 
-class OdontoclinicpimentasController extends AppController {
-	
-	public function beforeFilter(){
-		return true;
-   	}
+class OdontoclinicpimentasController extends SiteController {
 
-	function home() {
-		$this->layout = 'odontoclinicpimentas';
+	public function beforeFilter() {
+		$this->setLayout('odontoclinicpimentas');
 	}
 
-	function index() {
-		$this->layout = 'odontoclinicpimentas';
-	}
 }

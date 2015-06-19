@@ -19,10 +19,19 @@ class ProdutoController extends AppController{
 	}
 
 	public function s_adicionar_cadastro() {
-		$dados = $this->request->data('dados');
+		$dados  = $this->request->data('dados');
+		$image  = $_FILES['imagem'];
+		
+		$retorno = $this->uploadImage($image);
+
+		if (!$retorno['status']) 
+			$this->Session->setFlash('Não foi possivel salvar a imagem tente novamente');
+
+		$dados['imagem'] = $retorno['nome'];
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
+
 		if($this->Produto->save($dados)) {
 			$this->Session->setFlash('Produto salvo com sucesso!');
             return $this->redirect('/produto/listar_cadastros');
@@ -132,6 +141,19 @@ class ProdutoController extends AppController{
 		$retorno = $preco * $qnt;
 
 		return number_format($retorno, 2, ',', '.');
+	}
+
+	public function uploadImage(&$image) {
+		$type = substr($image['name'], -4);
+		$nameImage = uniqid() . md5($image['name']) . $type;
+		$dir = APP . 'tmp/produto/imagens/';
+
+		$returnUpload = move_uploaded_file($image['tmp_name'], $dir . $nameImage);
+
+		if (!$returnUpload)
+			return array('nome' => null, 'status' => false);
+
+		return array('nome' => $nameImage, 'status' => true);
 	}
 
 }

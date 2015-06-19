@@ -28,11 +28,8 @@ class AppController extends Controller {
 			return true;
 		}
 
-		$this->verificar_dominio();
-
 		$this->verificar_acesso();
     	$this->set('modulos', $this->modulos);
-
    	}
 
    	/*
@@ -109,27 +106,6 @@ class AppController extends Controller {
 		}
 
 		return true;
-	}
-
-	public function verificar_dominio() {
-		$dominios_winners = array (
-			'winners.local',
-			'www.winnersdesenvolvimento.com.br',
-			'winnersdesenvolvimento.com.br',
-			'blog.winnersdesenvolvimento.com.br'
-		);
-
-		$dominio = $_SERVER['SERVER_NAME'];
-
-		if (array_search($dominio, $dominios_winners) !== false) {
-			return true;
-		}
-
-		require(APP . 'Config/Domain/' . $dominio . '.php');
-		$objDomain = new domain();
-		$domain = $objDomain->domain();
-
-		$this->redirect(array('controller' => 'odontoclinicpimentas', 'action' => 'home'));
 	}
 
 }

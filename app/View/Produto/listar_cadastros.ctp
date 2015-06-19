@@ -20,6 +20,7 @@
                             <thead>
                                 <tr>
                                     <th>#ID</th>
+                                    <th>Imagem</th>
                                     <th>Nome</th>
                                     <th>Preço</th>
                                     <th>Estoque</th>
@@ -32,6 +33,9 @@
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $produto['Produto']['id'] ?>">
                                     <td><?php echo $produto['Produto']['id_alias'] ?></td>
+                                    <td>
+                                        <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
+                                    </td>
                                     <td><?php echo $produto['Produto']['nome'] ?></td>
                                     <td><?php echo $produto['Produto']['preco'] ?></td>
                                     <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>

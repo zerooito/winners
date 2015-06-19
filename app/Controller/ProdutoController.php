@@ -146,8 +146,8 @@ class ProdutoController extends AppController{
 	public function uploadImage(&$image) {
 		$type = substr($image['name'], -4);
 		$nameImage = uniqid() . md5($image['name']) . $type;
-		$dir = APP . 'tmp/produto/imagens/';
-
+		$dir = APP . 'webroot/uploads/produto/imagens/';
+		
 		$returnUpload = move_uploaded_file($image['tmp_name'], $dir . $nameImage);
 
 		if (!$returnUpload)

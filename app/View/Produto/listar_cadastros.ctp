@@ -40,8 +40,11 @@
                                     <td><?php echo $produto['Produto']['preco'] ?></td>
                                     <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>
                                     <td class="center">
-                                        <button onclick="remover_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="visualizar_cadastro(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                        
                                         <button onclick="editar_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        
+                                        <button onclick="remover_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
                                     </td>
                                 </tr>   
                             <?php
@@ -97,5 +100,8 @@
     }
     function editar_produto(id) {
         window.location.href = "/produto/editar_cadastro/"+id;
+    }
+    function visualizar_cadastro(id) {
+        window.location.href = "/produto/visualizar_cadastro/"+id;
     }
 </script>

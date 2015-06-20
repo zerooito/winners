@@ -1,6 +1,7 @@
 <?php
 
 class ProdutoController extends AppController{	
+
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';
 
@@ -41,10 +42,8 @@ class ProdutoController extends AppController{
 		}
 	}
 
-	public function editar_cadastro() {
+	public function editar_cadastro($id) {
 		$this->layout = 'wadmin';
-
-		$id = $this->params->pass[0];
 
 		$this->set('produto', $this->Produto->find('all', 
 				array('conditions' => 
@@ -52,13 +51,30 @@ class ProdutoController extends AppController{
 						  'id' => $id
 					)
 				)
-			)
+			)[0]
 		);
 	}
 
-	public function s_editar_cadastro() {
+	public function s_editar_cadastro($id) {
 		$dados = $this->request->data('dados');
-		$this->Produto->id = $this->request->data('id');
+
+		$image  = $_FILES['imagem'];
+		
+		if (!empty($image['name'])) {
+			$retorno = $this->uploadImage($image);
+			
+			if (!$retorno['status']) 
+				$this->Session->setFlash('Não foi possivel salvar a imagem tente novamente');
+			
+			$dados['imagem'] = $retorno['nome'];
+		}
+
+
+		$dados['id_usuario'] = $this->instancia;
+		$dados['ativo'] = 1;
+		$dados['id_alias'] = $this->id_alias();
+
+		$this->Produto->id = $id;
 		
 		if ($this->Produto->save($dados)) {
 			$this->Session->setFlash('Produto editado com sucesso!','default','good');
@@ -154,6 +170,25 @@ class ProdutoController extends AppController{
 			return array('nome' => null, 'status' => false);
 
 		return array('nome' => $nameImage, 'status' => true);
+	}
+
+	public function visualizar_cadastro($id) {
+		$this->layout = 'wadmin';
+
+		$produto = $this->Produto->find('all', 
+			array('conditions' => 
+				array('ativo' => 1,
+					  'id' => $id
+				)
+			)
+		);
+
+		if (empty($produto)) {
+			$this->Session->setFlash("Produto não encotrado, tente novamente");
+			$this->redirect("/produto/listar_cadastros");
+		}
+
+		$this->set('produto', $produto[0]);
 	}
 
 }

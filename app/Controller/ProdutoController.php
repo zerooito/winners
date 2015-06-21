@@ -21,8 +21,9 @@ class ProdutoController extends AppController{
 
 	public function s_adicionar_cadastro() {
 		$dados  = $this->request->data('dados');
+
 		$image  = $_FILES['imagem'];
-		
+
 		$retorno = $this->uploadImage($image);
 
 		if (!$retorno['status']) 

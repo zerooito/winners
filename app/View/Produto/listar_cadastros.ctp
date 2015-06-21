@@ -37,7 +37,7 @@
                                         <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
                                     </td>
                                     <td><?php echo $produto['Produto']['nome'] ?></td>
-                                    <td><?php echo $produto['Produto']['preco'] ?></td>
+                                    <td><?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></td>
                                     <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>
                                     <td class="center">
                                         <button onclick="visualizar_cadastro(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-eye-open"></i></button>
@@ -72,7 +72,7 @@
                         <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i>
                         </button>
 
-                        <button type="button" class="btn btn-info"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar Categoria</a></i></button>
+                        <!-- <button type="button" class="btn btn-info"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar Categoria</a></i></button> -->
                         
                 </div>
                 <!-- /.panel-body -->

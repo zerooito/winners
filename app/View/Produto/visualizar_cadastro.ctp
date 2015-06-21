@@ -34,12 +34,16 @@
 										</tr>
 									</tbody>
 								</table>
+
+					            <p>
+					              <strong>Descrição:</strong> <?php echo $produto['Produto']['descricao'] ?>
+								</p>					            
                 			</div>
                 			<div class="col-lg-6">
-                				<img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="..." class="img-rounded" height="225">
+                				<img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="..." class="img-rounded" height="260" width="450">
                 				
                 			</div>
-                			<button class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
+		            		<button class="btn btn-danger" onclick="history.go(-1);" style="float: right;   margin: 25px 10px;">Cancelar</button>
                 		</div>
                 	</div>
                 </div>

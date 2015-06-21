@@ -14,16 +14,16 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Nome</label>
-                                        <input class="form-control" name="dados[nome]"  value="<?php echo $produto['Produto']['nome'] ?>">
+                                        <input class="form-control" name="dados[nome]"  value="<?php echo $produto['Produto']['nome'] ?>" required>
                                         <!-- <p class="help-block">Example block-level help text here.</p> -->
                                     </div>
                                     <div class="form-group">
                                         <label>Preço</label>
-                                        <input class="form-control moeda" name="dados[preco]" value="<?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?>">
+                                        <input class="form-control moeda" name="dados[preco]" value="<?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Peso Bruto</label>
-                                        <input class="form-control peso" name="dados[peso_bruto]" value="<?php echo $produto['Produto']['peso_bruto'] ?>">
+                                        <input class="form-control peso" name="dados[peso_bruto]" value="<?php echo $produto['Produto']['peso_bruto'] ?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Peso Liquido</label>
@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Estoque</label>
-                                        <input type="number" class="form-control" name="dados[estoque]" value="<?php echo $produto['Produto']['estoque'] ?>">
+                                        <input type="number" class="form-control" name="dados[estoque]" value="<?php echo $produto['Produto']['estoque'] ?>" required>
                                     </div>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->

@@ -1,6 +1,8 @@
 <?php
 
-class VendaController extends AppController {
+include 'ProdutoEstoqueController.php';
+
+class VendaController extends ProdutoEstoqueController {
 
 	function pdv() {
 		$this->layout = 'wadmin';
@@ -92,12 +94,30 @@ class VendaController extends AppController {
 	}
 
 	public function s_adicionar_cadastro() {
-		$dados_venda 	 	= $this->request->data('venda');
-		$dados_lancamento	= $this->request->data('lancamento');
-		$dados_produto 		= $this->request->data('produto');
+		$dados_venda 	  = $this->request->data('venda');
+		$dados_lancamento = $this->request->data('lancamento');
+		$produtos 	  = $this->request->data('produto');
 
-		pr($dados_produto);
+		$this->adicionar_itens_venda($produtos);
+		pr($dados_lancamento);
+		pr($dados_venda);
+		pr($produtos);
 		exit();
+	}
+
+	public function adicionar_itens_venda($produtos) {
+		$this->loadModel('Produto');
+
+		foreach ($produtos as $indice => $produto) {
+			$produto = $this->Produto->find('all',
+				array('conditions' =>
+					array('Produto.id' => $produto['id_produto'])
+				)
+			);
+
+			$this->validar_estoque($produto);
+			debug($produto,1);
+		}
 	}
 
 }

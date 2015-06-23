@@ -1,7 +1,6 @@
 <?php
 
 class ProdutoController extends AppController{		
-	public $helpers = array('Excel');
 
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';

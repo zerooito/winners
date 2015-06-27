@@ -1,6 +1,6 @@
 <?php
 
-class ProdutoController extends AppController{	
+class ProdutoController extends AppController{		
 
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';
@@ -21,8 +21,9 @@ class ProdutoController extends AppController{
 
 	public function s_adicionar_cadastro() {
 		$dados  = $this->request->data('dados');
+
 		$image  = $_FILES['imagem'];
-		
+
 		$retorno = $this->uploadImage($image);
 
 		if (!$retorno['status']) 
@@ -190,5 +191,51 @@ class ProdutoController extends AppController{
 
 		$this->set('produto', $produto[0]);
 	}
+
+	public function exportar_excel_exemplo() {
+		include(APP . 'Vendor/PHPExcel/PHPExcel.php');
+		include(APP . 'Vendor/PHPExcel/PHPExcel/IOFactory.php');
+
+        $objPHPExcel = new PHPExcel();
+        // Definimos o estilo da fonte
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+
+        $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
+
+        // Criamos as colunas
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', "Nome do Produto")
+                    ->setCellValue('B1', "Preço ")
+                    ->setCellValue("C1", "Peso Bruto")
+                    ->setCellValue("D1", "Peso Liquido")
+                    ->setCellValue("E1", "Estoque")
+                    ->setCellValue("F1", "Descrição");
+
+        // Podemos renomear o nome das planilha atual, lembrando que um único arquivo pode ter várias planilhas
+        $objPHPExcel->getActiveSheet()->setTitle('Listagem de produtos');
+
+        // Cabeçalho do arquivo para ele baixar
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="planilha_importacao_exemplo.xls"');
+        header('Cache-Control: max-age=0');
+        // Se for o IE9, isso talvez seja necessário
+        header('Cache-Control: max-age=1');
+
+        // Acessamos o 'Writer' para poder salvar o arquivo
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+
+        // Salva diretamente no output, poderíamos mudar arqui para um nome de arquivo em um diretório ,caso não quisessemos jogar na tela
+        $objWriter->save('php://output'); 
+
+        exit;
+    }
+
+    public function exportar_excel_produto() {
+    	
+    }
+
+    public function importar_produtos_planilha() {
+
+    }
 
 }

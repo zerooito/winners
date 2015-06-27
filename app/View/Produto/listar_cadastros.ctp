@@ -37,7 +37,7 @@
                                         <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
                                     </td>
                                     <td><?php echo $produto['Produto']['nome'] ?></td>
-                                    <td><?php echo $produto['Produto']['preco'] ?></td>
+                                    <td><?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></td>
                                     <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>
                                     <td class="center">
                                         <button onclick="visualizar_cadastro(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-eye-open"></i></button>
@@ -72,7 +72,18 @@
                         <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i>
                         </button>
 
-                        <button type="button" class="btn btn-info"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar Categoria</a></i></button>
+                        <!-- Split button -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-info">Ações</button>
+                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a href="/produto/exportar_excel_exemplo">Exportar Excel Exemplo</a></li>
+                            <li><a href="/produto/exportar_excel_produto">Exportar Excel Produto</a></li>
+                          </ul>
+                        </div>
                         
                 </div>
                 <!-- /.panel-body -->

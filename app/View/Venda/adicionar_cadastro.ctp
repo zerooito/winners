@@ -13,6 +13,7 @@
                                 <div class="form-group">
                                     <label>Cliente</label>
                                     <select class="form-control" name="venda[id_cliente]">
+                                        <option value="">Nenhum Cliente Especifico</option>
                                         <?php foreach ($clientes as $cliente): ?>
                                             <option value="<?php echo $cliente['Cliente']['id'] ?>"><?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2'] ?></option>
                                         <?php endforeach; ?>
@@ -22,10 +23,6 @@
                                 <div class="form-group">
                                     <label>Valor</label>
                                     <input class="form-control moeda" name="venda[valor]" id="valor_venda" value="0.00">
-                                </div>
-                                <div class="form-group">
-                                    <label>Custo Medio</label>
-                                    <input class="form-control moeda" name="venda[custo]">
                                 </div>
                             </div>
                             <!-- /.col-lg-6 (nested) -->
@@ -48,11 +45,12 @@
                                     </div>
                                 </div>
 
-                                <button type="button" class="btn btn-info" aria-label="Left Align">
-                                  <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                  Adicionar Forma de Pagamento
-                                </button>
+                                <!-- <button type="button" class="btn btn-info" aria-label="Left Align"> -->
+                                  <!-- <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> -->
+                                  <!-- Adicionar Forma de Pagamento -->
+                                <!-- </button> -->
                             </div>
+                            
                             <!-- /.col-lg-6 (nested) -->
                             <div class="col-lg-12">
                                 <div class="panel panel-default">

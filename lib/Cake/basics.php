@@ -841,3 +841,21 @@ if (!function_exists('convertSlash')) {
 	}
 
 }
+
+
+function receber_data($data, $dia = true, $mes = true, $ano = true, $hora = false, $minuto = false, $segundo = false) {
+    if ($hora || $minuto || $segundo) {
+        $data = explode(' ', $data);
+        $_hora = $data[1];
+        $data = $data[0];
+
+        $_hora = explode(':', $_hora);
+        $_hora = ($hora ? $_hora[0] : '') . ($minuto ? ($hora ? ':' : '') . $_hora[1] : '') . ($segundo ? ($hora || $minuto ? ':' : '') . $_hora[2] : '');
+    }
+    $recebe = explode('-', $data);
+    if (isset($recebe[2]) && isset($recebe[1])) {
+        $data = ($dia ? $recebe[2] : '') . ($mes ? ($dia ? '/' : '') . $recebe[1] : '') . ($ano ? ($mes || $dia ? '/' : '') . $recebe[0] : '');
+    }
+
+    return $data . (isset($_hora) ? ' ' . $_hora : '');
+}

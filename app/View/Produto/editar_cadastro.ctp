@@ -22,6 +22,10 @@
                                         <input class="form-control moeda" name="dados[preco]" value="<?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?>" required>
                                     </div>
                                     <div class="form-group">
+                                        <label>Custo</label>
+                                        <input class="form-control moeda" name="dados[custo]" value="<?php echo number_format($produto['Produto']['custo'], '2', ',', '.') ?>" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Peso Bruto</label>
                                         <input class="form-control peso" name="dados[peso_bruto]" value="<?php echo $produto['Produto']['peso_bruto'] ?>" required>
                                     </div>

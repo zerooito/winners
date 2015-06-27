@@ -22,6 +22,10 @@
                                         <input class="form-control moeda" name="dados[preco]" required>
                                     </div>
                                     <div class="form-group">
+                                        <label>Custo</label>
+                                        <input class="form-control moeda" name="dados[custo]" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Peso Bruto</label>
                                         <input class="form-control peso" name="dados[peso_bruto]" required>
                                     </div>

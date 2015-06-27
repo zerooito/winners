@@ -20,9 +20,8 @@
                             <thead>
                                 <tr>
                                     <th>#ID</th>
-                                    <th>Nome</th>
-                                    <th>Preço</th>
-                                    <th>Estoque</th>
+                                    <th>Valor</th>
+                                    <th>Data Venda</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -30,14 +29,13 @@
                             <?php
                             foreach ($vendas as $indice => $venda) {
                             ?>
-                                <tr class="odd gradeX" id="<?php echo $venda['Produto']['id'] ?>">
-                                    <td><?php echo $venda['Produto']['id_alias'] ?></td>
-                                    <td><?php echo $venda['Produto']['nome'] ?></td>
-                                    <td><?php echo $venda['Produto']['preco'] ?></td>
-                                    <td class="center"><?php echo $venda['Produto']['estoque'] ?></td>
+                                <tr class="odd gradeX" id="<?php echo $venda['Venda']['id'] ?>">
+                                    <td><?php echo $venda['Venda']['id'] ?></td>
+                                    <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
+                                    <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
                                     <td class="center">
-                                        <button onclick="remover_produto(<?php echo $venda['Produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_produto(<?php echo $venda['Produto']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <button onclick="remover_produto(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <!-- <button onclick="editar_produto(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button> -->
                                     </td>
                                 </tr>
                             <?php
@@ -61,9 +59,24 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/venda/adicionar_cadastro" style="color: #FFF;"> Adicionar venda</a></i>
+    
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/venda/adicionar_cadastro" style="color: #FFF;"> Adicionar venda</a></i></button>
+                    
+                    <!-- Split button -->
+                    <div class="btn-group" style="margin-top: 10px;">
+                      <button type="button" class="btn btn-info">Ações</button>
+                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="/venda/relatorio_diario">Exportar Relatorio Diário</a></li>
+                      </ul>
+                    </div>
+    
                 </div>
                 <!-- /.panel-body -->
+
             </div>
             <!-- /.panel -->
         </div>
@@ -71,11 +84,11 @@
 </div>
 
 <script type="text/javascript">
-    function remover_produto(id) {
+    function remover_venda(id) {
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "/produto/excluir_cadastro",
+            url: "/venda/exlcluir_cadastro",
             async: true,
             data: {id: id},
             error: function(x){

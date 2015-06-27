@@ -10,46 +10,38 @@
                     <form role="form" action="/venda/s_adicionar_cadastro" method="post">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Cliente</label>
-                                    <select class="form-control" name="venda[id_cliente]">
-                                        <option value="">Nenhum Cliente Especifico</option>
-                                        <?php foreach ($clientes as $cliente): ?>
-                                            <option value="<?php echo $cliente['Cliente']['id'] ?>"><?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <!-- <p class="help-block">Example block-level help text here.</p> -->
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Produto</label>
+                                            <select class="form-control" id="produto_item">
+                                                <?php foreach ($produtos as $produto): ?>
+                                                    <option value="<?php echo $produto['Produto']['id'] ?>"><?php echo $produto['Produto']['nome'] ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Quantidade</label>
+                                            <input class="form-control" id="quantidade_produto">
+                                            <!-- <p class="help-block">Example block-level help text here.</p> -->
+                                        </div>
+
+                                        <a href="javascript:;" class="btn btn-primary" id="adicionar_item" onclick="adicionar_produto();">Adicionar Item</a>
+                                    </div>
+
                                 </div>
-                                <div class="form-group">
-                                    <label>Valor</label>
-                                    <input class="form-control moeda" name="venda[valor]" id="valor_venda" value="0.00">
-                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="jumbotron">
+                                  <h1 id="valor-atual" data-preco="0.00" style="color: green">R$ 0.00</h1>
+                                  <p>Valor total</P>
+                                </div>                                
                             </div>
                             <!-- /.col-lg-6 (nested) -->
-                            <div class="col-lg-6">
-                                <div id="formas">
-                                    <div class="form-group">
-                                        <label>Selecione a forma de Pagamento</label>
-                                        <select class="form-control" name="lancamento[forma_pagamento]">
-                                            <option value="1">Boleto</option>
-                                            <option value="2">Cartão de Credito</option>
-                                            <option value="3">Cartão de Debito</option>
-                                            <option value="4">Cheque</option>
-                                        </select>
-                                        <!-- <p class="help-block">Example block-level help text here.</p> -->
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Selecione o valor Pago</label>
-                                        <input class="form-control moeda" name="lancamento[valor]">
-                                        <!-- <p class="help-block">Example block-level help text here.</p> -->
-                                    </div>
-                                </div>
-
-                                <!-- <button type="button" class="btn btn-info" aria-label="Left Align"> -->
-                                  <!-- <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> -->
-                                  <!-- Adicionar Forma de Pagamento -->
-                                <!-- </button> -->
-                            </div>
                             
                             <!-- /.col-lg-6 (nested) -->
                             <div class="col-lg-12">
@@ -75,30 +67,7 @@
 
 
                                     <div class="panel-footer">
-                                        <div class="row">
 
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Produto</label>
-                                                    <select class="form-control" id="produto_item">
-                                                        <?php foreach ($produtos as $produto): ?>
-                                                            <option value="<?php echo $produto['Produto']['id'] ?>"><?php echo $produto['Produto']['nome'] ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Quantidade</label>
-                                                    <input class="form-control" id="quantidade_produto">
-                                                    <!-- <p class="help-block">Example block-level help text here.</p> -->
-                                                </div>
-
-                                                <a href="javascript:;" class="btn btn-primary" id="adicionar_item" onclick="adicionar_produto();">Adicionar Item</a>
-                                            </div>
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +89,7 @@
     function adicionar_produto() {
         var produto_item        = $('#produto_item').val();
         var quantidade_produto  = $('#quantidade_produto').val();
-        var valor_venda_atual   = $('#valor_venda').val();
+        var valor_venda_atual   = $('#valor-atual').attr('data-preco');
 
         $.ajax({
             type: "post",
@@ -146,7 +115,7 @@
                 $('#produtos').append(html);
 
                 var novo_valor_venda = parseFloat(valor_venda_atual) + parseFloat(data['Produto']['total']);
-                $('#valor_venda').val(number_format(novo_valor_venda, 2, ',', '.'));
+                $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
             }
         });
     }

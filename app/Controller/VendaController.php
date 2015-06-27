@@ -106,7 +106,8 @@ class VendaController extends AppController {
 		}
 
 		$dados_venda['valor'] = $this->calcular_valor_venda($produtos);
-
+		$dados_venda['custo'] = $this->calcular_custo_venda($produtos);
+		
 		$salvar_venda = $this->salvar_venda($produtos, $dados_lancamento, $dados_venda);
 		
 		if (!$salvar_venda) {
@@ -133,6 +134,24 @@ class VendaController extends AppController {
 		}
 
 		return $preco;
+	}
+
+
+	public function calcular_custo_venda($produtos) {
+		$this->loadModel('Produto');
+
+		(float) $custo = 0.00;
+		foreach ($produtos as $indice => $item) {
+			$produto = $this->Produto->find('all',
+				array('conditions' =>
+					array('Produto.id' => $item['id_produto'])
+				)
+			);
+
+			$custo += $produto[0]['Produto']['custo'] * $item['quantidade'];
+		}
+
+		return $custo;
 	}
 
 	public function validar_itens_venda($produtos) {
@@ -174,6 +193,7 @@ class VendaController extends AppController {
 		if ($objVendaItensProdutoController->adicionar_itens_venda($id_venda, $produtos) === false) {
 			return false;
 		}
+
 		$objLancamentoVendasController = new LancamentoVendasController();
 		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor']) === false) {
 			return false;
@@ -214,9 +234,9 @@ class VendaController extends AppController {
         $i = 2;
         foreach ($vendas as $key => $venda) {
         	$objPHPExcel->setActiveSheetIndex(0)
-        				->setCellValue('A'.$i, $venda['Venda']['valor'])
-        				->setCellValue('B'.$i, $venda['Venda']['id'])
-        				->setCellValue('C'.$i, $venda['Venda']['id'])
+        				->setCellValue('A'.$i, 'R$ ' . $venda['Venda']['valor'])
+        				->setCellValue('B'.$i, 'R$ ' . $venda['Venda']['custo'])
+        				->setCellValue('C'.$i, 'R$ ' . $venda['Venda']['valor'] - $venda['Venda']['custo'])
         				->setCellValue('D'.$i, $venda['Venda']['id']);
         	$i++;
         }

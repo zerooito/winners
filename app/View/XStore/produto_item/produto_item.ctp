@@ -2,7 +2,7 @@
     <div class="thumbnail"   style="min-height: 430px;">
         <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="Foto do produto <?php echo $produto['Produto']['nome'] ?>" width="100" height="60">
         <div class="caption">
-            <h4 class="pull-right">R$ 94.99</h4>
+            <h4 class="pull-right">R$ <?php echo number_format($produto['Produto']['preco'], 2, ',', '.') ?></h4>
             <h4><a href="#"><?php echo $produto['Produto']['nome'] ?></a>
             </h4>
             <p><?php echo $produto['Produto']['descricao'] ?></p>

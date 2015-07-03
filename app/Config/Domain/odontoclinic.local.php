@@ -22,6 +22,8 @@ Router::connect('/cart',   array('controller' => $dominio['controller'], 'action
 
 Router::connect('/checkout',   array('controller' => $dominio['controller'], 'action' => 'checkout'));
 
+Router::connect('/payment',   array('controller' => $dominio['controller'], 'action' => 'payment'));
+
 Router::connect('/removeProductCart/:id',   array('controller' => $dominio['controller'], 'action' => 'removeProductCart'));
 
 Router::connect('/produto/:id',    array('controller' => $dominio['controller'], 'action' => 'produto'));

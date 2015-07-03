@@ -4,7 +4,7 @@ include(APP . 'Vendor/PagSeguro/source/PagSeguroLibrary/PagSeguroLibrary.php');
 
 class IntegracaoPagseguroController extends AppController {
 
-    public function payment()
+    public function paymentPagSeguro($products, $andress, $client, $total)
     {
         // Instantiate a new payment request
         $paymentRequest = new PagSeguroPaymentRequest();
@@ -13,10 +13,16 @@ class IntegracaoPagseguroController extends AppController {
         $paymentRequest->setCurrency("BRL");
 
         // Add an item for this payment request
-        $paymentRequest->addItem('0001', 'Notebook prata', 2, 430.00);
+        foreach ($products as $i => $item) {
+        	$paymentRequest->addItem('000'.$item['Produto']['id'], $item['Produto']['nome'], 1, number_format($item['Produto']['preco'], 2, '.', ''));
+        }
+
+
+        // Add an item for this payment request
+        // $paymentRequest->addItem('0001', 'Notebook prata', 2, 430.00);
 
         // Add another item for this payment request
-        $paymentRequest->addItem('0002', 'Notebook rosa', 2, 560.00);
+        // $paymentRequest->addItem('0002', 'Notebook rosa', 2, 560.00);
 
         // Set a reference code for this payment request. It is useful to identify this payment
         // in future notifications.
@@ -26,41 +32,41 @@ class IntegracaoPagseguroController extends AppController {
         $sedexCode = PagSeguroShippingType::getCodeByType('SEDEX');
         $paymentRequest->setShippingType($sedexCode);
         $paymentRequest->setShippingAddress(
-            '01452002',
-            'Av. Brig. Faria Lima',
-            '1384',
+            $andress['cep'],
+            $andress['endereco'],
+            $andress['numero'],
             'apto. 114',
-            'Jardim Paulistano',
-            'São Paulo',
-            'SP',
+            $andress['bairro'],
+            $andress['cidade'],
+            $andress['estado'],
             'BRA'
         );
 
         // Set your customer information.
         $paymentRequest->setSender(
-            'João Comprador',
-            'email@comprador.com.br',
-            '11',
-            '56273440',
+            $client['nome'],
+            $client['email'],
+            $client['ddd'],
+            $client['telefone'],
             'CPF',
-            '156.009.442-76'
+            $client['cpf']
         );
 
         // Set the url used by PagSeguro to redirect user after checkout process ends
         $paymentRequest->setRedirectUrl("http://www.lojamodelo.com.br");
 
         // Add checkout metadata information
-        $paymentRequest->addMetadata('PASSENGER_CPF', '15600944276', 1);
-        $paymentRequest->addMetadata('GAME_NAME', 'DOTA');
-        $paymentRequest->addMetadata('PASSENGER_PASSPORT', '23456', 1);
+        // $paymentRequest->addMetadata('PASSENGER_CPF', '15600944276', 1);
+        // $paymentRequest->addMetadata('GAME_NAME', 'DOTA');
+        // $paymentRequest->addMetadata('PASSENGER_PASSPORT', '23456', 1);
 
         // Another way to set checkout parameters
-        $paymentRequest->addParameter('notificationURL', 'http://www.lojamodelo.com.br/nas');
-        $paymentRequest->addParameter('senderBornDate', '07/05/1981');
-        $paymentRequest->addIndexedParameter('itemId', '0003', 3);
-        $paymentRequest->addIndexedParameter('itemDescription', 'Notebook Preto', 3);
-        $paymentRequest->addIndexedParameter('itemQuantity', '1', 3);
-        $paymentRequest->addIndexedParameter('itemAmount', '200.00', 3);
+        // $paymentRequest->addParameter('notificationURL', 'http://www.lojamodelo.com.br/nas');
+        // $paymentRequest->addParameter('senderBornDate', '07/05/1981');
+        // $paymentRequest->addIndexedParameter('itemId', '0003', 3);
+        // $paymentRequest->addIndexedParameter('itemDescription', 'Notebook Preto', 3);
+        // $paymentRequest->addIndexedParameter('itemQuantity', '1', 3);
+        // $paymentRequest->addIndexedParameter('itemAmount', '200.00', 3);
 
         // Add discount per payment method
         $paymentRequest->addPaymentMethodConfig('CREDIT_CARD', 1.00, 'DISCOUNT_PERCENT');

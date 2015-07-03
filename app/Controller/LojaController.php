@@ -1,6 +1,8 @@
 <?php
 
-class LojaController extends AppController {
+require 'IntegracaoPagseguroController.php';
+
+class LojaController extends IntegracaoPagseguroController {
 	public $layout = 'lojaexemplo';	
 
 	public function beforeFilter(){
@@ -71,6 +73,14 @@ class LojaController extends AppController {
          }
 
          return array('products_cart' => $produtos, 'total' => $total);
+      }
+
+      public function payment() {
+         $andress = $this->request->data('endereco');
+         $client  = $this->request->data('cliente');
+         $products = $this->loadProductsAndValuesCart();
+
+         $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total']);
       }
 
    	/**

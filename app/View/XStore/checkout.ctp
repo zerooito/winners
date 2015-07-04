@@ -27,42 +27,42 @@
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>CEP</label>
-                    <input class='form-control' type='text' name="endereco[cep]">
+                    <input class='form-control cep' type='text' name="endereco[cep]" id="cep" required>
                   </div>
                 </div>
               
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Endereço</label>
-                    <input class='form-control' type='text' name="endereco[endereco]">
+                    <input class='form-control' type='text' name="endereco[endereco]" id="endereco" readonly>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Nº</label>
-                    <input class='form-control' type='text' name="endereco[numero]">
+                    <input class='form-control' type='text' name="endereco[numero]" required>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Bairro</label>
-                    <input class='form-control' type='text' name="endereco[bairro]">
+                    <input class='form-control' type='text' name="endereco[bairro]" id="bairro" readonly>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Cidade</label>
-                    <input class='form-control' type='text' name="endereco[cidade]">
+                    <input class='form-control' type='text' name="endereco[cidade]" id="cidade" readonly>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Estado</label>
-                    <input class='form-control' type='text' name="endereco[estado]">
+                    <input class='form-control' type='text' name="endereco[estado]" id="estado" readonly>
                   </div>
                 </div>
               </div>
@@ -77,35 +77,35 @@
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Nome</label>
-                    <input class='form-control' type='text' name="cliente[nome]">
+                    <input class='form-control' type='text' name="cliente[nome]" required>
                   </div>
                 </div>
               
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>E-mail</label>
-                    <input class='form-control' type='text' name="cliente[email]">
+                    <input class='form-control' type='email' name="cliente[email]" required>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>DDD</label>
-                    <input class='form-control' type='text' name="cliente[ddd]">
+                    <input class='form-control' type='text' name="cliente[ddd]" required>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Telefone</label>
-                    <input class='form-control' type='text' name="cliente[telefone]">
+                    <input class='form-control' type='text' name="cliente[telefone]" required>
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>CPF</label>
-                    <input class='form-control' type='text' name="cliente[cpf]">
+                    <input class='form-control' type='text' name="cliente[cpf]" id="cpf" required>
                   </div>
                 </div>
               </div>
@@ -118,10 +118,10 @@
           <div class="panel-heading">
             <div class="panel-title">
               <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-12">
                   <h5><span class="glyphicon glyphicon-shopping-cart"></span> Checkout</h5>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-12">
                   <button type="button" class="btn btn-primary btn-sm btn-block">
                     <span class="glyphicon glyphicon-share-alt"></span> Continue comprando
                   </button>
@@ -144,7 +144,24 @@
           <div class="panel-footer">
               <div class="row text-center">
                 <div class="col-xs-6">
-                  <h4 class="text-right">Total <strong>R$ <?php echo number_format($total, 2, ',', '.') ?></strong></h4>
+                  <h4 class="text-right"><strong>Frete:</strong> </h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4 id="frete">R$ 0,00</h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4 class="text-right"><strong>Subtotal:</strong> </h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4>R$ <?php echo number_format($total, 2, ',', '.') ?></h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4 class="text-right"><strong>Total:</strong> </h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4 id="total">R$ <?php echo number_format($total, 2, ',', '.') ?></h4>
+                </div>
+                <div class="col-xs-6">
                 </div>
                 <div class="col-xs-6">
                   <button type="submit" class="btn btn-success">
@@ -165,60 +182,55 @@
   }
 </style>
 
+<!--Mascaras-->
+<?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+
 <script type="text/javascript">
-  $(function() {
-  $('form.require-validation').bind('submit', function(e) {
-    var $form         = $(e.target).closest('form'),
-        inputSelector = ['input[type=email]', 'input[type=password]',
-                         'input[type=text]', 'input[type=file]',
-                         'textarea'].join(', '),
-        $inputs       = $form.find('.required').find(inputSelector),
-        $errorMessage = $form.find('div.error'),
-        valid         = true;
+  $('#cep').mask('99999-999');
+  $('#cpf').mask('999.999.999-99');
+  $('#cep').change(function() {
+    var cep_destino = $(this).val()
+      , cep_origem  = '07252-000'
+      , url         = '/loja/calcTransportAjax';
 
-    $errorMessage.addClass('hide');
-    $('.has-error').removeClass('has-error');
-    $inputs.each(function(i, el) {
-      var $input = $(el);
-      if ($input.val() === '') {
-        $input.parent().addClass('has-error');
-        $errorMessage.removeClass('hide');
-        e.preventDefault(); // cancel on first error
-      }
-    });
-  });
-});
-
-$(function() {
-  var $form = $("#payment-form");
-
-  $form.on('submit', function(e) {
-    if (!$form.data('cc-on-file')) {
-      e.preventDefault();
-      Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-      Stripe.createToken({
-        number: $('.card-number').val(),
-        cvc: $('.card-cvc').val(),
-        exp_month: $('.card-expiry-month').val(),
-        exp_year: $('.card-expiry-year').val()
-      }, stripeResponseHandler);
-    }
+      $.ajax({
+        url: url,
+        data: {
+          cep_origem:  cep_origem, 
+          cep_destino: cep_destino
+        },
+        dataType: 'json',
+        method: "post",
+        success: function(data) {
+          atualizacep(cep_destino);
+          $('#frete').html('R$ ' + data['frete']);
+          $('#total').html('R$ ' + data['total']);
+        },
+        error: function() {
+          console.log('erro');
+        }
+      });
   });
 
-  function stripeResponseHandler(status, response) {
-    if (response.error) {
-      $('.error')
-        .removeClass('hide')
-        .find('.alert')
-        .text(response.error.message);
-    } else {
-      // token contains id, last4, and card type
-      var token = response['id'];
-      // insert the token into the form so it gets submitted to the server
-      $form.find('input[type=text]').empty();
-      $form.append("<input type='hidden' name='reservation[stripe_token]' value='" + token + "'/>");
-      $form.get(0).submit();
-    }
+  function atualizacep(cep){
+      console.log('oila');
+      cep = cep.replace(/\D/g,"")
+      url="http://cep.correiocontrol.com.br/"+cep+".js"
+      s=document.createElement('script')
+      s.setAttribute('charset','utf-8')
+      s.src=url
+      document.querySelector('head').appendChild(s)
   }
-})
+
+  function correiocontrolcep(valor){
+      if (valor.erro) {
+        alert('Cep não encontrado');
+        return;
+      };
+
+      document.getElementById('endereco').value=valor.logradouro
+      document.getElementById('bairro').value=valor.bairro
+      document.getElementById('cidade').value=valor.localidade
+      document.getElementById('estado').value=valor.uf
+  }
 </script>

@@ -3,9 +3,8 @@
     <div class="container">
 
         <div class="row">
-            <?php include('barra_lateral/barra_lateral.ctp') ?>  
 
-            <div class="col-md-9">
+            <div class="col-md-12">
 
                 <?php include('banners/banners.ctp') ?>
 

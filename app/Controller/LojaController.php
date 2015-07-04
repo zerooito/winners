@@ -95,9 +95,95 @@ class LojaController extends IntegracaoPagseguroController {
    public function payment() {
       $andress = $this->request->data('endereco');
       $client  = $this->request->data('cliente');
+
       $products = $this->loadProductsAndValuesCart();
 
-      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total']);
+      (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
+
+      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete);
+   }
+
+   public function searchAndressByCep($cep) {
+      $this->layout = 'ajax';
+
+      $curl = curl_init('http://cep.correiocontrol.com.br/'.$cep.'.js');
+
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $resultado = curl_exec($curl);
+
+      echo $resultado;
+      exit();
+   }
+
+   public function calcTransportAjax() {
+      $this->layout = 'ajax';
+
+      $cep_destino = $this->request->data('cep_destino');
+      $cep_origem  = $this->request->data('cep_origem');
+
+      $dataProducts = $this->loadProducts();
+
+      (float) $peso = 0;
+      foreach ($dataProducts as $i => $product) {
+         $peso += $product['Produto']['peso_bruto'];
+      }
+
+      $fretes = $this->transport($cep_destino, $cep_origem, $peso);
+
+      $disponiveis = array();
+      $cont = 0;
+      foreach ($fretes as $i => $frete) {
+         $disponiveis[$cont]['valor']  = (array) $frete->Valor;
+         $disponiveis[$cont]['prazo']  = (array) $frete->PrazoEntrega;
+         $disponiveis[$cont]['codigo'] = (array) $frete->Codigo;
+
+         $disponiveis[$cont]['valor']  = array_shift($disponiveis[$cont]['valor']);
+         $disponiveis[$cont]['prazo']  = array_shift($disponiveis[$cont]['prazo']);
+         $disponiveis[$cont]['codigo'] = array_shift($disponiveis[$cont]['codigo']);
+         $cont++;
+      }
+
+      $cartReturn = $this->loadProductsAndValuesCart();
+
+      $this->Session->write('Frete.valor', $disponiveis[$cont - 1]['valor']);
+
+      $total = $disponiveis[$cont - 1]['valor'] + $cartReturn['total'];
+      $total = number_format($total, 2, ',', '.');
+
+      $retorno = array('frete' => $disponiveis[$cont - 1]['valor'], 'total' => $total);
+
+      echo json_encode($retorno);   
+      exit();
+   }
+   
+   public function transport($cep_destino, $cep_origem, $peso) {
+      $altura = '2';
+      $largura = '11';
+      $comprimento = '16';
+
+      $dados['sCepDestino'] = '07252-000';
+      $dados['sCepOrigem'] = '09181-000';
+      $dados['nVlPeso'] = $peso;
+      $dados['nVlComprimento'] = $comprimento;
+      $dados['nVlAltura'] = $altura;
+      $dados['nVlLargura'] = $largura;
+      $dados['nCdServico'] = 41106;//pac varejo
+      $dados['nVlDiametro'] = '2';
+      $dados['nCdFormato'] = '1';
+      $dados['sCdMaoPropria'] = 'n';
+      $dados['nVlValorDeclarado'] = '0';
+      $dados['StrRetorno'] = 'xml';
+
+      $dados = http_build_query($dados);
+
+      $curl = curl_init('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx' . '?' . $dados);
+
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $resultado = curl_exec($curl);
+
+      $resultado = simplexml_load_string($resultado);
+
+      return $resultado;
    }
 
 	/**
@@ -110,6 +196,7 @@ class LojaController extends IntegracaoPagseguroController {
 	}
 
    public function cart() {
+      $this->set('categorias', $this->loadCategoriesProducts());
       $products = $this->loadProductsAndValuesCart();
 
       $this->set('products', $products['products_cart']);
@@ -117,6 +204,7 @@ class LojaController extends IntegracaoPagseguroController {
    }
 
    public function checkout() {
+      $this->set('categorias', $this->loadCategoriesProducts());  
       $products = $this->loadProductsAndValuesCart();
 
       $this->set('products', $products['products_cart']);
@@ -133,4 +221,5 @@ class LojaController extends IntegracaoPagseguroController {
       $this->set('produtos', $products);
       $this->set('nameCategory', $nome);
    }
+
 }

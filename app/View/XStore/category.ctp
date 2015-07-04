@@ -7,9 +7,9 @@
             <div class="col-md-12">
 
                 <div class="row">
-                    <? foreach ($produtos as $indice => $produto) { ?> 
+                    <?php foreach ($produtos as $indice => $produto) { ?> 
                         <?php include('produto_item/produto_item.ctp') ?>
-                    <? } ?>
+                    <?php } ?>
                 </div>
 
             </div>

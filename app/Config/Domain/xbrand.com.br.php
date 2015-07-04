@@ -22,7 +22,7 @@ Router::connect('/category/:id/:nome',   array('controller' => $dominio['control
 
 Router::connect('/removeProductCart/:id',   array('controller' => $dominio['controller'], 'action' => 'removeProductCart'));
 
-Router::connect('/produto/:id',    array('controller' => $dominio['controller'], 'action' => 'produto'));
+Router::connect('/product/:id',    array('controller' => $dominio['controller'], 'action' => 'product'));
 
 require CAKE . 'Config' . DS . 'routes.php';
 

@@ -9,17 +9,22 @@ class LojaController extends IntegracaoPagseguroController {
 	   return true;
 	}
 
-	public function loadProducts($id_categoria = null) {
+	public function loadProducts($id_categoria = null, $id_produto = null) {
 		$this->loadModel('Produto');
 
       $params = array('conditions' => 
-         array('Produto.ativo' => 1,
-              'Produto.id_usuario' => $_SESSION['information']['id_usuario'],
+         array(
+            'Produto.ativo' => 1,
+            'Produto.id_usuario' => $_SESSION['information']['id_usuario'],
          )
       );
 
       if ($id_categoria != null) {
-         $params['conditions']['categoria_id'] = $id_categoria;
+         $params['conditions']['Produto.categoria_id'] = $id_categoria;
+      }
+
+      if ($id_produto != null) {
+         $params['conditions']['Produto.id'] = $id_produto;
       }
 
 		$produtos = $this->Produto->find('all', $params);
@@ -219,6 +224,18 @@ class LojaController extends IntegracaoPagseguroController {
       $this->set('categorias', $this->loadCategoriesProducts());
       $this->set('produtos', $products);
       $this->set('nameCategory', $nome);
+   }
+
+   public function product() {
+      $this->loadModel('Produto');
+
+      $id = $this->params['id'];
+
+      $this->set('categorias', $this->loadCategoriesProducts());
+      
+      $produto = $this->loadProducts(null, $id)[0];
+
+      $this->set('produto', $produto);
    }
 
 }

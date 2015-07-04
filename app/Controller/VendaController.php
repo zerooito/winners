@@ -174,15 +174,14 @@ class VendaController extends AppController {
 		return true;
 	}
 
-	public function salvar_venda($produtos, $lancamento, $informacoes) {
+	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id) {
 		unset($informacoes['id_cliente']);
 
 		$informacoes['data_venda'] = date('Y-m-d');
-		$informacoes['id_usuario'] = $this->instancia;
+		$informacoes['id_usuario'] = $this->instancia != 'winners' ? $this->instancia : $usuario_id;
 		$informacoes['ativo']	   = 1;
 
 		if (!$this->Venda->save($informacoes)) {
-			echo 'oi';exit();
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
 			return false;
 		}

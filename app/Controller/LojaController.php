@@ -105,7 +105,24 @@ class LojaController extends IntegracaoPagseguroController {
 
       (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
 
+      require 'VendaController.php';
+      $objVenda = new VendaController();
+      $productsSale = $this->prepareProductsSale($products['products_cart']);
+      $usuario_id = $this->Session->read('Usuario.id');
+
+      $retorno_venda = $objVenda->salvar_venda($productsSale, array(), array('valor' => $valor_frete + $products['total']), $usuario_id);
+
       $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete);
+   }
+
+   public function prepareProductsSale($products) {
+      $retorno = array();
+      foreach ($products as $i => $product) {
+         $retorno[$i]['id_produto'] = $product['Produto']['id'];
+         $retorno[$i]['quantidade'] = 1;
+      }
+
+      return $retorno;
    }
 
    public function searchAndressByCep($cep) {

@@ -48,7 +48,6 @@ a{
 a:hover{
    color:#0fa6bc;
    text-decoration:none;
-   border-bottom:1px dotted #0fa6bc;
 }
 
 a:hover,a:active,a:focus {

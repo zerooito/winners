@@ -128,7 +128,6 @@ class LojaController extends IntegracaoPagseguroController {
       }
 
       $fretes = $this->transport($cep_destino, $cep_origem, $peso);
-      echo 'oi';exit();
 
       $disponiveis = array();
       $cont = 0;

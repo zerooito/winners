@@ -6,9 +6,8 @@ class HomeController extends AppController{
    	}
 
 	function index(){
-		echo 'temporiamente off :(';exit();
-		// header("Location: http://blog.winnersdesenvolvimento.com.br/blog");
-		// die();
+		header("Location: http://blog.winnersdesenvolvimento.com.br/blog");
+		die();
 		$this->layout = 'winners';
 	}
 

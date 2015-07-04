@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>X Store</title>
+    <title>X Brand</title>
 
     <?php echo $this->Html->css('font-awesome/css/font-awesome.min'); ?>
 
@@ -55,7 +55,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/">X Store</a>
+              <a class="navbar-brand" href="/">X Brand</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->

@@ -8,9 +8,9 @@
                 <?php include('banners/banners.ctp') ?>
 
                 <div class="row">
-                    <? foreach ($produtos as $indice => $produto) { ?> 
-                        <?php pr($produto); ?>
-                    <? } ?>
+                    <?php foreach ($produtos as $indice => $produto) { ?> 
+                        <?php include('produto_item/produto_item.ctp') ?>
+                    <?php } ?>
                 </div>
 
             </div>

@@ -15,7 +15,7 @@ class LojaController extends IntegracaoPagseguroController {
       $params = array('conditions' => 
          array(
             'Produto.ativo' => 1,
-            'Produto.id_usuario' => $_SESSION['information']['id_usuario'],
+            'Produto.id_usuario' => $this->Session->read('Usuario.id')
          )
       );
 
@@ -88,7 +88,7 @@ class LojaController extends IntegracaoPagseguroController {
 
       $params = array('conditions' => 
          array('ativo' => 1,
-              'usuario_id' => $_SESSION['information']['id_usuario']
+              'usuario_id' => $this->Session->read('Usuario.id')
          )
       );
 

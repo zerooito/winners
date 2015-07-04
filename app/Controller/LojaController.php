@@ -117,7 +117,7 @@ class LojaController extends IntegracaoPagseguroController {
 
    public function calcTransportAjax() {
       $this->layout = 'ajax';
-
+      echo 'oi';exit();
       $cep_destino = $this->request->data('cep_destino');
       $cep_origem  = $this->request->data('cep_origem');
 

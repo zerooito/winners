@@ -5,7 +5,7 @@
         <div class="row">
 
             <div class="col-md-12">
-
+            <?php pr($produtos) ?>
                 <?php include('banners/banners.ctp') ?>
 
                 <div class="row">

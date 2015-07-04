@@ -24,7 +24,7 @@ class LojaController extends IntegracaoPagseguroController {
 
 		$produtos = $this->Produto->find('all', $params);
 
-	  return $produtos;
+	   return $produtos;
 	}
 
 	public function addCart() {

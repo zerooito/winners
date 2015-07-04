@@ -24,7 +24,6 @@ class AppController extends Controller {
 	* o mesmo precisa ter essa função rescrita somente com um return true
 	*/
 	public function beforeFilter(){
-		echo 'temporiamente off :(';exit();
 		if ($this->debug) {
 			return true;
 		}

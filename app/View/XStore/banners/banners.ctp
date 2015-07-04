@@ -9,13 +9,7 @@
             </ol>
             <div class="carousel-inner">
                 <div class="item active">
-                    <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                </div>
-                <div class="item">
-                    <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                </div>
-                <div class="item">
-                    <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                    <img class="slide-image" src="http://cdn.kaisan.com.br/media/wysiwyg/roupas-de-academia-2.jpg" alt="">
                 </div>
             </div>
             <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">

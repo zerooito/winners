@@ -37,6 +37,23 @@
                                         <label>Estoque</label>
                                         <input type="number" class="form-control" name="dados[estoque]" value="<?php echo $produto['Produto']['estoque'] ?>" required>
                                     </div>
+
+
+                                    <div class="form-group">
+                                        <label>Categoria</label>
+                                        <select class="form-control js-example-basic-single" name="dados[categoria_id]">
+                                            <?php foreach ($categorias as $key => $categoria): ?>
+                                            <option 
+                                                <?php if ($produto['Produto']['categoria_id'] == $categoria['Categoria']['id']): ?>
+                                                selected
+                                                <?php endif; ?>
+                                                value="<?php echo $categoria['Categoria']['id'] ?>"
+                                            >
+                                            <?php echo $categoria['Categoria']['nome'] ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>

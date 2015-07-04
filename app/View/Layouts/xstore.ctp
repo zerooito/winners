@@ -9,7 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>XStore</title>
+    <title>X Store</title>
+
+    <?php echo $this->Html->css('font-awesome/css/font-awesome.min'); ?>
 
     <!-- Bootstrap Core CSS -->
     <link href="/app/webroot/xstore/css/bootstrap.min.css" rel="stylesheet">
@@ -29,37 +31,24 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="header">
         <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">XStore</a>
+            <div class="row">
+                <div class="col-md-8 col-sm-2">
+                  <!-- Logo -->
+                  <div class="logo">
+                     <h1><a href="/">X Store</a></h1>
+                  </div>
+               </div>
+                <div class="col-md-4 col-sm-5">
+                    <div class="kart-links">
+                        <a data-toggle="modal" href="#shoppingcart"><i class="fa fa-shopping-cart"></i> 3 Items - R$ 300</a>
+                    </div>
+                </div>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Quem Somos</a>
-                    </li>
-                    <li>
-                        <a href="#">Serviços</a>
-                    </li>
-                    <li>
-                        <a href="#">Contato</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container -->
-    </nav>
-
+    </div>
+    
     <?php echo $this->fetch('content'); ?>
 
     <div class="container">
@@ -70,7 +59,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; XStore <?php echo date('Y') ?> - Desenvolvido por Winners Desenvolvimento de Sites e Sistemas</p>
                 </div>
             </div>
         </footer>

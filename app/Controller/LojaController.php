@@ -6,23 +6,26 @@ class LojaController extends IntegracaoPagseguroController {
 	public $layout = 'lojaexemplo';	
 
 	public function beforeFilter(){
-	  return true;
+	   return true;
 	}
 
-	public function loadProducts() {
+	public function loadProducts($id_categoria = null) {
 		$this->loadModel('Produto');
 
-		$produtos = $this->Produto->find('all', 
-   		array('conditions' => 
-   			array('Produto.ativo' => 1,
-   				  'Produto.id_usuario' => $_SESSION['information']['id_usuario'],
-   			)
-   		)
-   	);
+      $params = array('conditions' => 
+         array('Produto.ativo' => 1,
+              'Produto.id_usuario' => $_SESSION['information']['id_usuario'],
+         )
+      );
+
+      if ($id_categoria != null) {
+         $params['conditions']['categoria_id'] = $id_categoria;
+      }
+
+		$produtos = $this->Produto->find('all', $params);
 
 	  return $produtos;
 	}
-
 
 	public function addCart() {
 		$produto = $this->request->data('produto');
@@ -75,6 +78,20 @@ class LojaController extends IntegracaoPagseguroController {
       return array('products_cart' => $produtos, 'total' => $total);
    }
 
+   public function loadCategoriesProducts($id_categoria = null) {
+      $this->loadModel('Categoria');
+
+      $params = array('conditions' => 
+         array('ativo' => 1,
+              'usuario_id' => $_SESSION['information']['id_usuario']
+         )
+      );
+
+      $categorias = $this->Categoria->find('all', $params);
+
+      return $categorias;
+   }
+
    public function payment() {
       $andress = $this->request->data('endereco');
       $client  = $this->request->data('cliente');
@@ -87,6 +104,8 @@ class LojaController extends IntegracaoPagseguroController {
 	* Views
 	*/
 	public function index() {
+      // echo 'oi';exit();
+      $this->set('categorias', $this->loadCategoriesProducts());
 		$this->set('produtos', $this->loadProducts());
 	}
 
@@ -104,4 +123,14 @@ class LojaController extends IntegracaoPagseguroController {
       $this->set('total', $products['total']);
    }
 
+   public function category() {
+      $id   = $this->params['id'];
+      $nome = $this->params['nome'];
+
+      $products = $this->loadProducts($id);
+
+      $this->set('categorias', $this->loadCategoriesProducts());
+      $this->set('produtos', $products);
+      $this->set('nameCategory', $nome);
+   }
 }

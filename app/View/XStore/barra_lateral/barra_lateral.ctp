@@ -1,8 +1,8 @@
 <div class="col-md-3">
     <p class="lead">XStore</p>
     <div class="list-group">
-        <a href="#" class="list-group-item">Tenis</a>
-        <a href="#" class="list-group-item">Camisas</a>
-        <a href="#" class="list-group-item">Acessorios</a>
+    	<?php foreach($categorias as $indice => $valor): ?>
+        	<a href="/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>" class="list-group-item"><?php echo $valor['Categoria']['nome'] ?></a>
+        <?php endforeach; ?>
     </div>
 </div>

@@ -16,6 +16,17 @@ class ProdutoController extends AppController{
 	}
 
 	public function adicionar_cadastro() {
+		$this->loadModel('Categoria');
+
+		$this->set('categorias', $this->Categoria->find('all', 
+				array('conditions' => 
+					array('ativo' => 1,
+						  'usuario_id' => $this->instancia
+					)
+				)
+			)
+		);	
+
 		$this->layout = 'wadmin';
 	}
 
@@ -54,6 +65,17 @@ class ProdutoController extends AppController{
 				)
 			)[0]
 		);
+
+		$this->loadModel('Categoria');
+
+		$this->set('categorias', $this->Categoria->find('all', 
+				array('conditions' => 
+					array('ativo' => 1,
+						  'usuario_id' => $this->instancia
+					)
+				)
+			)
+		);	
 	}
 
 	public function s_editar_cadastro($id) {

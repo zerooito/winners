@@ -37,6 +37,19 @@
                                         <label>Estoque</label>
                                         <input type="number" class="form-control" name="dados[estoque]" required>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label>Categoria</label>
+                                        <select class="form-control js-example-basic-single" name="dados[categoria_id]">
+                                            <?php foreach ($categorias as $key => $categoria): ?>
+                                            <option 
+                                                value="<?php echo $categoria['Categoria']['id'] ?>"
+                                            >
+                                            <?php echo $categoria['Categoria']['nome'] ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
@@ -76,3 +89,9 @@
     </div>
     
 </form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+      $(".js-example-basic-single").select2();
+    });
+</script>

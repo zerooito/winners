@@ -72,6 +72,9 @@
                         <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i>
                         </button>
 
+                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i>
+                        </button>
+
                         <!-- Split button -->
                         <div class="btn-group">
                           <button type="button" class="btn btn-info">Ações</button>

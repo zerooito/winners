@@ -198,7 +198,7 @@ class VendaController extends AppController {
 			return false;
 		}
 
-		return true;
+		return array('status' => true, 'id' => $id_venda);
 	}
 
 	public function relatorio_diario() {

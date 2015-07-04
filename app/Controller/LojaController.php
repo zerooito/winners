@@ -112,7 +112,7 @@ class LojaController extends IntegracaoPagseguroController {
 
       $retorno_venda = $objVenda->salvar_venda($productsSale, array(), array('valor' => $valor_frete + $products['total']), $usuario_id);
 
-      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete);
+      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
    }
 
    public function prepareProductsSale($products) {

@@ -4,7 +4,7 @@ include(APP . 'Vendor/PagSeguro/source/PagSeguroLibrary/PagSeguroLibrary.php');
 
 class IntegracaoPagseguroController extends AppController {
 
-    public function paymentPagSeguro($products, $andress, $client, $total, $valor_frete)
+    public function paymentPagSeguro($products, $andress, $client, $total, $valor_frete, $id_venda)
     {
         // Instantiate a new payment request
         $paymentRequest = new PagSeguroPaymentRequest();
@@ -26,7 +26,7 @@ class IntegracaoPagseguroController extends AppController {
 
         // Set a reference code for this payment request. It is useful to identify this payment
         // in future notifications.
-        $paymentRequest->setReference("REF123");
+        $paymentRequest->setReference($id_venda);
 
         // Set shipping information for this payment request
         $sedexCode = PagSeguroShippingType::getCodeByType('PAC');

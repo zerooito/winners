@@ -117,7 +117,6 @@ class LojaController extends IntegracaoPagseguroController {
 
    public function calcTransportAjax() {
       $this->layout = 'ajax';
-      echo 'oi';exit();
       $cep_destino = $this->request->data('cep_destino');
       $cep_origem  = $this->request->data('cep_origem');
 
@@ -128,6 +127,7 @@ class LojaController extends IntegracaoPagseguroController {
          $peso += $product['Produto']['peso_bruto'];
       }
 
+      echo 'oi';exit();
       $fretes = $this->transport($cep_destino, $cep_origem, $peso);
 
       $disponiveis = array();

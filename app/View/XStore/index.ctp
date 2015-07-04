@@ -9,8 +9,7 @@
 
                 <div class="row">
                     <? foreach ($produtos as $indice => $produto) { ?> 
-                        <?php pr($produto);exit(); ?>
-                        <?php include('produto_item/produto_item.ctp') ?>
+                        <?php pr($produto); ?>
                     <? } ?>
                 </div>
 

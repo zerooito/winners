@@ -213,9 +213,9 @@
   });
 
   function atualizacep(cep){
-      // console.log('oila');
-      // cep = cep.replace(/\D/g,"")
-      url="cep.correiocontrol.com.br/"+cep+".js"
+      console.log('oila');
+      cep = cep.replace(/\D/g,"")
+      url="http://cep.correiocontrol.com.br/"+cep+".js"
       s=document.createElement('script')
       s.setAttribute('charset','utf-8')
       s.src=url

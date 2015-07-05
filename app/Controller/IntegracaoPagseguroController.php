@@ -14,7 +14,7 @@ class IntegracaoPagseguroController extends AppController {
 
         // Add an item for this payment request
         foreach ($products as $i => $item) {
-        	$paymentRequest->addItem('000'.$item['Produto']['id'], $item['Produto']['nome'] . ' Tamanho: '. $item['Produto']['variacao'], $item['Produto']['quantidade'], number_format($item['Produto']['preco'], 2, '.', ''));
+        	$paymentRequest->addItem('000'.$item['Produto']['id'], $item['Produto']['nome'] . '    Tamanho: '. $item['Produto']['variacao'], $item['Produto']['quantidade'], number_format($item['Produto']['preco'], 2, '.', ''));
         }
 
 

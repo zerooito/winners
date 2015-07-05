@@ -42,7 +42,8 @@ class LojaController extends IntegracaoPagseguroController {
 		$cont = count($this->Session->read('Produto'));
 
 		$this->Session->write('Produto.'.$produto['id'].'.id' , $produto['id']);
-      $this->Session->write('Produto.'.$produto['id'].'.quantidade' , 1);
+      $this->Session->write('Produto.'.$produto['id'].'.quantidade' , $produto['quantidade']);
+      $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
 
 		$this->redirect('/cart');
 	}
@@ -61,6 +62,7 @@ class LojaController extends IntegracaoPagseguroController {
 
    public function loadProductsAndValuesCart() {
       $this->loadModel('Produto');
+      $this->loadModel('Variacao');
 
       $productsSession = $this->Session->read('Produto');
 
@@ -75,7 +77,20 @@ class LojaController extends IntegracaoPagseguroController {
             )
          );
 
-         $total     += $produto[0]['Produto']['preco'];
+         $total     += $produto[0]['Produto']['preco'] * $item['quantidade'];
+
+         $produto[0]['Produto']['quantidade'] = $item['quantidade'];
+
+         $variacao = $this->Variacao->find('all', 
+            array('conditions' =>
+               array('Variacao.id' => $item['variacao'])
+            ),
+            array('fields' => 
+               array('Variacao.nome_variacao')
+            )
+         );
+
+         $produto[0]['Produto']['variacao'] = $variacao[0]['Variacao']['nome_variacao'];
 
          $produtos[] = $produto[0];
       }
@@ -119,7 +134,8 @@ class LojaController extends IntegracaoPagseguroController {
       $retorno = array();
       foreach ($products as $i => $product) {
          $retorno[$i]['id_produto'] = $product['Produto']['id'];
-         $retorno[$i]['quantidade'] = 1;
+         $retorno[$i]['quantidade'] = $product['Produto']['quantidade'];
+         $retorno[$i]['variacao']   = $product['Produto']['variacao'];
       }
 
       return $retorno;
@@ -251,6 +267,26 @@ class LojaController extends IntegracaoPagseguroController {
       $this->set('categorias', $this->loadCategoriesProducts());
       
       $produto = $this->loadProducts(null, $id)[0];
+
+      $this->loadModel('Variacao');
+
+      $query = array (
+         'joins' => array(
+                array(
+                    'table' => 'produtos',
+                    'alias' => 'Produto',
+                    'type' => 'LEFT',
+                    'conditions' => array(
+                        'Variacao.produto_id = Produto.id',
+                    ),
+                )
+            ),
+           'conditions' => array('Variacao.produto_id' => $id, 'Variacao.ativo' => 1),
+           'fields' => array('Produto.id, Variacao.*'),
+      );
+
+      $variacoes = $this->Variacao->find('all', $query);
+      $this->set('variacoes', $variacoes);
 
       $this->set('produto', $produto);
    }

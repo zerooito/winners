@@ -33,6 +33,8 @@ class ProdutoController extends AppController{
 	public function s_adicionar_cadastro() {
 		$dados  = $this->request->data('dados');
 
+		$variacoes = $this->request->data('variacao');
+
 		$image  = $_FILES['imagem'];
 
 		$retorno = $this->uploadImage($image);
@@ -46,6 +48,12 @@ class ProdutoController extends AppController{
 		$dados['id_alias'] = $this->id_alias();
 
 		if($this->Produto->save($dados)) {
+			$produto_id = $this->Produto->getLastInsertId();
+			require 'VariacaoController.php';
+			$objVariacaoController = new VariacaoController();
+
+			$objVariacaoController->s_adicionar_variacao($variacoes, $produto_id, $this->instancia);			
+
 			$this->Session->setFlash('Produto salvo com sucesso!');
             return $this->redirect('/produto/listar_cadastros');
 		} else {
@@ -56,6 +64,25 @@ class ProdutoController extends AppController{
 
 	public function editar_cadastro($id) {
 		$this->layout = 'wadmin';
+
+		$this->loadModel('Variacao');
+
+		$query = array (
+			'joins' => array(
+				    array(
+				        'table' => 'produtos',
+				        'alias' => 'Produto',
+				        'type' => 'LEFT',
+				        'conditions' => array(
+				            'Variacao.produto_id = Produto.id',
+				        ),
+				    )
+				),
+	        'conditions' => array('Variacao.produto_id' => $id, 'Variacao.ativo' => 1),
+	        'fields' => array('Produto.id, Variacao.*'),
+		);
+
+		$variacoes = $this->set('variacoes', $this->Variacao->find('all', $query));
 
 		$this->set('produto', $this->Produto->find('all', 
 				array('conditions' => 
@@ -81,6 +108,8 @@ class ProdutoController extends AppController{
 	public function s_editar_cadastro($id) {
 		$dados = $this->request->data('dados');
 
+		$variacoes = $this->request->data('variacao');
+
 		$image  = $_FILES['imagem'];
 		
 		if (!empty($image['name'])) {
@@ -100,6 +129,12 @@ class ProdutoController extends AppController{
 		$this->Produto->id = $id;
 		
 		if ($this->Produto->save($dados)) {
+
+			require 'VariacaoController.php';
+			$objVariacaoController = new VariacaoController();
+			$objVariacaoController->desativar_variacoes($id);
+			$objVariacaoController->s_adicionar_variacao($variacoes, $id, $this->instancia);	
+
 			$this->Session->setFlash('Produto editado com sucesso!','default','good');
             return $this->redirect('/produto/listar_cadastros');
 		} else {

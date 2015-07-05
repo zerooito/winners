@@ -25,7 +25,7 @@
 								<h5><span class="glyphicon glyphicon-shopping-cart"></span> Carrinho</h5>
 							</div>
 							<div class="col-xs-6">
-								<button type="button" class="btn btn-primary btn-sm btn-block">
+								<button onclick="window.location.href='/'" type="button" class="btn btn-primary btn-sm btn-block">
 									<span class="glyphicon glyphicon-share-alt"></span> Continue comprando
 								</button>
 							</div>
@@ -38,14 +38,14 @@
 						<div class="col-xs-2"><img class="img-responsive" src="/uploads/produto/imagens/<?php echo $product['Produto']['imagem'] ?>" alt="Foto do produto <?php echo $product['Produto']['nome'] ?>">
 						</div>
 						<div class="col-xs-4">
-							<h4 class="product-name"><strong><?php echo $product['Produto']['nome'] ?></strong></h4><h4><small><?php echo $product['Produto']['descricao'] ?></small></h4>
+							<h4 class="product-name"><strong><?php echo $product['Produto']['nome'] ?></strong></h4><h4><small>Tamanho: <?php echo $product['Produto']['variacao'] ?></small></h4>
 						</div>
 						<div class="col-xs-6">
 							<div class="col-xs-6 text-right">
 								<h6><strong>R$ <?php echo number_format($product['Produto']['preco'], 2, ',', '.') ?> <span class="text-muted">x</span></strong></h6>
 							</div>
 							<div class="col-xs-4">
-								<input type="text" class="form-control input-sm" value="1">
+								<input type="text" class="form-control input-sm" value="<?php echo $product['Produto']['quantidade'] ?>">
 							</div>
 							<div class="col-xs-2">
 								<button onclick="window.location.href = '/removeProductCart/<?php echo $product['Produto']['id'] ?>';" type="button" class="btn btn-link btn-xs">

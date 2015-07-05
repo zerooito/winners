@@ -53,9 +53,6 @@
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
-
-                            <button type="submit" class="btn btn-success">Salvar Produto</button>
-                            <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
                         </div>
                         <div class="col-lg-6">
                             <div class="panel panel-default">
@@ -78,6 +75,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-6"></div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Variações
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-lg-6">
+                                        <label>Variação</label>
+                                        <input type="text" class="form-control" name="variacao[0][variacao]" required>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label>Estoque</label>
+                                        <input type="number" class="form-control" name="variacao[0][estoque]" required>
+                                    </div>
+                                    <div id="variacoes" data-n-variacao="0">
+                                        
+                                    </div>
+                                    <div class="col-lg-9" style="margin-top: 10px;"></div>
+                                    <div class="col-lg-4">
+                                        <button type="button" class="btn btn-success" id="variacao">+ Variação</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9"></div>
+                        <div class="col-lg-3">
+                            <button type="submit" class="btn btn-success">Salvar Produto</button>
+                            <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
+                        </div>
                         <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
@@ -93,5 +120,23 @@
 <script type="text/javascript">
     $(document).ready(function() {
       $(".js-example-basic-single").select2();
+
+      $('#variacao').click(function() {
+        var n_variacao = $('#variacoes').data('n-variacao')
+          , html       = ''
+          ;
+
+        html  =  '<div class="col-lg-6">';
+        html +=     '<label>Variação</label>';
+        html +=     '<input type="text" class="form-control" name="variacao[' + (parseInt(n_variacao) + 1) + '][variacao]" required>';
+        html +=  '</div>';
+        html +=  '<div class="col-lg-6">';
+        html +=     '<label>Estoque</label>';
+        html +=     '<input type="number" class="form-control" name="variacao[' + (parseInt(n_variacao) + 1) + '][estoque]" required>';
+        html +=  '</div>';
+
+        $('#variacoes').data('n-variacao', (parseInt(n_variacao) + 1));
+        $('#variacoes').append(html);
+      });
     });
 </script>

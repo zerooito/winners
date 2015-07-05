@@ -24,11 +24,12 @@ class AppController extends Controller {
 	* o mesmo precisa ter essa função rescrita somente com um return true
 	*/
 	public function beforeFilter(){
+		$this->verificar_acesso();
+
 		if ($this->debug) {
 			return true;
 		}
 
-		$this->verificar_acesso();
     	$this->set('modulos', $this->modulos);
    	}
 
@@ -38,7 +39,7 @@ class AppController extends Controller {
    	*/
 	function verificar_acesso() {
 		$dados = $this->Session->Read('Usuario');
-		
+
 		if (count($dados) < 1) {
 			$this->Session->setFlash('Você não tem acesso a esta area do sistema!');
             return $this->redirect('/');

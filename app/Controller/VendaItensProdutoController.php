@@ -19,6 +19,14 @@ class VendaItensProdutoController extends ProdutoEstoqueController {
 				$erros++;
 			}
 
+			if (isset($item['variacao'])) {
+				if (!$this->diminuir_estoque_produto_variacao($item['id_produto'], $item['quantidade'], $item['variacao'])) {
+					return false;
+				}
+				
+				continue;
+			}
+
 			if (!$this->diminuir_estoque_produto($item['id_produto'], $item['quantidade'])) {
 				return false;
 			}

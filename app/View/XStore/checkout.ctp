@@ -135,7 +135,7 @@
               <div class="col-xs-6"><img class="img-responsive" src="/uploads/produto/imagens/<?php echo $product['Produto']['imagem'] ?>" alt="Foto do produto <?php echo $product['Produto']['nome'] ?>">
               </div>
               <div class="col-xs-6">
-                <h4 class="product-name"><strong><?php echo $product['Produto']['nome'] ?></strong></h4><h4><small><?php echo $product['Produto']['descricao'] ?></small></h4>
+                <h4 class="product-name"><strong><?php echo $product['Produto']['nome'] ?></strong></h4><h4><small>Tamanho: <?php echo $product['Produto']['variacao'] ?></small></h4>
               </div>
             </div>
             <hr>

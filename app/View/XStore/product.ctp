@@ -22,6 +22,18 @@
 					<hr>
 					<div class="btn-group cart">
 			            <form action="/addCart" method="post">
+			            	<label>Tamanho: 
+				            	<select class="form-control" name="produto[variacao]">
+				            		<?php foreach ($variacoes as $i => $variacao): ?>
+				            		<option value="<?php echo $variacao['Variacao']['id'] ?>"><?php echo $variacao['Variacao']['nome_variacao'] ?></option>
+				            		<?php endforeach; ?>
+				            	</select>
+				            </label>
+			            	<br>
+			            	<label>Quantidade: 
+			            		<input type="number" min="0" value="" required class="form-control" name="produto[quantidade]" />
+			            	</label>
+			            	<br>
 			                <input type="hidden" value="<?php echo $produto['Produto']['id'] ?>" name="produto[id]" />
 							<?php if ($produto['Produto']['estoque'] > 0): ?>
 							<button type="submit" class="btn btn-success">

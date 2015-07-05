@@ -48,4 +48,35 @@ class ProdutoEstoqueController extends AppController {
 		}
  	}
 
+ 	public function diminuir_estoque_produto_variacao($produto_id, $quantidade, $variacao) {
+ 		if (!isset($produto_id) || !isset($quantidade) || !isset($variacao)) {
+ 			return false;
+ 		}
+
+ 		try {
+ 			$this->loadModel('Variacao');
+
+ 			$variacao = $this->Variacao->find('first', array(
+ 					'conditions' => array(
+ 						'Variacao.produto_id' => $produto_id,
+ 						'Variacao.ativo' => 1,
+ 						'Variacao.nome_variacao' => $variacao
+ 					)
+ 				)
+ 			);
+
+			$novo_estoque['estoque'] = $variacao['Variacao']['estoque'] - $quantidade;
+
+			$this->Variacao->id = $variacao['Variacao']['id'];
+			if (!$this->Variacao->save($novo_estoque)) {
+				return false;
+			}
+
+			return true;
+ 		} catch (Exception $e) {
+ 			print_r($e);
+ 			exit();
+ 		}
+ 	}
+
 }

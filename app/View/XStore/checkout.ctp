@@ -161,11 +161,11 @@
                 <div class="col-xs-6">
                   <h4 id="total">R$ <?php echo number_format($total, 2, ',', '.') ?></h4>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-4">
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                   <button type="submit" class="btn btn-success">
-                    Finalizar
+                    Finalizar com PagSeguro
                   </button>
                 </div>
               </div>

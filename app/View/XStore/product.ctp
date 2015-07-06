@@ -14,11 +14,6 @@
 					<div class="product-title"><?php echo $produto['Produto']['nome'] ?></div>
 					<hr>
 					<div class="product-price">R$ <?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></div>
-					<?php if ($produto['Produto']['estoque'] > 0): ?>						
-						<div class="product-stock">Em Estoque</div>
-					<?php else: ?>
-						<div class="product-stock-off">Sem Estoque</div>
-					<?php endif; ?>
 					<hr>
 					<div class="btn-group cart">
 			            <form action="/addCart" method="post">

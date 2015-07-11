@@ -16,6 +16,8 @@
 					<div class="product-price">R$ <?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></div>
 					<hr>
 					<div class="btn-group cart">
+						<div class="fb-like" data-href="/product/<?php echo $produto['Produto']['id'] ?>" data-send="true" data-layout="button_count" data-width="250" data-show-faces="false"></div>
+						<hr>
 			            <form action="/addCart" method="post">
 			            	<label>Tamanho: 
 				            	<select class="form-control" name="produto[variacao]">

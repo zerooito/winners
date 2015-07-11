@@ -110,7 +110,19 @@
                 </div>
               </div>
             </div>
-
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Caso tenha um cupom digite-o abaixo.</h3>
+              </div>
+              <div class="panel-body">
+                <div class='form-row'>
+                  <div class='col-xs-12 form-group required'>
+                    <label class='control-label'>Cupom:</label>
+                    <input class='form-control' type='text' name="cliente[cpf]" id="cpf" required>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
         <div class='col-md-4'>
           

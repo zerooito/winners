@@ -221,6 +221,10 @@ class LojaController extends IntegracaoPagseguroController {
       return $resultado;
    }
 
+   public function saveEmailNewsletter() {
+      $dados = $this->request->data('dados');
+   }
+
 	/**
 	* Views
 	*/

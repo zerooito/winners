@@ -3,7 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Winners desenvolvimento de Sites e Sistemas</title>
+
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,200,300,600,700,800' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300,200' rel='stylesheet' type='text/css'>
 <?php
@@ -76,13 +78,13 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
     <div class="banner">
       <div class="container">
           <div class="header-text">
-              <p class="big-text">Gestão Inovadora</p>
-                <h2>100% Customizavel</h2>
-                <p class="small-text">Aumente suas vendas com nosso sistema de gestão</p>
+              <p class="big-text">Soluções Inovadoras</p>
+                <h2>As melhores ferramentas</h2>
+                <p class="small-text">ERP, CMS, E-commerce, Wordpress, OpenCart e muito mais</p>
                 <div class="button-section">
                   <ul>
                       <li><a href="#" class="top-button white" data-toggle="modal" data-target="#valores">Valores</a></li>
-                        <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Cadastre-se Já</a></li>
+                        <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Teste  a versão Free</a></li>
                     </ul>
                 </div>
             </div>
@@ -94,30 +96,30 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
     
     <div class="desc">
       <div class="container">
-          <h2>Sistema de Gestão Inovador</h2>
-            <p>Tenha total controle de suas vendas, estoque, funcionarios e muito mais, faça seu cadastro grátis e aproveite a versão free. Sistema 100% customizavel, precisa de algo e não achou entre em contato com nossa equipe comercial e faça uma cotação.</p>
+          <h2>Desenvolvimento orientado a resultado</h2>
+            <p>A Winners trabalha pensando no resultado final, ou seja, em lucro para sua empresa, escolhemos as melhores soluções para seu caso e então criamos sua ideia ou projeto.</p>
         </div>
     </div>
    
     <div class="features" id="features">
       <div class="container">
-          <h3 class="text-head">Produtos</h3>
+          <h3 class="text-head">Produto e Soluções</h3>
           <div class="features-section">
                 <ul>
                   <li>
                       <div class="feature-icon icon1"></div>
                       <h4>Sites Comporativos</h4>
-                        <p>O melhor cms de site corporativos da internet, com sistema de conteudo 100% amigavel podendo fazer posts de qualquer hora e lugar.</p>
+                      <p>Possuimos CMS próprio e também trabalhamos com Wordpress usando a solução mais viável e economica para seu negocio.</p>
                      </li>
                      <li>
                       <div class="feature-icon icon2"></div>
-                      <h4>Tempo Livre</h4>
-                        <p>Sistema 100% na nuvem podendo ser acessado de qualquer dispositivo móvel, assim mantendo você totalmente atualizado do que acontece na sua empresa.</p>
+                      <h4>Ecommerce</h4>
+                      <p>Plataforma de e-commerce própria ou open source, defina seu caso e escolhemos a melhor solução.</p>
                      </li>
                      <li>
                       <div class="feature-icon icon3"></div>
-                      <h4>100% Customizavel</h4>
-                        <p>Trabalhamos com a melhor equipe de desenvolvedores do mercado, 100% aptos a qualquer tipo de customização no sistema desde um simples cadastro as varias integrações web.</p>
+                      <h4>ERP Integrado e 100% Customizavel</h4>
+                      <p>Um sistema ERP totalmente flexivel e elastico ao seu projeto, defina suas necessidades e criamos a solução perfeita para você.</p>
                      </li>
                 </ul>
             </div>

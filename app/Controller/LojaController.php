@@ -158,11 +158,11 @@ class LojaController extends IntegracaoPagseguroController {
       $cep_destino = $this->request->data('cep_destino');
       $cep_origem  = $this->request->data('cep_origem');
 
-      $dataProducts = $this->loadProducts();
+      $dataProducts = $this->loadProductsAndValuesCart();
 
       (float) $peso = 0;
-      foreach ($dataProducts as $i => $product) {
-         $peso += $product['Produto']['peso_bruto'];
+      foreach ($dataProducts['products_cart'] as $i => $product) {
+         $peso += $product['Produto']['peso_bruto'] * $product['Produto']['quantidade'];
       }
 
       $fretes = $this->transport($cep_destino, $cep_origem, $peso);
@@ -180,11 +180,9 @@ class LojaController extends IntegracaoPagseguroController {
          $cont++;
       }
 
-      $cartReturn = $this->loadProductsAndValuesCart();
-
       $this->Session->write('Frete.valor', $disponiveis[$cont - 1]['valor']);
 
-      $total = $disponiveis[$cont - 1]['valor'] + $cartReturn['total'];
+      (float) $total = $disponiveis[$cont - 1]['valor'] + $dataProducts['total'];
       $total = number_format($total, 2, ',', '.');
 
       $retorno = array('frete' => $disponiveis[$cont - 1]['valor'], 'total' => $total);
@@ -221,6 +219,10 @@ class LojaController extends IntegracaoPagseguroController {
       $resultado = simplexml_load_string($resultado);
 
       return $resultado;
+   }
+
+   public function saveEmailNewsletter() {
+      $dados = $this->request->data('dados');
    }
 
 	/**

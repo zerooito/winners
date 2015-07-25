@@ -38,9 +38,19 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+
 </head>
 
 <body>
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.4&appId=576330039137830";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     <!-- Navigation -->
     <div class="container">
@@ -91,11 +101,6 @@
 
         <!-- Footer -->
         <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; XStore <?php echo date('Y') ?> - Desenvolvido por Winners Desenvolvimento de Sites e Sistemas</p>
-                </div>
-            </div>
         </footer>
 
     </div>
@@ -106,6 +111,45 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/app/webroot/xstore/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#myModal').modal('show');   
+        });
+    </script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <form action="/saveEmailNewsletter" method="post">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Cadastre seu e-mail e ganhe 10% de desconto.</h4>
+              </div>
+              <div class="modal-body">
+                
+                <div class='form-row'>
+                    <div class='form-group required'>
+                        <input type="text" class="form-control" placeholder="Digite seu nome" />
+                    </div>
+                </div>
+
+                <div class='form-row'>
+                    <div class='form-group required'>
+                        <input type="email" class="form-control" placeholder="Digite seu email" required/>
+                    </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Quero desconto</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
 
 </body>
 

@@ -26,11 +26,11 @@ class ApiController extends AppController {
 	    }
 	}
 
-	public function client() {
+	public function client($id_cliente) {
 	    $this->loadModel('Cliente');
 		$this->autoRender = false;
 		$this->response->type('json');
-
+		
 		$type = $this->request;
 
 	    if (!$this->validate_use_api($type))
@@ -42,15 +42,15 @@ class ApiController extends AppController {
 					array(
 						'ativo' => 1,
 						'id_usuario' => $this->getIdUser(),
-						'id' => $type->query['id_cliente']
+						'id' => $id_cliente
 					)
 				)
 			);
 
 			$this->response->body(json_encode($cliente));
 	    } else if ($type->is('post')) {
-	    	
-			$dados = $this->request->data('dados');
+	    	$this->request->data;
+
 			$dados['ativo'] = 1;
 			$dados['id_usuario'] = $this->instancia;
 

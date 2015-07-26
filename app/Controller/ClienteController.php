@@ -96,5 +96,4 @@ class ClienteController extends AppController{
         $this->layout = 'ajax'; 
         $this->set('event', $this->Cliente->find('all')); 
 	}
-
 }

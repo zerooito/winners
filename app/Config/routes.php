@@ -59,7 +59,9 @@
 			'winnersdesenvolvimento.com.br',
 			'blog.winnersdesenvolvimento.com.br',
 			'www.ciawn.com.br',
-			'ciawn.com.br'
+			'ciawn.com.br',
+			'api.cianwn.com.br',
+			'api.winnersdesenvolvimento.com.br'
 		);
 
 		$varDominio = $_SERVER['SERVER_NAME'];

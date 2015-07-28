@@ -1,7 +1,7 @@
 <?php
 
 class ClienteController extends AppController{	
-	public $helpers = array('Excel');
+	// public $helpers = array('Excel');
 
 	function home() {
 		$this->layout = 'wadmin';

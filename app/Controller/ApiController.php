@@ -56,12 +56,17 @@ class ApiController extends AppController {
 
 			$this->response->body(json_encode($cliente));
 	    } else if ($type->is('post')) {
-	    	$this->request->data;
+	    	$dados = $this->request->data;
 
+	    	$dados['senha'] = sha1($dados['senha']);
 			$dados['ativo'] = 1;
 			$dados['id_usuario'] = $this->instancia;
-
-			pr($dados);
+			
+			if ($this->Cliente->save($dados)) {
+				$this->response->body('{message: success, result:'.json_encode($dados).'}');
+			} else {
+				$this->response->body('{message: error}');
+			}
 	    } else if ($type->is('put')) {
 	    	echo 'put';
 	    } else if ($type->is('delete')) {

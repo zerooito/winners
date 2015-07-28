@@ -70,6 +70,7 @@
 
 		if (array_search($varDominio, $dominiosWinners) !== false) {
 			header('Location: www.ciawn.com.br');
+			exit();
 		}
 
 		if (array_search($varDominio, $dominiosWinners) !== false) {

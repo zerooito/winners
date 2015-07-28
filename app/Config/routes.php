@@ -58,7 +58,7 @@
 			'blog.winnersdesenvolvimento.com.br',
 			'www.ciawn.com.br',
 			'ciawn.com.br',
-			'api.cianwn.com.br',
+			'api.ciawn.com.br',
 		);
 
 		$dominiosWinnersRedirect = array(

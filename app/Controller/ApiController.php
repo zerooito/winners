@@ -58,6 +58,23 @@ class ApiController extends AppController {
 	    } else if ($type->is('post')) {
 	    	$dados = $this->request->data;
 
+	    	if (empty($dados['nome1']) && empty($dados['nome2']) && !empty($dados['email']) && !empty($dados['senha'])) {
+		    	$conditions = array(
+					'ativo' => 1,
+					'id_usuario' => $this->getIdUser(),
+					'email' => $dados['email'],
+					'senha' => $dados['senha']
+				);
+
+			    $cliente = $this->Cliente->find('all', 
+					array('conditions' => 
+						$conditions
+					)
+				);
+
+				$this->response->body(json_encode($cliente));
+	    	}
+
 	    	$dados['senha'] = sha1($dados['senha']);
 			$dados['ativo'] = 1;
 			$dados['id_usuario'] = $this->instancia;

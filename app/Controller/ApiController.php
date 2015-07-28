@@ -26,24 +26,31 @@ class ApiController extends AppController {
 	    }
 	}
 
-	public function client($id_cliente) {
+	public function client($id_cliente = null) {
 	    $this->loadModel('Cliente');
 		$this->autoRender = false;
 		$this->response->type('json');
 		
 		$type = $this->request;
 
-	    if (!$this->validate_use_api($type))
+	    if (!$this->validate_use_api($type)) {
 	    	echo '{message: Você não tem permissão para usar nossa API}';
+	    	exit();
+	    }
 
 	    if ($type->is('get')) {
+	    	$conditions = array(
+				'ativo' => 1,
+				'id_usuario' => $this->getIdUser(),
+			);
+
+			if (isset($id_cliente))
+			 	$conditions['id'] = $id_cliente;
+
+
 		    $cliente = $this->Cliente->find('all', 
 				array('conditions' => 
-					array(
-						'ativo' => 1,
-						'id_usuario' => $this->getIdUser(),
-						'id' => $id_cliente
-					)
+					$conditions
 				)
 			);
 

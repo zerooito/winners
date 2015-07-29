@@ -83,9 +83,8 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                 <p class="small-text">ERP, CMS, E-commerce, Wordpress, OpenCart e muito mais</p>
                 <div class="button-section">
                   <ul>
-                      <li><a href="#" class="top-button white" data-toggle="modal" data-target="#valores">Valores</a></li>
-                        <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Teste  a versão Free</a></li>
-                    </ul>
+                      <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Fazer Orçamento</a></li>
+                  </ul>
                 </div>
             </div>
         </div>
@@ -223,14 +222,15 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">Informe seus Dados</h4>
+            <h5 style="color: red">Logo após preencher seus dados, você será redirecionado para nosso sistema e entraremos em contato em breve</h5>
           </div>
           <div class="modal-body">
-                  <label style="margin-bottom: -15px;">Nome </label>
-                  <input type="text" name="dados[nome]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu nome"/>
-                  <label style="margin-bottom: -15px;">Email </label>
-                  <input type="text" name="dados[email]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu e-mail" />
-                  <label style="margin-bottom: -15px;">Senha </label>
-                  <input type="password" name="dados[senha]" style="margin-left:0px;margin-bottom: 15px;"  placeholder="Digite sua senha"/>
+              <label style="margin-bottom: -15px;">Nome </label>
+              <input type="text" name="dados[nome]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu nome"/>
+              <label style="margin-bottom: -15px;">Email </label>
+              <input type="text" name="dados[email]" style="margin-left:0px;margin-bottom: 15px;" placeholder="Digite seu e-mail" />
+              <label style="margin-bottom: -15px;">Senha </label>
+              <input type="password" name="dados[senha]" style="margin-left:0px;margin-bottom: 15px;"  placeholder="Digite sua senha"/>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

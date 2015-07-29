@@ -117,6 +117,7 @@ class UsuarioController extends AppController{
 		}
 
 		if ($this->Usuario->save($dados)) {
+			$this->notificar_cadastro($dados['nome'], $dados['email']);
 			$this->processar_login();
 		}
 
@@ -134,7 +135,13 @@ class UsuarioController extends AppController{
 		$email_body = "Muito Obrigado por nos contactar";
 		$headers = "From: noreply@winnersdevelopers.com\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
 		$headers .= "Reply-To: $email_address";	
-		mail($to,$email_subject,$email_body,$headers);
+		mail($to, $email_subject, $email_body, $headers);
+	}
+
+	public function notificar_cadastro($nome, $email) {
+		$headers = "From: noreply@ciawn.com.br\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
+		$headers .= "Reply-To: $email_address";	
+		mail('winnersdevelopers@gmail.com, jr.design_2010@hotmail.com, reginaldo@ciawn.com.br, victor@ciawn.com.br', 'Notificação de cadastro', 'O usuario ' . $nome . ' email ' . $email . ' ', $headers);
 	}
 
 }

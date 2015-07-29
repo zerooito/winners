@@ -35,7 +35,7 @@ class ApiController extends AppController {
 
 	    if (!$this->validate_use_api($type)) {
 	    	echo '{message: Você não tem permissão para usar nossa API}';
-	    	exit();
+	    	return;
 	    }
 
 	    if ($type->is('get')) {
@@ -58,37 +58,59 @@ class ApiController extends AppController {
 	    } else if ($type->is('post')) {
 	    	$dados = $this->request->data;
 
-	    	if (empty($dados['nome1']) && empty($dados['nome2']) && !empty($dados['email']) && !empty($dados['senha'])) {
-		    	$conditions = array(
-					'ativo' => 1,
-					'id_usuario' => $this->getIdUser(),
-					'email' => $dados['email'],
-					'senha' => $dados['senha']
-				);
-
-			    $cliente = $this->Cliente->find('all', 
-					array('conditions' => 
-						$conditions
-					)
-				);
-
-				$this->response->body(json_encode($cliente));
+	    	if (empty($dados)) {
+				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
+				return;
 	    	}
 
-	    	$dados['senha'] = sha1($dados['senha']);
-			$dados['ativo'] = 1;
-			$dados['id_usuario'] = $this->instancia;
-			
-			if ($this->Cliente->save($dados)) {
-				$this->response->body('{message: success, result:'.json_encode($dados).'}');
-			} else {
-				$this->response->body('{message: error}');
-			}
+	    	if (!empty($dados['nome1']) && !empty($dados['nome2']) && !empty($dados['email']) && !empty($dados['senha'])) {
+	    		$this->postClient($dados);
+	    	} 
+
+	    	$this->loginClient($dados);
 	    } else if ($type->is('put')) {
 	    	echo 'put';
 	    } else if ($type->is('delete')) {
 	    	echo 'delete';
 	    }
+	}
+
+	public function loginClient($dados) {
+
+    	$conditions = array(
+			'ativo' => 1,
+			'id_usuario' => $this->getIdUser(),
+			'email' => $dados['email'],
+			'senha' => sha1($dados['senha'])
+		);
+
+	    $cliente = $this->Cliente->find('all', 
+			array('conditions' => 
+				$conditions
+			)
+		);
+
+	    if (!empty($cliente)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($cliente).'}');
+			return;
+	    } else {
+			$this->response->body('{"message": "error"}');
+			return;
+	    }
+	}
+
+	public function postClient($dados) {
+    	$dados['senha'] = sha1($dados['senha']);
+		$dados['ativo'] = 1;
+		$dados['id_usuario'] = $this->instancia;
+		
+		if ($this->Cliente->save($dados)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+			return;
+		} else {
+			$this->response->body('{"message": "error"}');
+			return;
+		}		
 	}
 
 	/**

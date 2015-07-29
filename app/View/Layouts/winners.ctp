@@ -83,7 +83,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                 <p class="small-text">ERP, CMS, E-commerce, Wordpress, OpenCart e muito mais</p>
                 <div class="button-section">
                   <ul>
-                      <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Fazer Orçamento</a></li>
+                      <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Solicite um Orçamento</a></li>
                   </ul>
                 </div>
             </div>

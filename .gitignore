@@ -12,6 +12,7 @@
 /phpmyadmin
 /blog/uploads
 /blog/wp-content
+/blog/wp-config.php
 
 
 # OS generated files #

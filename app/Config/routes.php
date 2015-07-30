@@ -55,14 +55,24 @@
 	function verificar_dominio() {
 		$dominiosWinners = array (
 			'winners.local',
-			'www.winnersdesenvolvimento.com.br',
-			'winnersdesenvolvimento.com.br',
 			'blog.winnersdesenvolvimento.com.br',
 			'www.ciawn.com.br',
-			'ciawn.com.br'
+			'ciawn.com.br',
+			'api.ciawn.com.br',
+		);
+
+		$dominiosWinnersRedirect = array(
+			'www.winnersdesenvolvimento.com.br',
+			'winnersdesenvolvimento.com.br',
 		);
 
 		$varDominio = $_SERVER['SERVER_NAME'];
+
+		if (array_search($varDominio, $dominiosWinnersRedirect) !== false) {
+			header('Location: http://www.ciawn.com.br');
+			exit();
+		}
+
 		if (array_search($varDominio, $dominiosWinners) !== false) {
 			$retorno['is_winners'] = true;
 

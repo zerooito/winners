@@ -69,7 +69,19 @@ class ApiController extends AppController {
 
 	    	$this->loginClient($dados);
 	    } else if ($type->is('put')) {
-	    	echo 'put';
+	    	$data = $this->request->data;
+	    	parse_str(file_get_contents("php://input"), $data);
+	    	debug($data,1);
+	    	if (empty($id_cliente)) {
+	    		echo json_encode(array('message' => 'Você não especificou o cliente'));
+	    		return;
+	    	}
+	    	
+	    	if (empty($dados)) {
+	    		echo json_encode(array('message' => 'Você passou todos os campos vazios'));
+	    	}
+
+	    	$this->putClient($dados, $id_cliente);
 	    } else if ($type->is('delete')) {
 	    	echo 'delete';
 	    }
@@ -93,10 +105,11 @@ class ApiController extends AppController {
 	    if (!empty($cliente)) {
 			$this->response->body('{"message": "success", "result":'.json_encode($cliente).'}');
 			return;
-	    } else {
-			$this->response->body('{"message": "error"}');
-			return;
 	    }
+		
+		$this->response->body('{"message": "error"}');
+		return;
+	    
 	}
 
 	public function postClient($dados) {
@@ -107,10 +120,28 @@ class ApiController extends AppController {
 		if ($this->Cliente->save($dados)) {
 			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
 			return;
-		} else {
-			$this->response->body('{"message": "error"}');
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
+	}
+
+	public function putClient($dados, $id_cliente) {
+		if ($dados['senha'] != '') {
+			$dados['senha'] = sha1($dados['senha']);
+		}
+		debug($dados,1);
+		$this->Cliente->id = $id_cliente;
+		$this->Cliente->id_usuario = $this->getIdUser();
+
+		if ($this->Cliente->save($dados)) {
+	    	echo 'oi';exit('{"message": "success", "result": '. json_encode($dados) .'}');
+			$this->response->body('{"message": "success", "result": '. json_encode($dados) .'}');
 			return;
-		}		
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
 	}
 
 	/**

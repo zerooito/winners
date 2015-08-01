@@ -1,14 +1,13 @@
-Winners - ERP & CMS
+Winners - Plataforma OpenSource
 =======
-Sistema ERP e CMS baseado no framework Cakephp.
+Essa plataforma tem como funcionalidade auxiliar o desenvolvedor a entrega novos projetos em pouco tempo.
 
-Funcionalidades
-  - Venda
+Algumas das caracteristicas delas são estas a seguir
+	- Venda
   - Produto
   - Usuarios
   - Funcionarios
   - Gerenciamento de Site
   - Emissão de DANFE
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/reginaldojunior/winners/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+  - Cliente
+  - API Cliente

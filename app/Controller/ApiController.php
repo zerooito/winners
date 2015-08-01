@@ -2,11 +2,13 @@
 
 class ApiController extends AppController {
 
-	public function beforeFilter(){
+	public function beforeFilter()
+	{
 		return true;
    	}
 
-	public function wishlist() {
+	public function wishlist()
+	{
 		$this->autoRender = false;
 		$this->response->type('json');
 
@@ -26,7 +28,8 @@ class ApiController extends AppController {
 	    }
 	}
 
-	public function client($id_cliente = null) {
+	public function client($id_cliente = null)
+	{
 	    $this->loadModel('Cliente');
 		$this->autoRender = false;
 		$this->response->type('json');
@@ -69,25 +72,33 @@ class ApiController extends AppController {
 
 	    	$this->loginClient($dados);
 	    } else if ($type->is('put')) {
-	    	$data = $this->request->data;
-	    	parse_str(file_get_contents("php://input"), $data);
-	    	debug($data,1);
-	    	if (empty($id_cliente)) {
-	    		echo json_encode(array('message' => 'Você não especificou o cliente'));
-	    		return;
-	    	}
+
+	    	$dados = $this->request->data;
 	    	
-	    	if (empty($dados)) {
-	    		echo json_encode(array('message' => 'Você passou todos os campos vazios'));
+			if (empty($dados)) {
+				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
+				return;
+	    	}
+
+	    	if ($id_cliente == null) {
+	    		$this->response->body(json_encode(array('message' => 'Você não passou o id do usuario')));
+	    		return;
 	    	}
 
 	    	$this->putClient($dados, $id_cliente);
 	    } else if ($type->is('delete')) {
-	    	echo 'delete';
+	    	
+	    	if ($id_cliente == null) {
+	    		$this->response->body(json_encode(array('message' => 'Você não passou o id do usuario')));
+	    		return;
+	    	}
+
+	    	$this->inactiveClient($id_cliente);
 	    }
 	}
 
-	public function loginClient($dados) {
+	public function loginClient($dados)
+	{
 
     	$conditions = array(
 			'ativo' => 1,
@@ -112,7 +123,8 @@ class ApiController extends AppController {
 	    
 	}
 
-	public function postClient($dados) {
+	public function postClient($dados)
+	{
     	$dados['senha'] = sha1($dados['senha']);
 		$dados['ativo'] = 1;
 		$dados['id_usuario'] = $this->instancia;
@@ -130,12 +142,11 @@ class ApiController extends AppController {
 		if ($dados['senha'] != '') {
 			$dados['senha'] = sha1($dados['senha']);
 		}
-		debug($dados,1);
+
 		$this->Cliente->id = $id_cliente;
 		$this->Cliente->id_usuario = $this->getIdUser();
 
 		if ($this->Cliente->save($dados)) {
-	    	echo 'oi';exit('{"message": "success", "result": '. json_encode($dados) .'}');
 			$this->response->body('{"message": "success", "result": '. json_encode($dados) .'}');
 			return;
 		}
@@ -144,10 +155,44 @@ class ApiController extends AppController {
 		return;
 	}
 
+	public function inactiveClient($id_cliente) 
+	{
+		$dados['ativo'] = 0;
+		
+		$this->Cliente->id = $id_cliente;
+
+		if ($this->Cliente->save($dados)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+			return;
+		} else {
+			$this->response->body('{"message": "error"}');
+			return;
+		}	
+	}
+
+	public function putClient($dados, $id_cliente) 
+	{
+		if (!empty($dados['senha'])) {
+			$dados['senha'] = sha1($dados['senha']);
+		}
+
+		$this->Cliente->id = $id_cliente;
+
+		if ($this->Cliente->save($dados)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+			return;
+		} else {
+			$this->response->body('{"message": "error"}');
+			return;
+		}		
+	}
+
+
 	/**
 	* Valida o usuario que está tentando usar a api
 	*/
-	public function validate_use_api($req) {
+	public function validate_use_api($req)
+	{
 		$this->loadModel('Usuario');
 		
 		$data['auth'] = $req->query;
@@ -169,11 +214,13 @@ class ApiController extends AppController {
 		return true;
 	}
 
-	public function setIdUser($id) {
+	public function setIdUser($id)
+	{
 		$this->instancia = $id;
 	}
 
-	public function getIdUser() {
+	public function getIdUser()
+	{
 		return $this->instancia;
 	}
 }

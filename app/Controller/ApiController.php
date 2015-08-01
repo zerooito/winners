@@ -72,6 +72,7 @@ class ApiController extends AppController {
 
 	    	$this->loginClient($dados);
 	    } else if ($type->is('put')) {
+
 	    	$dados = $this->request->data;
 	    	
 			if (empty($dados)) {
@@ -115,10 +116,11 @@ class ApiController extends AppController {
 	    if (!empty($cliente)) {
 			$this->response->body('{"message": "success", "result":'.json_encode($cliente).'}');
 			return;
-	    } else {
-			$this->response->body('{"message": "error"}');
-			return;
 	    }
+		
+		$this->response->body('{"message": "error"}');
+		return;
+	    
 	}
 
 	public function postClient($dados)
@@ -130,10 +132,27 @@ class ApiController extends AppController {
 		if ($this->Cliente->save($dados)) {
 			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
 			return;
-		} else {
-			$this->response->body('{"message": "error"}');
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
+	}
+
+	public function putClient($dados, $id_cliente) {
+		if ($dados['senha'] != '') {
+			$dados['senha'] = sha1($dados['senha']);
+		}
+
+		$this->Cliente->id = $id_cliente;
+		$this->Cliente->id_usuario = $this->getIdUser();
+
+		if ($this->Cliente->save($dados)) {
+			$this->response->body('{"message": "success", "result": '. json_encode($dados) .'}');
 			return;
-		}		
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
 	}
 
 	public function inactiveClient($id_cliente) 

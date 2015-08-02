@@ -170,24 +170,6 @@ class ApiController extends AppController {
 		}	
 	}
 
-	public function putClient($dados, $id_cliente) 
-	{
-		if (!empty($dados['senha'])) {
-			$dados['senha'] = sha1($dados['senha']);
-		}
-
-		$this->Cliente->id = $id_cliente;
-
-		if ($this->Cliente->save($dados)) {
-			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
-			return;
-		} else {
-			$this->response->body('{"message": "error"}');
-			return;
-		}		
-	}
-
-
 	/**
 	* Valida o usuario que está tentando usar a api
 	*/

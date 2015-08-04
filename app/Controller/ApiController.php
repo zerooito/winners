@@ -61,7 +61,7 @@ class ApiController extends AppController {
 			$this->response->body(json_encode($cliente));
 	    } else if ($type->is('post')) {
 	    	$dados = $this->request->data;
-
+	    	
 	    	if (empty($dados)) {
 				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
 				return;

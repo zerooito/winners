@@ -30,14 +30,15 @@ class ApiController extends AppController {
 
 	public function client($id_cliente = null)
 	{
+		$api = 'cliente';
 	    $this->loadModel('Cliente');
 		$this->autoRender = false;
 		$this->response->type('json');
 		
 		$type = $this->request;
 
-	    if (!$this->validate_use_api($type)) {
-	    	echo '{message: Você não tem permissão para usar nossa API}';
+	    if (!$this->validate_use_api($type, $api)) {
+	    	echo '{message: Você não tem permissão para usar nosso modulo}';
 	    	return;
 	    }
 
@@ -60,7 +61,7 @@ class ApiController extends AppController {
 			$this->response->body(json_encode($cliente));
 	    } else if ($type->is('post')) {
 	    	$dados = $this->request->data;
-
+	    	
 	    	if (empty($dados)) {
 				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
 				return;
@@ -119,8 +120,7 @@ class ApiController extends AppController {
 	    }
 		
 		$this->response->body('{"message": "error"}');
-		return;
-	    
+		return;	    
 	}
 
 	public function postClient($dados)
@@ -138,7 +138,8 @@ class ApiController extends AppController {
 		return;
 	}
 
-	public function putClient($dados, $id_cliente) {
+	public function putClient($dados, $id_cliente)
+	{
 		if ($dados['senha'] != '') {
 			$dados['senha'] = sha1($dados['senha']);
 		}
@@ -170,28 +171,10 @@ class ApiController extends AppController {
 		}	
 	}
 
-	public function putClient($dados, $id_cliente) 
-	{
-		if (!empty($dados['senha'])) {
-			$dados['senha'] = sha1($dados['senha']);
-		}
-
-		$this->Cliente->id = $id_cliente;
-
-		if ($this->Cliente->save($dados)) {
-			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
-			return;
-		} else {
-			$this->response->body('{"message": "error"}');
-			return;
-		}		
-	}
-
-
 	/**
 	* Valida o usuario que está tentando usar a api
 	*/
-	public function validate_use_api($req)
+	public function validate_use_api($req, $api)
 	{
 		$this->loadModel('Usuario');
 		
@@ -205,13 +188,41 @@ class ApiController extends AppController {
 			)
 		)[0];
 
-		if (empty($resposta)) {
+		if (empty($resposta))
+		{
 			return false;
 		}
 
 		$this->setIdUser($resposta['Usuario']['id']);
 
+		if (!$this->verifyUseApi($api)) 
+		{
+			return false;
+		}
+
 		return true;
+	}
+
+	public function verifyUseApi($api)
+	{
+		$this->loadModel('ModuloRelacionaUsuario');
+
+		$modulos = $this->ModuloRelacionaUsuario->find('all',
+		array('conditions' => 
+			array('ModuloRelacionaUsuario.id_usuario' => $this->getIdUser(), 
+				  'ModuloRelacionaUsuario.ativo' => 1,
+				  'Modulo.ativo' => 1
+				)
+			)
+		);
+
+		foreach ($modulos as $i => $modulo) {
+			if ($modulo['Modulo']['modulo'] == $api) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function setIdUser($id)

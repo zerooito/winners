@@ -51,6 +51,28 @@ class HomeController extends AppController{
         return $this->redirect('/');
 	}
 
+	public function sendmail() {
+		App::uses('CakeEmail', 'Network/Email');
+		$email = new CakeEmail('default');
+		$email->from('jr.design_2010@hotmail.com', 'reginaldo')
+			->to('jr.design_2010@hotmail.com')
+			->subject('Contato CakePHP MyStore');
+		$mensagem = '
+				<p><strong>Nome</strong>: adfasdf</p>
+				<p><strong>Email</strong>: fasdf@laksjdf</p>
+				<p><strong>Telefone</strong>: asdfasdf</p>
+				<p><strong>Mensagem</strong>:fasdf</p>
+			';
+		
+		if ($email->send($mensagem)) {
+			echo('Mensagem enviada com sucesso');
+		} else {
+			echo('Sua mensagem não foi enviada, tente denovo');
+		}
+
+		exit();
+	}
+
 	// public function loja() {
 	// 	$curl = curl_init('http://ecommissi.local/produtos/2');
  //        curl_setopt($curl, CURLOPT_HTTPHEADER, array(

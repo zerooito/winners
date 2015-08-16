@@ -19,6 +19,9 @@ Moesia is based on Underscores http://underscores.me/, (C) 2012-2014 Automattic,
 
 
 --------------------------------------------------------------*/
+img.attachment-post-thumbnail.wp-post-image {
+  width: 100%;
+}
 
 body {
 	font-family: 'Roboto', sans-serif;
@@ -1935,4 +1938,8 @@ section .container {
 	.so-panel.widget .widget-title {
 		font-size: 36px;
 	}
+}
+
+img.alignnone {
+  width: 100%;
 }

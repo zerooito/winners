@@ -6,6 +6,8 @@
 
 <title>Winners desenvolvimento de Sites e Sistemas</title>
 
+<link rel='shortcut icon' type='image/x-icon' href='/app/webroot/images/favicon.ico' />
+
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,200,300,600,700,800' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300,200' rel='stylesheet' type='text/css'>
 <?php

@@ -1,6 +1,7 @@
 <?php
 
 class FuncionarioController extends AppController {
+
 	public $matricula;
 	public $salario;
 	public $departamento;

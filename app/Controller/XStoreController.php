@@ -13,5 +13,4 @@ class XStoreController extends LojaController
 		$this->layout = 'xstore';
 		return true;
    	}
-
 }

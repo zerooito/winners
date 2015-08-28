@@ -30,9 +30,10 @@ class ProdutoEstoqueController extends AppController {
 			$this->loadModel('Produto');
 
 			$produto = $this->Produto->find('first', array(
-				'conditions' => array('Produto.id' => $produto_id),
-				'order' => array('Produto.id' => 'desc')
-			));
+					'conditions' => array('Produto.id' => $produto_id),
+					'order' => array('Produto.id' => 'desc')
+				)
+			);
 
 			$novo_estoque['estoque'] = $produto['Produto']['estoque'] - $quantidade;
 

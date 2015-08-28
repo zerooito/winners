@@ -13,4 +13,10 @@ Algumas das caracteristicas delas são estas a seguir
   - API Cliente 
   - Desenvolvimento de E-Commerce 
 
- Para dúvidas acesse a Wiki.
+
+Contribuindo
+=======
+Basta abrir pull request com sua sugestão ou criar issue reportando bugs.
+
+
+Para dúvidas acesse a Wiki.

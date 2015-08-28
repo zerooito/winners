@@ -8,6 +8,7 @@ Algumas das caracteristicas delas são estas a seguir
   - Usuarios
   - Funcionarios
   - Gerenciamento de Site
+  - Integração com o PagSeguro
   - Emissão de DANFE
   - Cliente
   - API Cliente 

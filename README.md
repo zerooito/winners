@@ -8,6 +8,16 @@ Algumas das caracteristicas delas são estas a seguir
   - Usuarios
   - Funcionarios
   - Gerenciamento de Site
+  - Integração com o PagSeguro
   - Emissão de DANFE
   - Cliente
-  - API Cliente
+  - API Cliente 
+  - Desenvolvimento de E-Commerce 
+
+
+Contribuindo
+=======
+Basta abrir pull request com sua sugestão ou criar issue reportando bugs.
+
+
+Para dúvidas acesse a Wiki.

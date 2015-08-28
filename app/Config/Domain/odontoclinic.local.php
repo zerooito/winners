@@ -5,6 +5,7 @@ $dominio = array(
 	'controller' => 'XStore',
 	'funcao'	 => 'index'
 );
+	
 $_SESSION['information'] = $dominio;
 
 Router::connect('/addCart',   array('controller' => $dominio['controller'], 'action' => 'addCart'));

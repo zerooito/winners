@@ -10,7 +10,7 @@ Algumas das caracteristicas delas são estas a seguir
   - Gerenciamento de Site
   - Emissão de DANFE
   - Cliente
-  - API Cliente (https://github.com/reginaldojunior/winners/wiki/API---Cliente)
-  - Desenvolvimento de E-Commerce (https://github.com/reginaldojunior/winners/wiki/Desenvolvimento-de-E---commerce)
+  - API Cliente 
+  - Desenvolvimento de E-Commerce 
 
  Para dúvidas acesse a Wiki.

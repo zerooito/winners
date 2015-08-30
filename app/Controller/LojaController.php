@@ -32,6 +32,20 @@ class LojaController extends IntegracaoPagseguroController {
 	   return $produtos;
 	}
 
+   public function loadBanners($id_banner = null) {
+      $this->loadModel('Banner');
+
+      $params = array('conditions' => 
+         array('ativo' => 1,
+              'usuario_id' => $this->Session->read('Usuario.id')
+         )
+      );
+
+      $banners = $this->Banner->find('all', $params);
+
+      return $banners;
+   } 
+
 	public function addCart() {
 		$produto = $this->request->data('produto');
 		
@@ -229,7 +243,7 @@ class LojaController extends IntegracaoPagseguroController {
 	* Views
 	*/
 	public function index() {
-      // echo 'oi';exit();
+      $this->set('banners', $this->loadBanners());
       $this->set('categorias', $this->loadCategoriesProducts());
 		$this->set('produtos', $this->loadProducts());
 	}

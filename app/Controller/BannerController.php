@@ -33,6 +33,7 @@ class BannerController extends AppController {
 
 	public function editar_cadastro($id) {
 		$this->loadModel('CategoriaBanner');
+		
 		$this->set('categorias', $this->CategoriaBanner->find('all', 
 				array('conditions' => 
 					array('ativo' => 1,

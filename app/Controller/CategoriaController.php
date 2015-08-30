@@ -52,7 +52,7 @@ class CategoriaController extends AppController {
 		$this->layout = 'wadmin';
 	}
 
-	public function S_editar_cadastro($id) {
+	public function s_editar_cadastro($id) {
 		$this->loadModel('Categoria');
 
 		$dados = $this->request->data('dados');

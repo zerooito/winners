@@ -98,7 +98,7 @@ class ApiController extends AppController {
 	    }
 	}
 
-	public function parent($id_cliente, $id_parente = null)
+	public function parent($id_cliente = null, $id_parente = null)
 	{
 		$api = 'parente';
 
@@ -145,7 +145,7 @@ class ApiController extends AppController {
 	    		$this->postParent($dados);
 	    	} 
 
-	    	$this->loginParent($dados, $id_cliente);
+	    	$this->loginParent($dados);
 	    } else if ($type->is('put')) {
 
 	    	$dados = $this->request->data;
@@ -265,12 +265,11 @@ class ApiController extends AppController {
 		return;
 	}
 
-	public function loginParent($dados, $id_cliente) 
+	public function loginParent($dados) 
 	{
     	$conditions = array(
 			'ativo' => 1,
 			'usuario_id' => $this->getIdUser(),
-			'cliente_id' => $id_cliente,
 			'login' => $dados['login'],
 			'senha' => sha1($dados['senha'])
 		);

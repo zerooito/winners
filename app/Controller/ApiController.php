@@ -172,6 +172,35 @@ class ApiController extends AppController {
 	    }
 	}
 
+	public function occurrences($id_cliente = null) 
+	{
+		$api = 'parente';	
+
+		$this->autoRender = false;
+		$this->response->type('json');
+		$this->loadModel('Ocorrencias');
+
+		$type = $this->request;
+
+	    if ($type->is('get'))
+	    {
+	    	$conditions = array(
+				'ativo' => 1,
+				'cliente_id' => $id_cliente,
+			);
+
+			$conditions['cliente_id'] = $id_cliente;
+
+		    $ocorrencias = $this->Ocorrencias->find('all', 
+				array('conditions' => 
+					$conditions
+				)
+			);
+
+			$this->response->body(json_encode($ocorrencias));	    	
+	    }
+	}
+
 	public function loginClient($dados)
 	{
 

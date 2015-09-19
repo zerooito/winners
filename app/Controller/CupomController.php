@@ -96,16 +96,15 @@ class CupomController extends AppController {
 		}
 
 		$cupom = $this->Cupom->find('all',
-				array('conditions' => 
-					array(
-						'ativo'      => 1,
-						'usuario_id' => $this->instancia,
-						'nome'       => $nome_cupom
-					)
+			array('conditions' => 
+				array(
+					'ativo'      => 1,
+					'usuario_id' => $this->instancia,
+					'nome'       => $nome_cupom
 				)
-			)	
-		);
-
+			)
+		);		
+	
 		if (empty($cupom))
 		{
 			return false;

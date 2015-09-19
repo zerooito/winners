@@ -1,6 +1,7 @@
 <?php
 
 require 'IntegracaoPagseguroController.php';
+require 'CupomController.php';
 
 class LojaController extends IntegracaoPagseguroController {
 	public $layout = 'lojaexemplo';	
@@ -237,6 +238,24 @@ class LojaController extends IntegracaoPagseguroController {
 
    public function saveEmailNewsletter() {
       $dados = $this->request->data('dados');
+   }
+
+   public function useCoupon() {
+      $this->layout = 'ajax';
+      $cupom = $this->request->data('cupom');
+      $valor  = $this->request->data('valor');
+
+      $objCupom = new CupomController();
+      $novo_valor = $objCupom->utilizar_cupom($cupom, $valor);
+
+      if (!$novo_valoro)
+      {
+         echo json_encode(false);
+         exit();
+      }
+
+      echo json_encode($novo_valor);
+      exit();
    }
 
 	/**

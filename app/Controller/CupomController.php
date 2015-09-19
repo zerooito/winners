@@ -84,4 +84,82 @@ class CupomController extends AppController {
 		}
 	}
 
+	/**
+	* @param nome cupom
+	* @return false ou o array com os dados do cupom
+	**/
+	public function procurar_cupom($nome_cupom)
+	{
+		if (empty($nome_cupom) && !isset($nome_cupom))
+		{
+			return false;
+		}
+
+		$cupom = $this->Cupom->find('all',
+				array('conditions' => 
+					array(
+						'ativo'      => 1,
+						'usuario_id' => $this->instancia,
+						'nome'       => $nome_cupom
+					)
+				)
+			)	
+		);
+
+		if (empty($cupom))
+		{
+			return false;
+		}
+
+		return $cupom[0];
+	}
+
+	/**
+	* @param valor original float
+	* @return float com o valor final ja considerando o valor do cupom
+	**/
+	public function calcular_desconto_cupom($valor_original, $valor_desconto_cupom, $tipo_cupom)
+	{
+		if (empty($valor_original) && !isset($valor_original))
+		{
+			return false;
+		}
+
+		if ($tipo_cupom == 'porcento')
+		{
+			return (($valor_original * $valor_desconto_cupom) / 100) + $valor_original;
+		}
+
+		if ($tipo_cupom == 'fixo')
+		{
+			return $valor_original - $valor_desconto_cupom;
+		}
+
+		return (float) $valor_original;
+	}
+
+	/**
+	* @param $cupom String nome do cupom a ser utilizado
+	* @param $valor float com o valor original da venda
+	* @return $novo_valor float com o novo valor da venda
+	**/
+	public function utilizar_cupom($cupom, $valor_original)
+	{
+		if (empty($cupom) && !isset($cupom))
+		{
+			return false;
+		}
+
+		$cupom = $this->procurar_cupom($cupom);
+
+		if (!$cupom)
+		{
+			return false;
+		}
+
+		$novo_valor = $this->calcular_desconto_cupom($valor_original, $cupom['Cupom']['valor'], $cupom['Cupom']['tipo']);
+
+		return $novo_valor;
+	}
+
 }

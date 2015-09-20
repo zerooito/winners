@@ -242,13 +242,14 @@ class LojaController extends IntegracaoPagseguroController {
 
    public function useCoupon() {
       $this->layout = 'ajax';
+
       $cupom = $this->request->data('cupom');
       $valor  = $this->request->data('valor');
-
+         
       $objCupom = new CupomController();
-      $novo_valor = $objCupom->utilizar_cupom($cupom, $valor);
+      $novo_valor = $objCupom->utilizar_cupom($cupom, $valor, $this->Session->read('Usuario.id'));
 
-      if (!$novo_valoro)
+      if (!$novo_valor)
       {
          echo json_encode(false);
          exit();

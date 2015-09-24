@@ -2,6 +2,8 @@
 
 require 'IntegracaoPagseguroController.php';
 require 'CupomController.php';
+require 'NewsletterController.php';
+require 'VendaController.php';
 
 class LojaController extends IntegracaoPagseguroController {
 	public $layout = 'lojaexemplo';	
@@ -135,7 +137,6 @@ class LojaController extends IntegracaoPagseguroController {
 
       (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
 
-      require 'VendaController.php';
       $objVenda = new VendaController();
       $productsSale = $this->prepareProductsSale($products['products_cart']);
       $usuario_id = $this->Session->read('Usuario.id');
@@ -237,7 +238,19 @@ class LojaController extends IntegracaoPagseguroController {
    }
 
    public function saveEmailNewsletter() {
-      $dados = $this->request->data('dados');
+      $nome  = $this->request->data('nome');
+      $email = $this->request->data('email');
+
+      $objNewsletter = new NewsletterController();
+
+      if ($objNewsletter->newsletter_cadastro($nome, $email, $this->Session->read('Usuario.id')))
+      {
+         echo json_encode(true);
+         exit();
+      } 
+
+      echo json_encode(false);
+      exit();
    }
 
    public function useCoupon() {

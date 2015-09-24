@@ -56,6 +56,11 @@ class LojaController extends IntegracaoPagseguroController {
 			$this->redirect('/');
 		}
 
+      if (!$this->validateProduct($produto)) {
+         $this->Session->setFlash('Quantidade de produtos escolhidas é maior do que a disponivel!');
+         $this->redirect('/');
+      }
+
 		$cont = count($this->Session->read('Produto'));
 
 		$this->Session->write('Produto.'.$produto['id'].'.id' , $produto['id']);
@@ -270,6 +275,25 @@ class LojaController extends IntegracaoPagseguroController {
 
       echo json_encode($novo_valor);
       exit();
+   }
+
+   public function validateProduct($data) {
+      $this->loadModel('Variacao');
+
+      $params = array('conditions' => 
+         array(
+            'Variacao.id' => $data['variacao']
+         )
+      );
+
+      $variacao = $this->Variacao->find('all', $params);
+
+      if ($variacao[0]['Variacao']['estoque'] <= 0 || $data['quantidade'] > $variacao[0]['Variacao']['estoque'])
+      {
+         return false;
+      }
+
+      return true;   
    }
 
 	/**

@@ -98,6 +98,109 @@ class ApiController extends AppController {
 	    }
 	}
 
+	public function parent($id_cliente = null, $id_parente = null)
+	{
+		$api = 'parente';
+
+	    $this->loadModel('Parente');
+
+		$this->autoRender = false;
+		$this->response->type('json');
+		
+		$type = $this->request;
+
+	    if (!$this->validate_use_api($type, $api)) {
+	    	echo '{message: Você não tem permissão para usar nosso modulo}';
+	    	return;
+	    }
+
+	    if ($type->is('get')) {
+	    	$conditions = array(
+				'ativo' => 1,
+				'usuario_id' => $this->getIdUser(),
+			);
+
+			$conditions['cliente_id'] = $id_cliente;
+
+			if (isset($id_parente)) {
+				$conditions['id'] = $id_parente;
+			}
+
+		    $parentes = $this->Parente->find('all', 
+				array('conditions' => 
+					$conditions
+				)
+			);
+
+			$this->response->body(json_encode($parentes));
+	    } else if ($type->is('post')) {
+	    	$dados = $this->request->data;
+	    	
+	    	if (empty($dados)) {
+				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
+				return;
+	    	}
+
+	    	if (!empty($dados['cliente_id'])) {
+	    		$this->postParent($dados);
+	    	} 
+
+	    	$this->loginParent($dados);
+	    } else if ($type->is('put')) {
+
+	    	$dados = $this->request->data;
+	    	
+			if (empty($dados)) {
+				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
+				return;
+	    	}
+
+	    	if ($id_parente == null) {
+	    		$this->response->body(json_encode(array('message' => 'Você não passou o id do usuario')));
+	    		return;
+	    	}
+
+	    	$this->putParent($dados, $id_parente);
+	    } else if ($type->is('delete')) {
+	    	
+	    	if ($id_parente == null) {
+	    		$this->response->body(json_encode(array('message' => 'Você não passou o id do usuario')));
+	    		return;
+	    	}
+
+	    	$this->inactiveClient($id_parente);
+	    }
+	}
+
+	public function occurrences($id_cliente = null) 
+	{
+		$api = 'parente';	
+
+		$this->autoRender = false;
+		$this->response->type('json');
+		$this->loadModel('Ocorrencias');
+
+		$type = $this->request;
+
+	    if ($type->is('get'))
+	    {
+	    	$conditions = array(
+				'ativo' => 1,
+				'cliente_id' => $id_cliente,
+			);
+
+			$conditions['cliente_id'] = $id_cliente;
+
+		    $ocorrencias = $this->Ocorrencias->find('all', 
+				array('conditions' => 
+					$conditions
+				)
+			);
+
+			$this->response->body(json_encode($ocorrencias));	    	
+	    }
+	}
+
 	public function loginClient($dados)
 	{
 
@@ -163,6 +266,83 @@ class ApiController extends AppController {
 		$this->Cliente->id = $id_cliente;
 
 		if ($this->Cliente->save($dados)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+			return;
+		} else {
+			$this->response->body('{"message": "error"}');
+			return;
+		}	
+	}
+
+
+	public function postParent($dados)
+	{
+    	$dados = array(
+			'senha'      => sha1($dados['senha']),
+			'usuario_id' => $this->getIdUser(),
+			'cliente_id' => $dados['cliente_id'],
+			'login'      => $dados['login'],
+			'ativo'      => 1,
+		);
+		
+		if ($this->Parente->save($dados)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+			return;
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
+	}
+
+	public function loginParent($dados) 
+	{
+    	$conditions = array(
+			'ativo' => 1,
+			'usuario_id' => $this->getIdUser(),
+			'login' => $dados['login'],
+			'senha' => sha1($dados['senha'])
+		);
+
+	    $parente = $this->Parente->find('all', 
+			array('conditions' => 
+				$conditions
+			)
+		);
+
+	    if (!empty($parente)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($parente).'}');
+			return;
+	    }
+		
+		$this->response->body('{"message": "error"}');
+		return;	
+	}
+
+	public function putParent($dados, $id_parente) 
+	{
+		if ($dados['senha'] != '') {
+			$dados['senha'] = sha1($dados['senha']);
+		}
+
+		$this->Parente->id = $id_parente;
+		$this->Parente->id_usuario = $this->getIdUser();
+
+		if ($this->Parente->save($dados)) {
+			$this->response->body('{"message": "success", "result": '. json_encode($dados) .'}');
+			return;
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
+	}
+
+	public function inactiveParent($id_parente) 
+	{
+		$dados['ativo'] = 0;
+		
+		$this->Parente->id = $id_parente;
+
+		if ($this->Parente->save($dados)) {
 			$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
 			return;
 		} else {

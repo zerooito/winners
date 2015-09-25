@@ -7,7 +7,7 @@ class LancamentoVendasController extends AppController {
 		$lancamento['valor_pago'] = $valor_total;
 		$lancamento['data_pgt']   = date('Y-m-d');
 		$lancamento['ativo']	  = 1;
-		$lancamentó['usuario_id'] = $this->instancia;
+		$lancamento['usuario_id'] = $this->instancia;
 
 		$this->LancamentoVenda->save($lancamento);
 

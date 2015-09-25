@@ -1,6 +1,9 @@
 <?php
 
 require 'IntegracaoPagseguroController.php';
+require 'CupomController.php';
+require 'NewsletterController.php';
+require 'VendaController.php';
 
 class LojaController extends IntegracaoPagseguroController {
 	public $layout = 'lojaexemplo';	
@@ -32,12 +35,31 @@ class LojaController extends IntegracaoPagseguroController {
 	   return $produtos;
 	}
 
+   public function loadBanners($id_banner = null) {
+      $this->loadModel('Banner');
+
+      $params = array('conditions' => 
+         array('ativo' => 1,
+              'usuario_id' => $this->Session->read('Usuario.id')
+         )
+      );
+
+      $banners = $this->Banner->find('all', $params);
+
+      return $banners;
+   } 
+
 	public function addCart() {
 		$produto = $this->request->data('produto');
 		
 		if (empty($produto)) {
 			$this->redirect('/');
 		}
+
+      if (!$this->validateProduct($produto)) {
+         $this->Session->setFlash('Quantidade de produtos escolhidas é maior do que a disponivel!');
+         $this->redirect('/');
+      }
 
 		$cont = count($this->Session->read('Produto'));
 
@@ -120,7 +142,6 @@ class LojaController extends IntegracaoPagseguroController {
 
       (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
 
-      require 'VendaController.php';
       $objVenda = new VendaController();
       $productsSale = $this->prepareProductsSale($products['products_cart']);
       $usuario_id = $this->Session->read('Usuario.id');
@@ -222,14 +243,64 @@ class LojaController extends IntegracaoPagseguroController {
    }
 
    public function saveEmailNewsletter() {
-      $dados = $this->request->data('dados');
+      $nome  = $this->request->data('nome');
+      $email = $this->request->data('email');
+
+      $objNewsletter = new NewsletterController();
+
+      if ($objNewsletter->newsletter_cadastro($nome, $email, $this->Session->read('Usuario.id')))
+      {
+         echo json_encode(true);
+         exit();
+      } 
+
+      echo json_encode(false);
+      exit();
+   }
+
+   public function useCoupon() {
+      $this->layout = 'ajax';
+
+      $cupom = $this->request->data('cupom');
+      $valor  = $this->request->data('valor');
+         
+      $objCupom = new CupomController();
+      $novo_valor = $objCupom->utilizar_cupom($cupom, $valor, $this->Session->read('Usuario.id'));
+
+      if (!$novo_valor)
+      {
+         echo json_encode(false);
+         exit();
+      }
+
+      echo json_encode($novo_valor);
+      exit();
+   }
+
+   public function validateProduct($data) {
+      $this->loadModel('Variacao');
+
+      $params = array('conditions' => 
+         array(
+            'Variacao.id' => $data['variacao']
+         )
+      );
+
+      $variacao = $this->Variacao->find('all', $params);
+
+      if ($variacao[0]['Variacao']['estoque'] <= 0 || $data['quantidade'] > $variacao[0]['Variacao']['estoque'])
+      {
+         return false;
+      }
+
+      return true;   
    }
 
 	/**
 	* Views
 	*/
 	public function index() {
-      // echo 'oi';exit();
+      $this->set('banners', $this->loadBanners());
       $this->set('categorias', $this->loadCategoriesProducts());
 		$this->set('produtos', $this->loadProducts());
 	}

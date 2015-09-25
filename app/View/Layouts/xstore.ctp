@@ -119,7 +119,7 @@
     </script>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <form action="/saveEmailNewsletter" method="post">
             <div class="modal-content">
@@ -150,7 +150,7 @@
         </form>
       </div>
     </div>
-
+ -->
 </body>
 
 </html>

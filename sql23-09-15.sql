@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 24-Set-2015 às 02:45
+-- Generation Time: 26-Set-2015 às 16:40
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -33,10 +33,6 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `ativo` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `admins`
---
-
 -- --------------------------------------------------------
 
 --
@@ -52,10 +48,6 @@ CREATE TABLE IF NOT EXISTS `banners` (
   `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `banners`
---
-
 -- --------------------------------------------------------
 
 --
@@ -68,10 +60,6 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   `ativo` tinyint(4) NOT NULL,
   `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `categorias`
---
 
 -- --------------------------------------------------------
 
@@ -106,6 +94,8 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `ativo` tinyint(1) DEFAULT NULL,
   `senha` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 
 --
 -- Estrutura da tabela `consultas`
@@ -148,10 +138,6 @@ CREATE TABLE IF NOT EXISTS `cupoms` (
   `ativo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `cupoms`
---
-
 -- --------------------------------------------------------
 
 --
@@ -171,10 +157,6 @@ CREATE TABLE IF NOT EXISTS `endereco_cliente_cadastros` (
   `uf` varchar(30) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `endereco_cliente_cadastros`
---
-
 -- --------------------------------------------------------
 
 --
@@ -187,14 +169,6 @@ CREATE TABLE IF NOT EXISTS `forma_pagamentos` (
   `ativo` tinyint(1) NOT NULL,
   `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `forma_pagamentos`
---
-
-INSERT INTO `forma_pagamentos` (`id`, `descricao`, `ativo`, `usuario_id`) VALUES
-(1, 'Dinheiro', 1, 13),
-(2, 'Cartão', 1, 13);
 
 -- --------------------------------------------------------
 
@@ -252,8 +226,7 @@ CREATE TABLE IF NOT EXISTS `modulos` (
   `padrao` tinyint(1) DEFAULT NULL,
   `funcao` varchar(100) DEFAULT NULL,
   `icone` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -266,7 +239,21 @@ CREATE TABLE IF NOT EXISTS `modulo_relaciona_usuarios` (
   `id_usuario` int(11) DEFAULT NULL,
   `id_modulo` int(11) DEFAULT NULL,
   `ativo` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `newsletters`
+--
+
+CREATE TABLE IF NOT EXISTS `newsletters` (
+`id` int(11) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `ativo` tinyint(4) NOT NULL,
+  `usuario_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -297,7 +284,6 @@ CREATE TABLE IF NOT EXISTS `parentes` (
   `ativo` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
-
 -- --------------------------------------------------------
 
 --
@@ -319,7 +305,6 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   `custo` decimal(10,4) DEFAULT NULL,
   `categoria_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -366,9 +351,24 @@ CREATE TABLE IF NOT EXISTS `variacaos` (
   `ativo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Extraindo dados da tabela `variacaos`
+-- Estrutura da tabela `vendas`
 --
+
+CREATE TABLE IF NOT EXISTS `vendas` (
+`id` int(11) NOT NULL,
+  `valor` decimal(10,4) DEFAULT NULL,
+  `id_alias` int(11) DEFAULT NULL,
+  `custo` decimal(10,0) DEFAULT NULL,
+  `data_venda` date DEFAULT NULL,
+  `data_entrega` date DEFAULT NULL,
+  `id_lancamento_financeiro` int(11) DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `id_cadastro_situacao_venda` int(11) DEFAULT NULL,
+  `ativo` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -383,6 +383,10 @@ CREATE TABLE IF NOT EXISTS `venda_itens_produtos` (
   `quantidade_produto` int(11) NOT NULL,
   `ativo` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
 
 --
 -- Indexes for table `admins`
@@ -473,6 +477,12 @@ ALTER TABLE `modulos`
 --
 ALTER TABLE `modulo_relaciona_usuarios`
  ADD PRIMARY KEY (`id`), ADD KEY `fk2_modelo_relaciona_id_modulo` (`id_modulo`), ADD KEY `fk1_usuario_id` (`id_usuario`);
+
+--
+-- Indexes for table `newsletters`
+--
+ALTER TABLE `newsletters`
+ ADD PRIMARY KEY (`id`), ADD KEY `usuario_id` (`usuario_id`);
 
 --
 -- Indexes for table `ocorrencias`
@@ -595,12 +605,17 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
 -- AUTO_INCREMENT for table `modulos`
 --
 ALTER TABLE `modulos`
-MODIFY `id` int(100) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `id` int(100) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `modulo_relaciona_usuarios`
 --
 ALTER TABLE `modulo_relaciona_usuarios`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=31;
+--
+-- AUTO_INCREMENT for table `newsletters`
+--
+ALTER TABLE `newsletters`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ocorrencias`
 --
@@ -678,6 +693,12 @@ ADD CONSTRAINT `fk_cor_id` FOREIGN KEY (`cor_id`) REFERENCES `cores` (`id`);
 ALTER TABLE `modulo_relaciona_usuarios`
 ADD CONSTRAINT `fk1_usuario_id` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
 ADD CONSTRAINT `fk2_modelo_relaciona_id_modulo` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id`);
+
+--
+-- Limitadores para a tabela `newsletters`
+--
+ALTER TABLE `newsletters`
+ADD CONSTRAINT `newsletters_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 
 --
 -- Limitadores para a tabela `ocorrencias`

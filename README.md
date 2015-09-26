@@ -14,6 +14,14 @@ Algumas das caracteristicas delas são estas a seguir
   - API Cliente 
   - Desenvolvimento de E-Commerce 
 
+Caracteristicas de Desenvolvimento
+  - Muitos módulos já prontos
+  - TDD com phpunit
+  - Dependencias com o composer
+  - Estrutura MVC com a framework CakePHP
+  - Diversas plugins disponiveis devido ao framework utilizado
+
+Para instalar as dependencias você deve instalar o composer e depois rodar o comando "composer install", pronto.
 
 Contribuindo
 =======

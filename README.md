@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/reginaldojunior/winners.svg)](https://travis-ci.org/reginaldojunior/winners)
+
 Winners - Plataforma OpenSource
 =======
 Essa plataforma tem como funcionalidade auxiliar o desenvolvedor a entregar novos projetos em pouco tempo.

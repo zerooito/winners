@@ -1,15 +1,25 @@
 [![Build Status](https://travis-ci.org/reginaldojunior/winners.svg)](https://travis-ci.org/reginaldojunior/winners)
 
-<html>
-<body>
-  <form method='post' action='https://www.moip.com.br/Process.do'> <input type='hidden' name='method' value='donation'/> <input type='hidden' name='donation_id' value='8232'/> <input type='hidden' name='type' value='2'/> <input type='image' name='submit' src='https://static.moip.com.br/imgs/buttons/bt_doar_c02_e04.png' alt='upload blog in server' border='0' /> </form>
-</body>
-</html>
+
+O Problema
+=======
+Motivo pelo qual iniciei este projeto foi basicamente isso "eu queria fazer algo e tinha tempo livre". Porém ao passar do tempo notei que ele podia ser algo melhor que imaginei e comecei implementar varias features legais, como controle de estoque de produto, uma classe pai para lojas e etc...
+
+Objetivo
+=======
+Ter uma sistema pronto no qual tenha os conceitos atuais de programação, entre eles, MVC, SOLID, TDD e outros. Tudo isso em cima de uma framework robusta nesse caso CakePHP, coisa que as plataforma atuais não tem, entre elas Wordpress, magento, opencart e etc...
+
+Erros Conhecidos
+=======
+Como iniciei o projeto tinha muito pouco conhecimento nos paradigmas citados acima, ela está com algumas GAMBIARRAS feita entre os controllers e os models
+
+Proximos Passos
+=======
+Meus próximos passos que espero para a plataforma e ter um auxilio da comunidade para o desenvolvimento, criando issues, testando e usando em produção ;)
 
 Winners - Plataforma OpenSource
 =======
 Essa plataforma tem como funcionalidade auxiliar o desenvolvedor a entregar novos projetos em pouco tempo.
-
 Algumas das caracteristicas delas são estas a seguir
   - Venda
   - Produto
@@ -21,14 +31,12 @@ Algumas das caracteristicas delas são estas a seguir
   - Cliente
   - API Cliente 
   - Desenvolvimento de E-Commerce 
-
 Caracteristicas de Desenvolvimento
   - Muitos módulos já prontos
   - TDD com phpunit
   - Dependencias com o composer
   - Estrutura MVC com a framework CakePHP
   - Diversas plugins disponiveis devido ao framework utilizado
-
 Para instalar as dependencias você deve instalar o composer e depois rodar o comando "composer install", pronto.
 
 Contribuindo

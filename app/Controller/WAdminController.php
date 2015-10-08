@@ -1,5 +1,6 @@
 <?php
 class WAdminController extends AppController{
+	
 	function index(){
 		$this->layout = 'wadmin';
 
@@ -20,6 +21,6 @@ class WAdminController extends AppController{
 		$empresa_home = $this->request->data['empresa_home'];
 		$id_usuario = $this->request->data['id_usuario'];
 
-
 	}
+
 }

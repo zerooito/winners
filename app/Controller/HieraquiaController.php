@@ -1,6 +1,7 @@
 <?php
 
 class HieraquiaController extends AppController {
+
 	public function listar_cadastros() {
 		$this->loadModel('Hieraquia');
 		$dados = $this->Hieraquia->find('all',
@@ -39,6 +40,5 @@ class HieraquiaController extends AppController {
 	public function listar_subusuarios() {
 		$this->layout = 'wadmin';
 	}
-
 
 }

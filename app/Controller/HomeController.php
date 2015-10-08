@@ -53,6 +53,7 @@ class HomeController extends AppController{
 
 	public function sendmail() {
 		App::uses('CakeEmail', 'Network/Email');
+
 		$email = new CakeEmail('default');
 		$email->from('jr.design_2010@hotmail.com', 'reginaldo')
 			->to('jr.design_2010@hotmail.com')

@@ -32,7 +32,7 @@ class AviseMeControllerTest extends ControllerTestCase
 	public function testPostMailAndProductToCreateOfAviseMe()
 	{
 		$data = array(
-			'usuario_id' => 9,
+			'usuario_id' => 13,
 			'produto_id' => 75,
 			'email'      => 'email@teste.com',
 			'ativo'      => 1
@@ -51,9 +51,10 @@ class AviseMeControllerTest extends ControllerTestCase
 	public function testSendMailOfAviseMe()
 	{
 		$produto_id = 75;
+		$email      = 'email@teste.com';
 
 		$result = $this->testAction(
-			'/aviseme/enviar_email_aviseme/' . $produto_id
+			'/aviseme/enviar_email_aviseme/' . $produto_id . '/' . $email
 		);
 
 		$this->assertEquals(true, $result);

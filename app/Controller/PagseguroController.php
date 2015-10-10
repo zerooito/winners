@@ -89,8 +89,7 @@ class PagseguroController extends AppController
             //  */
 
             // seller authentication
-            $credentials = new PagSeguroAccountCredentials("winnersdevelopers@gmail.com",
-                "EBD38F1C1C6349ACA798C8ECE08643E6");
+            $credentials = new PagSeguroAccountCredentials("email", "token");
 
             // application authentication
             //$credentials = PagSeguroConfig::getApplicationCredentials();

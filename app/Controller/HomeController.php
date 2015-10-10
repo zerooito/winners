@@ -6,8 +6,8 @@ class HomeController extends AppController{
    	}
 
 	function index(){
-		header("Location: http://blog.winnersdesenvolvimento.com.br/blog");
-		die();
+		// header("Location: http://blog.winnersdesenvolvimento.com.br/blog");
+		// die();
 		$this->layout = 'winners';
 	}
 
@@ -53,6 +53,7 @@ class HomeController extends AppController{
 
 	public function sendmail() {
 		App::uses('CakeEmail', 'Network/Email');
+
 		$email = new CakeEmail('default');
 		$email->from('jr.design_2010@hotmail.com', 'reginaldo')
 			->to('jr.design_2010@hotmail.com')

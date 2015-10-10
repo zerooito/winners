@@ -7,25 +7,9 @@ class ApiController extends AppController {
 		return true;
    	}
 
-	public function wishlist()
+	public function wishlist($dados)
 	{
-		$this->autoRender = false;
-		$this->response->type('json');
-
-		$type = $this->request;
-	    
-	    if (!$this->validate_use_api($type))
-	    	echo '{message: Você não tem permissão para usar nossa API}';
-
-	    if ($type->is('get')) {
-	    	echo 'get';
-	    } else if ($type->is('post')) {
-	    	echo 'post';
-	    } else if ($type->is('put')) {
-	    	echo 'put';
-	    } else if ($type->is('delete')) {
-	    	echo 'delete';
-	    }
+		return true;
 	}
 
 	public function client($id_cliente = null)
@@ -228,6 +212,8 @@ class ApiController extends AppController {
 
 	public function postClient($dados)
 	{
+		$this->loadModel('Cliente');
+
     	$dados['senha'] = sha1($dados['senha']);
 		$dados['ativo'] = 1;
 		$dados['id_usuario'] = $this->instancia;
@@ -238,7 +224,7 @@ class ApiController extends AppController {
 		}
 
 		$this->response->body('{"message": "error"}');
-		return;
+		return true;
 	}
 
 	public function putClient($dados, $id_cliente)
@@ -412,6 +398,11 @@ class ApiController extends AppController {
 
 	public function getIdUser()
 	{
+		if (!is_numeric($this->instancia))
+		{
+			return false;
+		}
+
 		return $this->instancia;
 	}
 }

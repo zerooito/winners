@@ -298,6 +298,39 @@ class LojaController extends PagamentoController {
       return true;   
    }
 
+   public function saveClientFromEcommerce($data) {
+      $this->loadModel('Cliente');
+
+      $data['senha'] = sha1($data['senha']);
+
+      $this->Cliente->set($data);
+
+      if (!$this->Cliente->validates())
+      {
+         return false;
+      }
+
+      if (!$this->Cliente->save())
+      {
+         return false;
+      }
+
+      return $this->Cliente->getLastInsertId();
+   }
+
+   public function saveAndressClientFromEcommerce($data) {
+      $this->loadModel('EnderecoClienteCadastro');
+
+      $this->EnderecoClienteCadastro->set($data);
+
+      if (!$this->EnderecoClienteCadastro->validates())
+      {
+         return false;
+      }
+
+      return $this->EnderecoClienteCadastro->save();
+   }
+
 	/**
 	* Views
 	*/

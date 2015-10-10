@@ -1,4 +1,6 @@
 <?php
 
-class Produto extends AppModel{
+class Produto extends AppModel
+{
+	
 }

@@ -108,5 +108,9 @@ class PagseguroController extends AppController
         }
     }
 
+    public function sum($num1, $num2)
+    {
+        return $num1 + $num2;
+    }
 
 }

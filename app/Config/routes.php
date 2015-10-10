@@ -31,12 +31,12 @@
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
 	$dominio = verificar_dominio();
+
 	if ($dominio['is_winners']) {
 		Router::connect('/', array('controller' => 'home', 'action' => 'index'));
 	} else {
 		Router::connect('/', array('controller' => $dominio['controller'], 'action' => $dominio['funcao']));
 	}
-
 	
 /**
  * Load all plugin routes. See the CakePlugin documentation on

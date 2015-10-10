@@ -1,8 +1,13 @@
 <?php
 
-require 'IntegracaoPagseguroController.php';
+App::uses('AppController', 'Controller');
 
-class LojaController extends IntegracaoPagseguroController {
+require 'PagamentoController.php';
+require 'CupomController.php';
+require 'NewsletterController.php';
+require 'VendaController.php';
+
+class LojaController extends PagamentoController {
 	public $layout = 'lojaexemplo';	
 
 	public function beforeFilter(){

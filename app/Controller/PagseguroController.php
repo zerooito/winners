@@ -2,7 +2,8 @@
 
 include(APP . 'Vendor/PagSeguro/source/PagSeguroLibrary/PagSeguroLibrary.php');
 
-class IntegracaoPagseguroController extends AppController {
+class PagseguroController extends AppController 
+{
 
     public function paymentPagSeguro($products, $andress, $client, $total, $valor_frete, $id_venda)
     {

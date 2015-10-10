@@ -1,19 +1,14 @@
 <?php
 
-class PagamentoController extends Controller {
-	public $data;
-	public $status;
-	
-	function forma_de_pagamento() {
-		return true;
-	}
+require 'PagseguroController.php';
 
-	function status_de_pagamento() {
-		return true;
-	}
+class PagamentoController extends AppController
+{
+	private $gateway = '';	
 
-	function efetuar_pagamento() {
-		return true;
+	function __construct($gateway)
+	{
+		$this->gateway = new $gateway();
 	}
 
 }

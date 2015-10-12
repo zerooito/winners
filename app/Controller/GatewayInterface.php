@@ -30,17 +30,17 @@ interface GatewayInterface{
 	* @return void
 	* @param Array $produtos
 	**/
-	public function setProduto($produtos);
+	public function setProdutos($produtos);
 
 	/**
 	* @return Array $produto
 	**/
-	public function getProduto();
+	public function getProdutos();
 
 	/**
 	* @param Array Produtos a serem adicionados
 	**/
-	public function adicionarProdutos();
+	public function adicionarProdutosGateway();
 
 	public function finalizarPedido();
 

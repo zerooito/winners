@@ -22,12 +22,6 @@ class PagseguroController extends AppController implements GatewayInterface
     // $products, $andress, $client, $total, $valor_frete, $id_venda
     public function finalizarPedido()
     {
-        // Add an item for this payment request
-        // $paymentRequest->addItem('0001', 'Notebook prata', 2, 430.00);
-
-        // Add another item for this payment request
-        // $paymentRequest->addItem('0002', 'Notebook rosa', 2, 560.00);
-
         // Set a reference code for this payment request. It is useful to identify this payment
         // in future notifications.
         $paymentRequest->setReference($id_venda);
@@ -111,32 +105,53 @@ class PagseguroController extends AppController implements GatewayInterface
         }
     }
 
+    /**
+    * @return void
+    * @param String $token
+    **/
     public function setToken($token)
     {
         $this->token = $token;
     }
 
+    /**
+    * @return String $token
+    **/
     public function getToken()
     {
         return $this->token;
     }
 
+    /**
+    * @return void
+    * @param String $email
+    **/
     public function setEmail($email)
     {
         $this->email = $email;
     }
 
+    /**
+    * @return String $email
+    **/
     public function getEmail()
     {
         return $this->email;
     }
 
-    public function setProduto($produtos)
+    /**
+    * @return void
+    * @param Array $produtos
+    **/
+    public function setProdutos($produtos)
     {
         $this->produtos = $produtos;
     }
 
-    public function getProduto()
+    /**
+    * @return Array $produtos
+    **/
+    public function getProdutos()
     {
         return $this->produtos;
     }
@@ -145,18 +160,18 @@ class PagseguroController extends AppController implements GatewayInterface
     * @param Array Produtos
     * @return Array Produtos
     **/
-    public function adicionarProdutos()
+    public function adicionarProdutosGateway()
     {
-        foreach ($this->getProduto() as $i => $item) {
+        foreach ($this->getProdutos() as $i => $item) {
             $this->paymentRequest->addItem(
-                '000'.$item['Produto']['id'], 
+                '000' . $item['Produto']['id'], 
                 $item['Produto']['nome'] . '    Tamanho: '. $item['Produto']['variacao'], 
                 $item['Produto']['quantidade'], 
                 number_format($item['Produto']['preco'], 2, '.', '')
             );
         }
 
-        return $this->getProduto();
+        return $this->getProdutos();
     }
 
 }

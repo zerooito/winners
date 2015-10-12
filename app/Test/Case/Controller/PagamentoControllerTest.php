@@ -50,8 +50,8 @@ class PagamentoControllerTest extends PHPUnit_Framework_TestCase
             )
         );
 
-        $this->pagamento->setProduto($produto);
-        $this->assertEquals($produto, $this->pagamento->adicionarProdutos());
+        $this->pagamento->setProdutos($produto);
+        $this->assertEquals($produto, $this->pagamento->adicionarProdutosGateway());
     }
 
 }

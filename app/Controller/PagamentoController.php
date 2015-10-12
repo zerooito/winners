@@ -46,35 +46,29 @@ class PagamentoController extends AppController
 		return $this->gateway->getEmail();
 	}
 
-	
 	/**
 	* @return void
 	* @param Array $produtos
 	**/
-	public function setProduto($produto)
+	public function setProdutos($produto)
 	{
-		$this->gateway->setProduto($produto);
+		$this->gateway->setProdutos($produto);
 	}
 
 	/**
 	* @return Array $produto
 	**/
-	public function getProduto()
+	public function getProdutos()
 	{
-		return $this->gateway->getProduto();
+		return $this->gateway->getProdutos();
 	}
 
-	public function adicionarProdutos()
+	public function adicionarProdutosGateway()
 	{
-		return $this->gateway->adicionarProdutos();
+		return $this->gateway->adicionarProdutosGateway();
 	}
 
 	public function removerProdutos($produto)
-	{
-		return true;
-	}
-
-	public function getProdutos()
 	{
 		return true;
 	}

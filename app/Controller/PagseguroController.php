@@ -9,12 +9,14 @@ class PagseguroController extends AppController implements GatewayInterface
     private $paymentRequest;
     private $email;
     private $token;
-    private $produtos = Array();
+    private $produtos = array();
+    private $client = array();    
+    private $reference;
+    private $valor_frete;
 
     public function __construct()
     {
         $this->paymentRequest = new PagSeguroPaymentRequest();
-        
         // Set the currency
         $this->paymentRequest->setCurrency("BRL");
     }
@@ -22,59 +24,12 @@ class PagseguroController extends AppController implements GatewayInterface
     // $products, $andress, $client, $total, $valor_frete, $id_venda
     public function finalizarPedido()
     {
-        // Set a reference code for this payment request. It is useful to identify this payment
-        // in future notifications.
-        $paymentRequest->setReference($id_venda);
+        $this->paymentRequest->setReference($this->reference);
+        $this->paymentRequest->setShippingCost($this->valor_frete);
 
-        // Set shipping information for this payment request
-        $sedexCode = PagSeguroShippingType::getCodeByType('PAC');
-        
-        $paymentRequest->setShippingCost($valor_frete);  
-
-        $paymentRequest->setShippingType($sedexCode);
-        $paymentRequest->setShippingAddress(
-            $andress['cep'],
-            $andress['endereco'],
-            $andress['numero'],
-            'apto. 114',
-            $andress['bairro'],
-            $andress['cidade'],
-            $andress['estado'],
-            'BRA'
-        );
-
-        // Set your customer information.
-        $paymentRequest->setSender(
-            $client['nome'],
-            $client['email'],
-            $client['ddd'],
-            $client['telefone'],
-            'CPF',
-            $client['cpf']
-        );
 
         // Set the url used by PagSeguro to redirect user after checkout process ends
-        $paymentRequest->setRedirectUrl("http://www.lojamodelo.com.br");
-
-        // Add checkout metadata information
-        // $paymentRequest->addMetadata('PASSENGER_CPF', '15600944276', 1);
-        // $paymentRequest->addMetadata('GAME_NAME', 'DOTA');
-        // $paymentRequest->addMetadata('PASSENGER_PASSPORT', '23456', 1);
-
-        // Another way to set checkout parameters
-        // $paymentRequest->addParameter('notificationURL', 'http://www.lojamodelo.com.br/nas');
-        // $paymentRequest->addParameter('senderBornDate', '07/05/1981');
-        // $paymentRequest->addIndexedParameter('itemId', '0003', 3);
-        // $paymentRequest->addIndexedParameter('itemDescription', 'Notebook Preto', 3);
-        // $paymentRequest->addIndexedParameter('itemQuantity', '1', 3);
-        // $paymentRequest->addIndexedParameter('itemAmount', '200.00', 3);
-
-        // Add discount per payment method
-        $paymentRequest->addPaymentMethodConfig('CREDIT_CARD', 1.00, 'DISCOUNT_PERCENT');
-        $paymentRequest->addPaymentMethodConfig('EFT', 2.90, 'DISCOUNT_PERCENT');
-        $paymentRequest->addPaymentMethodConfig('BOLETO', 10.00, 'DISCOUNT_PERCENT');
-        $paymentRequest->addPaymentMethodConfig('DEPOSIT', 3.45, 'DISCOUNT_PERCENT');
-        $paymentRequest->addPaymentMethodConfig('BALANCE', 0.01, 'DISCOUNT_PERCENT');
+        $this->paymentRequest->setRedirectUrl("http://www.lojamodelo.com.br");
 
         try {
 
@@ -86,7 +41,7 @@ class PagseguroController extends AppController implements GatewayInterface
             //  */
 
             // seller authentication
-            $credentials = new PagSeguroAccountCredentials("email", "token");
+            $credentials = new PagSeguroAccountCredentials($this->email, $this->token);
 
             // application authentication
             //$credentials = PagSeguroConfig::getApplicationCredentials();
@@ -94,8 +49,8 @@ class PagseguroController extends AppController implements GatewayInterface
             //$credentials->setAuthorizationCode("E231B2C9BCC8474DA2E260B6C8CF60D3");
 
             // Register this payment request in PagSeguro to obtain the payment URL to redirect your customer.
-            $url = $paymentRequest->register($credentials);
-
+            $url = $this->paymentRequest->register($credentials);
+            
             $this->redirect($url);
 
         } catch (PagSeguroServiceException $e) {
@@ -162,6 +117,11 @@ class PagseguroController extends AppController implements GatewayInterface
     **/
     public function adicionarProdutosGateway()
     {
+        if (empty($this->getProdutos()))
+        {
+            throw new Exception("Você precisa usar a função setar os dados do produto!", 1);            
+        }
+
         foreach ($this->getProdutos() as $i => $item) {
             $this->paymentRequest->addItem(
                 '000' . $item['Produto']['id'], 
@@ -172,6 +132,90 @@ class PagseguroController extends AppController implements GatewayInterface
         }
 
         return $this->getProdutos();
+    }
+
+    public function setEndereco($endereco)
+    {
+        $this->endereco = $endereco;
+    }
+
+    public function getEndereco()
+    {
+        return $this->endereco;
+    }
+
+    public function setEnderecoClienteGateway()
+    {
+        if (empty($this->endereco))
+        {
+            throw new Exception("Você precisa usar a função setar os dados do cliente!", 1);            
+        }
+
+        $sedexCode = PagSeguroShippingType::getCodeByType('PAC');
+        $paymentRequest->setShippingType($sedexCode);
+
+        $paymentRequest->setShippingAddress(
+            $this->endereco['cep'],
+            $this->endereco['endereco'],
+            $this->endereco['numero'],
+            $this->endereco['complemento'],
+            $this->endereco['bairro'],
+            $this->endereco['cidade'],
+            $this->endereco['estado'],
+            'BRA'
+        );
+
+        return $this->getEndereco();
+    }
+
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+    }
+
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    public function setValorFrete($valor_frete)
+    {
+        $this->valor_frete = $valor_frete;
+    }
+
+    public function getValorFrete()
+    {
+        return $this->valor_frete;
+    }
+
+    public function setClienteGateway()
+    {
+        if (empty($this->cliente))
+        {
+            throw new Exception("Você precisa usar a função setar os dados do cliente!", 1);            
+        }
+
+        // Set your customer information.
+        $this->paymentRequest->setSender(
+            $this->cliente['nome'],
+            $this->cliente['email'],
+            $this->cliente['ddd'],
+            $this->cliente['telefone'],
+            'CPF',
+            $this->cliente['cpf']
+        );
+
+        return $this->getCliente();
+    }
+
+    public function setCliente($cliente)
+    {
+        $this->cliente = $cliente;
+    }
+
+    public function getCliente()
+    {
+        return $this->cliente;
     }
 
 }

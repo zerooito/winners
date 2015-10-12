@@ -41,6 +41,17 @@ interface GatewayInterface{
 	* @param Array Produtos a serem adicionados
 	**/
 	public function adicionarProdutosGateway();
+	
+	/**
+	* @param Array Andress/Endeço do cliente
+	**/
+	public function setEnderecoClienteGateway();
+
+	public function setCliente($cliente);
+
+	public function getCliente();
+
+	public function setClienteGateway();
 
 	public function finalizarPedido();
 

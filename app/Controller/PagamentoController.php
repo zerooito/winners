@@ -68,13 +68,59 @@ class PagamentoController extends AppController
 		return $this->gateway->adicionarProdutosGateway();
 	}
 
-	public function removerProdutos($produto)
+	public function setEndereco($endereco)
 	{
-		return true;
+		$this->gateway->setEndereco($endereco);
 	}
-	
+
+	public function getEndereco()
+	{
+		return $this->gateway->getEndereco();
+	}
+
+	public function setEnderecoClienteGateway()
+	{
+		return $this->gateway->setEnderecoClienteGateway();
+	}
+
+	public function setReference($reference)
+	{
+		$this->gateway->setReference($reference);
+	}
+
+	public function getReference()
+	{
+		return $this->gateway->getReference();
+	}
+
+	public function setValorFrete($valor_frete)
+	{
+		$this->gateway->setValorFrete($valor_frete);
+	}
+
+	public function getValorFrete()
+	{
+		return $this->gateway->getValorFrete();
+	}
+
+	public function setCliente($cliente)
+	{
+		$this->gateway->setCliente($cliente);
+	}
+
+	public function getCliente()
+	{
+		return $this->gateway->getCliente();
+	}
+
+	public function setClienteGateway()
+	{
+		return $this->gateway->setClienteGateway();
+	}
+
 	public function finalizarPedido()
 	{
-		return true;
+		return $this->gateway->finalizarPedido();
 	}
+
 }

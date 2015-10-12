@@ -1,9 +1,8 @@
 <?php
 
-require 'GatewayInterface.php';
 require 'PagseguroController.php';
 
-class PagamentoController extends AppController implements GatewayInterface
+class PagamentoController extends AppController
 {
 
 	private $gateway = '';	
@@ -47,9 +46,27 @@ class PagamentoController extends AppController implements GatewayInterface
 		return $this->gateway->getEmail();
 	}
 
-	public function adicionarProdutos($produtos)
+	
+	/**
+	* @return void
+	* @param Array $produtos
+	**/
+	public function setProduto($produto)
 	{
-		return true;
+		$this->gateway->setProduto($produto);
+	}
+
+	/**
+	* @return Array $produto
+	**/
+	public function getProduto()
+	{
+		return $this->gateway->getProduto();
+	}
+
+	public function adicionarProdutos()
+	{
+		return $this->gateway->adicionarProdutos();
 	}
 
 	public function removerProdutos($produto)

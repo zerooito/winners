@@ -1,27 +1,27 @@
 <?php
 
+require 'GatewayInterface.php';
 include(APP . 'Vendor/PagSeguro/source/PagSeguroLibrary/PagSeguroLibrary.php');
 
-class PagseguroController extends AppController 
+class PagseguroController extends AppController implements GatewayInterface
 {
 
+    private $paymentRequest;
     private $email;
     private $token;
+    private $produtos = Array();
 
-    public function paymentPagSeguro($products, $andress, $client, $total, $valor_frete, $id_venda)
+    public function __construct()
     {
-        // Instantiate a new payment request
-        $paymentRequest = new PagSeguroPaymentRequest();
-
+        $this->paymentRequest = new PagSeguroPaymentRequest();
+        
         // Set the currency
-        $paymentRequest->setCurrency("BRL");
-
-        // Add an item for this payment request
-        foreach ($products as $i => $item) {
-        	$paymentRequest->addItem('000'.$item['Produto']['id'], $item['Produto']['nome'] . '    Tamanho: '. $item['Produto']['variacao'], $item['Produto']['quantidade'], number_format($item['Produto']['preco'], 2, '.', ''));
-        }
-
-
+        $this->paymentRequest->setCurrency("BRL");
+    }
+    
+    // $products, $andress, $client, $total, $valor_frete, $id_venda
+    public function finalizarPedido()
+    {
         // Add an item for this payment request
         // $paymentRequest->addItem('0001', 'Notebook prata', 2, 430.00);
 
@@ -131,9 +131,32 @@ class PagseguroController extends AppController
         return $this->email;
     }
 
-    public function adicionarProdutos($produtos)
+    public function setProduto($produtos)
     {
-        return $produtos;
+        $this->produtos = $produtos;
+    }
+
+    public function getProduto()
+    {
+        return $this->produtos;
+    }
+
+    /**
+    * @param Array Produtos
+    * @return Array Produtos
+    **/
+    public function adicionarProdutos()
+    {
+        foreach ($this->getProduto() as $i => $item) {
+            $this->paymentRequest->addItem(
+                '000'.$item['Produto']['id'], 
+                $item['Produto']['nome'] . '    Tamanho: '. $item['Produto']['variacao'], 
+                $item['Produto']['quantidade'], 
+                number_format($item['Produto']['preco'], 2, '.', '')
+            );
+        }
+
+        return $this->getProduto();
     }
 
 }

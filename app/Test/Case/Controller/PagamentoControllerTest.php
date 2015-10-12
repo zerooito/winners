@@ -38,7 +38,20 @@ class PagamentoControllerTest extends PHPUnit_Framework_TestCase
     {
         $this->pagamento = new PagamentoController('PagseguroController');
 
-        $this->pagamento->adicionarProdutos($produto);
+        $produto = array(
+            0 => array(
+                'Produto' => array(
+                    'id' => 23,
+                    'nome' => 'Produto Teste',
+                    'variacao' => 'M',
+                    'quantidade' => 2,
+                    'preco' => 2.44
+                )
+            )
+        );
 
+        $this->pagamento->setProduto($produto);
+        $this->assertEquals($produto, $this->pagamento->adicionarProdutos());
     }
+
 }

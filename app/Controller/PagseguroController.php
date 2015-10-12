@@ -131,4 +131,9 @@ class PagseguroController extends AppController
         return $this->email;
     }
 
+    public function adicionarProdutos($produtos)
+    {
+        return $produtos;
+    }
+
 }

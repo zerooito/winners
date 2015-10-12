@@ -11,12 +11,12 @@ class PagamentoControllerTest extends PHPUnit_Framework_TestCase
 {
     protected $pagamento;
 
-    public function testInstanciaClassePagamentoComPagseguro()
+    public function testInstanciaClassePagamentoComPagSeguro()
     {
     	$this->pagamento = new PagamentoController('PagseguroController');
     }
 
-    public function testSetAndGetTokenPagseguro()
+    public function testSetAndGetTokenPagSeguro()
     {
     	$this->pagamento = new PagamentoController('PagseguroController');
 
@@ -25,12 +25,20 @@ class PagamentoControllerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('açlksdjflçajsdflkajsdf', $this->pagamento->getToken());
     }
 
-    public function testSetAndGetEmailPagseeguro()
+    public function testSetAndGetEmailPagSeguro()
     {
         $this->pagamento = new PagamentoController('PagseguroController');
 
         $this->pagamento->setEmail('winnersdevelopers@gmail.com');
 
         $this->assertEquals('winnersdevelopers@gmail.com', $this->pagamento->getEmail());
+    }
+
+    public function testSetOneNewProductInListPagSeguro()
+    {
+        $this->pagamento = new PagamentoController('PagseguroController');
+
+        $this->pagamento->adicionarProdutos($produto);
+
     }
 }

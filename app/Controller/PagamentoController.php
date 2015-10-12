@@ -72,7 +72,7 @@ class PagamentoController extends AppController
 	{
 		return true;
 	}
-
+	
 	public function finalizarPedido()
 	{
 		return true;

@@ -5,6 +5,9 @@ include(APP . 'Vendor/PagSeguro/source/PagSeguroLibrary/PagSeguroLibrary.php');
 class PagseguroController extends AppController 
 {
 
+    private $email;
+    private $token;
+
     public function paymentPagSeguro($products, $andress, $client, $total, $valor_frete, $id_venda)
     {
         // Instantiate a new payment request
@@ -108,9 +111,24 @@ class PagseguroController extends AppController
         }
     }
 
-    public function sum($num1, $num2)
+    public function setToken($token)
     {
-        return $num1 + $num2;
+        $this->token = $token;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 
 }

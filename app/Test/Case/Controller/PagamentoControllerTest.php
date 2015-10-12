@@ -18,7 +18,19 @@ class PagamentoControllerTest extends PHPUnit_Framework_TestCase
 
     public function testSetAndGetTokenPagseguro()
     {
-    	$this->pagamento = new PagamentoController('PagamentoController');
-    	
+    	$this->pagamento = new PagamentoController('PagseguroController');
+
+        $this->pagamento->setToken('açlksdjflçajsdflkajsdf');
+
+        $this->assertEquals('açlksdjflçajsdflkajsdf', $this->pagamento->getToken());
+    }
+
+    public function testSetAndGetEmailPagseeguro()
+    {
+        $this->pagamento = new PagamentoController('PagseguroController');
+
+        $this->pagamento->setEmail('winnersdevelopers@gmail.com');
+
+        $this->assertEquals('winnersdevelopers@gmail.com', $this->pagamento->getEmail());
     }
 }

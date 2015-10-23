@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/reginaldojunior/winners.svg)](https://travis-ci.org/reginaldojunior/winners)
+[![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/)
 
 
 O Problema

@@ -59,6 +59,7 @@
 			'www.ciawn.com.br',
 			'ciawn.com.br',
 			'api.ciawn.com.br',
+			'winnersopensource.herokuapp.com'
 		);
 
 		$dominiosWinnersRedirect = array(

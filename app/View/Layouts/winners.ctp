@@ -70,7 +70,7 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                     <li><a href="#stories">Métodos</a></li>
                     <li><a href="#contact">Contato</a></li>
                     <li><a href="/home/login">Login</a></li>
-                    <li><a target="_blank" href="/blog">Blog</a></li>
+                    <li><a target="_blank" href="https://github.com/reginaldojunior/winners">Winners OpenSource</a></li>
                 </ul>
               </div>
           </div>
@@ -80,12 +80,12 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
     <div class="banner">
       <div class="container">
           <div class="header-text">
-              <p class="big-text">Soluções Inovadoras</p>
+              <p class="big-text">Soluções Inovadora</p>
                 <h2>As melhores ferramentas</h2>
-                <p class="small-text">ERP, CMS, E-commerce, Wordpress, OpenCart e muito mais</p>
+                <p class="small-text">Plataforma E-commerce Winners OpenSource</p>
                 <div class="button-section">
                   <ul>
-                      <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Solicite um Orçamento</a></li>
+                      <li><a href="#" class="top-button green" data-toggle="modal" data-target="#myModal">Contrate um Especialista</a></li>
                   </ul>
                 </div>
             </div>
@@ -109,58 +109,19 @@ type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
                 <ul>
                   <li>
                       <div class="feature-icon icon1"></div>
-                      <h4>Sites Comporativos</h4>
-                      <p>Possuimos CMS próprio e também trabalhamos com Wordpress usando a solução mais viável e economica para seu negocio.</p>
+                      <h4>Gráficos</h4>
+                      <p>Possuimos gráficos de vendas, produtos com estoque baixo e muito mais.</p>
                      </li>
                      <li>
                       <div class="feature-icon icon2"></div>
                       <h4>Ecommerce</h4>
-                      <p>Plataforma de e-commerce própria ou open source, defina seu caso e escolhemos a melhor solução.</p>
+                      <p>Plataforma de e-commerce open source, os melhores desenvolvedores do mundo.</p>
                      </li>
                      <li>
                       <div class="feature-icon icon3"></div>
-                      <h4>ERP Integrado e 100% Customizavel</h4>
-                      <p>Um sistema ERP totalmente flexivel e elastico ao seu projeto, defina suas necessidades e criamos a solução perfeita para você.</p>
+                      <h4>Nosso código é seu código</h4>
+                      <p>Suporte para instalação do software ou consultoria para desenvolvimento especifico.</p>
                      </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    
-    <div class="stories" id="stories">
-      <div class="container">
-          <h3 class="text-head">Métodos</h3>
-            <p class="box-desc">Como funciona os novos projetos.</p>
-          <div class="stories-section">
-              <ul>
-                  <li>
-                      <a href="#">
-                      <div class="story-img"><img src="images/story1.png"/></div>
-                          <div class="story-box">
-                              <h4>Você</h4>
-                              <p>Você cliente entra em contato conosco informando suas necessidades.</p>
-                            
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                      <div class="story-img"><img src="images/story2.png"/></div>
-                          <div class="story-box">
-                              <h4>Call Alinhamento</h4>
-                              <p>Call de alinhamento dos pontos necessários do projeto, assim mantendo os dois lados cientes do que vai ser feito.</p>                            
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                      <div class="story-img"><img src="images/story3.png"/></div>
-                          <div class="story-box">
-                              <h4>Contato comercial</h4>
-                              <p>Comercial entra em contato com você alinhado valores e prazos do projeto.</p>
-                            </div>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>

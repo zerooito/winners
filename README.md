@@ -1,5 +1,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/)
 
+[![Code Quality](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/)
+
 
 O Problema
 =======

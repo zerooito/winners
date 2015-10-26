@@ -1,2 +1,0 @@
-<?php
-// Prevent directory browsing

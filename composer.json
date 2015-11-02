@@ -1,21 +1,21 @@
 {
-	"name": "cakephp/cakephp",
-	"description": "The CakePHP framework",
+	"name": "winners",
+	"description": "Winners platform OpenSource E-commerce.",
 	"type": "library",
-	"keywords": ["framework"],
-	"homepage": "http://cakephp.org",
+	"keywords": ["opensource", "ecommerce", "winners", "cakephp"],
+	"homepage": "http://winnersopensource.herokuapp.com/",
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "CakePHP Community",
-			"homepage": "https://github.com/cakephp/cakephp/graphs/contributors"
+			"name": "Winners Community",
+			"homepage": "https://github.com/reginaldojunior/winners/graphs/contributors"
 		}
 	],
 	"support": {
-		"issues": "https://github.com/cakephp/cakephp/issues",
-		"forum": "http://stackoverflow.com/tags/cakephp",
-		"irc": "irc://irc.freenode.org/cakephp",
-		"source": "https://github.com/cakephp/cakephp"
+		"issues": "https://github.com/reginaldojunior/winners/issues",
+		"forum": "",
+		"irc": "",
+		"source": "https://github.com/reginaldojunior/winners"
 	},
 	"require": {
 		"php": ">=5.2.8"

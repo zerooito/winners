@@ -3,7 +3,7 @@
    
    RewriteCond %{HTTPS} off 
    RewriteCond %{HTTP_HOST} ^(?:fastshipping\.)?(.*)$ [NC]
-   RewriteRule (.*) https://%1%{REQUEST_URI} [L,R=301]
+   RewriteRule (.*) https://fastshipping.%1%{REQUEST_URI} [L,R=301]
    
    RewriteCond %{REQUEST_URI} ^/blog.*
    RewriteRule (.*) - [L]

@@ -79,8 +79,15 @@
 
 			return $retorno;
 		}
-
-		require(APP . 'Config/Domain/' . $varDominio . '.php');
+		
+		$caminho = APP . 'Config/Domain/' . $varDominio . '.php';
+		if (!file_exists($caminho))
+		{
+			$retorno['is_winners'] = true;
+			return $retorno;
+		}
+		
+		require($caminho);
 
 		$retorno['is_winners'] = false;
 		$retorno['id_usuario'] = $dominio['id_usuario'];

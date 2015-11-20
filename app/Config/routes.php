@@ -79,7 +79,12 @@
 
 			return $retorno;
 		}
-		print_r($varDominio);exit();
+		
+		if ($varDominio == "fastshipping.ciawn.com.br")
+		{
+			header('Location: https://fastshipping.ciawn.com.br');
+			exit();
+		}
 		
 		$caminho = APP . 'Config/Domain/' . $varDominio . '.php';
 		if (!file_exists($caminho))

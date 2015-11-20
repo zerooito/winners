@@ -79,6 +79,7 @@
 
 			return $retorno;
 		}
+		print_r($varDominio);exit();
 		
 		$caminho = APP . 'Config/Domain/' . $varDominio . '.php';
 		if (!file_exists($caminho))

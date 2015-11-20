@@ -56,8 +56,8 @@
 		$dominiosWinners = array (
 			'winners.local',
 			'blog.winnersdesenvolvimento.com.br',
-			'www.ciawn.com.br',
 			'ciawn.com.br',
+			'www.ciawn.com.br',
 			'api.ciawn.com.br',
 			'winnersopensource.herokuapp.com'
 		);
@@ -68,7 +68,7 @@
 		);
 
 		$varDominio = $_SERVER['SERVER_NAME'];
-
+		print_r($varDominio);exit();
 		if (array_search($varDominio, $dominiosWinnersRedirect) !== false) {
 			header('Location: http://www.ciawn.com.br');
 			exit();

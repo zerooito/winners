@@ -2,7 +2,7 @@
    RewriteEngine on 
    
    RewriteCond %{HTTPS} off 
-   RewriteCond %{HTTP_HOST} ^(?:fastshipping\.)?(.*)$ [NC]
+   RewriteCond %{HTTP_HOST} ^fastshipping.ciawn.com.br [NC] 
    RewriteRule (.*) https://fastshipping.%1%{REQUEST_URI} [L,R=301]
    
    RewriteCond %{REQUEST_URI} ^/blog.*

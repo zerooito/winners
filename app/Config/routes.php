@@ -68,8 +68,8 @@
 		);
 
 		$varDominio = $_SERVER['SERVER_NAME'];
-		print_r($varDominio);exit();
-		if (array_search($varDominio, $dominiosWinnersRedirect) !== false) {
+		
+		if (array_search($varDominio, $dominiosWinnersRedirect) !== false || $varDominio == "ciawn.com.br") {
 			header('Location: http://www.ciawn.com.br');
 			exit();
 		}

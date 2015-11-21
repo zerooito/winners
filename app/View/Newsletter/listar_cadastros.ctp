@@ -36,7 +36,7 @@
                                         <td> - </td>
                                     <?php endif; ?>
                                     
-                                    <?php if (!empty($newsletter['Newsletter']['nome']) && isset($newsletter['Newsletter']['nome'])): ?>    
+                                    <?php if (!empty($newsletter['Newsletter']['origem']) && isset($newsletter['Newsletter']['origem'])): ?>    
                                         <td><?php echo $newsletter['Newsletter']['origem'] ?></td>
                                     <?php else: ?>
                                         <td> - </td>

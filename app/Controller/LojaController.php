@@ -2,12 +2,12 @@
 
 App::uses('AppController', 'Controller');
 
-require 'IntegracaoPagseguroController.php';
+require 'PagamentoController.php';
 require 'CupomController.php';
 require 'NewsletterController.php';
 require 'VendaController.php';
 
-class LojaController extends IntegracaoPagseguroController {
+class LojaController extends PagamentoController {
 	public $layout = 'lojaexemplo';	
 
 	public function beforeFilter(){

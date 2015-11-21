@@ -11,6 +11,7 @@
 /dist
 /tags
 /phpmyadmin
+/blog
 /blog/uploads
 /blog/wp-content
 /blog/wp-config.php

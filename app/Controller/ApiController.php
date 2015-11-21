@@ -185,6 +185,43 @@ class ApiController extends AppController {
 	    }
 	}
 
+	public function newsletter()
+	{
+		$api = 'newsletter';
+
+		$this->loadModel('Newsletter');
+
+		$this->autoRender = false;
+		$this->response->type('json');
+		
+		$type = $this->request;
+
+	    if (!$this->validate_use_api($type, $api)) {
+	    	echo '{message: Você não tem permissão para usar nosso modulo}';
+	    	return;
+	    }
+
+    	$request = $this->request->data;
+    	
+    	if (empty($request)) {
+			$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
+			return;
+    	}
+
+		$dados = array(
+			'email'  => $request['email'],
+			'origem' => $request['origem'],
+			'ativo'  => 1,
+			'usuario_id' => $this->getIdUser()
+		);
+
+		$this->Newsletter->save($dados);
+
+		$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+		return;		
+	}
+
+
 	public function loginClient($dados)
 	{
 

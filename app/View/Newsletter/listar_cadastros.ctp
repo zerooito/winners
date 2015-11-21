@@ -20,6 +20,7 @@
                             <thead>
                                 <tr>
                                     <th>Nome</th>
+                                    <th>Origem</th>
                                     <th>Email</th>
                                     <th>Ações</th>
                                 </tr>
@@ -29,7 +30,8 @@
                             foreach ($newsletters as $indice => $newsletter) {
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $newsletter['Newsletter']['id'] ?>">
-                                    <td><?php echo $newsletter['Newsletter']['nome'] ?></td>
+                                    <td><?php echo !empty($newsletter['Newsletter']['nome']) ? $newsletter['Newsletter']['nome'] : '-' ?></td>
+                                    <td><?php echo !empty($newsletter['Newsletter']['origem']) ? $newsletter['Newsletter']['nome'] : '-' ?></td>
                                     <td><?php echo $newsletter['Newsletter']['email'] ?></td>
                                     <td class="center">
                                         <button onclick="remover_newsletter(<?php echo $newsletter['Newsletter']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>

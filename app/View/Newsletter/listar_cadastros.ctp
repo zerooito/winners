@@ -32,13 +32,13 @@
                                 <tr class="odd gradeX" id="<?php echo $newsletter['Newsletter']['id'] ?>">
                                     <?php if (!empty($newsletter['Newsletter']['nome']) && isset($newsletter['Newsletter']['nome'])): ?>
                                         <td><?php echo $newsletter['Newsletter']['nome'] ?></td>
-                                    <?php else ?>
+                                    <?php else: ?>
                                         <td> - </td>
                                     <?php endif; ?>
                                     
                                     <?php if (!empty($newsletter['Newsletter']['nome']) && isset($newsletter['Newsletter']['nome'])): ?>    
                                         <td><?php echo $newsletter['Newsletter']['origem'] ?></td>
-                                    <?php else ?>
+                                    <?php else: ?>
                                         <td> - </td>
                                     <?php endif; ?>
 

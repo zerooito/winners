@@ -221,6 +221,41 @@ class ApiController extends AppController {
 		return;		
 	}
 
+	public function banner()
+	{
+		$api = 'banner';
+
+		$this->loadModel('Banner');
+
+		$this->autoRender = false;
+		$this->response->type('json');
+
+		$type = $this->request;
+
+		if (!$this->validate_use_api($type, $api)) {
+	    	echo '{message: Você não tem permissão para usar nosso modulo}';
+	    	return;
+	    }
+
+    	$conditions = array(
+			'ativo' => 1,
+			'id_usuario' => $this->getIdUser()
+		);
+
+	    $banner = $this->Banner->find('all', 
+			array('conditions' => 
+				$conditions
+			)
+		);
+
+	    if (!empty($banner)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($banner).'}');
+			return;
+	    }
+		
+		$this->response->body('{"message": "error"}');
+		return;	
+	}
 
 	public function loginClient($dados)
 	{

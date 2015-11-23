@@ -6,7 +6,7 @@ O Problema
 =======
 Para instalar a ultima versão no composer você pode rodar o seguinte comando.
 
-`composer require reginaldojunior/winners`
+`composer require reginaldojunior/winners dev-master`
 
 O Problema
 =======

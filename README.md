@@ -4,6 +4,12 @@ Build Status
 
 O Problema
 =======
+Para instalar a ultima versão no composer você pode rodar o seguinte comando.
+
+`composer require reginaldojunior/winners`
+
+O Problema
+=======
 Motivo pelo qual iniciei este projeto foi basicamente isso "eu queria fazer algo e tinha tempo livre". Porém ao passar do tempo notei que ele podia ser algo melhor que imaginei e comecei implementar varias features legais, como controle de estoque de produto, uma classe pai para lojas e etc...
 
 Objetivo

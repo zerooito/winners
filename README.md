@@ -2,6 +2,12 @@ Build Status
 =======
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/build-status/master)
 
+Instalação
+=======
+Para instalar a ultima versão no composer você pode rodar o seguinte comando.
+
+`composer require reginaldojunior/winners dev-master`
+
 O Problema
 =======
 Motivo pelo qual iniciei este projeto foi basicamente isso "eu queria fazer algo e tinha tempo livre". Porém ao passar do tempo notei que ele podia ser algo melhor que imaginei e comecei implementar varias features legais, como controle de estoque de produto, uma classe pai para lojas e etc...

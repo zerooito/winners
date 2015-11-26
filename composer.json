@@ -1,9 +1,9 @@
 {
-	"name": "winners",
+	"name": "reginaldojunior/winners",
 	"description": "Winners platform OpenSource E-commerce.",
 	"type": "library",
 	"keywords": ["opensource", "ecommerce", "winners", "cakephp"],
-	"homepage": "http://winnersopensource.herokuapp.com/",
+	"homepage": "http://www.ciawn.com.br/",
 	"license": "MIT",
 	"authors": [
 		{

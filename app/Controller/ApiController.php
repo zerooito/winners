@@ -239,7 +239,7 @@ class ApiController extends AppController {
 
     	$conditions = array(
 			'ativo' => 1,
-			'id_usuario' => $this->getIdUser()
+			'usuario_id' => $this->getIdUser()
 		);
 
 	    $banner = $this->Banner->find('all', 

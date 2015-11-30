@@ -1,6 +1,6 @@
 Build Status
 =======
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/build-status/master) [![Issue Stats](http://issuestats.com/github/reginaldojunior/winners/badge/pr)](http://issuestats.com/github/reginaldojunior/winners) [![Issue Stats](http://issuestats.com/github/reginaldojunior/winners/badge/issue)](http://issuestats.com/github/reginaldojunior/winners)
 
 Instalação
 =======

@@ -1,5 +1,5 @@
 {
-	"name": "cakephp/cakephp",
+	"name": "reginaldojunior/winners",
 	"description": "The CakePHP framework",
 	"type": "library",
 	"keywords": ["framework"],
@@ -12,13 +12,13 @@
 		}
 	],
 	"support": {
-		"issues": "https://github.com/cakephp/cakephp/issues",
-		"forum": "http://stackoverflow.com/tags/cakephp",
-		"irc": "irc://irc.freenode.org/cakephp",
-		"source": "https://github.com/cakephp/cakephp"
+		"issues": "https://github.com/reginaldojunior/winners/issues",
+		"source": "https://github.com/reginaldojunior/winners"
 	},
 	"require": {
-		"php": ">=5.2.8"
+		"php": ">=5.2.8",
+		"fastshipping/fastshipping-php": "master-dev",
+		"respect/validation": "master-dev"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.7.*",

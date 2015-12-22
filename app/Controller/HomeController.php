@@ -1,9 +1,5 @@
 <?php
 
-require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
-
-use FastShipping\Lib\Tracking;
-
 class HomeController extends AppController{	
 	
 	public function beforeFilter(){

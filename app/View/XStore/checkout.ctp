@@ -176,8 +176,8 @@
                 <div class="col-xs-4">
                 </div>
                 <div class="col-xs-8">
-                  <button type="submit" class="btn btn-success">
-                    Finalizar com PagSeguro
+                  <button type="submit" class="btn btn-success" disabled="">
+                    Loja Teste
                   </button>
                 </div>
               </div>

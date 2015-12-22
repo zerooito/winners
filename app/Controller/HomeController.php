@@ -1,4 +1,5 @@
 <?php
+
 class HomeController extends AppController{	
 	
 	public function beforeFilter(){
@@ -6,8 +7,6 @@ class HomeController extends AppController{
    	}
 
 	function index(){
-		// header("Location: http://blog.winnersdesenvolvimento.com.br/blog");
-		// die();
 		$this->layout = 'winners';
 	}
 
@@ -23,7 +22,7 @@ class HomeController extends AppController{
 		if(empty($dados['name'])  		||
    			empty($dados['email']) 		||
    			empty($dados['message'])	||
-   			!filter_var($dados['email'],FILTER_VALIDATE_EMAIL)){
+   			!filter_var($dados['email'], FILTER_VALIDATE_EMAIL)) {
 				$this->Session->setFlash('Você deve preencher todos os dados!');
 	            return $this->redirect('/');
 		}	

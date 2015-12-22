@@ -2,7 +2,7 @@
 
 require 'PagseguroController.php';
 
-class PagamentoController extends AppController
+class PagamentoController
 {
 
 	private $gateway = '';	

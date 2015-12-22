@@ -7,7 +7,12 @@ require 'CupomController.php';
 require 'NewsletterController.php';
 require 'VendaController.php';
 
-class LojaController extends PagamentoController {
+require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
+
+use FastShipping\Lib\Tracking;
+use FastShipping\Lib\Shipping;
+
+class LojaController extends AppController {
 	public $layout = 'lojaexemplo';	
 
 	public function beforeFilter(){
@@ -149,7 +154,7 @@ class LojaController extends PagamentoController {
       $usuario_id = $this->Session->read('Usuario.id');
 
       $retorno_venda = $objVenda->salvar_venda($productsSale, array(), array('valor' => $valor_frete + $products['total']), $usuario_id);
-
+      
       $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
    }
 
@@ -178,28 +183,19 @@ class LojaController extends PagamentoController {
 
    public function calcTransportAjax() {
       $this->layout = 'ajax';
+
       $cep_destino = $this->request->data('cep_destino');
       $cep_origem  = $this->request->data('cep_origem');
 
       $dataProducts = $this->loadProductsAndValuesCart();
-
-      (float) $peso = 0;
-      foreach ($dataProducts['products_cart'] as $i => $product) {
-         $peso += $product['Produto']['peso_bruto'] * $product['Produto']['quantidade'];
-      }
-
-      $fretes = $this->transport($cep_destino, $cep_origem, $peso);
+      $fretes = $this->transport($cep_destino, $cep_origem, $dataProducts['products_cart']);
 
       $disponiveis = array();
       $cont = 0;
       foreach ($fretes as $i => $frete) {
-         $disponiveis[$cont]['valor']  = (array) $frete->Valor;
-         $disponiveis[$cont]['prazo']  = (array) $frete->PrazoEntrega;
-         $disponiveis[$cont]['codigo'] = (array) $frete->Codigo;
-
-         $disponiveis[$cont]['valor']  = array_shift($disponiveis[$cont]['valor']);
-         $disponiveis[$cont]['prazo']  = array_shift($disponiveis[$cont]['prazo']);
-         $disponiveis[$cont]['codigo'] = array_shift($disponiveis[$cont]['codigo']);
+         $disponiveis[$cont]['valor']  = $frete->price;
+         $disponiveis[$cont]['prazo']  = $frete->estimate;
+         $disponiveis[$cont]['codigo'] = $frete->method;
          $cont++;
       }
 
@@ -214,34 +210,35 @@ class LojaController extends PagamentoController {
       exit();
    }
    
-   public function transport($cep_destino, $cep_origem, $peso) {
-      $altura = '2';
-      $largura = '11';
-      $comprimento = '16';
+   public function transport($cep_destino, $cep_origem, $data) {
+      $products = [];
+      foreach ($data as $key => $item) {
+         $products[] = [
+           "weight" => (float) $item['Produto']['peso_bruto'],
+           "height" => (float) '',
+           "length" =>(float)  '',
+           "width" => (float) '',
+           "unit_price" => (float) $item['Produto']['preco'],
+           "quantity" => (integer) $item['Produto']['quantidade'],
+           "sku" => $item['Produto']['id_alias'],
+           "id" => $item['Produto']['id']
+         ];
+      }
 
-      $dados['sCepDestino'] = '07252-000';
-      $dados['sCepOrigem'] = '09181-000';
-      $dados['nVlPeso'] = $peso;
-      $dados['nVlComprimento'] = $comprimento;
-      $dados['nVlAltura'] = $altura;
-      $dados['nVlLargura'] = $largura;
-      $dados['nCdServico'] = 41106;//pac varejo
-      $dados['nVlDiametro'] = '2';
-      $dados['nCdFormato'] = '1';
-      $dados['sCdMaoPropria'] = 'n';
-      $dados['nVlValorDeclarado'] = '0';
-      $dados['StrRetorno'] = 'xml';
+      $shipping = new Shipping(
+          (string) $cep_destino,
+          'BR',
+          'GUARULHOS',
+          (string) $cep_origem,
+          '',
+          '',
+          '',
+          $products
+      );
 
-      $dados = http_build_query($dados);
+      $response = $shipping->getPricesShipping();
 
-      $curl = curl_init('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx' . '?' . $dados);
-
-      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-      $resultado = curl_exec($curl);
-
-      $resultado = simplexml_load_string($resultado);
-
-      return $resultado;
+      return $response;
    }
 
    public function saveEmailNewsletter() {

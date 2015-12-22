@@ -1,6 +1,6 @@
 <?php
 
-require(APP . '/Controller/IntegracaoPagseguroController.php');
+require(APP . 'Controller/IntegracaoPagseguroController.php');
 
 /**
 * IntegracaoPagseguroControllerTest

@@ -16,7 +16,7 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 
-	public $debug = true;
+	public $debug = false;
 
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
@@ -101,6 +101,7 @@ class AppController extends Controller {
 
 	public function verificar_acesso_admin() {
 		$verificar = $this->Session->read('Admin.logado');
+		
 		if (!$verificar) {
 			$this->Session->setFlash('Você não possui acesso a está área do sistema');
 			$this->redirect('/admin/login');

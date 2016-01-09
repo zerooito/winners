@@ -8,7 +8,6 @@ require 'NewsletterController.php';
 require 'VendaController.php';
 
 require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
-
 use FastShipping\Lib\Tracking;
 use FastShipping\Lib\Shipping;
 

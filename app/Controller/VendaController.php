@@ -98,7 +98,7 @@ class VendaController extends AppController {
 	public function s_adicionar_cadastro() {
 		$dados_venda 	  = $this->request->data('venda');
 		$dados_lancamento = $this->request->data('lancamento');
-		$produtos 	  = $this->request->data('produto');
+		$produtos 	      = $this->request->data('produto');
 
 		if (!$this->validar_itens_venda($produtos)) {
 			$this->Session->setFlash('Algum produto adicionado não possui estoque disponivel');
@@ -135,7 +135,6 @@ class VendaController extends AppController {
 
 		return $preco;
 	}
-
 
 	public function calcular_custo_venda($produtos) {
 		$this->loadModel('Produto');
@@ -174,12 +173,14 @@ class VendaController extends AppController {
 		return true;
 	}
 
-	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id) {
+	public function salvar_venda($produtos, $lancamento, $informacoes) {
 		unset($informacoes['id_cliente']);
 
 		$informacoes['data_venda'] = date('Y-m-d');
 		$informacoes['id_usuario'] = $this->instancia != 'winners' ? $this->instancia : $usuario_id;
 		$informacoes['ativo']	   = 1;
+		$informacoes['desconto']   = (float) $informacoes['desconto'];
+		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
 
 		if (!$this->Venda->save($informacoes)) {
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
@@ -187,7 +188,7 @@ class VendaController extends AppController {
 		}
 		
 		$id_venda = $this->Venda->getLastInsertId();
-		
+
 		$objVendaItensProdutoController = new VendaItensProdutoController();
 		if ($objVendaItensProdutoController->adicionar_itens_venda($id_venda, $produtos) === false) {
 			return false;

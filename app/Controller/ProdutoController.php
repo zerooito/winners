@@ -195,7 +195,7 @@ class ProdutoController extends AppController{
 		if (empty($produto) && !isset($produto)) {
 			return false;
 		}
-
+		
 		if ($produto['Produto']['estoque'] <= 0) {
 			return false;
 		}

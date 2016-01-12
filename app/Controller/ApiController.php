@@ -495,6 +495,7 @@ class ApiController extends AppController {
 			'email'      => $dados['email'],
 			'data'       => $dados['date'],
 			'hora'       => $dados['hora'],
+			'telefone'   => $dados['telefone'],
 			'id_usuario' => $this->getIdUser(),
 			'ativo'      => 1,
 		);

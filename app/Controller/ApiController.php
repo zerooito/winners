@@ -396,7 +396,8 @@ class ApiController extends AppController {
 		
 		$email->from('jr.design_2010@hotmail.com', 'reginaldo')
 			  ->to('jr.design_2010@hotmail.com')
-			  ->subject('Contato CakePHP MyStore');
+			  ->subject('Contato CakePHP MyStore')
+			  ->attachments('/opt/lampp/htdocs/winners-base/app/webroot/odontoclinicpimentas/images/banner.jpg') ;
 
 		$mensagem = '
 			<p><strong>Nome</strong>: adfasdf</p>

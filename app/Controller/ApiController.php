@@ -185,7 +185,7 @@ class ApiController extends AppController {
 	    }
 	}
 
-	public function newsletter()
+	public function newsletter($sendMail = null)
 	{
 		$api = 'newsletter';
 
@@ -215,9 +215,14 @@ class ApiController extends AppController {
 			'usuario_id' => $this->getIdUser()
 		);
 
+		if ($sendMail == 'enviar_email')
+		{
+			return $this->sendMail($dados);
+		}
+
 		$this->Newsletter->save($dados);
 
-		$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+		$this->response->body('{"message": "success", "result":' . json_encode($dados) . '}');
 		return;		
 	}
 
@@ -383,6 +388,28 @@ class ApiController extends AppController {
 		}	
 	}
 
+	public function sendMail($dados)
+	{
+		App::uses('CakeEmail', 'Network/Email');
+
+		$email = new CakeEmail('default');
+		
+		$email->from('jr.design_2010@hotmail.com', 'reginaldo')
+			  ->to('jr.design_2010@hotmail.com')
+			  ->subject('Contato CakePHP MyStore');
+
+		$mensagem = '
+			<p><strong>Nome</strong>: adfasdf</p>
+			<p><strong>Email</strong>: fasdf@laksjdf</p>
+			<p><strong>Telefone</strong>: asdfasdf</p>
+			<p><strong>Mensagem</strong>:fasdf</p>
+		';
+		
+		$email->send($mensagem);
+
+		print_r($dados);exit;
+		exit();
+	}
 
 	public function postParent($dados)
 	{

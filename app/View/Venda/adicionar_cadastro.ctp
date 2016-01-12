@@ -1,4 +1,3 @@
-
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -129,7 +128,10 @@
         var valor_venda_atual   = $('#valor-atual').attr('data-preco');
 
         if (isNaN(quantidade_produto))
+        {
+            $('#produto_item').focus();
             return;
+        }
 
         $.ajax({
             type: "post",

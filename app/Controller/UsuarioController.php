@@ -6,7 +6,7 @@ class UsuarioController extends AppController{
    	}
 
 	//faz o login no sistema, com a função autentica_email
-	function login(){
+	public function login(){
 		$this->layout = 'ajax';//chama o layout para executar uma função ajax
 
 		$login_email = $this->request->data['email'];//recebe o post email
@@ -54,14 +54,14 @@ class UsuarioController extends AppController{
 		return $this->redirect('/home/login');
 	}
 
-	function logout(){
+	public function logout(){
 		$this->Session->Destroy();
 
 		echo '<script>location.href="/winners/framework/"</script>';
 	}
 
 	//autentica email verifica se o email e senha existem para efetuar o login, ou outra acao.
-	function autentica_email($email,$senha){
+	public function autentica_email($email,$senha){
 		$this->loadModel('Usuario');
 		$resposta = $this->Usuario->find('count', 
 								array('conditions' => array('AND' => array('Usuario.email' => $email, 'Usuario.senha' => sha1($senha))
@@ -74,7 +74,7 @@ class UsuarioController extends AppController{
 	}			
 
 	//se o email estiver livre retorna false, senão retorna true
-	function verificar_email($email){
+	public function verificar_email($email){
 		$this->layout = 'ajax';
 		
 		if(empty($email)){
@@ -94,7 +94,7 @@ class UsuarioController extends AppController{
 		}
 	}
 
-	function recuperar_dados($email,$senha){
+	public function recuperar_dados($email,$senha){
 		$this->loadModel('Usuario');
 		$resposta = $this->Usuario->find('all', 
 								array('conditions' => array('AND' => array('Usuario.email' => $email, 'Usuario.senha' => sha1($senha))
@@ -175,6 +175,12 @@ class UsuarioController extends AppController{
 		$this->ModuloRelacionaUsuario->saveAll($modulos);
 
 		return true;
+	}
+
+	public function meus_dados() {
+		$this->verificar_acesso();
+		$this->layout = 'wadmin';
+    	$this->set('modulos', $this->modulos);
 	}
 
 }

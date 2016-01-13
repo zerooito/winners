@@ -399,9 +399,9 @@ class ApiController extends AppController {
 			  ->subject('Newsletter OdontoClinic Pimentas');
 		
 		$mensagem = 'Obrigado pelo cadastro, em breve você vai receber novidades e promoções!';
-		if (file_exists('/opt/lampp/htdocs/winners-base/app/webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf'))
+		if (file_exists(APP . 'webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf'))
 		{
-			$email->attachments('/opt/lampp/htdocs/winners-base/app/webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf') ;
+			$email->attachments(APP . '/webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf') ;
 
 			$mensagem = '
 				Obrigado pelo cadastro, para mais informações veja o arquivo em anexo!
@@ -412,7 +412,7 @@ class ApiController extends AppController {
 					\n Rua 7, 23
 					\n Jardim Nova Cidade, 07252-380
 					\n (11) 2486-8936";
-					
+
 		$email->send($mensagem);
 
 		return $this->response->body('{"message": "success", "result":' . json_encode($dados) . '}');

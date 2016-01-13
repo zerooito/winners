@@ -394,22 +394,28 @@ class ApiController extends AppController {
 
 		$email = new CakeEmail('default');
 		
-		$email->from('jr.design_2010@hotmail.com', 'reginaldo')
-			  ->to('jr.design_2010@hotmail.com')
-			  ->subject('Contato CakePHP MyStore')
-			  ->attachments('/opt/lampp/htdocs/winners-base/app/webroot/odontoclinicpimentas/images/banner.jpg') ;
-
-		$mensagem = '
-			<p><strong>Nome</strong>: adfasdf</p>
-			<p><strong>Email</strong>: fasdf@laksjdf</p>
-			<p><strong>Telefone</strong>: asdfasdf</p>
-			<p><strong>Mensagem</strong>:fasdf</p>
-		';
+		$email->from('contato@ciawn.com.br', 'OdontoClinic Pimentas')
+			  ->to($dados['email'])
+			  ->subject('Newsletter OdontoClinic Pimentas');
 		
+		$mensagem = 'Obrigado pelo cadastro, em breve você vai receber novidades e promoções!';
+		if (file_exists('/opt/lampp/htdocs/winners-base/app/webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf'))
+		{
+			$email->attachments('/opt/lampp/htdocs/winners-base/app/webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf') ;
+
+			$mensagem = '
+				Obrigado pelo cadastro, para mais informações veja o arquivo em anexo!
+			';
+		}
+		
+		$mensagem .= "\n OdontoClinic Pimentas
+					\n Rua 7, 23
+					\n Jardim Nova Cidade, 07252-380
+					\n (11) 2486-8936";
+					
 		$email->send($mensagem);
 
-		print_r($dados);exit;
-		exit();
+		return $this->response->body('{"message": "success", "result":' . json_encode($dados) . '}');
 	}
 
 	public function postParent($dados)

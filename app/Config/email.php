@@ -40,11 +40,18 @@
 class EmailConfig {
 
 	public $default = array(
-	    'host' => 'ssl://smtp.gmail.com',
+	    'host' => 'ssl://smtp.zoho.com',
 	    'port' => 465,
-	    'username' => 'winnersdevelopers@gmail.com', // seu email no gmail
-	    'password' => '', // sua senha no gmail
-	    'transport' => 'Smtp'
+	    'username' => 'contato@ciawn.com.br', // seu email no gmail
+	    'password' => '123456789', // sua senha no gmail
+	    'transport' => 'Smtp',
+	    'context' => array(
+			'ssl' => array(
+			    'verify_peer' => false,
+			    'verify_peer_name' => false,
+			    'allow_self_signed' => true
+			)
+		)
 	);
 
 	public $fast = array(

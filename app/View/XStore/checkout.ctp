@@ -176,7 +176,7 @@
                 <div class="col-xs-4">
                 </div>
                 <div class="col-xs-8">
-                  <button type="submit" class="btn btn-success" disabled="">
+                  <button type="submit" class="btn btn-success">
                     Loja Teste
                   </button>
                 </div>

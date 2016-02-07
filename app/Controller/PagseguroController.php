@@ -51,7 +51,7 @@ class PagseguroController extends AppController implements GatewayInterface
             // Register this payment request in PagSeguro to obtain the payment URL to redirect your customer.
             $url = $this->paymentRequest->register($credentials);
             
-            $this->redirect($url);
+            return $url;
 
         } catch (PagSeguroServiceException $e) {
 

@@ -173,7 +173,7 @@ class VendaController extends AppController {
 		return true;
 	}
 
-	public function salvar_venda($produtos, $lancamento, $informacoes) {
+	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id) {
 		unset($informacoes['id_cliente']);
 
 		$informacoes['data_venda'] = date('Y-m-d');

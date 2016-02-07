@@ -142,6 +142,7 @@ class LojaController extends AppController {
 
    public function payment() {
       $andress = $this->request->data('endereco');
+     
       $client  = $this->request->data('cliente');
 
       $products = $this->loadProductsAndValuesCart();
@@ -149,16 +150,39 @@ class LojaController extends AppController {
       (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
 
       $objVenda = new VendaController();
+     
       $productsSale = $this->prepareProductsSale($products['products_cart']);
+     
       $usuario_id = $this->Session->read('Usuario.id');
 
-      $retorno_venda = $objVenda->salvar_venda($productsSale, array(), array('valor' => $valor_frete + $products['total']), $usuario_id);
+      $retorno_venda = $objVenda->salvar_venda($productsSale, array('forma_pagamento' => 'pagseguro'), array('valor' => $valor_frete + $products['total']), $usuario_id);
       
       $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
    }
 
+   public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id) {
+      $pagamento = new PagamentoController('PagseguroController');   
+
+      $pagamento->setToken('0C063416737542A28219A50736AD363E');
+      
+      $pagamento->setEmail('jr.design_2010@hotmail.com');
+
+      $pagamento->setProdutos($products);
+      
+      $pagamento->adicionarProdutosGateway();
+
+      $pagamento->setEndereco($andress);
+
+      $pagamento->setReference('#' . $id);
+      
+      $pagamento->setValorFrete($shipping);
+
+      return $this->redirect($pagamento->finalizarPedido());
+   }
+
    public function prepareProductsSale($products) {
       $retorno = array();
+     
       foreach ($products as $i => $product) {
          $retorno[$i]['id_produto'] = $product['Produto']['id'];
          $retorno[$i]['quantidade'] = $product['Produto']['quantidade'];

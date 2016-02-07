@@ -16,7 +16,7 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 
-	public $debug = true;
+	public $debug = false;
 
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada

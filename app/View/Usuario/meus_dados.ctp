@@ -1,4 +1,4 @@
-<form role="form" action="/produto/s_adicionar_cadastro" method="post" enctype="multipart/form-data">
+<form role="form" action="/usuario/s_editar_dados" method="post" enctype="multipart/form-data">
 
     <div id="page-wrapper">
         <div class="row">

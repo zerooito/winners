@@ -6,7 +6,7 @@ include 'LancamentoVendasController.php';
 
 class VendaController extends AppController {
 
-	function pdv() {
+	public function pdv() {
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Produto');
@@ -32,7 +32,7 @@ class VendaController extends AppController {
 		);
 	}
 
-	function recuperar_dados_venda_ajax() {
+	public function recuperar_dados_venda_ajax() {
 		$this->layout = 'ajax';
 
 		$dados = $this->request->data('dados');
@@ -258,6 +258,30 @@ class VendaController extends AppController {
         $objWriter->save('php://output'); 
 
         exit;
+	}
+
+	public function recoverDataToDashboardOneWeek(){
+		$vendas = $this->Venda->find('all',
+			array('conditions' =>
+				array(
+					'ativo' => 1,
+					'id_usuario' => $this->instancia,
+				),
+				'limit' => 6
+			)
+		);
+
+		$resposta = [];
+		foreach ($vendas as $i => $venda) {
+			$resposta[] = (float) number_format($venda['Venda']['valor'], 2, '.', ',');
+		}
+
+		$resposta = [
+			'name' => 'Valor',
+			'data' => $resposta
+		];
+
+		return json_encode($resposta);
 	}
 
 }

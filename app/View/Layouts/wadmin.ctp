@@ -154,6 +154,8 @@
 
     <!-- /#wrapper -->
 
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <?php echo $this->Html->script('bootstrap.min'); ?>

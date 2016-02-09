@@ -1,7 +1,7 @@
 <?php
 
 $dominio = array(
-	'id_usuario' => '23',
+	'id_usuario' => '28',
 	'controller' => 'XStore',
 	'funcao'	 => 'index'
 );

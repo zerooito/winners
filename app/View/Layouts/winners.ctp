@@ -213,7 +213,7 @@
         <div class="col-sm-3">
           <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
             <div class="folio-image">
-              <img class="img-responsive" src="https://scontent-gru2-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/1916015_1021200741290895_397416332427452610_n.jpg?oh=15a7ec17b2aacbc310964eb25d559677&oe=57704D65" alt="">
+              <img class="img-responsive" src="https://cloud.githubusercontent.com/assets/7466894/11922636/98291d36-a77f-11e5-9b8f-f57719fd0322.png" alt="" style="min-height: 230px;">
             </div>
             <div class="overlay">
               <div class="overlay-content">
@@ -294,6 +294,48 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInLeftBig" data-wow-duration="1000ms" data-wow-delay="600ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="http://ganhedinheiro.ciawn.com.br/assets/images/background.jpg" alt=""  height="230" style="min-height: 230px; height:230px;">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Ganhe Dinheiro</h3>
+                    <p>Projeto de marketing virtual <br> acelerado pela CiaWN</p>
+                  </div>
+                  <div class="folio-overview">
+                    <span class="folio-link"><a class="folio-read-more" href="http://ganhedinheiro.ciawn.com.br" ><i class="fa fa-link"></i></a></span>
+                    <span class="folio-expand"><a href="http://ganhedinheiro.ciawn.com.br/" data-lightbox="portfolio"><i class="fa fa-search-plus"></i></a></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInLeftBig" data-wow-duration="1000ms" data-wow-delay="600ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="https://scontent-gru2-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/1916015_1021200741290895_397416332427452610_n.jpg?oh=15a7ec17b2aacbc310964eb25d559677&oe=57704D65" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Fast Shipping</h3>
+                    <p>Projeto de Logistica acelerado pela CiaWN</p>
+                  </div>
+                  <div class="folio-overview">
+                    <span class="folio-link"><a class="folio-read-more" href="http://fastshipping.ciawn.com.br" ><i class="fa fa-link"></i></a></span>
+                    <span class="folio-expand"><a href="http://fastshipping.ciawn.com.br/" data-lightbox="portfolio"><i class="fa fa-search-plus"></i></a></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="portfolio-single-wrap">
@@ -315,13 +357,13 @@
           <div class="col-sm-3">
             <div class="team-member wow flipInY" data-wow-duration="1000ms" data-wow-delay="300ms">
               <div class="member-image">
-                <!-- <img class="img-responsive" src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xlt1/v/t1.0-9/12642908_988820731193511_3880526810393509097_n.jpg?oh=cc1036b35e8e0aab7e923ba0e951f702&oe=57316BC0&__gda__=1466502353_8f67f81d0a51a2a9e8988f866b8e638e" alt=""> -->
+                <img class="img-responsive img-circle" src="https://avatars3.githubusercontent.com/u/7466894?v=3&s=460" alt="">
               </div>
               <div class="member-info">
                 <h3>Reginaldo Junior</h3>
-                <h4>CEO &amp; Founder</h4>
+                <h4>CTO &amp; Founder</h4>
                 <p>Vai um café ai?</p>
-              </div>
+              <!-- </div> -->
               <div class="social-icons">
                 <ul>
                   <li><a class="facebook" href="https://www.facebook.com/reginaldo.delunajunior"><i class="fa fa-facebook"></i></a></li>

@@ -8,18 +8,6 @@
                         Dados do Perfil
                     </div>
                     <div class="panel-body">
-                        <div class="col-md-12">
-                            <label>Token API: </label>
-                            <div class="row">
-                                <div class="col-md-7 col-xs-12">
-                                    <input class="form-control" type="text" id="_token" readonly name="token">
-                                </div>
-                                <div class="col-md-4 col-xs-12">
-                                    <a href="javascript:generateNewToken();" class="btn btn-small btn-info">Gerar Novo Token</a>
-                                </div>                                
-
-                            </div>                       
-                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -32,7 +20,18 @@
                         Dados de Integrações
                     </div>
                     <div class="panel-body">
+                        <div class="col-md-12">
+                            <label>Token API: </label>
+                            <div class="row">
+                                <div class="col-md-7 col-xs-12">
+                                    <input class="form-control" type="text" id="_token" readonly name="token">
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <a href="javascript:generateNewToken();" class="btn btn-small btn-info">Gerar Novo Token</a>
+                                </div>                                
 
+                            </div>                       
+                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>

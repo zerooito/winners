@@ -2,7 +2,7 @@
 
 class VendaItensProdutoController extends ProdutoEstoqueController {
 
-	public function adicionar_itens_venda($id_venda, $produtos) {
+	public function adicionar_itens_venda($id_venda, $produtos, $orcamento) {
 
 		if ($id_venda == null || empty($produtos)) {
 			return false;
@@ -19,14 +19,16 @@ class VendaItensProdutoController extends ProdutoEstoqueController {
 				$erros++;
 			}
 
-			if (isset($item['variacao'])) {
-				if (!$this->diminuir_estoque_produto_variacao($item['id_produto'], $item['quantidade'], $item['variacao'])) {
+			if (!$orcamento) {
+				if (isset($item['variacao'])) {
+					if (!$this->diminuir_estoque_produto_variacao($item['id_produto'], $item['quantidade'], $item['variacao'])) {
+						return false;
+					}
+				}
+
+				if (!$this->diminuir_estoque_produto($item['id_produto'], $item['quantidade'])) {
 					return false;
 				}
-			}
-
-			if (!$this->diminuir_estoque_produto($item['id_produto'], $item['quantidade'])) {
-				return false;
 			}
 		}
 

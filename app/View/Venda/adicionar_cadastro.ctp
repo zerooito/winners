@@ -6,7 +6,7 @@
                     Dados da Venda
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="/venda/s_adicionar_cadastro" method="post">
+                    <form role="form" action="/venda/s_adicionar_cadastro" method="post" id="form-venda">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
@@ -109,8 +109,13 @@
                             </div>                          
                         </div>
 
-                        <button type="submit" class="btn btn-success">Salvar Venda</button>
-                        <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
+                        <div class="text-right">
+                            <input type="hidden" name="venda[orcamento]" value="0" id="orcamento">
+                            <?php if (isset($modulos['orcamento'])): ?>
+                                <a href="javascript:salvarOrcamento();" class="btn btn-info">Salvar Orçamento</a>
+                            <?php endif; ?>
+                            <button type="submit" class="btn btn-success">Salvar Venda</button>
+                        </div>
                     </form>
                     <!-- /.row (nested) -->
                 </div>
@@ -173,6 +178,8 @@
             troco = 0.00; 
 
         $('#troco').attr('data-troco', troco).html('R$ ' + number_format(troco, 2, ',', '.'));
+
+        $('#form-venda').attr('action', '/venda/s_adicionar_cadastro');
     }
 
     function continuar_venda() {        
@@ -180,6 +187,12 @@
         $('select').removeAttr('disabled');
     }
     
+    function salvarOrcamento() {
+        $('#orcamento').val(1);
+
+        $('#form-venda').submit();
+    }
+
     $('#valor_desconto').change(function(){
         var valor_venda_atual = $('#valor-atual').attr('data-preco');
         var valor_desconto    = $('#valor_desconto').val();

@@ -16,7 +16,7 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 
-	public $debug = false;
+	public $debug = true;
 
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
@@ -66,10 +66,10 @@ class AppController extends Controller {
 		);
 		
 		foreach ($registros as $indice => $modulo) {
-			$this->modulos[$indice]['modulo'] = $modulo['Modulo']['modulo'];
-			$this->modulos[$indice]['funcao'] = $modulo['Modulo']['funcao'];
-			$this->modulos[$indice]['nome']   = $modulo['Modulo']['nome_modulo'];
-			$this->modulos[$indice]['icone']  = $modulo['Modulo']['icone'];
+			$this->modulos[$modulo['Modulo']['modulo']]['modulo'] = $modulo['Modulo']['modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
+			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
 		}
 		
 		return $this->modulos;

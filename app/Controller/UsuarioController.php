@@ -179,8 +179,34 @@ class UsuarioController extends AppController{
 
 	public function meus_dados() {
 		$this->verificar_acesso();
+
 		$this->layout = 'wadmin';
+
     	$this->set('modulos', $this->modulos);
+	}
+
+	public function new_token() {
+		$this->verificar_acesso();
+
+		$this->loadModel('Usuario');
+
+		$response = $this->Usuario->find('all', array(
+				'conditions' => array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		);
+
+		$token = md5(uniqid());
+
+		$this->Usuario->id = $this->instancia;
+
+		$dados['token'] = $token;
+
+		$this->Usuario->save($dados);
+
+		echo json_encode($token);
+		exit();
 	}
 
 }

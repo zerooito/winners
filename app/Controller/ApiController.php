@@ -15,6 +15,7 @@ class ApiController extends AppController {
 	public function client($id_cliente = null)
 	{
 		$api = 'cliente';
+
 	    $this->loadModel('Cliente');
 		$this->autoRender = false;
 		$this->response->type('json');
@@ -523,14 +524,17 @@ class ApiController extends AppController {
 		$this->loadModel('Usuario');
 		
 		$data['auth'] = $req->query;
-		
+
 		$resposta = $this->Usuario->find('all',
 			array('conditions' => 
-				array('Usuario.email' => $data['auth']['email'], 
-					  'Usuario.senha' => sha1($data['auth']['senha'])
-				)
+				array('Usuario.token' => $data['auth']['token'])
 			)
-		)[0];
+		);
+
+		if (isset($resposta[0]) && !empty($resposta[0]))
+		{
+			$resposta = $resposta[0];
+		}
 
 		if (empty($resposta))
 		{

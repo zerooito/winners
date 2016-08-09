@@ -182,7 +182,15 @@ class UsuarioController extends AppController{
 
 		$this->layout = 'wadmin';
 
+		$dadosUsuario = $this->Usuario->find('all', array(
+				'conditions' => array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		);
+		
     	$this->set('modulos', $this->modulos);
+    	$this->set('usuario', $dadosUsuario);
 	}
 
 	public function new_token() {

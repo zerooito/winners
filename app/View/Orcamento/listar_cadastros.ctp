@@ -64,20 +64,21 @@
 <script type="text/javascript">
     function remover_venda(id) {
         $.ajax({
-            type: "post",
+            type: "get",
             dataType: "json",
-            url: "/venda/excluir_cadastro",
+            url: "/orcamento/excluir_cadastro/" + id,
             async: true,
-            data: {id: id},
             error: function(x){
-                window.reload();
+                window.location.reload();
             },
             success: function(x){
                 window.location.reload();
             }
         });
     }
+
     function editar_produto(id) {
         window.location.href = "/produto/editar_cadastro/"+id;
     }
+    
 </script>

@@ -24,7 +24,7 @@
                             <label>Token API: </label>
                             <div class="row">
                                 <div class="col-md-7 col-xs-12">
-                                    <input class="form-control" type="text" id="_token" readonly name="token">
+                                    <input class="form-control" type="text" id="_token" readonly name="token" value="<?php echo $usuario[0]['Usuario']['token']; ?>">
                                 </div>
                                 <div class="col-md-4 col-xs-12">
                                     <a href="javascript:generateNewToken();" class="btn btn-small btn-info">Gerar Novo Token</a>

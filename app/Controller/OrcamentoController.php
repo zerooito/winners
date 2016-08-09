@@ -25,6 +25,21 @@ class OrcamentoController extends AppController
 		);
 	}
 
+	public function excluir_cadastro($vendaId)
+	{
+		$this->layout = 'ajax';
+
+		$this->loadModel('Venda');
+
+		$dados['ativo'] = 0;
+		$dados['id_usuario'] = $this->instancia;
+		$dados['id'] = $vendaId;
+
+		echo json_encode($this->Venda->save($dados));
+
+		exit;
+	}
+
 	public function salvar_orcamento()
 	{
 		$this->layout = 'wadmin';

@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default" style="margin-top: 12px;">
                 <div class="panel-heading">
-                    Dados da Venda
+                    Dados do Orçamento
                 </div>
                 <div class="panel-body">
                     <form role="form" action="/venda/s_adicionar_cadastro" method="post" id="form-venda">
@@ -51,7 +51,7 @@
                                         <div class="form-group">
                                             <label>Desconto %</label>
                                             <input class="form-control" id="valor_desconto">
-                                            <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+                                            <input type="hidden" value="<?php echo $venda[0]['Venda']['desconto']; ?>" name="venda[desconto]" id="desconto">
                                         </div>
                                     </div>
 
@@ -71,10 +71,10 @@
                             <div class="col-lg-6"></div>
                             <div class="col-lg-6">
                                 <div class="jumbotron" style="padding-left: 15px;">
-                                  <p>Valor total </p>
-                                  <h1 id="valor-atual" data-preco="0.00" style="color: green">R$ 0.00</h1>
+                                  <p>Valor total</p>
+                                  <h1 id="valor-atual" data-preco="<?php echo number_format($venda[0]['Venda']['valor'], 2); ?>" style="color: green">R$ <?php echo number_format($venda[0]['Venda']['valor'], 2, ',', '.'); ?></h1>
                                   <p>Desconto</p>
-                                  <h3 id="desconto-label" data-troco="0.00" style="color: red">R$ 0.00</h3>
+                                  <h3 id="desconto-label" data-desconto="<?php echo number_format($venda[0]['Venda']['desconto'], 2); ?>" style="color: red">R$ <?php echo number_format($venda[0]['Venda']['desconto'], 2, ',', '.'); ?></h3>
                                   <p>Valor troco</p>
                                   <h3 id="troco" data-troco="0.00" style="color: red">R$ 0.00</h3>
                                 </div>                                
@@ -99,7 +99,15 @@
                                             <th>Total</th>
                                         </thead>
                                         <tbody id="produtos">
-
+                                            <?php foreach ($venda_produtos as $i => $produto): ?>
+                                                <input type="hidden" name="produto[<?php echo $produto['id']; ?>][id_produto]" value="<?php echo $produto['id']; ?>"/>
+                                                <input type="hidden" name="produto[<?php echo $produto['id']; ?>][quantidade]" value="<?php echo $produto['quantidade'] ?>"/>
+                                                <td><?php echo $produto['id']; ?></td>
+                                                <td><?php echo $produto['nome']; ?></td>
+                                                <td><?php echo $produto['preco']; ?></td>
+                                                <td><?php echo $produto['quantidade']; ?></td>
+                                                <td><?php echo $produto['total']; ?></td>                                                
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
 
@@ -113,9 +121,6 @@
 
                         <div class="text-right">
                             <input type="hidden" name="venda[orcamento]" value="0" id="orcamento">
-                            <?php if (isset($modulos['orcamento'])): ?>
-                                <a href="javascript:salvarOrcamento();" class="btn btn-info">Salvar Orçamento</a>
-                            <?php endif; ?>
                             <button type="submit" class="btn btn-success">Salvar Venda</button>
                         </div>
                     </form>
@@ -152,14 +157,13 @@
                 var html = '';
                 
                 html += '<tr>';
-                html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][id_produto]" value="' + data['Produto']['id'] + '"/>';
-                html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][quantidade]" value="' + quantidade_produto + '"/>';
-                html +=    '<td>' + data['Produto']['id'] + '</td>';
-                html +=    '<td>' + data['Produto']['nome'] + '</td>';
-                html +=    '<td>' + data['Produto']['preco'] + '</td>';
-                html +=    '<td>' + quantidade_produto + '</td>';
-                html +=    '<td>' + data['Produto']['total'] + '</td>';
-                html += '</tr>';
+                                                html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][id_produto]" value="' + data['Produto']['id'] + '"/>';
+                                                html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][quantidade]" value="' + quantidade_produto + '"/>';
+                                                html +=    '<td>' + data['Produto']['id'] + '</td>';
+                                                html +=    '<td>' + data['Produto']['nome'] + '</td>';
+                                                html +=    '<td>' + data['Produto']['preco'] + '</td>';
+                                                html +=    '<td>' + quantidade_produto + '</td>';
+                                                html +=    '<td>' + data['Produto']['total'] + '</td>';                html += '</tr>';
 
                 $('#produtos').append(html);
 

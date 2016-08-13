@@ -16,7 +16,12 @@ function number_format(number, decimals, decPoint, thousandsSep){
 		formattedNumber += thousandsSep + numbersString.slice(-3)
 		numbersString = numbersString.slice(0,-3);
 	}
- 
-	return (number < 0 ? '-' : '') + numbersString + formattedNumber + (decimalsString ? (decPoint + decimalsString) : '');
+ 	
+	number = (number < 0 ? '-' : '') + numbersString + formattedNumber + (decimalsString ? (decPoint + decimalsString) : '');
+
+	if (number.charAt(0) == ',')
+		return "0" + number;
+
+	return number;
 }
  

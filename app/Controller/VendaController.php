@@ -96,6 +96,85 @@ class VendaController extends AppController {
 		);
 	}
 
+	public function conveter_venda($vendaId) {
+		$this->layout = 'wadmin';
+
+		$this->loadModel('Cliente');
+		
+		$this->set('clientes', $this->Cliente->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+
+		$this->loadModel('Produto');
+
+		$this->set('produtos', $this->Produto->find('all',
+				array('conditions' =>
+					array('ativo' => 1,
+						  'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+
+		$this->set('venda', $this->Venda->find('all', 
+				array('conditions' =>
+					array(
+						'Venda.ativo' => 1,
+						'Venda.id' => $vendaId,
+						'id_usuario' => $this->instancia
+					)
+				)
+			)
+		);
+
+		$this->loadModel('VendaItensProduto');
+
+		$venda_produtos = $this->VendaItensProduto->find('all', 
+			array('conditions' => 
+				array(
+					'VendaItensProduto.ativo' => 1,
+					'VendaItensProduto.id' => $vendaId
+				)
+			)
+		);
+
+		$this->loadModel('Produto');
+
+		$produtos = [];
+		foreach ($venda_produtos as $i => $venda_produto) 
+		{
+			$produto = $this->Produto->find('all',
+				array('conditions' =>	
+					array(
+						'Produto.ativo' => 1,
+						'Produto.id' => $venda_produto['VendaItensProduto']['produto_id']
+					)
+				)
+			);
+
+			if ($produto[0]['Produto']['estoque'] <= 0)
+			{
+				$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+				continue;
+			}
+			
+			$produtos[$i] = $produto[0]['Produto'];
+			$produtos[$i]['quantidade'] = $venda_produto['VendaItensProduto']['quantidade_produto'];
+
+			$total = $produtos[$i]['preco'] * $venda_produto['VendaItensProduto']['quantidade_produto'];
+
+			$produtos[$i]['preco'] = number_format($produtos[$i]['preco'], 2, ',', '.');
+			$produtos[$i]['total'] = number_format($total, 2, ',', '.');
+		}
+
+		$this->set('venda_produtos', $produtos);
+	}
+
 	public function s_adicionar_cadastro() {
 		$dados_venda 	  = $this->request->data('venda');
 		$dados_lancamento = $this->request->data('lancamento');

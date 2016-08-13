@@ -38,11 +38,13 @@
                                     <td class="center">
                                         <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
 
-                                        <button onclick="converter_em_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-reply"></i></button>
-
-                                        <a target="_blank" href="/orcamento/pdf/<?php echo $venda['Venda']['id'] ?>" type="button" class="btn btn-primary btn-circle">
+                                        <a target="_blank" href="/orcamento/pdf/<?php echo $venda['Venda']['id'] ?>" class="btn btn-primary btn-circle">
                                             <i class="fa fa-file-pdf-o"></i>
                                         </a>
+
+                                        <a target="_blank" href="/venda/conveter_venda/<?php echo $venda['Venda']['id'] ?>" class="btn btn-info btn-circle">
+                                            <i class="fa fa-reply"></i> 
+                                        </button> 
                                     </td>
                                 </tr>
                             <?php
@@ -62,6 +64,7 @@
 </div>
 
 <script type="text/javascript">
+    
     function remover_venda(id) {
         $.ajax({
             type: "get",
@@ -77,8 +80,4 @@
         });
     }
 
-    function editar_produto(id) {
-        window.location.href = "/produto/editar_cadastro/"+id;
-    }
-    
 </script>

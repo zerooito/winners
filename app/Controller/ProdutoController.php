@@ -292,6 +292,67 @@ class ProdutoController extends AppController{
     }
 
     public function importar_produtos_planilha() {
+		include(APP . 'Vendor/PHPExcel/PHPExcel.php');
+		include(APP . 'Vendor/PHPExcel/PHPExcel/IOFactory.php');
+    	
+        $objPHPExcel = new PHPExcel();
+
+        if (!isset($_FILES['arquivo']['tmp_name']) && empty($_FILES['arquivo']['tmp_name']))
+        {
+			$this->Session->setFlash("Erro ao subir a planilha, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");        	
+        }
+
+        $inputFileName = $_FILES['arquivo']['tmp_name'];
+
+		try {
+		    $inputFileType 	= PHPExcel_IOFactory::identify($inputFileName);
+		    $objReader 		= PHPExcel_IOFactory::createReader($inputFileType);
+		    $objPHPExcel 	= $objReader->load($inputFileName);
+		} catch(Exception $e) {
+		    die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
+		}
+
+
+		$rows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+		for ($row = 2; $row <= $rows; $row++) {
+			$row = $objPHPExcel->getActiveSheet()->getRowIterator($row)->current();
+
+			$cellIterator = $row->getCellIterator();
+			$cellIterator->setIterateOnlyExistingCells(false);
+
+			$j = 0;
+			foreach ($cellIterator as $i => $cell) {
+				$dados = [];
+
+				switch ($i) {
+					case 0: //Codigo/SKU
+						$dados[$j]['sku'] = $cell->getValue();
+					break; 
+					case 1: // Nome/Descrição 
+						$dados[$j]['nome'] = $cell->getValue();						
+					break;
+					case 2: // QtdAtual
+						//$dados[$j]['sku'] = $cell->getValue();						
+					break;
+					case 3: // QtdMinima  
+						$dados[$j]['quantidade_minima'] = $cell->getValue();						
+					break;
+					case 4: // QtdTotal
+						$dados[$j]['estoque'] = $cell->getValue();						
+					break;
+					case 5: // ValCusto
+						$dados[$j]['custo'] = $cell->getValue();						
+					break;
+					case 6:  // ValVenda
+						$dados[$j]['preco'] = $cell->getValue();						
+					break;
+				}
+
+				pr($i);
+			}
+
+		}
 
     }
 

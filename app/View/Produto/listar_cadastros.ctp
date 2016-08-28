@@ -69,25 +69,21 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
 
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i>
-                        </button>
-
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i>
-                        </button>
-
-                        <!-- Split button -->
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-info">Ações</button>
-                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><a href="/produto/exportar_excel_exemplo">Exportar Excel Exemplo</a></li>
-                            <li><a href="/produto/exportar_excel_produto">Exportar Excel Produto</a></li>
-                          </ul>
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i></button>
                         </div>
-                        
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i></button>
+                        </div>
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-excel-o"><a href="/produtos/exportar_excel_exemplo" style="color: #FFF;"> Exportar Excel Exemplo</a></i></button>
+                        </div>
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button  data-toggle="modal" data-target="#importarProdutos" type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-upload"><a style="color: #FFF;"> Importar Produtos</a></i></button>
+                        </div>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -95,6 +91,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="importarProdutos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+    <form method="POST" enctype="multipart/form-data" action="/produto/importar_produtos_planilha">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <p>Escolha o arquivo que deseja enviar.</p>
+            <input type="file" name="arquivo">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Importar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </form>
+</div><!-- /.modal -->
 
 <script type="text/javascript">
     function remover_produto(id) {

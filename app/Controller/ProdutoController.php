@@ -287,12 +287,114 @@ class ProdutoController extends AppController{
         exit;
     }
 
-    public function exportar_excel_produto() {
+    public function importar_produtos_planilha() {
+	include(APP . 'Vendor/PHPExcel/PHPExcel.php');
+	include(APP . 'Vendor/PHPExcel/PHPExcel/IOFactory.php');
     	
+        $objPHPExcel = new PHPExcel();
+
+        if (!isset($_FILES['arquivo']['tmp_name']) && empty($_FILES['arquivo']['tmp_name']))
+        {
+			$this->Session->setFlash("Erro ao subir a planilha, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");        	
+        }
+
+        $typesPermissions = ['application/vnd.ms-excel'];
+
+        if (!in_array($_FILES['arquivo']['type'], $typesPermissions))
+        {
+			$this->Session->setFlash("O arquivo deve ser no formato .xls.");
+			$this->redirect("/produto/listar_cadastros");                	
+        }
+
+        $caminho = APP . 'webroot/uploads/produto/planilhas/' . uniqid() . '.xls';
+
+        $inputFileName = $_FILES['arquivo']['tmp_name'];
+
+        move_uploaded_file($inputFileName, $caminho);
+
+        $data = [
+        	'caminho' => $caminho,
+        	'usuario_id' => $this->instancia,
+        	'processado' => 0,
+        	'ativo' => 1
+        ];
+
+        if ($this->QueueProducts->save($data))
+        {
+			$this->Session->setFlash("O arquivo está na fila para ser importado, iremos enviar um e-mail quando terminar.");
+			$this->redirect("/produto/listar_cadastros");  
+        }
+        else 
+        {
+			$this->Session->setFlash("Ocorreu um erro, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");          	
+        }
     }
 
-    public function importar_produtos_planilha() {
+    public function processar_planilhas_na_fila() {
+    	$planilhas = [
+	    	[
+	    		'file' => 'teste.xls',
+	    		'user_id' => 1
+	    	]
+    	];
 
+    	$response = [];
+    	foreach ($planilhas as $planilha) {
+    		$response[] = $this->processar_planilhas();
+    	}
+
+    	return $response;
+    }
+
+    public function processar_planilhas($inputFileName) {
+		try {
+		    $inputFileType 	= PHPExcel_IOFactory::identify($inputFileName);
+		    $objReader 		= PHPExcel_IOFactory::createReader($inputFileType);
+		    $objPHPExcel 	= $objReader->load($inputFileName);
+		} catch(Exception $e) {
+		    die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
+		}
+
+		$dados = [];
+
+		$rows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+
+		for ($row = 2; $row <= $rows; $row++) {
+			$rowInterator = $objPHPExcel->getActiveSheet()->getRowIterator($row)->current();
+
+			$cellIterator = $rowInterator->getCellIterator();
+			$cellIterator->setIterateOnlyExistingCells(false);
+
+			foreach ($cellIterator as $i => $cell) {
+				switch ($i) {
+					case 0: //Codigo/SKU
+						$dados[$row]['sku'] = $cell->getValue();
+					break; 
+					case 1: // Nome/Descrição 
+						$dados[$row]['nome'] = $cell->getValue();						
+					break;
+					case 2: // QtdAtual
+						//$dados[$row]['sku'] = $cell->getValue();						
+					break;
+					case 3: // QtdMinima  
+						$dados[$row]['quantidade_minima'] = $cell->getValue();						
+					break;
+					case 4: // QtdTotal
+						$dados[$row]['estoque'] = $cell->getValue();						
+					break;
+					case 5: // ValCusto
+						$dados[$row]['custo'] = $cell->getValue();						
+					break;
+					case 6:  // ValVenda
+						$dados[$row]['preco'] = $cell->getValue();						
+					break;
+				}
+			}
+		}
+
+		pr($dados);
     }
 
 }

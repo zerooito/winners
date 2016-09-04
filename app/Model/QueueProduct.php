@@ -5,9 +5,10 @@ class QueueProduct extends AppModel {
 	public function loadPlanilhasNotProcesseds() {
 		$planilhas = $this->find('all', array(
 				array('conditions' => array(
-						array('OR' => 
-							'QueueProduct.processado' => 0,
-							'QueueProduct.processado' => 2
+						array('OR' => array(
+								'QueueProduct.processado' => 0,
+								'QueueProduct.processado' => 2
+							)
 						)
 					)
 				)

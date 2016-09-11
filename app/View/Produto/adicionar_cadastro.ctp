@@ -22,6 +22,10 @@
                                         <input class="form-control moeda" name="dados[preco]" required>
                                     </div>
                                     <div class="form-group">
+                                        <label>SKU</label>
+                                        <input class="form-control moeda" name="dados[sku]" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Custo</label>
                                         <input class="form-control moeda" name="dados[custo]" required>
                                     </div>
@@ -36,6 +40,10 @@
                                     <div class="form-group">
                                         <label>Estoque</label>
                                         <input type="number" class="form-control" name="dados[estoque]" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estoque Minimo</label>
+                                        <input type="number" class="form-control" name="dados[quantidade_minima]" required>
                                     </div>
 
                                     <div class="form-group">

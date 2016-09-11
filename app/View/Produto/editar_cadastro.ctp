@@ -18,8 +18,12 @@
                                         <!-- <p class="help-block">Example block-level help text here.</p> -->
                                     </div>
                                     <div class="form-group">
-                                        <label>Preço</label>
+                                        <label>SKU</label>
                                         <input class="form-control moeda" name="dados[preco]" value="<?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Preço</label>
+                                        <input class="form-control moeda" name="dados[sku]" value="<?php echo $produto['Produto']['sku'] ?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Custo</label>
@@ -36,6 +40,10 @@
                                     <div class="form-group">
                                         <label>Estoque</label>
                                         <input type="number" class="form-control" name="dados[estoque]" value="<?php echo $produto['Produto']['estoque'] ?>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estoque Minimo</label>
+                                        <input type="number" class="form-control" name="dados[quantidade_minima]" value="<?php echo $produto['Produto']['quantidade_minima'] ?>" required>
                                     </div>
 
 

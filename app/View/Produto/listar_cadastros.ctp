@@ -19,7 +19,7 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-cliente">
                             <thead>
                                 <tr>
-                                    <th>#ID</th>
+                                    <th>SKU</th>
                                     <th>Imagem</th>
                                     <th>Nome</th>
                                     <th>Preço</th>
@@ -32,9 +32,9 @@
                             foreach ($produtos as $indice => $produto) {
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $produto['Produto']['id'] ?>">
-                                    <td><?php echo $produto['Produto']['id_alias'] ?></td>
+                                    <td><?php echo $produto['Produto']['sku'] ?></td>
                                     <td>
-                                        <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
+                                        <img onerror="imgError(this);" src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
                                     </td>
                                     <td><?php echo $produto['Produto']['nome'] ?></td>
                                     <td><?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></td>
@@ -135,5 +135,10 @@
     }
     function visualizar_cadastro(id) {
         window.location.href = "/produto/visualizar_cadastro/"+id;
+    }
+    function imgError(image) {
+        image.onerror = "";
+        image.src = "/images/no_image.png";
+        return true;
     }
 </script>

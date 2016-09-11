@@ -1,5 +1,7 @@
 <?php
 
+ini_set('max_execution_time', 300);
+
 class ProdutoController extends AppController{		
 
 	public function listar_cadastros() {
@@ -49,15 +51,19 @@ class ProdutoController extends AppController{
 
 		if($this->Produto->save($dados)) {
 			$produto_id = $this->Produto->getLastInsertId();
+			
 			require 'VariacaoController.php';
+
 			$objVariacaoController = new VariacaoController();
 
 			$objVariacaoController->s_adicionar_variacao($variacoes, $produto_id, $this->instancia);			
 
 			$this->Session->setFlash('Produto salvo com sucesso!');
+            
             return $this->redirect('/produto/listar_cadastros');
 		} else {
 			$this->Session->setFlash('Ocorreu um erro ao salva o produto!');
+            
             return $this->redirect('/produto/listar_cadastros');
 		}
 	}
@@ -148,10 +154,10 @@ class ProdutoController extends AppController{
 
 		$id = $this->request->data('id');
 
-		$dados = array ('ativo' => '0');
-		$parametros = array ('id' => $id);
+		$dados = array('ativo' => '0');
+		$parametros = array('id' => $id);
 
-		if ($this->Produto->updateAll($dados,$parametros)) {
+		if ($this->Produto->updateAll($dados, $parametros)) {
 			echo json_encode(true);
 		} else {
 			echo json_encode(false);
@@ -287,8 +293,46 @@ class ProdutoController extends AppController{
         exit;
     }
 
-    public function exportar_excel_produto() {
-    	
+    public function importar_produtos_planilha() {
+        if (!isset($_FILES['arquivo']['tmp_name']) && empty($_FILES['arquivo']['tmp_name']))
+        {
+			$this->Session->setFlash("Erro ao subir a planilha, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");        	
+        }
+
+        $typesPermissions = ['application/vnd.ms-excel'];
+
+        if (!in_array($_FILES['arquivo']['type'], $typesPermissions))
+        {
+			$this->Session->setFlash("O arquivo deve ser no formato .xls.");
+			$this->redirect("/produto/listar_cadastros");                	
+        }
+
+        $caminho = APP . 'webroot/uploads/produto/planilhas/' . uniqid() . '.xls';
+
+        $inputFileName = $_FILES['arquivo']['tmp_name'];
+
+        move_uploaded_file($inputFileName, $caminho);
+
+        $data = [
+        	'caminho' => $caminho,
+        	'usuario_id' => $this->instancia,
+        	'processado' => 0,
+        	'ativo' => 1
+        ];
+
+        $this->loadModel('QueueProduct');
+
+        if ($this->QueueProduct->save($data))
+        {
+			$this->Session->setFlash("O arquivo está na fila para ser importado, iremos enviar um e-mail quando terminar.");
+			$this->redirect("/produto/listar_cadastros");  
+        }
+        else 
+        {
+			$this->Session->setFlash("Ocorreu um erro, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");          	
+        }
     }
 
     public function importar_produtos_planilha() {
@@ -337,22 +381,24 @@ class ProdutoController extends AppController{
     }
 
     public function processar_planilhas_na_fila() {
-    	$planilhas = [
-	    	[
-	    		'file' => 'teste.xls',
-	    		'user_id' => 1
-	    	]
-    	];
+    	$this->loadModel('QueueProduct');
+
+    	$planilhas = $this->QueueProduct->loadPlanilhasNotProcesseds();
 
     	$response = [];
     	foreach ($planilhas as $planilha) {
-    		$response[] = $this->processar_planilhas();
+    		$response[] = $this->processar_planilhas($planilha['caminho'], $planilha['usuario_id'], $planilha['id']);
     	}
 
     	return $response;
     }
 
-    public function processar_planilhas($inputFileName) {
+    public function processar_planilhas($inputFileName, $usuarioId, $planilhaId) {
+		include(APP . 'Vendor/PHPExcel/PHPExcel.php');
+		include(APP . 'Vendor/PHPExcel/PHPExcel/IOFactory.php');
+    	
+        $objPHPExcel = new PHPExcel();
+
 		try {
 		    $inputFileType 	= PHPExcel_IOFactory::identify($inputFileName);
 		    $objReader 		= PHPExcel_IOFactory::createReader($inputFileType);
@@ -366,6 +412,7 @@ class ProdutoController extends AppController{
 		$rows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
 
 		for ($row = 2; $row <= $rows; $row++) {
+			
 			$rowInterator = $objPHPExcel->getActiveSheet()->getRowIterator($row)->current();
 
 			$cellIterator = $rowInterator->getCellIterator();
@@ -396,9 +443,57 @@ class ProdutoController extends AppController{
 					break;
 				}
 			}
+
+			$dados[$row]['id_usuario'] = $usuarioId;	
+			$dados[$row]['ativo'] = 1;
+
 		}
 
-		pr($dados);
+		$errors = $this->processar_lista_produtos($dados);
+
+		if (isset($errors) && !empty($errors))
+		{
+			$this->QueueProduct->planilhaProcessedIncomplete($planilhaId);
+		}
+
+		$this->QueueProduct->planilhaProcessedComplete($planilhaId);
+
+		echo json_encode(array('sucess' => true));
+		exit;
+    }
+
+    public function processar_lista_produtos($dados) {
+    	$errors = [];
+
+    	foreach ($dados as $dado) {
+    		$this->loadModel('Produto');
+    		
+    		$existProduto = $this->Produto->find('all',
+    			array(
+    				'conditions' => array(
+    					'Produto.sku' => $dado['sku'],
+    					'Produto.ativo' => 1
+    				)
+    			)
+    		);
+
+    		if (isset($existProduto) && !empty($existProduto))
+    		{
+    			$this->Produto->id = $existProduto[0]['Produto']['id'];
+    			$this->Produto->save($dado);
+    			continue;
+    		}
+
+			$this->Produto->create();
+
+    		if (!$this->Produto->save($dado))
+    		{
+    			$errors[] = $dado;
+    		}
+    	}
+
+    	return $errors;
+>>>>>>> 36dc74c7f7a4a9679dceb6b9594a56aa51a0ed1a
     }
 
 }

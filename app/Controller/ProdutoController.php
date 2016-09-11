@@ -303,8 +303,56 @@ class ProdutoController extends AppController{
 			$this->redirect("/produto/listar_cadastros");        	
         }
 
+        $typesPermissions = ['application/vnd.ms-excel'];
+
+        if (!in_array($_FILES['arquivo']['type'], $typesPermissions))
+        {
+			$this->Session->setFlash("O arquivo deve ser no formato .xls.");
+			$this->redirect("/produto/listar_cadastros");                	
+        }
+
+        $caminho = APP . 'webroot/uploads/produto/planilhas/' . uniqid() . '.xls';
+
         $inputFileName = $_FILES['arquivo']['tmp_name'];
 
+        move_uploaded_file($inputFileName, $caminho);
+
+        $data = [
+        	'caminho' => $caminho,
+        	'usuario_id' => $this->instancia,
+        	'processado' => 0,
+        	'ativo' => 1
+        ];
+
+        if ($this->QueueProducts->save($data))
+        {
+			$this->Session->setFlash("O arquivo está na fila para ser importado, iremos enviar um e-mail quando terminar.");
+			$this->redirect("/produto/listar_cadastros");  
+        }
+        else 
+        {
+			$this->Session->setFlash("Ocorreu um erro, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");          	
+        }
+    }
+
+    public function processar_planilhas_na_fila() {
+    	$planilhas = [
+	    	[
+	    		'file' => 'teste.xls',
+	    		'user_id' => 1
+	    	]
+    	];
+
+    	$response = [];
+    	foreach ($planilhas as $planilha) {
+    		$response[] = $this->processar_planilhas();
+    	}
+
+    	return $response;
+    }
+
+    public function processar_planilhas($inputFileName) {
 		try {
 		    $inputFileType 	= PHPExcel_IOFactory::identify($inputFileName);
 		    $objReader 		= PHPExcel_IOFactory::createReader($inputFileType);
@@ -313,47 +361,44 @@ class ProdutoController extends AppController{
 		    die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
 		}
 
+		$dados = [];
 
 		$rows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
-		for ($row = 2; $row <= $rows; $row++) {
-			$row = $objPHPExcel->getActiveSheet()->getRowIterator($row)->current();
 
-			$cellIterator = $row->getCellIterator();
+		for ($row = 2; $row <= $rows; $row++) {
+			$rowInterator = $objPHPExcel->getActiveSheet()->getRowIterator($row)->current();
+
+			$cellIterator = $rowInterator->getCellIterator();
 			$cellIterator->setIterateOnlyExistingCells(false);
 
-			$j = 0;
 			foreach ($cellIterator as $i => $cell) {
-				$dados = [];
-
 				switch ($i) {
 					case 0: //Codigo/SKU
-						$dados[$j]['sku'] = $cell->getValue();
+						$dados[$row]['sku'] = $cell->getValue();
 					break; 
 					case 1: // Nome/Descrição 
-						$dados[$j]['nome'] = $cell->getValue();						
+						$dados[$row]['nome'] = $cell->getValue();						
 					break;
 					case 2: // QtdAtual
-						//$dados[$j]['sku'] = $cell->getValue();						
+						//$dados[$row]['sku'] = $cell->getValue();						
 					break;
 					case 3: // QtdMinima  
-						$dados[$j]['quantidade_minima'] = $cell->getValue();						
+						$dados[$row]['quantidade_minima'] = $cell->getValue();						
 					break;
 					case 4: // QtdTotal
-						$dados[$j]['estoque'] = $cell->getValue();						
+						$dados[$row]['estoque'] = $cell->getValue();						
 					break;
 					case 5: // ValCusto
-						$dados[$j]['custo'] = $cell->getValue();						
+						$dados[$row]['custo'] = $cell->getValue();						
 					break;
 					case 6:  // ValVenda
-						$dados[$j]['preco'] = $cell->getValue();						
+						$dados[$row]['preco'] = $cell->getValue();						
 					break;
 				}
-
-				pr($i);
 			}
-
 		}
 
+		pr($dados);
     }
 
 }

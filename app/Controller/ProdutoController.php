@@ -334,52 +334,7 @@ class ProdutoController extends AppController{
 			$this->redirect("/produto/listar_cadastros");          	
         }
     }
-
-    public function importar_produtos_planilha() {
-		include(APP . 'Vendor/PHPExcel/PHPExcel.php');
-		include(APP . 'Vendor/PHPExcel/PHPExcel/IOFactory.php');
-    	
-        $objPHPExcel = new PHPExcel();
-
-        if (!isset($_FILES['arquivo']['tmp_name']) && empty($_FILES['arquivo']['tmp_name']))
-        {
-			$this->Session->setFlash("Erro ao subir a planilha, tente novamente.");
-			$this->redirect("/produto/listar_cadastros");        	
-        }
-
-        $typesPermissions = ['application/vnd.ms-excel'];
-
-        if (!in_array($_FILES['arquivo']['type'], $typesPermissions))
-        {
-			$this->Session->setFlash("O arquivo deve ser no formato .xls.");
-			$this->redirect("/produto/listar_cadastros");                	
-        }
-
-        $caminho = APP . 'webroot/uploads/produto/planilhas/' . uniqid() . '.xls';
-
-        $inputFileName = $_FILES['arquivo']['tmp_name'];
-
-        move_uploaded_file($inputFileName, $caminho);
-
-        $data = [
-        	'caminho' => $caminho,
-        	'usuario_id' => $this->instancia,
-        	'processado' => 0,
-        	'ativo' => 1
-        ];
-
-        if ($this->QueueProducts->save($data))
-        {
-			$this->Session->setFlash("O arquivo está na fila para ser importado, iremos enviar um e-mail quando terminar.");
-			$this->redirect("/produto/listar_cadastros");  
-        }
-        else 
-        {
-			$this->Session->setFlash("Ocorreu um erro, tente novamente.");
-			$this->redirect("/produto/listar_cadastros");          	
-        }
-    }
-
+    
     public function processar_planilhas_na_fila() {
     	$this->loadModel('QueueProduct');
 
@@ -493,7 +448,6 @@ class ProdutoController extends AppController{
     	}
 
     	return $errors;
->>>>>>> 36dc74c7f7a4a9679dceb6b9594a56aa51a0ed1a
     }
 
 }

@@ -17,6 +17,79 @@ class ProdutoController extends AppController{
 		);
 	}
 
+	public function listar_cadastros_ajax() {
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'sku', 'imagem', 'nome', 'preco', 'estoque' );
+		
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia
+			)
+		);
+
+		$allProdutos = $this->Produto->find('all', $conditions);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Produto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				$value = $produto['Produto'][$aColumns[$i]];
+
+				if ($aColumns[$i] == "imagem")
+				{
+					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+
+					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					{
+						$value = '<img src="/images/no_image.png" width="120" height="120">';
+					}
+				}
+				
+				$row[] = $value;
+			}
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
+
 	public function adicionar_cadastro() {
 		$this->loadModel('Categoria');
 
@@ -334,7 +407,7 @@ class ProdutoController extends AppController{
 			$this->redirect("/produto/listar_cadastros");          	
         }
     }
-    
+
     public function processar_planilhas_na_fila() {
     	$this->loadModel('QueueProduct');
 

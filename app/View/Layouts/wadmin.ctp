@@ -145,42 +145,45 @@
             <!-- /.navbar-static-side -->
         </nav>
 
+
+
+        <!-- /#wrapper -->
+
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <?php echo $this->Html->script('bootstrap.min'); ?>
+        <!--script src="js/bootstrap.min.js"></script-->
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <?php echo $this->Html->script('plugins/metisMenu/metisMenu.min'); ?>
+        <!--script src="js/plugins/metisMenu/metisMenu.min.js"></script-->
+
+        <!-- Morris Charts JavaScript -->
+        <!--script src="js/plugins/morris/raphael.min.js"></script>
+        <script src="js/plugins/morris/morris.min.js"></script>
+        <script src="js/plugins/morris/morris-data.js"></script-->
+
+        <!-- Custom Theme JavaScript -->
+        <?php echo $this->Html->script('sb-admin-2'); ?>
+        <!--script src="js/sb-admin-2.js"></script-->
+
+        <!-- DataTables JavaScript -->
+        <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
+        <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
+
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
         <!-- Conteudo -->
         <?php echo $this->fetch('content'); ?>
 
     </div>
 
-    <!-- /#wrapper -->
-
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <?php echo $this->Html->script('bootstrap.min'); ?>
-    <!--script src="js/bootstrap.min.js"></script-->
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <?php echo $this->Html->script('plugins/metisMenu/metisMenu.min'); ?>
-    <!--script src="js/plugins/metisMenu/metisMenu.min.js"></script-->
-
-    <!-- Morris Charts JavaScript -->
-    <!--script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script-->
-
-    <!-- Custom Theme JavaScript -->
-    <?php echo $this->Html->script('sb-admin-2'); ?>
-    <!--script src="js/sb-admin-2.js"></script-->
-
-    <!-- DataTables JavaScript -->
-    <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
-    <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
-    $(document).ready(function() {
-        $('#dataTables-cliente').dataTable();
-    });
+        $(document).ready(function() {
+            $('#dataTables-cliente').dataTable();
+        });
     </script>
 
 </body>

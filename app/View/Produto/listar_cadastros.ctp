@@ -16,7 +16,7 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-cliente">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-produtos">
                             <thead>
                                 <tr>
                                     <th>SKU</th>
@@ -24,32 +24,10 @@
                                     <th>Nome</th>
                                     <th>Preço</th>
                                     <th>Estoque</th>
-                                    <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>                   
-                            <?php
-                            foreach ($produtos as $indice => $produto) {
-                            ?>             
-                                <tr class="odd gradeX" id="<?php echo $produto['Produto']['id'] ?>">
-                                    <td><?php echo $produto['Produto']['sku'] ?></td>
-                                    <td>
-                                        <img onerror="imgError(this);" src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
-                                    </td>
-                                    <td><?php echo $produto['Produto']['nome'] ?></td>
-                                    <td><?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></td>
-                                    <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>
-                                    <td class="center">
-                                        <button onclick="visualizar_cadastro(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                        
-                                        <button onclick="editar_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
-                                        
-                                        <button onclick="remover_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                    </td>
-                                </tr>   
-                            <?php
-                            }// fim foreach
-                            ?>
+                            <tbody>   
+
                             </tbody>
                         </table>
                     </div>
@@ -115,6 +93,23 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+    
+    $(document).ready(function(){
+        
+        datatable = $('#dataTables-produtos').dataTable({
+            "bServerSide": true,
+            "iDisplayStart": 0,
+            "sAjaxDataProp": "data",
+            "aaSorting": [[ 1, "desc" ]],
+            "sAjaxSource": "/produto/listar_cadastros_ajax"
+        });
+
+    });
+
+    function fnCallback() {
+        console.log('oi');
+    }
+
     function remover_produto(id) {
         $.ajax({
             type: "post",
@@ -130,15 +125,19 @@
             }
         });
     }
+
     function editar_produto(id) {
         window.location.href = "/produto/editar_cadastro/"+id;
     }
+    
     function visualizar_cadastro(id) {
         window.location.href = "/produto/visualizar_cadastro/"+id;
     }
+    
     function imgError(image) {
         image.onerror = "";
         image.src = "/images/no_image.png";
         return true;
     }
+
 </script>

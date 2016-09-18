@@ -177,6 +177,30 @@ class UsuarioController extends AppController{
 		return true;
 	}
 
+	public function s_editar_dados() {
+		$this->verificar_acesso();
+
+		$this->layout = 'wadmin';
+
+		$estoque_minimo = $this->request->data['estoque_minimo'];
+
+		$this->loadModel('Usuario');
+
+		$this->Usuario->id = $this->instancia;
+
+		$retorno = $this->Usuario->save(array('estoque_minimo' => $estoque_minimo));
+
+		if(!$retorno) {
+			$this->Session->setFlash('Ocorreu um erro ao salvar as novas infomações, tente novamente!');
+            
+            return $this->redirect('/usuario/meus_dados');
+		}
+
+		$this->Session->setFlash('Dados atualizados com sucesso!');
+        
+        return $this->redirect('/usuario/meus_dados');
+	}
+
 	public function meus_dados() {
 		$this->verificar_acesso();
 
@@ -188,7 +212,7 @@ class UsuarioController extends AppController{
 				)
 			)
 		);
-		
+
     	$this->set('modulos', $this->modulos);
     	$this->set('usuario', $dadosUsuario);
 	}

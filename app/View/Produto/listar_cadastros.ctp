@@ -62,6 +62,11 @@
                         <div class="row" style="padding-left:10px;padding-right:10px;">
                             <button  data-toggle="modal" data-target="#importarProdutos" type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-upload"><a style="color: #FFF;"> Importar Produtos</a></i></button>
                         </div>
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-warning" style="margin-bottom: 10px; width:100%;"><i class="fa fa-warning"><a href="/produto/listar_cadastros_estoque_minimo" style="color: #FFF;"> Produtos com Estoque Minimo</a></i></button>
+                        </div>
+
                 </div>
                 <!-- /.panel-body -->
             </div>

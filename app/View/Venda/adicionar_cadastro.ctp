@@ -136,9 +136,11 @@
 
         if (isNaN(quantidade_produto))
         {
-            $('#produto_item').focus();
+            $('#produto_item').css('border-color', 'red').focus();
             return;
         }
+
+        $('#produto_item').css('border-color', 'gray');
 
         $.ajax({
             type: "post",
@@ -215,6 +217,7 @@
     
     $('body').keydown(function(e) {
         var key = e.keyCode; // this value
+
         console.log(key);
 
         // CONTINUAR VENDA (q);
@@ -222,10 +225,29 @@
         {
             finalizar_venda();
         }
+
+        if (key == 113)
+        {
+            $('#forma_pagamento').select2("open");
+        }
+        
         // ADICIONAR ITEM (w)
         if (key == 87)
         {
             adicionar_produto();
         }
+
+        // PROCURAR ITEM (F)
+        if (key == 70)
+        {
+            $("#produto_item").select2("open");
+        }
+
+        // REGISTRAR VENDA
+        if (key == 83) 
+        {
+            $('#form-venda').submit();
+        }
+
     }); 
 </script>

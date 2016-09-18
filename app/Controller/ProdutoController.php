@@ -2,19 +2,15 @@
 
 ini_set('max_execution_time', 300);
 
+require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
+
+use Dompdf\Dompdf;
+
+
 class ProdutoController extends AppController{		
 
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';
-
-		$this->set('produtos', $this->Produto->find('all', 
-				array('conditions' => 
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
-					)
-				)
-			)
-		);
 	}
 
 	public function listar_cadastros_ajax() {
@@ -88,6 +84,187 @@ class ProdutoController extends AppController{
 		
 		echo json_encode($output);
 		exit;
+	}
+
+	public function listar_cadastros_estoque_minimo(){
+		$this->layout = 'wadmin';
+	}
+
+	public function listar_cadastros_estoque_minimo_ajax(){
+
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'sku', 'imagem', 'nome', 'preco', 'estoque' );
+
+		$this->loadModel('Usuario');
+
+		$usuario = $this->Usuario->find('all', array('conditions' =>
+				array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		)[0]['Usuario'];
+		
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia,
+				'Produto.quantidade_minima <= ' => 'Produto.estoque',
+				'Produto.estoque <= ' => $usuario['estoque_minimo']
+			)
+		);
+
+		$allProdutos = $this->Produto->find('all', $conditions);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Produto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				$value = $produto['Produto'][$aColumns[$i]];
+
+				if ($aColumns[$i] == "imagem")
+				{
+					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+
+					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					{
+						$value = '<img src="/images/no_image.png" width="120" height="120">';
+					}
+				}
+				
+				$row[] = $value;
+			}
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
+
+	public function baixar_estoque_minimo_pdf() {
+		$this->loadModel('Produto');
+		$this->loadModel('Usuario');
+
+		$dompdf = new Dompdf();
+
+		$usuario = $this->Usuario->find('all', array('conditions' =>
+				array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		)[0]['Usuario'];
+
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia,
+				'Produto.quantidade_minima <= ' => 'Produto.estoque',
+				'Produto.estoque <= ' => $usuario['estoque_minimo']
+			)
+		);
+
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$html = $this->getProdutosEstoqueMinimoComoHtml($produtos);
+
+		$dompdf->loadHtml($html);
+
+		$dompdf->setPaper('A4');
+
+		$dompdf->render();
+
+		$dompdf->stream();
+
+		exit;
+	}
+
+	public function getProdutosEstoqueMinimoComoHtml($produtos) {
+		$html = '';
+		$html .= '<html>';
+		$html .= '<head>';
+		$html .= '	<title></title>';
+		$html .= '</head>';
+		$html .= '<body>';
+		$html .= '';
+		$html .= '	<table style="background-color: #cacaca;"  width="100%" valign="center" align="center">';
+		$html .= '		<tr align="center">';
+		$html .= '			<td>';
+		$html .= '				<h2>Produtos com quantidade de estoque minimo</h2>';
+		$html .= '			</td>';
+		$html .= '		</tr> ';
+		$html .= '	</table>';
+		$html .= '	<br>';
+		$html .= '	<br>';
+		$html .= '	<table  width="100%" valign="center" align="center">';
+		$html .= '		<tr style="background-color: #cacaca;" align="center">';
+		$html .= '			<td>';
+		$html .= '				<h2>Produtos</h2>';
+		$html .= '			</td>';
+		$html .= '		</tr> ';
+		$html .= '	</table>';
+		$html .= '	<br>';
+		$html .= '	<table  width="100%" valign="center" align="center">';
+		$html .= '		<tr>';
+		$html .= '			<td>';
+		$html .= '				<table width="100%" valign="center" align="center">';
+		$html .= '					<tr style="background-color: #cacaca;">';
+		$html .= '						<td>Nome Produto</td>';
+		$html .= '						<td>Quantidade</td>';
+		$html .= '					</tr>';
+		$html .= '';
+
+		foreach ($produtos as $i => $produto) {
+
+			$html .= '					<tr>';
+			$html .= '						<td>' . $produto['Produto']['nome'] . '</td>';
+			$html .= '						<td>' . $produto['Produto']['estoque'] . '</td>';
+			$html .= '					</tr>';
+		}
+
+		$html .= '				</table>';
+		$html .= '			</td>';
+		$html .= '		</tr>';
+		$html .= '	</table>';
+		$html .= '	<br>';
+		$html .= '';
+		$html .= '</body>';
+		$html .= '</html>';
+
+		return $html;
 	}
 
 	public function adicionar_cadastro() {

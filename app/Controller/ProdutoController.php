@@ -213,6 +213,8 @@ class ProdutoController extends AppController{
 	}
 
 	public function getProdutosEstoqueMinimoComoHtml($produtos) {
+    	ob_start();
+
 		$html = '';
 		$html .= '<html>';
 		$html .= '<head>';
@@ -244,14 +246,18 @@ class ProdutoController extends AppController{
 		$html .= '					<tr style="background-color: #cacaca;">';
 		$html .= '						<td>Nome Produto</td>';
 		$html .= '						<td>Quantidade</td>';
+		$html .= '						<td>Custo</td>';
 		$html .= '					</tr>';
 		$html .= '';
 
 		foreach ($produtos as $i => $produto) {
+			if ($i > 30)
+				break;
 
 			$html .= '					<tr>';
 			$html .= '						<td>' . $produto['Produto']['nome'] . '</td>';
 			$html .= '						<td>' . $produto['Produto']['estoque'] . '</td>';
+			$html .= '						<td>R$ ' . number_format($produto['Produto']['custo'], 2, ',', '.') . '</td>';
 			$html .= '					</tr>';
 		}
 

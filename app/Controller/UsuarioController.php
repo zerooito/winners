@@ -183,12 +183,13 @@ class UsuarioController extends AppController{
 		$this->layout = 'wadmin';
 
 		$estoque_minimo = $this->request->data['estoque_minimo'];
+		$sale_without_stock = $this->request->data['sale_without_stock'];
 
 		$this->loadModel('Usuario');
 
 		$this->Usuario->id = $this->instancia;
 
-		$retorno = $this->Usuario->save(array('estoque_minimo' => $estoque_minimo));
+		$retorno = $this->Usuario->save(array('estoque_minimo' => $estoque_minimo, 'sale_without_stock' => $sale_without_stock));
 
 		if(!$retorno) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar as novas infomações, tente novamente!');

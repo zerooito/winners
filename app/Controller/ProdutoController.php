@@ -453,7 +453,25 @@ class ProdutoController extends AppController{
 		echo json_encode($retorno);
 	}
 
+	public function getUserActive($id) {
+		$this->loadModel('Usuario');
+
+		$user = $this->Usuario->find('all', 
+			array('conditions' => 
+				array('Usuario.id' => $id)
+			)
+		);
+		
+		return $user;
+	}
+
 	public function validar_estoque($produto) {
+
+		$user_active = $this->getUserActive($produto['Produto']['id_usuario']);
+
+		if ($user_active[0]['Usuario']['sale_without_stock'])
+			return true;
+
 		if (empty($produto) && !isset($produto)) {
 			return false;
 		}

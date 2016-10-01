@@ -16,6 +16,29 @@
                                 </div>
                             </div>                       
                         </div>
+                        <div class="col-md-12" style="margin-top:10px;">
+                            <label>Vender produtos sem estoque?</label>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <select class="form-control" name="sale_without_stock">
+                                        <option value="1"
+                                            <?php if (@$usuario[0]['Usuario']['sale_without_stock']): ?>
+                                                selected
+                                            <?php endif; ?>
+                                        >
+                                            Sim
+                                        </option>
+                                        <option value="0"
+                                            <?php if (@!$usuario[0]['Usuario']['sale_without_stock']): ?>
+                                                selected
+                                            <?php endif; ?>
+                                        >
+                                            Não
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>                       
+                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>

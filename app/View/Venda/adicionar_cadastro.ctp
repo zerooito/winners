@@ -3,7 +3,13 @@
         <div class="col-lg-12">
             <div class="panel panel-default" style="margin-top: 12px;">
                 <div class="panel-heading">
-                    Dados da Venda (<a href="javascript:;" onclick="$('#showHints').modal();">     Dicas </a>)
+                    Dados da Venda 
+
+                    (<a href="javascript:;" onclick="$('#showHints').modal();"> Dicas </a>) 
+
+                    (<a href="javascript:;" onclick="$('#startSales').modal();"> Iniciar Caixa </a>) 
+
+                    (<a href="javascript:;" onclick="closeSales();"> Fechar Caixa </a>) 
                 </div>
                 <div class="panel-body">
                     <form role="form" action="/venda/s_adicionar_cadastro" method="post" id="form-venda">
@@ -156,7 +162,134 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="startSales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form action="/caixa/iniciar_caixa" method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Iniciar Caixa</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor Inicial Caixa</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_inicial]" id="valor_inicial">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Data</label>
+                                <input type="date" required class="form-control" name="caixa[data_abertura]" id="data_abertura">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Iniciar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="endSales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form action="/caixa/finalizar_caixa" method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Finalizar Caixa</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor Inicial Caixa</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_inicial]" id="valor_inicial_final" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor Final</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_total]" id="valor_final_total" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor Final Cartão</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_cartao]" id="valor_final_cartao" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor Final Dinheiro</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_dinheiro]" id="valor_final_dinheiro" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Data Abertura</label>
+                                <input type="date" required class="form-control" name="caixa[data_abertura]" id="data_abertura_final" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Data Fechamento</label>
+                                <input type="date" required class="form-control" name="caixa[data_fechamento]" id="data_fechamento">
+                            </div>
+                        </div>
+                        <input type="hidden" id="id_caixa" name="caixa[id]">
+                        <div class="col-lg-6">
+                            <p> Total Caixa: <i id="total_caixa"></i> </p>
+                            <p> Total Vendido: <i id="vendido"></i> </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Finalizar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <script type="text/javascript">
+
+    function closeSales() {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/caixa/carregar_fechamento_caixa_dia_ajax",
+            success: function(data) {
+                $('#data_abertura_final').val(data['caixa_atual']['Caixa']['data_abertura']);
+                $('#valor_inicial_final').val(number_format(data['caixa_atual']['Caixa']['valor_inicial'],2,',','.'));
+                $('#data_fechamento').val(data['caixa_atual']['Caixa']['data_fechamento']);
+                $('#valor_final_total').val(number_format(data['total_vendas'], 2, ',', '.'));
+                $('#valor_final_dinheiro').val(number_format(data['total_dinheiro'], 2, ',', '.'));
+                $('#valor_final_cartao').val(number_format(data['total_cartao'], 2, ',', '.'));
+                $('#id_caixa').val(data['caixa_atual']['Caixa']['id']);
+
+                $('#vendido').html('R$ ' + number_format(data['vendido'], 2, ',', '.'));
+                $('#total_caixa').html('R$ ' + number_format(data['total_vendas'], 2, ',', '.'));
+
+                $('#endSales').modal();
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        })
+    }
+
     function adicionar_produto() {
         var produto_item        = $('#produto_item').val();
         var quantidade_produto  = parseFloat($('#quantidade_produto').val());
@@ -194,6 +327,7 @@
                 $('#produtos').append(html);
 
                 var novo_valor_venda = parseFloat(valor_venda_atual) + parseFloat(data['Produto']['total']);
+                console.log(parseFloat(data['Produto']['total']));
                 $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
                 $('#quantidade_produto').val('');
             }

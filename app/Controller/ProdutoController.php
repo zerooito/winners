@@ -448,7 +448,7 @@ class ProdutoController extends AppController{
 
 		$retorno['Produto']['total'] = $this->calcular_preco_produto_venda($retorno['Produto']['preco'], $this->request->data('qnt'));
 
-		$retorno['Produto']['preco'] = number_format($retorno['Produto']['preco'], 2, ',', '.');
+		$retorno['Produto']['preco'] = (float) $retorno['Produto']['preco'];
 		
 		echo json_encode($retorno);
 	}
@@ -494,7 +494,7 @@ class ProdutoController extends AppController{
 
 		$retorno = $preco * $qnt;
 
-		return number_format($retorno, 2, ',', '.');
+		return (float) $retorno;
 	}
 
 	public function uploadImage(&$image) {

@@ -79,6 +79,10 @@ class ProdutoController extends AppController{
 				$row[] = $value;
 			}
 
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
+
+			$row[] = $btEdit;
+
 			$output['aaData'][] = $row;
 		}
 		

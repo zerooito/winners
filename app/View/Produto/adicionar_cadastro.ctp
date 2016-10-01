@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>SKU</label>
-                                        <input class="form-control moeda" name="dados[sku]" required>
+                                        <input class="form-control" name="dados[sku]" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Custo</label>

@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default" style="margin-top: 12px;">
                 <div class="panel-heading">
-                    Dados da Venda
+                    Dados da Venda (<a href="javascript:;" onclick="$('#showHints').modal();">     Dicas </a>)
                 </div>
                 <div class="panel-body">
                     <form role="form" action="/venda/s_adicionar_cadastro" method="post" id="form-venda">
@@ -128,6 +128,34 @@
         <!-- /.col-lg-12 -->
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="showHints" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Atalhos e Dicas do PDV</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>Procurar Produto: <b>CTRL + F</b></li>
+            <li>Adicionar Produto: <b>CTRL + W</b></li>
+            <li>Selecionar Metodo de Pagamento: <b>CTRL + F2</b></li>
+            <li>Continuar Venda: <b>CTRL + Q</b></li>            
+            <li>Salvar Venda: <b>CTRL + S</b></li>           
+            <li>Salvar Orçamento: <b>CTRL + O</b></li>
+            <li>Navegar entre campos: <b>TAB</b></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
     function adicionar_produto() {
         var produto_item        = $('#produto_item').val();
@@ -218,35 +246,46 @@
     $('body').keydown(function(e) {
         var key = e.keyCode; // this value
 
-        console.log(key);
+        if (key == 13)
+            return e.preventDefault(); 
 
-        // CONTINUAR VENDA (q);
-        if (key == 81)
-        {
-            finalizar_venda();
-        }
+        if (e.ctrlKey || e.metaKey) {
 
-        if (key == 113)
-        {
-            $('#forma_pagamento').select2("open");
-        }
-        
-        // ADICIONAR ITEM (w)
-        if (key == 87)
-        {
-            adicionar_produto();
-        }
+            e.preventDefault();
 
-        // PROCURAR ITEM (F)
-        if (key == 70)
-        {
-            $("#produto_item").select2("open");
-        }
+            // CONTINUAR VENDA (q);
+            if (key == 81)
+            {
+                finalizar_venda();
+            }
 
-        // REGISTRAR VENDA
-        if (key == 83) 
-        {
-            $('#form-venda').submit();
+            if (key == 113) //f2
+            {
+                $('#forma_pagamento').select2("open");
+            }
+            
+            // ADICIONAR ITEM (A)
+            if (key == 65)
+            {
+                adicionar_produto();
+            }
+
+            // PROCURAR ITEM (F)
+            if (key == 70)
+            {
+                $("#produto_item").select2("open");
+            }
+
+            // REGISTRAR VENDA
+            if (key == 83) 
+            {
+                $('#form-venda').submit();
+            }
+
+            if (key == 79)
+            {
+                salvarOrcamento();
+            }
         }
 
     }); 

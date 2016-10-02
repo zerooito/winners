@@ -71,6 +71,7 @@ class CaixaController extends AppController {
 		$conditions = array(
 			'conditions' => array(
 				'LancamentoVenda.usuario_id' => $this->instancia,
+				'LancamentoVenda.data_pgt' => date('Y-m-d')
 			)
 		);
 

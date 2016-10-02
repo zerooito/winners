@@ -102,7 +102,8 @@ class CaixaController extends AppController {
 		$vendas = $this->Venda->find('all', array(
 				'conditions' => array(
 					'Venda.data_venda' => $dateInit,
-					'Venda.id_usuario' => $this->instancia
+					'Venda.id_usuario' => $this->instancia,
+					'Venda.ativo' => 1
 				)
 			)
 		);

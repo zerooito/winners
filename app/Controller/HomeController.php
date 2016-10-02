@@ -10,6 +10,10 @@ class HomeController extends AppController{
 		$this->layout = 'winners';
 	}
 
+	function servicos(){
+		$this->layout = 'servicos';
+	}
+
 	function login() {
 		$this->set('admin', false);
 		$this->layout = 'login';

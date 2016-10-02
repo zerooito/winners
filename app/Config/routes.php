@@ -37,6 +37,8 @@
 	} else {
 		Router::connect('/', array('controller' => $dominio['controller'], 'action' => $dominio['funcao']));
 	}
+
+	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
 	
 /**
  * Load all plugin routes. See the CakePlugin documentation on

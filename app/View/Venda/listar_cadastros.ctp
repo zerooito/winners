@@ -34,7 +34,7 @@
                                     <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
                                     <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
                                     <td class="center">
-                                        <button onclick="remover_produto(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
                                         <!-- <button onclick="editar_produto(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button> -->
                                     </td>
                                 </tr>
@@ -88,7 +88,7 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "/venda/exlcluir_cadastro",
+            url: "/venda/excluir_cadastro",
             async: true,
             data: {id: id},
             error: function(x){

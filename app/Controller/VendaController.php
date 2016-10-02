@@ -365,4 +365,19 @@ class VendaController extends AppController {
 		return json_encode($resposta);
 	}
 
+	public function excluir_cadastro() {
+		$this->layout = 'ajax';
+
+		$id = $this->request->data('id');
+
+		$dados = array('ativo' => '0');
+		$parametros = array('id' => $id);
+
+		if ($this->Venda->updateAll($dados, $parametros)) {
+			echo json_encode(true);
+		} else {
+			echo json_encode(false);
+		}
+	}
+
 }

@@ -980,3 +980,12 @@ ul.address {
 /*Presets*/
 
 
+
+.home .row {
+  margin-top: 25px;
+  margin-bottom: 45px;
+}
+
+.home .row .col-sm-9, .home .row .col-sm-3 {
+  margin-top:20px;
+}

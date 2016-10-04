@@ -40,9 +40,9 @@ class CaixaController extends AppController {
 		$vendido = $totalVendas - $caixaAtual['Caixa']['valor_inicial'];
 
 		$response = [
-			'total_vendas' => $totalVendas,
-			'total_cartao' => $this->carregar_total_por_tipo('cartao'),
-			'total_dinheiro' => $this->carregar_total_por_tipo('dinheiro'),
+			'total_vendas' => (float) $totalVendas,
+			'total_cartao' => (float) $this->carregar_total_por_tipo('cartao'),
+			'total_dinheiro' => (float) $this->carregar_total_por_tipo('dinheiro'),
 			'caixa_atual' => $caixaAtual,
 			'vendido' => $vendido
 		];
@@ -89,7 +89,7 @@ class CaixaController extends AppController {
 			$total += $LancamentoVenda['LancamentoVenda']['valor_pago'];
 		}
 
-		return $total;
+		return (float) $total;
 	}
 
 	public function carregar_total_vendas()
@@ -103,7 +103,8 @@ class CaixaController extends AppController {
 				'conditions' => array(
 					'Venda.data_venda' => $dateInit,
 					'Venda.id_usuario' => $this->instancia,
-					'Venda.ativo' => 1
+					'Venda.ativo' => 1,
+					'Venda.orcamento <> ' => 1
 				)
 			)
 		);
@@ -113,7 +114,7 @@ class CaixaController extends AppController {
 			$total += $venda['Venda']['valor'];
 		}
 
-		return $total;
+		return (float) $total;
 	}
 
 }

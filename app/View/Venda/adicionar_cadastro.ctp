@@ -102,7 +102,9 @@
                                             <th>Nome Produto</th>
                                             <th>Preço</th>
                                             <th>Quantidade</th>
+                                            <th>Em estoque</th>
                                             <th>Total</th>
+                                            <th>Ações</th>
                                         </thead>
                                         <tbody id="produtos">
 
@@ -314,24 +316,39 @@
             success: function(data){
                 var html = '';
                 
-                html += '<tr>';
+                html += '<tr id="' + data['Produto']['id'] + '">';
                 html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][id_produto]" value="' + data['Produto']['id'] + '"/>';
                 html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][quantidade]" value="' + quantidade_produto + '"/>';
                 html +=    '<td>' + data['Produto']['id'] + '</td>';
                 html +=    '<td>' + data['Produto']['nome'] + '</td>';
                 html +=    '<td>' + data['Produto']['preco'] + '</td>';
                 html +=    '<td>' + quantidade_produto + '</td>';
-                html +=    '<td>' + data['Produto']['total'] + '</td>';
+                html +=    '<td>' + data['Produto']['estoque'] + '</td>';
+                html +=    '<td id="' + data['Produto']['id'] + '-total">' + data['Produto']['total'] + '</td>';
+                html +=    '<td><a href="javascript:removeItem(\'' + data['Produto']['id'] + '\');" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></td>';
                 html += '</tr>';
 
                 $('#produtos').append(html);
 
                 var novo_valor_venda = parseFloat(valor_venda_atual) + parseFloat(data['Produto']['total']);
-                console.log(parseFloat(data['Produto']['total']));
+                
                 $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
                 $('#quantidade_produto').val('');
             }
         });
+    }
+
+    function removeItem(id) {
+        total = $('#' + id + '-total').html();
+
+        var valor_venda_atual   = $('#valor-atual').attr('data-preco');
+
+        var novo_valor_venda = parseFloat(valor_venda_atual) - parseFloat(total);
+
+        $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
+        $('#' + id).remove();
     }
 
     function finalizar_venda() {

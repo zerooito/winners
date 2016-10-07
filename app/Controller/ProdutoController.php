@@ -255,9 +255,6 @@ class ProdutoController extends AppController{
 		$html .= '';
 
 		foreach ($produtos as $i => $produto) {
-			if ($i > 30)
-				break;
-
 			$html .= '					<tr>';
 			$html .= '						<td>' . $produto['Produto']['nome'] . '</td>';
 			$html .= '						<td>' . $produto['Produto']['estoque'] . '</td>';

@@ -207,7 +207,7 @@ class ProdutoController extends AppController{
 
 		$dompdf->loadHtml($html);
 
-		$dompdf->setPaper('A4');
+		$dompdf->setPaper(array(0, 0, 450, 306));
 
 		$dompdf->render();
 

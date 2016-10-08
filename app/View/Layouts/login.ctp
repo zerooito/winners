@@ -51,17 +51,25 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
+
+                <div class="login-panel text-center">
+                    <img src="/images/logo.png" style="width: 230px;" class="logo">
+                </div>
+
+            </div>
+            
+            <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Entre com seus dados
-                        <?php
-                            if ($admin) {
-                                echo '<b>FRAMEWORK</b>';
-                            }
-                        ?>
+                        <?php if ($admin): ?>
+                            <b>FRAMEWORK</b>
+                        <?php endif; ?>
                         </h3>
                     </div>
                     <div class="panel-body">
+
+
                         <form <?php if ($admin) { echo 'action="/admin/processar_login"'; } else { echo 'action="/usuario/processar_login"'; }?> role="form" id="form-login" method="post">
                             <fieldset>
                                 <div class="form-group">
@@ -77,6 +85,7 @@
                                 <button type="submit" class="btn btn-lg btn-success btn-block" id="login">Login</a>
                             </fieldset>
                         </form>
+
                     </div>
                 </div>
             </div>

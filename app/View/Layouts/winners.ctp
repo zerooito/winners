@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Cia WN - Fabrica de Software</title>
+  <title>Winners & CiaWN - Plataforma E-commerce + Software Sob Medida</title>
   <link href="/css/bootstrap.min.css" rel="stylesheet">
   <link href="/css/animate.min.css" rel="stylesheet"> 
   <link href="/css/font-awesome.min.css" rel="stylesheet">
@@ -37,7 +37,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="index.html">
-            <h1><img class="img-responsive" src="/images/logo.png" alt="logo"></h1>
+            <h1><img class="img-responsive" src="/images/logo.png" style="width: 115px;"  alt="logo"></h1>
           </a>                    
         </div>
         <div class="collapse navbar-collapse">
@@ -57,21 +57,21 @@
       <div class="carousel-inner">
         <div class="item active" style="background-image: url(/images/slider/1.jpg)">
           <div class="caption">
-            <h1 class="animated fadeInLeftBig">Bem vindo a <span>CiaWN</span></h1>
+            <h1 class="animated fadeInLeftBig">Bem vindo</h1>
             <p class="animated fadeInRightBig">Ecommerce - Integrações - OpenSource - ERP</p>
             <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Ver mais</a>
           </div>
         </div>
         <div class="item" style="background-image: url(/images/slider/2.jpg)">
           <div class="caption">
-            <h1 class="animated fadeInLeftBig">Bem vindo a <span>CiaWN</span></h1>
+            <h1 class="animated fadeInLeftBig">Winners & CiaWN</h1>
             <p class="animated fadeInRightBig">Desenvolvimento Web - Responsivo - Desenvolvimento Mobile - Wordpress</p>
             <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Ver mais</a>
           </div>
         </div>
         <div class="item" style="background-image: url(/images/slider/3.jpg)">
           <div class="caption">
-            <h1 class="animated fadeInLeftBig">Bem vindo a <span>CiaWN</span></h1>
+            <h1 class="animated fadeInLeftBig">Plataforma E-commerce + Software Sob Medida</h1>
             <p class="animated fadeInRightBig">Opencart - Magento - Recorte de PSD's - SEO - UI\UX</p>
             <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Ver mais</a>
           </div>
@@ -89,7 +89,7 @@
     <div class="footer-top">
       <div class="container text-center">
         <div class="footer-logo">
-          <a href="index.html"><img class="img-responsive" src="/images/logo.png" alt=""></a>
+          <a href="index.html"><img class="img-responsive" src="/images/logo.png" style="width: 300px;" alt=""></a>
         </div>
         <div class="social-icons">
           <ul>

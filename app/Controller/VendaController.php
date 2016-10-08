@@ -56,18 +56,27 @@ class VendaController extends AppController {
 	}
 
 	public function listar_cadastros() {
+		$this->loadModel('LancamentoVenda');
+
 		$this->layout = 'wadmin';
 
-		$this->set('vendas', $this->Venda->find('all',
-				array('conditions' =>
-					array(
-						'ativo' => 1,
-						'id_usuario' => $this->instancia,
-						'orcamento' => 0
-					)
+		$vendas = $this->Venda->find('all',
+			array('conditions' =>
+				array(
+					'Venda.ativo' => 1,
+					'Venda.id_usuario' => $this->instancia,
+					'Venda.orcamento' => 0
 				)
 			)
 		);
+
+		foreach ($vendas as $i => $venda) {
+			$lancamento = $this->LancamentoVenda->find('first', array('conditions' => array('LancamentoVenda.venda_id' => $venda['Venda']['id'])));
+
+			$vendas[$i]['Lancamento'] = (isset($lancamento['LancamentoVenda'])) ? $lancamento['LancamentoVenda'] : array();
+		}
+
+		$this->set('vendas', $vendas);
 	}
 
 	public function adicionar_cadastro() {

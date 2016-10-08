@@ -21,26 +21,29 @@
                                 <tr>
                                     <th>#ID</th>
                                     <th>Valor</th>
+                                    <th>Forma de Pagamento</th>
                                     <th>Data Venda</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php
-                            foreach ($vendas as $indice => $venda) {
-                            ?>
+                            <?php foreach ($vendas as $i => $venda): ?>
                                 <tr class="odd gradeX" id="<?php echo $venda['Venda']['id'] ?>">
                                     <td><?php echo $venda['Venda']['id'] ?></td>
                                     <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
+
+                                    <?php if (isset($venda['Lancamento']['forma_pagamento'])): ?>
+                                        <td><?php echo strtoupper($venda['Lancamento']['forma_pagamento']) ?></td>
+                                    <?php else: ?>
+                                        <td>Não informado</td>
+                                    <?php endif; ?>
+
                                     <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
                                     <td class="center">
                                         <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <!-- <button onclick="editar_produto(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button> -->
                                     </td>
                                 </tr>
-                            <?php
-                            }// fim foreach
-                            ?>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -60,20 +63,22 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
     
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/venda/adicionar_cadastro" style="color: #FFF;"> Adicionar venda</a></i></button>
+                    <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;">
+                        <i class="fa fa-plus">
+                            <a href="/venda/adicionar_cadastro" style="color: #FFF;"> 
+                                Adicionar venda
+                            </a>
+                        </i>
+                    </button>
+
+                    <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;">
+                        <i class="fa fa-eye">
+                            <a href="/venda/relatorio_diario" style="color: #FFF;"> 
+                                Relatorio do dia atual
+                            </a>
+                        </i>
+                    </button>
                     
-                    <!-- Split button -->
-                    <div class="btn-group" style="margin-top: 10px;">
-                      <button type="button" class="btn btn-info">Ações</button>
-                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a href="/venda/relatorio_diario">Exportar Relatorio Diário</a></li>
-                      </ul>
-                    </div>
-    
                 </div>
                 <!-- /.panel-body -->
 

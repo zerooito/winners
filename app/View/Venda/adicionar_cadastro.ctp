@@ -46,9 +46,9 @@
                                         <div class="form-group">
                                             <label>Forma de Pagamento</label>
                                             <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
+                                                <option value="dinheiro">Dinheiro</option>
                                                 <option value="cartao_debito">Cartão Debito</option>
                                                 <option value="cartao_credito">Cartão Credito</option>
-                                                <option value="dinheiro">Dinheiro</option>
                                             </select>
                                         </div>
                                     </div>
@@ -292,9 +292,9 @@
         })
     }
 
-    function adicionar_produto() {
-        var produto_item        = $('#produto_item').val();
-        var quantidade_produto  = parseFloat($('#quantidade_produto').val());
+    function adicionar_produto(id=null, quantidade_produto=null) {
+        var produto_item        = (id != null) ? id : $('#produto_item').val();
+        var quantidade_produto  = quantidade_produto != null ? quantidade_produto : parseFloat($('#quantidade_produto').val());
         var valor_venda_atual   = $('#valor-atual').attr('data-preco');
 
         if (isNaN(quantidade_produto))
@@ -322,7 +322,7 @@
                 html +=    '<td>' + data['Produto']['id'] + '</td>';
                 html +=    '<td>' + data['Produto']['nome'] + '</td>';
                 html +=    '<td>' + data['Produto']['preco'] + '</td>';
-                html +=    '<td>' + quantidade_produto + '</td>';
+                html +=    '<td><input type="number" class="form-control" onchange="changeItem(' + data['Produto']['id'] + ');" id="qnt-' + data['Produto']['id'] + '" value="' + quantidade_produto + '"></td>';
                 html +=    '<td>' + data['Produto']['estoque'] + '</td>';
                 html +=    '<td id="' + data['Produto']['id'] + '-total">' + data['Produto']['total'] + '</td>';
                 html +=    '<td><a href="javascript:removeItem(\'' + data['Produto']['id'] + '\');" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></td>';
@@ -389,8 +389,17 @@
 
     $("#quantidade_produto").keyup(function() {
         v = $(this).val();
+
         $(this).val(v.replace(/\D/g,"")); //Remove tudo o que não é dígito
     });
+
+    function changeItem(id) {
+        val = $('#qnt-' + id).val();
+
+        removeItem(id);
+
+        adicionar_produto(id, val);
+    }
 
     /* ATALHOS TECLADO */
     

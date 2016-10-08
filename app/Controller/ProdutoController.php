@@ -1,11 +1,8 @@
 <?php
 
-ini_set('max_execution_time', 300);
-
 require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
 
 use Dompdf\Dompdf;
-
 
 class ProdutoController extends AppController{		
 
@@ -202,12 +199,12 @@ class ProdutoController extends AppController{
 		);
 
 		$produtos = $this->Produto->find('all', $conditions);
-
+		
 		$html = $this->getProdutosEstoqueMinimoComoHtml($produtos);
 
 		$dompdf->loadHtml($html);
 
-		$dompdf->setPaper(array(0, 0, 450, 306));
+		$dompdf->set_paper(array(0, 0, 595.28, count($produtos) * 25));
 
 		$dompdf->render();
 

@@ -39,8 +39,13 @@
                                     <?php endif; ?>
 
                                     <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
+
                                     <td class="center">
-                                        <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+
+                                        <a href="javascript:printNotaNaoFiscal(<?php echo $venda['Venda']['id'] ?>);" target="_blank" class="btn btn-info">
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -88,6 +93,8 @@
     </div>
 </div>
 
+<iframe id="textfile" src=""></iframe>
+
 <script type="text/javascript">
     function remover_venda(id) {
         $.ajax({
@@ -104,7 +111,26 @@
             }
         });
     }
+
+    function printNotaNaoFiscal(id) {
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/imprimir_nota_nao_fiscal/" + id,
+            error: function(data){
+                alert('Ocorreu um erro.');
+                console.log(data);
+            },
+            success: function(data){
+                $('#textfile').attr('src', '/impressao_fiscal/exibir?arquivo=' + data['file']);
+                var iframe = document.getElementById('textfile');
+                iframe.contentWindow.print();
+            }
+        });
+    }
+
     function editar_produto(id) {
         window.location.href = "/produto/editar_cadastro/"+id;
     }
+
 </script>

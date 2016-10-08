@@ -17,6 +17,7 @@
 	"require": {
 		"php": ">=5.2.8",
 		"fastshipping/fastshipping-php": "master-dev",
+        "pluggto/pluggto-php": "master-dev",
 		"dompdf/dompdf": "v0.7.0"
 	},
 	"require-dev": {

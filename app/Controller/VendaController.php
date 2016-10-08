@@ -350,17 +350,17 @@ class VendaController extends AppController {
         exit;
 	}
 
-	public function recoverDataToDashboardOneWeek(){
+	public function recoverDataToDashboardOneWeek($id_usuario){
 		$vendas = $this->Venda->find('all',
 			array('conditions' =>
 				array(
-					'ativo' => 1,
-					'id_usuario' => $this->instancia,
+					'Venda.ativo' => 1,
+					'Venda.id_usuario' => $id_usuario,
 				),
 				'limit' => 6
 			)
 		);
-
+		
 		$resposta = [];
 		foreach ($vendas as $i => $venda) {
 			$resposta[] = (float) number_format($venda['Venda']['valor'], 2, '.', ',');

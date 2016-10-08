@@ -11,7 +11,7 @@ class DashboardController extends AppController{
 		$this->set('pagamento', $pagamento);
 		
 		$vendaController = new VendaController;
-		$this->set('vendas', $vendaController->recoverDataToDashboardOneWeek());
+		$this->set('vendas', $vendaController->recoverDataToDashboardOneWeek($this->instancia));
 
 		$this->layout = 'wadmin';
 

@@ -55,6 +55,7 @@ class ProdutoEstoqueController extends AppController {
 			$novo_estoque['estoque'] = $produto['Produto']['estoque'] - $quantidade;
 
 			$this->Produto->id = $produto_id;
+			
 			if (!$this->Produto->save($novo_estoque)) {
 				return false;
 			}

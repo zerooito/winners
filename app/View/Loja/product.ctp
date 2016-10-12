@@ -16,9 +16,9 @@
 					<div class="product-price">R$ <?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></div>
 					<hr>
 					<div class="btn-group cart">
-						<div class="fb-like" data-href="/product/<?php echo $produto['Produto']['id'] ?>" data-send="true" data-layout="button_count" data-width="250" data-show-faces="false"></div>
+						<div class="fb-like" data-href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/product/<?php echo $produto['Produto']['id'] ?>" data-send="true" data-layout="button_count" data-width="250" data-show-faces="false"></div>
 						<hr>
-			            <form action="/addCart" method="post">
+			            <form action="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/addCart" method="post">
 			            	<label>Tamanho: 
 				            	<select class="form-control" name="produto[variacao]">
 				            		<?php foreach ($variacoes as $i => $variacao): ?>
@@ -69,8 +69,8 @@
 </div>
 
 
-<script src="/app/webroot/xstore/js/jquery-1.8.3.min.js"></script>
-<script src='/app/webroot/xstore/js/jquery.elevatezoom.js'></script>
+<script src="/shopdefault/js/jquery-1.8.3.min.js"></script>
+<script src='/shopdefault/js/jquery.elevatezoom.js'></script>
 
 <script type="text/javascript">
 	$("#item-display").elevateZoom(); 

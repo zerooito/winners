@@ -25,7 +25,7 @@
 								<h5><span class="glyphicon glyphicon-shopping-cart"></span> Carrinho</h5>
 							</div>
 							<div class="col-xs-6">
-								<button onclick="window.location.href='/'" type="button" class="btn btn-primary btn-sm btn-block">
+								<button onclick="window.location.href='/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>'" type="button" class="btn btn-primary btn-sm btn-block">
 									<span class="glyphicon glyphicon-share-alt"></span> Continue comprando
 								</button>
 							</div>
@@ -48,7 +48,7 @@
 								<input type="text" class="form-control input-sm" value="<?php echo $product['Produto']['quantidade'] ?>">
 							</div>
 							<div class="col-xs-2">
-								<button onclick="window.location.href = '/removeProductCart/<?php echo $product['Produto']['id'] ?>';" type="button" class="btn btn-link btn-xs">
+								<button onclick="window.location.href = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/removeProductCart/<?php echo $product['Produto']['id'] ?>';" type="button" class="btn btn-link btn-xs">
 									<span class="glyphicon glyphicon-trash"> </span>
 								</button>
 							</div>
@@ -75,7 +75,7 @@
 							<h4 class="text-right">Total <strong>R$ <?php echo number_format($total, 2, ',', '.') ?></strong></h4>
 						</div>
 						<div class="col-xs-3">
-							<button onclick="window.location.href = 'checkout'" type="button" class="btn btn-success btn-block">
+							<button onclick="window.location.href = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/checkout'" type="button" class="btn btn-success btn-block">
 								Continuar
 							</button>
 						</div>

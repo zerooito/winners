@@ -8,14 +8,56 @@ require 'NewsletterController.php';
 require 'VendaController.php';
 
 require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
+
 use FastShipping\Lib\Tracking;
 use FastShipping\Lib\Shipping;
 
 class LojaController extends AppController {
 	public $layout = 'lojaexemplo';	
 
+  protected $usuario;
+
 	public function beforeFilter(){
-	   return true;
+    $lojaSession = $this->Session->read('Usuario.loja');
+    
+    if (isset($lojaSession))
+    {
+      $loja = $lojaSession;
+    }
+    else
+    {
+      $loja = $this->params['loja'];
+    }
+    
+    if (!isset($loja)) 
+    {
+      echo 'Loja não existe';    
+      exit;
+    }
+    else
+    {
+      $this->loadModel('Usuario');
+
+      $this->usuario = $this->Usuario->find('first', array(
+          'conditions' => array(
+            'Usuario.loja' => $loja
+          )
+        )
+      );
+
+      if (empty($this->usuario))
+      {
+        echo 'Loja não existe';
+        exit;
+      }
+
+      $this->Session->write('Usuario.id', $this->usuario['Usuario']['id']);//gambi temporaria
+      $this->Session->write('Usuario.loja', $this->usuario['Usuario']['loja']);//gambi temporaria
+
+      $this->layout = $this->usuario['Usuario']['layout_loja'];
+    }
+
+	  return true;
 	}
 
 	public function loadProducts($id_categoria = null, $id_produto = null) {
@@ -25,7 +67,8 @@ class LojaController extends AppController {
          array(
             'Produto.ativo' => 1,
             'Produto.id_usuario' => $this->Session->read('Usuario.id')
-         )
+         ),
+         'limit' => 8
       );
 
       if ($id_categoria != null) {
@@ -36,7 +79,7 @@ class LojaController extends AppController {
          $params['conditions']['Produto.id'] = $id_produto;
       }
 
-		$produtos = $this->Produto->find('all', $params);
+		  $produtos = $this->Produto->find('all', $params);
 
 	   return $produtos;
 	}
@@ -59,12 +102,12 @@ class LojaController extends AppController {
 		$produto = $this->request->data('produto');
 		
 		if (empty($produto)) {
-			$this->redirect('/');
+			$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/');
 		}
 
       if (!$this->validateProduct($produto)) {
          $this->Session->setFlash('Quantidade de produtos escolhidas é maior do que a disponivel!');
-         $this->redirect('/');
+         $this->redirect('/' . $this->usuario['Usuario']['loja'] . '/');
       }
 
 		$cont = count($this->Session->read('Produto'));
@@ -73,7 +116,7 @@ class LojaController extends AppController {
       $this->Session->write('Produto.'.$produto['id'].'.quantidade' , $produto['quantidade']);
       $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
 
-		$this->redirect('/cart');
+		$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
 	}
 
    public function removeProductCart() {
@@ -81,7 +124,7 @@ class LojaController extends AppController {
          $this->Session->delete( 'Produto.' . $this->params['id'] );
       }
 
-      $this->redirect('/cart');
+      $this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
    }
 
 	public function clearCart() {
@@ -198,9 +241,11 @@ class LojaController extends AppController {
       $curl = curl_init('http://cep.correiocontrol.com.br/'.$cep.'.js');
 
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      
       $resultado = curl_exec($curl);
 
       echo $resultado;
+
       exit();
    }
 
@@ -355,12 +400,14 @@ class LojaController extends AppController {
 	* Views
 	*/
 	public function index() {
+      $this->set('usuario', $this->usuario);
       $this->set('banners', $this->loadBanners());
       $this->set('categorias', $this->loadCategoriesProducts());
-		$this->set('produtos', $this->loadProducts());
+		  $this->set('produtos', $this->loadProducts());
 	}
 
    public function cart() {
+      $this->set('usuario', $this->usuario);
       $this->set('categorias', $this->loadCategoriesProducts());
       $products = $this->loadProductsAndValuesCart();
 
@@ -369,6 +416,7 @@ class LojaController extends AppController {
    }
 
    public function checkout() {
+      $this->set('usuario', $this->usuario);
       $this->set('categorias', $this->loadCategoriesProducts());  
       $products = $this->loadProductsAndValuesCart();
 
@@ -377,6 +425,7 @@ class LojaController extends AppController {
    }
 
    public function category() {
+      $this->set('usuario', $this->usuario);
       $id   = $this->params['id'];
       $nome = $this->params['nome'];
 
@@ -388,6 +437,7 @@ class LojaController extends AppController {
    }
 
    public function product() {
+      $this->set('usuario', $this->usuario);
       $this->loadModel('Produto');
 
       $id = $this->params['id'];

@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<form action="/payment" id="payment-form" method="post">
+<form action="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/payment" id="payment-form" method="post">
 <div class="container">
     <div class='row'>
         <div class='col-md-4'>
@@ -203,7 +203,7 @@
   $('#cep').change(function() {
     var cep_destino = $(this).val()
       , cep_origem  = '07252-000'
-      , url         = '/loja/calcTransportAjax';
+      , url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
 
       $.ajax({
         url: url,

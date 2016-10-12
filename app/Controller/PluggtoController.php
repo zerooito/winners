@@ -68,7 +68,11 @@ class PluggtoController extends AppController {
 
 		$PluggProduct->access_token = $token;
 		$PluggProduct->name = $dados['nome'];
-		$PluggProduct->photos = [['url' => 'http://www.ciawn.com.br/uploads/produto/imagens/' . $dados['imagem']]];
+		$PluggProduct->photos = [
+			[
+				'url' => 'http://www.ciawn.com.br/uploads/produto/imagens/' . $dados['imagem']
+			]
+		];
 		$PluggProduct->sku = $dados['sku'];
 		$PluggProduct->quantity = $dados['estoque'];
 		$PluggProduct->price = $dados['preco'];

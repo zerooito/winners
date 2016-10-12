@@ -38,6 +38,10 @@
 		Router::connect('/', array('controller' => $dominio['controller'], 'action' => $dominio['funcao']));
 	}
 
+	$caminho = APP . 'Config/routesshop.php';
+	
+	require($caminho);
+
 	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
 	
 /**

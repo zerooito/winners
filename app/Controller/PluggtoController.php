@@ -1,5 +1,8 @@
 <?php
 
+use PluggTo\Lib\Product\PluggProduct;
+use PluggTo\Lib\PluggRequest;
+
 class PluggtoController extends AppController {
 
 	public function beforeFilter() {
@@ -39,6 +42,43 @@ class PluggtoController extends AppController {
 		$this->Session->setFlash("Configurações salvas com sucesso.");
 
 		return $this->redirect("/pluggto/configuracoes");  
+	}
+
+	public function enviar_produto($dados, $variacao) 
+	{
+		$this->loadModel('PluggtoConfiguracoes');
+
+		$PluggProduct = new PluggProduct;
+		$PluggRequest = new PluggRequest;
+
+		$keysPluggTo  = $this->PluggtoConfiguracoes->find('first', array(
+				'conditions' => array(
+					'PluggtoConfiguracoes.usuario_id' => $dados['id_usuario']
+				)
+			)
+		);
+
+		$PluggRequest->CLIENT_ID     = $keysPluggTo['PluggtoConfiguracoes']['client_id'];
+		$PluggRequest->CLIENT_SECRET = $keysPluggTo['PluggtoConfiguracoes']['client_secret'];
+		$PluggRequest->API_USER      = $keysPluggTo['PluggtoConfiguracoes']['api_user'];
+		$PluggRequest->PASSWORD      = $keysPluggTo['PluggtoConfiguracoes']['api_secret'];
+		$PluggRequest->TYPE          = 'PLUGIN';
+
+		$token = $PluggRequest->getAccessToken();
+
+		$PluggProduct->access_token = $token;
+		$PluggProduct->name = $dados['nome'];
+		$PluggProduct->photos = [['url' => 'http://www.ciawn.com.br/uploads/produto/imagens/' . $dados['imagem']]];
+		$PluggProduct->sku = $dados['sku'];
+		$PluggProduct->quantity = $dados['estoque'];
+		$PluggProduct->price = $dados['preco'];
+		$PluggProduct->dimension = [
+			'weight' => $dados['peso_bruto']
+		];
+
+		$retorno = $PluggProduct->sendProductToPlugg();
+
+		return $retorno;
 	}
 
 }

@@ -80,7 +80,7 @@ class AppController extends Controller {
 	* @param array modulo
 	*/
 	function verificar_modulo_ativo($modulo) {
-		$retorno = in_array($modulo, $this->modulos);
+		$retorno = array_key_exists($modulo, $this->modulos);
 		return $retorno;
 	}
 

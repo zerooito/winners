@@ -312,6 +312,18 @@ class ProdutoController extends AppController{
 
 			$objVariacaoController->s_adicionar_variacao($variacoes, $produto_id, $this->instancia);			
 
+			if ($this->verificar_modulo_ativo('pluggto'))
+			{
+				require 'PluggtoController.php';
+				$objPluggTo = new PluggtoController();
+				$produto_pluggto = $objPluggTo->enviar_produto($dados, $variacoes);
+
+				if (!isset($produto_pluggto->Product->id)) 
+				{
+					$this->Session->setFlash('Produto não foi enviado para o Plugg.to!');
+				}
+			}
+
 			$this->Session->setFlash('Produto salvo com sucesso!');
             
             return $this->redirect('/produto/listar_cadastros');

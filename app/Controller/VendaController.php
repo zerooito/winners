@@ -394,6 +394,7 @@ class VendaController extends AppController {
 		$this->loadModel('LancamentoVenda');
 		$this->loadModel('VendaItensProduto');
 		$this->loadModel('Produto');
+		$this->loadModel('Usuario');
 
 		$ImpressaoFiscalController = new ImpressaoFiscalController;
 
@@ -406,7 +407,17 @@ class VendaController extends AppController {
 			)
 		);
 
-		$ImpressaoFiscalController->corpoTxt .= "Valor: " . $dados_venda['Venda']['valor'] . "\n\n";
+		$usuario = $this->Usuario->find('first',
+			array('conditions' =>
+				array(
+					'Usuario.id' => $dados_venda['Venda']['id_usuario']
+				)
+			)
+		);
+		
+		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
+
+		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n\n";
 		
 		$dados_lancamento = $this->LancamentoVenda->find('first',
 			array('conditions' => 
@@ -438,11 +449,11 @@ class VendaController extends AppController {
 			$total = $produto['Produto']['preco'] * $item['VendaItensProduto']['quantidade_produto'];
 
 			$ImpressaoFiscalController->corpoTxt .= ""
-						   . "Produto: " . $produto['Produto']['nome'] . " Quantidade: "
-						   . $item['VendaItensProduto']['quantidade_produto'] 
+						   . "Produto: " . $produto['Produto']['nome']
+						   . "\nQuantidade: " . $item['VendaItensProduto']['quantidade_produto'] 
 						   . "\nPreço: " . $produto['Produto']['preco']
 						   . "\nTotal: " . number_format($total, 2, ',', '.')
-						   . "\n----------------------------------------------\n";
+						   . "\n---------------------------\n";
 		}
 
 		$file = $ImpressaoFiscalController->gerar_arquivo();

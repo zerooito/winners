@@ -96,6 +96,8 @@
 <iframe id="textfile" src=""></iframe>
 
 <script type="text/javascript">
+    var url;
+
     function remover_venda(id) {
         $.ajax({
             type: "post",
@@ -122,11 +124,16 @@
                 console.log(data);
             },
             success: function(data){
-                $('#textfile').attr('src', '/impressao_fiscal/exibir?arquivo=' + data['file']);
-                var iframe = document.getElementById('textfile');
-                iframe.contentWindow.print();
+                url = '/uploads/venda/fiscal/' + data['file'];
             }
         });
+
+        openInNewTab(url);
+    }
+
+    function openInNewTab(url) {
+        var win = window.open(url, '_blank');
+        win.focus();
     }
 
     function editar_produto(id) {

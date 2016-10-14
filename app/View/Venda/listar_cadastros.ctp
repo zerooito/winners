@@ -125,10 +125,10 @@
             },
             success: function(data){
                 url = '/uploads/venda/fiscal/' + data['file'];
+                openInNewTab(url);
             }
         });
 
-        openInNewTab(url);
     }
 
     function openInNewTab(url) {

@@ -11,7 +11,11 @@ class HomeController extends AppController{
 	}
 
 	function servicos(){
-		$this->layout = 'servicos';
+		$this->layout = 'winners';
+	}
+
+	function timeline(){
+		$this->layout = 'winners';
 	}
 
 	function login() {

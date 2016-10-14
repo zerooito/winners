@@ -29,14 +29,14 @@ class ImpressaoFiscalController extends AppController {
 
 	public function cabecalho() {
 		$this->txt .= "     Winners OpenSource    \n";
-		$this->txt .= "---------------------------\n";
+		$this->txt .= "--------------------------\n";
 		$this->txt .= "  " . $this->userName .   "\n";
-		$this->txt .= "---------------------------\n";
+		$this->txt .= "--------------------------\n";
 		
 		$this->txt .= "Data: " . date('d')  . '/' . date('m') . '/' . date('Y')
 				   . "\nHora: " . date('H:i:s') . "\n";
 
-		$this->txt .= "---------------------------\n\n";
+		$this->txt .= "--------------------------\n\n";
 	}
 
 	public function rodape() {

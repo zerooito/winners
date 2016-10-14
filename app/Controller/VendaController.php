@@ -451,9 +451,9 @@ class VendaController extends AppController {
 			$ImpressaoFiscalController->corpoTxt .= ""
 						   . "Produto: " . $produto['Produto']['nome']
 						   . "\nQuantidade: " . $item['VendaItensProduto']['quantidade_produto'] 
-						   . "\nPreço: " . $produto['Produto']['preco']
-						   . "\nTotal: " . number_format($total, 2, ',', '.')
-						   . "\n---------------------------\n";
+						   . "\nPreço: R$ " . number_format($produto['Produto']['preco'], 2, ',', '.')
+						   . "\nTotal: R$ " . number_format($total, 2, ',', '.')
+						   . "\n--------------------------\n";
 		}
 
 		$file = $ImpressaoFiscalController->gerar_arquivo();

@@ -390,7 +390,7 @@
     $("#quantidade_produto").keyup(function() {
         v = $(this).val();
 
-        $(this).val(v.replace(/\D/g,"")); //Remove tudo o que não é dígito
+        $(this).val(v.replace(/[^\d.-]/g, '')); //Remove tudo o que não é dígito
     });
 
     function changeItem(id) {

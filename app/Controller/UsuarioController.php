@@ -185,11 +185,22 @@ class UsuarioController extends AppController{
 		$estoque_minimo = $this->request->data['estoque_minimo'];
 		$sale_without_stock = $this->request->data['sale_without_stock'];
 
+		$data = array(
+			'estoque_minimo' => $estoque_minimo, 
+			'sale_without_stock' => $sale_without_stock,
+			'loja_active' => $this->request->data['loja_active'],
+			'loja' => $this->request->data['loja'],
+			'layout_loja' => $this->request->data['layout_loja'],
+			'cep_origem' => $this->request->data['cep_origem'],
+			'descricao' => $this->request->data['descricao'],
+			'token_pagseguro' => $this->request->data['token_pagseguro']
+		);
+
 		$this->loadModel('Usuario');
 
 		$this->Usuario->id = $this->instancia;
 
-		$retorno = $this->Usuario->save(array('estoque_minimo' => $estoque_minimo, 'sale_without_stock' => $sale_without_stock));
+		$retorno = $this->Usuario->save($data);
 
 		if(!$retorno) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar as novas infomações, tente novamente!');

@@ -3,6 +3,7 @@
 include 'ProdutoEstoqueController.php';
 include 'VendaItensProdutoController.php';
 include 'LancamentoVendasController.php';
+include 'ImpressaoFiscalController.php';
 
 class VendaController extends AppController {
 
@@ -387,6 +388,79 @@ class VendaController extends AppController {
 		} else {
 			echo json_encode(false);
 		}
+	}
+
+	public function imprimir_nota_nao_fiscal($id) {
+		$this->loadModel('LancamentoVenda');
+		$this->loadModel('VendaItensProduto');
+		$this->loadModel('Produto');
+		$this->loadModel('Usuario');
+
+		$ImpressaoFiscalController = new ImpressaoFiscalController;
+
+		$dados_venda = $this->Venda->find('first',
+			array('conditions' =>
+				array(
+					'Venda.ativo' => 1,
+					'Venda.id' => $id
+				)
+			)
+		);
+
+		$usuario = $this->Usuario->find('first',
+			array('conditions' =>
+				array(
+					'Usuario.id' => $dados_venda['Venda']['id_usuario']
+				)
+			)
+		);
+		
+		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
+
+		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n\n";
+		
+		$dados_lancamento = $this->LancamentoVenda->find('first',
+			array('conditions' => 
+				array(
+					'LancamentoVenda.ativo' => 1,
+					'LancamentoVenda.venda_id' => $id
+				)
+			)
+		);
+
+		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
+		
+		$produtos = $this->VendaItensProduto->find('all', 
+			array('conditions' =>
+				array(
+					'VendaItensProduto.venda_id' => $id
+				)
+			)
+		);
+
+		$itens = array();
+		foreach ($produtos as $i => $item) {
+			$produto = $this->Produto->find('first',
+				array('conditions' =>
+					array('Produto.id' => $item['VendaItensProduto']['produto_id'])
+				)
+			);	
+
+			$total = $produto['Produto']['preco'] * $item['VendaItensProduto']['quantidade_produto'];
+
+			$ImpressaoFiscalController->corpoTxt .= ""
+						   . "Produto: " . $produto['Produto']['nome']
+						   . "\nQuantidade: " . $item['VendaItensProduto']['quantidade_produto'] 
+						   . "\nPreço: R$ " . number_format($produto['Produto']['preco'], 2, ',', '.')
+						   . "\nTotal: R$ " . number_format($total, 2, ',', '.')
+						   . "\n--------------------------\n";
+		}
+
+		$file = $ImpressaoFiscalController->gerar_arquivo();
+		
+		echo json_encode(array('file' => $file));
+
+		exit;
 	}
 
 }

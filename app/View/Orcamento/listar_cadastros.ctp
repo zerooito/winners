@@ -36,13 +36,13 @@
                                     <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
                                     <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
                                     <td class="center">
-                                        <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
+                                        <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
 
-                                        <a target="_blank" href="/orcamento/pdf/<?php echo $venda['Venda']['id'] ?>" class="btn btn-primary btn-circle">
+                                        <a target="_blank" href="/orcamento/pdf/<?php echo $venda['Venda']['id'] ?>" class="btn btn-primary">
                                             <i class="fa fa-file-pdf-o"></i>
                                         </a>
 
-                                        <a target="_blank" href="/venda/conveter_venda/<?php echo $venda['Venda']['id'] ?>" class="btn btn-info btn-circle">
+                                        <a target="_blank" href="/venda/conveter_venda/<?php echo $venda['Venda']['id'] ?>" class="btn btn-info">
                                             <i class="fa fa-reply"></i> 
                                         </button> 
                                     </td>

@@ -10,12 +10,14 @@ class VendaItensProdutoController extends ProdutoEstoqueController {
 
 		$erros = 0;
 		foreach ($produtos as $indice => $item) {
+    		$this->loadModel('VendaItensProduto');
+
 			$dados['produto_id'] 		 = $item['id_produto'];
 			$dados['quantidade_produto'] = $item['quantidade'];
 			$dados['venda_id']			 = $id_venda;
 			$dados['ativo']				 = 1;
-
-			if (!$this->VendaItensProduto->save($dados)) {
+			
+			if (!$this->VendaItensProduto->saveAll($dados)) {
 				$erros++;
 			}
 
@@ -31,7 +33,7 @@ class VendaItensProdutoController extends ProdutoEstoqueController {
 				}
 			}
 		}
-
+		
 		return $erros;
 	}
 

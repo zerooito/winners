@@ -110,8 +110,12 @@ class ProdutoController extends AppController{
 			array(
 				'ativo' => 1,
 				'id_usuario' => $this->instancia,
-				'Produto.quantidade_minima <= ' => 'Produto.estoque',
-				'Produto.estoque <= ' => $usuario['estoque_minimo']
+				'OR' => array(
+					'Produto.quantidade_minima <= ' => 'Produto.estoque',
+				),
+				'OR' => array(
+					'Produto.estoque <= ' => $usuario['estoque_minimo']
+				)
 			)
 		);
 
@@ -193,8 +197,12 @@ class ProdutoController extends AppController{
 			array(
 				'ativo' => 1,
 				'id_usuario' => $this->instancia,
-				'Produto.quantidade_minima <= ' => 'Produto.estoque',
-				'Produto.estoque <= ' => $usuario['estoque_minimo']
+				'OR' => array(
+					'Produto.quantidade_minima <= ' => 'Produto.estoque',
+				),
+				'OR' => array(
+					'Produto.estoque <= ' => $usuario['estoque_minimo']
+				)
 			)
 		);
 

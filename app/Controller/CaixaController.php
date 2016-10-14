@@ -69,9 +69,20 @@ class CaixaController extends AppController {
 		$this->loadModel('LancamentoVenda');
 
 		$conditions = array(
+			'joins' => array(
+			    array(
+			        'table' => 'vendas',
+			        'alias' => 'Venda',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'LancamentoVenda.venda_id = Venda.id',
+			        ),
+			    )
+			),
 			'conditions' => array(
 				'LancamentoVenda.usuario_id' => $this->instancia,
-				'LancamentoVenda.data_pgt' => date('Y-m-d')
+				'LancamentoVenda.data_pgt' => date('Y-m-d'),
+				'Venda.orcamento <> ' => 1
 			)
 		);
 

@@ -42,9 +42,9 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">                 
-            <li class="scroll active"><a href="#home">Inicio</a></li>
+            <li class="scroll"><a href="/">Inicio</a></li>
+            <li class="scroll"><a href="/linha-do-tempo-winners-opensource">Nossa História</a></li>                     
             <li class="scroll"><a href="#services">Serviços</a></li> 
-            <li class="scroll"><a href="#about-us">Sobre</a></li>                     
             <li class="scroll"><a href="#portfolio">Portfolio</a></li>
             <li class="scroll"><a href="#team">Time</a></li>
             <li class="scroll"><a href="#contact">Contato</a></li>    

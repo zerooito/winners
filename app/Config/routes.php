@@ -39,6 +39,7 @@
 	}
 
 	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
+	Router::connect('/linha-do-tempo-winners-opensource', array('controller' => 'home', 'action' => 'timeline'));
 	
 /**
  * Load all plugin routes. See the CakePlugin documentation on

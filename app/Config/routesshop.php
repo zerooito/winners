@@ -21,7 +21,9 @@ Router::connect('/:loja/calcTransportAjax', array('controller' => 'loja', 'actio
 
 Router::connect('/:loja/removeProductCart/:id',   array('controller' => 'loja', 'action' => 'removeProductCart'));
 
-Router::connect('/:loja/product/:id',    array('controller' => 'loja', 'action' => 'product'));
+Router::connect('/:loja/product/:id', array('controller' => 'loja', 'action' => 'product'));
+
+Router::connect('/:loja/retornopagseguro', array('controller' => 'loja', 'action' => 'retornopagseguro'));
 
 require CAKE . 'Config' . DS . 'routes.php';
 

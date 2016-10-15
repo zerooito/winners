@@ -92,7 +92,7 @@
                                 <label>CEP Origem</label>
                                 <div class="row">
                                     <div class="col-md-12 col-xs-12">
-                                        <input class="form-control" type="text" name="layout_loja" value="<?php echo @$usuario[0]['Usuario']['cep_origem']; ?>">
+                                        <input class="form-control" type="text" name="cep_origem" value="<?php echo @$usuario[0]['Usuario']['cep_origem']; ?>">
                                         <small>Útil para o frete.</small>  
                                     </div>
                                 </div>                       
@@ -118,6 +118,17 @@
                                     <div class="col-md-12 col-xs-12">
                                         <input type="text" class="form-control" type="text" name="token_pagseguro" value="<?php echo @$usuario[0]['Usuario']['token_pagseguro']; ?>">
                                         <small>Token para finalizar pagamentos.</small>  
+                                    </div>
+                                </div>                       
+                            </div>     
+                        </div>  
+                        <div class="row" style="margin-top: 12px;">
+                            <div class="col-md-12">
+                                <label>Email PagSeguro</label>
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        <input type="text" class="form-control" type="text" name="email_pagseguro" value="<?php echo @$usuario[0]['Usuario']['email_pagseguro']; ?>">
+                                        <small>Email pagseguro para finalizar pagamentos.</small>  
                                     </div>
                                 </div>                       
                             </div>     

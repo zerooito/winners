@@ -269,9 +269,9 @@ class VendaController extends AppController {
 		$informacoes['data_venda'] = date('Y-m-d');
 		$informacoes['id_usuario'] = $this->instancia != 'winners' ? $this->instancia : $usuario_id;
 		$informacoes['ativo']	   = 1;
-		$informacoes['desconto']   = (float) $informacoes['desconto'];
+		$informacoes['desconto']   = (float) @$informacoes['desconto'];
 		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
-		$informacoes['orcamento']  = $informacoes['orcamento'];
+		$informacoes['orcamento']  = @$informacoes['orcamento'];
 
 		if (!$this->Venda->save($informacoes)) {
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');

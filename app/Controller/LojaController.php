@@ -206,9 +206,9 @@ class LojaController extends AppController {
    public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id) {
       $pagamento = new PagamentoController('PagseguroController');   
 
-      $pagamento->setToken('0C063416737542A28219A50736AD363E');
+      $pagamento->setToken($this->usuario['Usuario']['token_pagseguro']);
       
-      $pagamento->setEmail('jr.design_2010@hotmail.com');
+      $pagamento->setEmail($this->usuario['Usuario']['email_pagseguro']);
 
       $pagamento->setProdutos($products);
       
@@ -251,62 +251,73 @@ class LojaController extends AppController {
 
    public function calcTransportAjax() {
       $this->layout = 'ajax';
-
+   
       $cep_destino = $this->request->data('cep_destino');
       $cep_origem  = $this->request->data('cep_origem');
-
+   
       $dataProducts = $this->loadProductsAndValuesCart();
-      $fretes = $this->transport($cep_destino, $cep_origem, $dataProducts['products_cart']);
-
+   
+      (float) $peso = 0;
+      foreach ($dataProducts['products_cart'] as $i => $product) {
+         $peso += $product['Produto']['peso_bruto'] * $product['Produto']['quantidade'];
+      }
+   
+      $fretes = $this->transport($cep_destino, $this->usuario['Usuario']['cep_origem'], $peso);
+   
       $disponiveis = array();
+   
       $cont = 0;
       foreach ($fretes as $i => $frete) {
-         $disponiveis[$cont]['valor']  = $frete->price;
-         $disponiveis[$cont]['prazo']  = $frete->estimate;
-         $disponiveis[$cont]['codigo'] = $frete->method;
+         $disponiveis[$cont]['valor']  = (array) $frete->Valor;
+         $disponiveis[$cont]['prazo']  = (array) $frete->PrazoEntrega;
+         $disponiveis[$cont]['codigo'] = (array) $frete->Codigo;
+         $disponiveis[$cont]['valor']  = array_shift($disponiveis[$cont]['valor']);
+         $disponiveis[$cont]['prazo']  = array_shift($disponiveis[$cont]['prazo']);
+         $disponiveis[$cont]['codigo'] = array_shift($disponiveis[$cont]['codigo']);
+         
          $cont++;
       }
-
+   
       $this->Session->write('Frete.valor', $disponiveis[$cont - 1]['valor']);
-
+   
       (float) $total = $disponiveis[$cont - 1]['valor'] + $dataProducts['total'];
+   
       $total = number_format($total, 2, ',', '.');
-
+   
       $retorno = array('frete' => $disponiveis[$cont - 1]['valor'], 'total' => $total);
-
+   
       echo json_encode($retorno);   
       exit();
    }
    
-   public function transport($cep_destino, $cep_origem, $data) {
-      $products = [];
-      foreach ($data as $key => $item) {
-         $products[] = [
-           "weight" => (float) $item['Produto']['peso_bruto'],
-           "height" => (float) '',
-           "length" =>(float)  '',
-           "width" => (float) '',
-           "unit_price" => (float) $item['Produto']['preco'],
-           "quantity" => (integer) $item['Produto']['quantidade'],
-           "sku" => $item['Produto']['id_alias'],
-           "id" => $item['Produto']['id']
-         ];
-      }
+   public function transport($cep_destino, $cep_origem, $peso) {
+      $altura = '2';
+      $largura = '11';
+      $comprimento = '16';
 
-      $shipping = new Shipping(
-          (string) $cep_destino,
-          'BR',
-          'GUARULHOS',
-          (string) $cep_origem,
-          '',
-          '',
-          '',
-          $products
-      );
-
-      $response = $shipping->getPricesShipping();
-
-      return $response;
+      $dados['sCepDestino'] = $cep_destino;
+      $dados['sCepOrigem'] = $cep_origem;
+      $dados['nVlPeso'] = $peso;
+      $dados['nVlComprimento'] = $comprimento;
+      $dados['nVlAltura'] = $altura;
+      $dados['nVlLargura'] = $largura;
+      $dados['nCdServico'] = '41106';
+      $dados['nVlDiametro'] = '2';
+      $dados['nCdFormato'] = '1';
+      $dados['sCdMaoPropria'] = 'n';
+      $dados['nVlValorDeclarado'] = '0';
+      $dados['StrRetorno'] = 'xml';
+      
+      $dados = http_build_query($dados);
+      
+      $curl = curl_init('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx' . '?' . $dados);
+      
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      
+      $resultado = curl_exec($curl);
+      $resultado = simplexml_load_string($resultado);
+      
+      return $resultado;
    }
 
    public function saveEmailNewsletter() {
@@ -467,6 +478,12 @@ class LojaController extends AppController {
       $this->set('variacoes', $variacoes);
 
       $this->set('produto', $produto);
+   }
+
+   public function retornopagseguro() {
+      $code = $_GET['code'];
+
+      pr($code,1);
    }
 
 }

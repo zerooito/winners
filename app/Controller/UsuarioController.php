@@ -193,7 +193,8 @@ class UsuarioController extends AppController{
 			'layout_loja' => $this->request->data['layout_loja'],
 			'cep_origem' => $this->request->data['cep_origem'],
 			'descricao' => $this->request->data['descricao'],
-			'token_pagseguro' => $this->request->data['token_pagseguro']
+			'token_pagseguro' => $this->request->data['token_pagseguro'],
+			'email_pagseguro' => $this->request->data['email_pagseguro']
 		);
 
 		$this->loadModel('Usuario');

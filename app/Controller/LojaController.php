@@ -28,6 +28,10 @@ class LojaController extends AppController {
         {
           $loja = $this->params['loja'];
         }
+        else 
+        {
+          $loja = $lojaSession;
+        }
       }
       else 
       {

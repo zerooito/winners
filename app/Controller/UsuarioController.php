@@ -187,16 +187,17 @@ class UsuarioController extends AppController{
 		$sale_without_stock = $this->request->data['sale_without_stock'];
 
 		$template = $_FILES['template'];
-
-		if (!empty($template) && isset($template))
-			$this->uploadZipTemplate($template);
+		
+		$layout_loja = $this->request->data['layout_loja'];
+		if (!empty($template['name']) && isset($template['name']))
+			$layout_loja = $this->uploadZipTemplate($template);
 		
 		$data = array(
 			'estoque_minimo' => $estoque_minimo, 
 			'sale_without_stock' => $sale_without_stock,
 			'loja_active' => $this->request->data['loja_active'],
 			'loja' => $this->request->data['loja'],
-			'layout_loja' => $this->request->data['layout_loja'],
+			'layout_loja' => $layout_loja	,
 			'cep_origem' => $this->request->data['cep_origem'],
 			'descricao' => $this->request->data['descricao'],
 			'token_pagseguro' => $this->request->data['token_pagseguro'],
@@ -291,9 +292,9 @@ class UsuarioController extends AppController{
         
 		shell_exec("mv " . $origem . " " . $destino);
 
-		shell_exec("rm -R " . ROOT . DS . "app/View/" . $nomeLayout . DS . "Layouts");
+		shell_exec("rm -R " . ROOT . DS . "app/View/" . $nomeLayout . "Layouts");
 
-		pr($template, 1);
+		return $nomeLayout;
 	}
 
 }

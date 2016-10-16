@@ -183,8 +183,14 @@ class UsuarioController extends AppController{
 		$this->layout = 'wadmin';
 
 		$estoque_minimo = $this->request->data['estoque_minimo'];
+
 		$sale_without_stock = $this->request->data['sale_without_stock'];
 
+		$template = $_FILES['template'];
+
+		if (!empty($template) && isset($template))
+			$this->uploadZipTemplate($template);
+		
 		$data = array(
 			'estoque_minimo' => $estoque_minimo, 
 			'sale_without_stock' => $sale_without_stock,
@@ -252,6 +258,42 @@ class UsuarioController extends AppController{
 
 		echo json_encode($token);
 		exit();
+	}
+
+	public function uploadZipTemplate($template) {
+		$z = new ZipArchive();
+		
+		$abriu = $z->open($template['tmp_name']);
+		
+		if ($abriu === true) {
+
+		    // Listando os nomes dos elementos
+		    for ($i = 0; $i < $z->numFiles; $i++) {
+
+        		$nome = $z->getNameIndex($i);
+
+		        $response = $z->extractTo(ROOT . DS . "app/View/");
+
+		    }
+
+		    // Fechando o arquivo
+
+		    $z->close();
+
+		} else {
+		    echo 'Erro: ' . $abriu;
+		}
+        
+        $nomeLayout = substr($template['name'], 0, -4);
+
+        $origem  = ROOT . DS . "app/View/" . $nomeLayout . DS . "Layouts" . DS . $nomeLayout . ".ctp";
+        $destino = ROOT . DS . "app/View/" . "Layouts" . DS . $nomeLayout . ".ctp";
+        
+		shell_exec("mv " . $origem . " " . $destino);
+
+		shell_exec("rm -R " . ROOT . DS . "app/View/" . $nomeLayout . DS . "Layouts");
+
+		pr($template, 1);
 	}
 
 }

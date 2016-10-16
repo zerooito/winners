@@ -61,6 +61,7 @@
                 </div>
                 <!-- /.panel -->
             </div>
+
             <div class="col-lg-6">
                 <div class="panel panel-default" style="margin-top: 12px;">
                     <div class="panel-heading">
@@ -158,6 +159,17 @@
                                 </div>                       
                             </div>
                         </div>
+                        <div class="row" style="margin-top: 12px;">
+                            <div class="col-md-12">
+                                <label>Template .zip</label>
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        <input type="file" class="form-control" type="text" name="template">
+                                        <small>Suba o novo template .zip se deseja.</small>  
+                                    </div>
+                                </div>                       
+                            </div>     
+                        </div>     
                     </div>
                     <!-- /.panel-body -->
                 </div>

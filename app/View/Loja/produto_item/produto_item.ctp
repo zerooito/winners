@@ -1,44 +1,24 @@
 <div class="col-sm-3 col-lg-3 col-md-3">
-    <div class="thumbnail" style="min-height: 430px;">
+    <div class="thumbnail" style="min-height: 350px;">
         <a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/product/<?php echo $produto['Produto']['id'] ?>">
             
             <?php if (isset($produto['Produto']['imagem']) && !empty($produto['Produto']['imagem'])): ?>
-                <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="Foto do produto <?php echo $produto['Produto']['nome'] ?>" width="100" height="60" style="max-height:255px;height: 255px;">
+                <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="Foto do produto <?php echo $produto['Produto']['nome'] ?>" style="max-height:255px;height: 255px;max-height:255px;">
             <?php else: ?>
-                <img src="/images/imagem404.jpg" alt="Foto do produto <?php echo $produto['Produto']['nome'] ?>" width="100" height="60">
+                <img src="/images/imagem404.jpg" alt="Foto do produto <?php echo $produto['Produto']['nome'] ?>" style="max-height:255px;height: 255px;max-height:255px;">
             <?php endif; ?>
 
         </a>
-        <div class="caption">
-            <h4 class="pull-right">R$ <?php echo number_format($produto['Produto']['preco'], 2, ',', '.') ?></h4>
+        <div class="caption" style="padding-top:10px;">
             
-            <h4>
+            <h4 class="pull-right">
             
                 <a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/product/<?php echo $produto['Produto']['id'] ?>">  <?php echo $produto['Produto']['nome'] ?>                
                 </a>
             
             </h4>
-
-            <p>
             
-                <?php echo substr($produto['Produto']['descricao'], 0, 50) . '...' ?>
-            
-            </p>
-        </div>
-        <div class="ratings">
-            <form action="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/addCart" method="post">
-                <input type="hidden" value="<?php echo $produto['Produto']['id'] ?>" name="produto[id]" />
-                
-                <?php if ($produto['Produto']['estoque'] <= 0): ?>
-                
-                    <button disabled="" type="submit" style="margin-top: -60px;" type="button" class="btn btn-default">Sem Estoque</button>
-                
-                <?php else: ?>
-                
-                    <button onclick="window.location.href='/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/product/<?php echo $produto['Produto']['id'] ?>'" style="margin-top: -60px;" type="button" class="btn btn-info">Mais informações</button>
-                
-                <?php endif; ?>
-            </form>
+            <h4 class="pull-right">R$ <?php echo number_format($produto['Produto']['preco'], 2, ',', '.') ?></h4>
         </div>
     </div>
 </div>

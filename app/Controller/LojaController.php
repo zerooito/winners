@@ -87,9 +87,20 @@ class LojaController extends AppController {
    public function loadBanners($id_banner = null) {
       $this->loadModel('Banner');
 
-      $params = array('conditions' => 
-         array('ativo' => 1,
-              'usuario_id' => $this->Session->read('Usuario.id')
+      $params = array(
+         'joins' => array(
+             array(
+                 'table' => 'categoria_banners',
+                 'alias' => 'CategoriaBanner',
+                 'type' => 'LEFT',
+                 'conditions' => array(
+                     'Banner.categoria_banner_id = CategoriaBanner.id',
+                 ),
+             )
+         ),
+         'conditions' => array(
+            'Banner.ativo' => 1,
+            'Banner.usuario_id' => $this->Session->read('Usuario.id')
          )
       );
 

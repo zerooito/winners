@@ -40,11 +40,10 @@
 
 	$caminho = APP . 'Config/routesshop.php';
 	
-	require($caminho);
-
 	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
 	Router::connect('/linha-do-tempo-winners-opensource', array('controller' => 'home', 'action' => 'timeline'));
 	
+	require($caminho);
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

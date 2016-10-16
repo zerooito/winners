@@ -200,6 +200,7 @@
 <script type="text/javascript">
   $('#cep').mask('99999-999');
   $('#cpf').mask('999.999.999-99');
+
   $('#cep').change(function() {
     var cep_destino = $(this).val()
       , cep_origem  = '07252-000'
@@ -215,34 +216,29 @@
         method: "post",
         success: function(data) {
           atualizacep(cep_destino);
+          
           $('#frete').html('R$ ' + data['frete']);
+          
           $('#total').html('R$ ' + data['total']);
-        },
-        error: function() {
-          console.log('erro');
         }
       });
   });
 
   function atualizacep(cep){
-      console.log('oila');
       cep = cep.replace(/\D/g,"")
-      url="http://cep.correiocontrol.com.br/"+cep+".js"
-      s=document.createElement('script')
-      s.setAttribute('charset','utf-8')
-      s.src=url
-      document.querySelector('head').appendChild(s)
-  }
+      
+      var url = "http://viacep.com.br/ws/" + cep + "/json/";
 
-  function correiocontrolcep(valor){
-      if (valor.erro) {
-        alert('Cep não encontrado');
-        return;
-      };
-
-      document.getElementById('endereco').value=valor.logradouro
-      document.getElementById('bairro').value=valor.bairro
-      document.getElementById('cidade').value=valor.localidade
-      document.getElementById('estado').value=valor.uf
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        method: "get",
+        success: function(data) {
+          document.getElementById('endereco').value = data['logradouro'];
+          document.getElementById('bairro').value = data['bairro'];
+          document.getElementById('cidade').value = data['localidade'];
+          document.getElementById('estado').value = data['uf'];
+        }
+      });
   }
 </script>

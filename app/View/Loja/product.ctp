@@ -5,7 +5,12 @@
 				<div class="col-md-5">
 					<div class="product col-md-3 service-image-left">
 						<center>
-							<img id="item-display" src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="" data-zoom-image="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>"></img>
+
+            				<?php if (isset($produto['Produto']['imagem']) && !empty($produto['Produto']['imagem'])): ?>
+								<img id="item-display" src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" alt="" data-zoom-image="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>"></img>
+							<?php else: ?>
+								<img id="item-display" src="/images/imagem404.jpg" alt="" data-zoom-image="/images/imagem404.jpg"></img>
+							<?php endif; ?>
 						</center>
 					</div>
 				</div>

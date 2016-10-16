@@ -64,14 +64,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/"><?php echo $usuario['Usuario']['nome']; ?></a>
+              <a class="navbar-brand" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>"><?php echo $usuario['Usuario']['nome']; ?></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
                 <?php foreach($categorias as $indice => $valor): ?>
-                <li class=""><a href="/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>"><?php echo $valor['Categoria']['nome'] ?></a></li>
+                <li class=""><a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>"><?php echo $valor['Categoria']['nome'] ?></a></li>
                 <?php endforeach; ?>
               </ul>
 

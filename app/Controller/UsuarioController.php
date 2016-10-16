@@ -189,6 +189,7 @@ class UsuarioController extends AppController{
 		$template = $_FILES['template'];
 		
 		$layout_loja = $this->request->data['layout_loja'];
+		
 		if (!empty($template['name']) && isset($template['name']))
 			$layout_loja = $this->uploadZipTemplate($template);
 		
@@ -292,7 +293,7 @@ class UsuarioController extends AppController{
         
 		shell_exec("mv " . $origem . " " . $destino);
 
-		shell_exec("rm -R " . ROOT . DS . "app/View/" . $nomeLayout . "Layouts");
+		shell_exec("rm -R " . ROOT . DS . "app/View/" . $nomeLayout . "Layouts/");
 
 		return $nomeLayout;
 	}

@@ -22,7 +22,17 @@ class LojaController extends AppController {
     
     if (isset($lojaSession))
     {
-      $loja = $lojaSession;
+      if (isset($this->params['loja']))
+      {
+        if ($this->params['loja'] != $lojaSession)
+        {
+          $loja = $this->params['loja'];
+        }
+      }
+      else 
+      {
+        $loja = $lojaSession;
+      }
     }
     else
     {

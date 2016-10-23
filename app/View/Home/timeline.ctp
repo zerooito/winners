@@ -1,3 +1,6 @@
+
+</header><!--/#home-->
+
 <div class="container">
 
     <!-- Page header -->

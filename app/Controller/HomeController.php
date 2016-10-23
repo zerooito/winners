@@ -19,7 +19,7 @@ class HomeController extends AppController{
 	}
 
 	function developers(){
-		$this->layout = 'developers';
+		$this->layout = 'winners';
 	}
 
 	function login() {

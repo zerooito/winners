@@ -44,7 +44,7 @@
           <ul class="nav navbar-nav navbar-right">                 
             <li class="scroll"><a href="/">Inicio</a></li>
             <li class="scroll"><a href="/linha-do-tempo-winners-opensource">Nossa História</a></li>                     
-            <li class="scroll"><a href="#services">Serviços</a></li> 
+            <li class="scroll"><a href="/canal-para-desenvolvedores-winners">Desenvolvedores</a></li> 
             <li class="scroll"><a href="#portfolio">Portfolio</a></li>
             <li class="scroll"><a href="#team">Time</a></li>
             <li class="scroll"><a href="#contact">Contato</a></li>    
@@ -52,35 +52,6 @@
         </div>
       </div>
     </div><!--/#main-nav-->
-
-    <div id="home-slider" class="carousel slide carousel-fade" data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="item active" style="background-image: url(/images/slider/1.jpg)">
-          <div class="caption">
-            <h1 class="animated fadeInLeftBig">Bem vindo</h1>
-            <p class="animated fadeInRightBig">Ecommerce - Integrações - OpenSource - ERP</p>
-            <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Ver mais</a>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(/images/slider/2.jpg)">
-          <div class="caption">
-            <h1 class="animated fadeInLeftBig">Winners & CiaWN</h1>
-            <p class="animated fadeInRightBig">Desenvolvimento Web - Responsivo - Desenvolvimento Mobile - Wordpress</p>
-            <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Ver mais</a>
-          </div>
-        </div>
-        <div class="item" style="background-image: url(/images/slider/3.jpg)">
-          <div class="caption">
-            <h1 class="animated fadeInLeftBig">Plataforma E-commerce + Software Sob Medida</h1>
-            <p class="animated fadeInRightBig">Opencart - Magento - Recorte de PSD's - SEO - UI\UX</p>
-            <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Ver mais</a>
-          </div>
-        </div>
-      </div>
-      <a class="left-control" href="#home-slider" data-slide="prev"><i class="fa fa-angle-left"></i></a>
-      <a class="right-control" href="#home-slider" data-slide="next"><i class="fa fa-angle-right"></i></a>
-    </div><!--/#home-slider-->
-  </header><!--/#home-->
 
   <!-- Conteudo -->
   <?php echo $this->fetch('content'); ?>

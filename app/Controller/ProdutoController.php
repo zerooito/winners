@@ -119,10 +119,12 @@ class ProdutoController extends AppController{
 
 		$allProdutos = $this->Produto->query("select * from produtos where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1");
 
+		
+		$sql = "select * from produtos as Produto where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1";
+
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
 		{
-			$conditions['offset'] = $_GET['iDisplayStart'];
-			$conditions['limit'] = $_GET['iDisplayLength'];
+			$sql .= ' LIMIT ' . $_GET['iDisplayLength'] . ' OFFSET ' . $_GET['iDisplayStart'];
 		}
 
 		if ( isset( $_GET['iSortCol_0'] ) )
@@ -135,13 +137,13 @@ class ProdutoController extends AppController{
 				}
 			}
 		}
-
+		
 		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
 		{
 			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
 		}
-		
-		$produtos = $this->Produto->find('all', $conditions);
+
+		$produtos = $this->Produto->query($sql);
 
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),

@@ -104,6 +104,8 @@ class VendaController extends AppController {
 				)
 			)
 		);
+
+		$this->set('vendaId', $this->Session->read('UltimoIdVendaSalvo'));
 	}
 
 	public function conveter_venda($vendaId) {
@@ -204,6 +206,8 @@ class VendaController extends AppController {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');
 			$this->redirect('/venda/adicionar_cadastro');
 		}
+
+		$this->Session->write('UltimoIdVendaSalvo', $salvar_venda['id']);
 		
 		$this->Session->setFlash('Venda salva com sucesso');
 		$this->redirect('/venda/adicionar_cadastro');
@@ -281,11 +285,13 @@ class VendaController extends AppController {
 		$id_venda = $this->Venda->getLastInsertId();
 
 		$objVendaItensProdutoController = new VendaItensProdutoController();
+
 		if ($objVendaItensProdutoController->adicionar_itens_venda($id_venda, $produtos, $informacoes['orcamento']) === false) {
 			return false;
 		}
 
 		$objLancamentoVendasController = new LancamentoVendasController();
+
 		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario']) === false) {
 			return false;
 		}
@@ -461,6 +467,11 @@ class VendaController extends AppController {
 		echo json_encode(array('file' => $file));
 
 		exit;
+	}
+
+	public function clear_session_venda($id)
+	{
+		$this->Session->write('UltimoIdVendaSalvo', null);
 	}
 
 }

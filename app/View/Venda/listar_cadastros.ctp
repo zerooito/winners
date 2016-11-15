@@ -76,10 +76,20 @@
                         </i>
                     </button>
 
+                    <hr>
+
+                    <p>De: </p>
+
+                    <input type="date" id="from" class="col-lg-12" style="margin-bottom: 10px;">
+
+                    <p>Até: </p>
+
+                    <input type="date" id="to" class="col-lg-12" style="margin-bottom: 10px;">
+
                     <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;">
                         <i class="fa fa-eye">
-                            <a href="/venda/relatorio_diario" style="color: #FFF;"> 
-                                Relatorio do dia atual
+                            <a href="javascript:;" onclick="printSalesPeriod();" style="color: #FFF;"> 
+                                Relatório Período
                             </a>
                         </i>
                     </button>
@@ -97,6 +107,23 @@
 
 <script type="text/javascript">
     var url;
+
+    function printSalesPeriod() {
+        var from = $('#from').val();
+        var to = $('#to').val();
+
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/relatorio/?from=" + from + "&to=" + to,
+            error: function(data) {
+                console.log(data);
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    }
 
     function remover_venda(id) {
         $.ajax({

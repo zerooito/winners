@@ -1,5 +1,9 @@
 <?php
 
+require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
+
+use Dompdf\Dompdf;
+
 include 'ProdutoEstoqueController.php';
 include 'VendaItensProdutoController.php';
 include 'LancamentoVendasController.php';
@@ -472,6 +476,78 @@ class VendaController extends AppController {
 	public function clear_session_venda($id)
 	{
 		$this->Session->write('UltimoIdVendaSalvo', null);
+	}
+
+	public function relatorio() {
+		$from = $_GET['from'];
+		$to   = $_GET['to'];
+
+		$this->loadModel('Venda');
+		$this->loadModel('LancamentoVenda');
+
+		$conditions = array(
+			'conditions' => array(
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.data_venda >=' => $from,
+				'Venda.data_venda <=' => $to
+			)
+		);
+
+		$vendas = $this->Venda->find('all', $conditions);
+
+		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
+
+		$totalCustoPeriodo = $this->calcularTotalCustoProdutosPeriodo($vendas);
+
+		$lancamentos = array();
+
+		foreach ($vendas as $i => $venda) {
+			$lancamento =  $this->LancamentoVenda->find('first', array(
+					'conditions' => array(
+						'LancamentoVenda.venda_id' => $venda['Venda']['id']
+					)
+				)
+			);
+
+			if (!empty($lancamento))
+				$lancamentos[] = $lancamento;
+		}
+
+		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
+
+		pr($valorTotalPgt,1);	
+	}
+
+	public function calcularTotalVendas($lancamentos)
+	{
+		$response = array();
+		foreach ($lancamentos as $i => $lancamento) {
+			@$response[$lancamento['LancamentoVenda']['forma_pagamento']] += $lancamento['LancamentoVenda']['valor_pago'];
+		}
+
+		return $response;
+	}
+
+	public function calcularTotalCustoProdutosPeriodo($vendas)
+	{
+		$valor = 0.00;
+
+		foreach ($vendas as $i => $venda) {
+			$valor += $venda['Venda']['custo'];
+		}
+
+		return $valor;
+	}
+
+	public function calcularValorTotalVendas($vendas)
+	{
+		$valor = 0.00;
+
+		foreach ($vendas as $i => $venda) {
+			$valor += $venda['Venda']['valor'];
+		}
+
+		return $valor;
 	}
 
 }

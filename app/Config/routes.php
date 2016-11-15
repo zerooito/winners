@@ -32,7 +32,7 @@
 	
 	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
 	Router::connect('/linha-do-tempo-winners-opensource', array('controller' => 'home', 'action' => 'timeline'));
-	Router::connect('/quero-saber-como-funciona-winners-opensource', array('controller' => 'home', 'action', 'contact'));
+	Router::connect('/quero-saber-como-funciona-winners-opensource', array('controller' => 'home', 'action', 'teste'));
 	
 	$dominio = verificar_dominio();
 

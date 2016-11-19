@@ -491,7 +491,8 @@ class VendaController extends AppController {
 			'conditions' => array(
 				'Venda.id_usuario' => $this->instancia,
 				'Venda.data_venda >=' => $from,
-				'Venda.data_venda <=' => $to
+				'Venda.data_venda <=' => $to,
+				'Venda.orcamento <>' => 1
 			)
 		);
 

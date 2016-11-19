@@ -479,6 +479,8 @@ class VendaController extends AppController {
 	}
 
 	public function relatorio() {
+		$this->layout = 'wadmin';
+
 		$from = $_GET['from'];
 		$to   = $_GET['to'];
 
@@ -515,7 +517,12 @@ class VendaController extends AppController {
 
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
 
-		pr($valorTotalPgt,1);	
+		$this->set('dinheiro', $valorTotalPgt['dinheiro']);
+		$this->set('cartao_credito', $valorTotalPgt['cartao_credito']);
+		$this->set('cartao_debito', $valorTotalPgt['cartao_debito']);
+		$this->set('valorTotalVendasPeriodo', $valorTotalVendasPeriodo);
+		$this->set('totalCustoPeriodo', $totalCustoPeriodo);
+		$this->set('totalLucro', $valorTotalVendasPeriodo - $totalCustoPeriodo);
 	}
 
 	public function calcularTotalVendas($lancamentos)

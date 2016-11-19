@@ -117,7 +117,7 @@
             dataType: "json",
             url: "/venda/relatorio/?from=" + from + "&to=" + to,
             error: function(data) {
-                console.log(data);
+                openInNewTab("/venda/relatorio/?from=" + from + "&to=" + to);
             },
             success: function(data) {
                 console.log(data);

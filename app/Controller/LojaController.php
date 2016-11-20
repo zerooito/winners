@@ -439,7 +439,9 @@ class LojaController extends AppController {
       $this->set('usuario', $this->usuario);
       $this->set('banners', $this->loadBanners());
       $this->set('categorias', $this->loadCategoriesProducts());
-		  $this->set('produtos', $this->loadProducts());
+      $this->set('produtos', $this->loadProducts());
+      
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/index');
 	}
 
    public function cart() {
@@ -449,6 +451,8 @@ class LojaController extends AppController {
 
       $this->set('products', $products['products_cart']);
       $this->set('total', $products['total']);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/cart');
    }
 
    public function checkout() {
@@ -458,6 +462,8 @@ class LojaController extends AppController {
 
       $this->set('products', $products['products_cart']);
       $this->set('total', $products['total']);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/checkout');
    }
 
    public function category() {
@@ -470,6 +476,8 @@ class LojaController extends AppController {
       $this->set('categorias', $this->loadCategoriesProducts());
       $this->set('produtos', $products);
       $this->set('nameCategory', $nome);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/category');
    }
 
    public function product() {
@@ -503,6 +511,8 @@ class LojaController extends AppController {
       $this->set('variacoes', $variacoes);
 
       $this->set('produto', $produto);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/product');
    }
 
    public function retornopagseguro() {

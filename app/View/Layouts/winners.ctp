@@ -44,7 +44,7 @@
           <ul class="nav navbar-nav navbar-right">                 
             <li class="scroll"><a href="/">Inicio</a></li>
             <li class="scroll"><a href="/linha-do-tempo-winners-opensource">Nossa História</a></li>                     
-            <li class="scroll"><a href="#services">Serviços</a></li> 
+            <li class="scroll"><a href="/canal-para-desenvolvedores-winners">Desenvolvedores</a></li> 
             <li class="scroll"><a href="#portfolio">Portfolio</a></li>
             <li class="scroll"><a href="#team">Time</a></li>
             <li class="scroll"><a href="/quero-saber-como-funciona-winners-opensource">Contato</a></li>    
@@ -53,6 +53,7 @@
       </div>
     </div><!--/#main-nav-->
 
+  <!-- Conteudo -->
   <?php echo $this->fetch('content'); ?>
 
   <footer id="footer">

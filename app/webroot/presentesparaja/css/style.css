@@ -1,0 +1,52 @@
+nav {
+	background-color: rgba(255, 255, 255, 0);
+	border: none;
+	box-shadow: none;
+}
+
+nav .nav-wrapper {
+	margin-left: 10px;
+}
+
+#search {
+	padding-left: 23%;
+	position: relative;
+	top: 30%;
+}
+
+#search input {
+	border: none !important;
+}
+
+h5 {
+	color: #fff;
+}
+
+.title {
+	color: #9C27B0 !important;
+	text-shadow: 2px 2px #fff !important;
+}
+
+.custom-color {
+	background-color: #9c27b0 !important
+}
+
+.title-product {
+	font-size: 26px;
+}
+
+.cart .row {
+	text-align:center;
+}
+
+.cart .row .col {
+	padding-top: 35px;
+}
+
+.cart .row .img {
+	padding-top: 0px !important;
+}
+
+.cart .text-right {
+	text-align: right;
+}

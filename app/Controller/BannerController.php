@@ -1,5 +1,7 @@
 <?php
 
+require ROOT . DS . 'app/Vendor/m2brimagem.php';
+
 class BannerController extends AppController {
 	
 	public function listar_cadastros() {
@@ -85,11 +87,20 @@ class BannerController extends AppController {
 	}
 
 	public function s_adicionar_cadastro() {
+		$this->loadModel('CategoriaBanner');
+
 		$dados  = $this->request->data('dados');
+
+		$categoriaBanner = $this->CategoriaBanner->find('first', array(
+				'conditions' => array(
+					'CategoriaBanner.id' => $dados['categoria_banner_id']
+				)
+			)
+		);
 
 		$image  = $_FILES['imagem'];
 
-		$retorno = $this->uploadImage($image);
+		$retorno = $this->uploadImage($image, $categoriaBanner);
 
 		if (!$retorno['status']) 
 			$this->Session->setFlash('Não foi possivel salvar a imagem tente novamente');
@@ -107,13 +118,31 @@ class BannerController extends AppController {
 		}
 	}
 
-	public function uploadImage(&$image) {
+	public function uploadImage(&$image, $categoriaBanner) {
 		$type = substr($image['name'], -4);
+		
 		$nameImage = uniqid() . md5($image['name']) . $type;
+
 		$dir = APP . 'webroot/uploads/banner/imagens/';
 		
 		$returnUpload = move_uploaded_file($image['tmp_name'], $dir . $nameImage);
+				
+		$oImg = new m2brimagem($dir . $nameImage);
+		
+		$valida = $oImg->valida();
+		
+		if ($valida == 'OK') {
+			
+			$oImg->redimensiona($categoriaBanner['CategoriaBanner']['width'], $categoriaBanner['CategoriaBanner']['height'], 'crop');
+		    
+		    $oImg->grava($dir . $nameImage);
 
+		} else {
+
+			die($valida);
+
+		}
+		
 		if (!$returnUpload)
 			return array('nome' => null, 'status' => false);
 

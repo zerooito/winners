@@ -22,6 +22,10 @@ class HomeController extends AppController{
 		$this->layout = 'winners';
 	}
 
+	function developers(){
+		$this->layout = 'winners';
+	}
+
 	function login() {
 		$this->set('admin', false);
 		

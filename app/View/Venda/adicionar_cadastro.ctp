@@ -137,6 +137,26 @@
     </div>
 </div>
 
+<?php if (isset($vendaId)): ?>
+    <!-- Modal -->
+    <div class="modal fade" id="showCupomUltimaVenda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Imprimir Cupom Fiscal</h4>
+          </div>
+          <div class="modal-body text-center">
+            <h3>Deseja imprimir cupom fiscal da última venda</h3>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success" href="javascript:printNotaNaoFiscal(<?php echo $vendaId; ?>);">Imprimir</a>
+            <a class="btn btn-danger" href="javascript:hideModalNota(<?php echo $vendaId; ?>);">Cancelar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+<?php endif; ?>
 
 <!-- Modal -->
 <div class="modal fade" id="showHints" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -266,6 +286,116 @@
 
 
 <script type="text/javascript">
+
+    /* ATALHOS TECLADO */
+    
+  
+    $('body').keydown(function(e){  
+        var evt = evt || window.event;
+        
+        var key = evt.keyCode; // this value
+
+        if (key == 13)
+            return e.preventDefault(); 
+
+        if (e.ctrlKey || e.metaKey) {
+
+            e.preventDefault();
+
+            // CONTINUAR VENDA (q);
+            if (key == 81)
+            {
+                finalizar_venda();
+            }
+
+            if (key == 113) //f2
+            {
+                $('#forma_pagamento').select2("open");
+            }
+            
+            // ADICIONAR ITEM (A)
+            if (key == 65)
+            {
+                adicionar_produto();
+            }
+
+            // PROCURAR ITEM (F)
+            if (key == 70)
+            {
+                $("#produto_item").select2("open");
+            }
+
+            // REGISTRAR VENDA
+            if (key == 83) 
+            {
+                $('#form-venda').submit();
+            }
+
+            if (key == 79)
+            {
+                salvarOrcamento();
+            }
+        }
+
+    }); 
+
+    <?php if (isset($vendaId)): ?>
+        $('#showCupomUltimaVenda').modal('show');
+    <?php endif; ?>
+
+    function hideModalNota(id) {
+
+        $('#showCupomUltimaVenda').modal('hide');
+
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/clear_session_venda/" + id,
+            error: function(data){
+                alert('Ocorreu um erro.');
+                console.log(data);
+            },
+            success: function(data){
+                console.log(data);
+            }
+        });
+
+    }
+
+    function printNotaNaoFiscal(id) {
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/imprimir_nota_nao_fiscal/" + id,
+            error: function(data){
+                alert('Ocorreu um erro.');
+                console.log(data);
+            },
+            success: function(data){
+                url = '/uploads/venda/fiscal/' + data['file'];
+                openInNewTab(url);
+            }
+        });
+
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/clear_session_venda/" + id,
+            error: function(data){
+                console.log(data);
+            },
+            success: function(data){
+                console.log(data);
+            }
+        });
+              
+        $('#showCupomUltimaVenda').modal('hide');
+    }
+
+    function openInNewTab(url) {
+        var win = window.open(url, '_blank');
+        win.focus();
+    }
 
     function closeSales() {
         $.ajax({
@@ -401,52 +531,4 @@
         adicionar_produto(id, val);
     }
 
-    /* ATALHOS TECLADO */
-    
-    $('body').keydown(function(e) {
-        var key = e.keyCode; // this value
-
-        if (key == 13)
-            return e.preventDefault(); 
-
-        if (e.ctrlKey || e.metaKey) {
-
-            e.preventDefault();
-
-            // CONTINUAR VENDA (q);
-            if (key == 81)
-            {
-                finalizar_venda();
-            }
-
-            if (key == 113) //f2
-            {
-                $('#forma_pagamento').select2("open");
-            }
-            
-            // ADICIONAR ITEM (A)
-            if (key == 65)
-            {
-                adicionar_produto();
-            }
-
-            // PROCURAR ITEM (F)
-            if (key == 70)
-            {
-                $("#produto_item").select2("open");
-            }
-
-            // REGISTRAR VENDA
-            if (key == 83) 
-            {
-                $('#form-venda').submit();
-            }
-
-            if (key == 79)
-            {
-                salvarOrcamento();
-            }
-        }
-
-    }); 
 </script>

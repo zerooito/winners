@@ -14,6 +14,10 @@ class HomeController extends AppController{
 		$this->layout = 'winners';
 	}
 
+	function contact(){
+		$this->layout = 'winners';
+	}
+
 	function timeline(){
 		$this->layout = 'winners';
 	}
@@ -24,6 +28,7 @@ class HomeController extends AppController{
 
 	function login() {
 		$this->set('admin', false);
+		
 		$this->layout = 'login';
 	}
 

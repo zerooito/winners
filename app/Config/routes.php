@@ -30,6 +30,10 @@
  */
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
+	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
+	Router::connect('/linha-do-tempo-winners-opensource', array('controller' => 'home', 'action' => 'timeline'));
+	Router::connect('/quero-saber-como-funciona-winners-opensource', array('controller' => 'home', 'action', 'teste'));
+	
 	$dominio = verificar_dominio();
 
 	if ($dominio['is_winners']) {
@@ -38,13 +42,6 @@
 		Router::connect('/', array('controller' => $dominio['controller'], 'action' => $dominio['funcao']));
 	}
 
-	$caminho = APP . 'Config/routesshop.php';
-	
-	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
-	Router::connect('/linha-do-tempo-winners-opensource', array('controller' => 'home', 'action' => 'timeline'));
-	Router::connect('/canal-para-desenvolvedores-winners', array('controller' => 'home', 'action' => 'developers'));
-	
-	require($caminho);
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

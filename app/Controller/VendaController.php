@@ -1,5 +1,9 @@
 <?php
 
+require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
+
+use Dompdf\Dompdf;
+
 include 'ProdutoEstoqueController.php';
 include 'VendaItensProdutoController.php';
 include 'LancamentoVendasController.php';
@@ -104,6 +108,8 @@ class VendaController extends AppController {
 				)
 			)
 		);
+
+		$this->set('vendaId', $this->Session->read('UltimoIdVendaSalvo'));
 	}
 
 	public function conveter_venda($vendaId) {
@@ -204,6 +210,8 @@ class VendaController extends AppController {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');
 			$this->redirect('/venda/adicionar_cadastro');
 		}
+
+		$this->Session->write('UltimoIdVendaSalvo', $salvar_venda['id']);
 		
 		$this->Session->setFlash('Venda salva com sucesso');
 		$this->redirect('/venda/adicionar_cadastro');
@@ -281,11 +289,13 @@ class VendaController extends AppController {
 		$id_venda = $this->Venda->getLastInsertId();
 
 		$objVendaItensProdutoController = new VendaItensProdutoController();
+
 		if ($objVendaItensProdutoController->adicionar_itens_venda($id_venda, $produtos, $informacoes['orcamento']) === false) {
 			return false;
 		}
 
 		$objLancamentoVendasController = new LancamentoVendasController();
+
 		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario']) === false) {
 			return false;
 		}
@@ -461,6 +471,91 @@ class VendaController extends AppController {
 		echo json_encode(array('file' => $file));
 
 		exit;
+	}
+
+	public function clear_session_venda($id)
+	{
+		$this->Session->write('UltimoIdVendaSalvo', null);
+	}
+
+	public function relatorio() {
+		$this->layout = 'wadmin';
+
+		$from = $_GET['from'];
+		$to   = $_GET['to'];
+
+		$this->loadModel('Venda');
+		$this->loadModel('LancamentoVenda');
+
+		$conditions = array(
+			'conditions' => array(
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.data_venda >=' => $from,
+				'Venda.data_venda <=' => $to,
+				'Venda.orcamento <>' => 1
+			)
+		);
+
+		$vendas = $this->Venda->find('all', $conditions);
+
+		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
+
+		$totalCustoPeriodo = $this->calcularTotalCustoProdutosPeriodo($vendas);
+
+		$lancamentos = array();
+
+		foreach ($vendas as $i => $venda) {
+			$lancamento =  $this->LancamentoVenda->find('first', array(
+					'conditions' => array(
+						'LancamentoVenda.venda_id' => $venda['Venda']['id']
+					)
+				)
+			);
+
+			if (!empty($lancamento))
+				$lancamentos[] = $lancamento;
+		}
+
+		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
+
+		$this->set('dinheiro', $valorTotalPgt['dinheiro']);
+		$this->set('cartao_credito', $valorTotalPgt['cartao_credito']);
+		$this->set('cartao_debito', $valorTotalPgt['cartao_debito']);
+		$this->set('valorTotalVendasPeriodo', $valorTotalVendasPeriodo);
+		$this->set('totalCustoPeriodo', $totalCustoPeriodo);
+		$this->set('totalLucro', $valorTotalVendasPeriodo - $totalCustoPeriodo);
+	}
+
+	public function calcularTotalVendas($lancamentos)
+	{
+		$response = array();
+		foreach ($lancamentos as $i => $lancamento) {
+			@$response[$lancamento['LancamentoVenda']['forma_pagamento']] += $lancamento['LancamentoVenda']['valor_pago'];
+		}
+
+		return $response;
+	}
+
+	public function calcularTotalCustoProdutosPeriodo($vendas)
+	{
+		$valor = 0.00;
+
+		foreach ($vendas as $i => $venda) {
+			$valor += $venda['Venda']['custo'];
+		}
+
+		return $valor;
+	}
+
+	public function calcularValorTotalVendas($vendas)
+	{
+		$valor = 0.00;
+
+		foreach ($vendas as $i => $venda) {
+			$valor += $venda['Venda']['valor'];
+		}
+
+		return $valor;
 	}
 
 }

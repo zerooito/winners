@@ -110,21 +110,21 @@ class ProdutoController extends AppController{
 			array(
 				'ativo' => 1,
 				'id_usuario' => $this->instancia,
-				'OR' => array(
-					'Produto.quantidade_minima <= ' => 'Produto.estoque',
-				),
-				'OR' => array(
-					'Produto.estoque <= ' => $usuario['estoque_minimo']
-				)
+				'Produto.estoque < ' => 'Produto.quantidade_minima',
+				//'OR' => array(
+				//	'Produto.estoque <= ' => $usuario['estoque_minimo']
+				//)
 			)
 		);
 
-		$allProdutos = $this->Produto->find('all', $conditions);
+		$allProdutos = $this->Produto->query("select * from produtos where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1");
+
 		
+		$sql = "select * from produtos as Produto where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1";
+
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
 		{
-			$conditions['offset'] = $_GET['iDisplayStart'];
-			$conditions['limit'] = $_GET['iDisplayLength'];
+			$sql .= ' LIMIT ' . $_GET['iDisplayLength'] . ' OFFSET ' . $_GET['iDisplayStart'];
 		}
 
 		if ( isset( $_GET['iSortCol_0'] ) )
@@ -137,13 +137,13 @@ class ProdutoController extends AppController{
 				}
 			}
 		}
-
+		
 		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
 		{
 			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
 		}
-		
-		$produtos = $this->Produto->find('all', $conditions);
+
+		$produtos = $this->Produto->query($sql);
 
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -197,16 +197,14 @@ class ProdutoController extends AppController{
 			array(
 				'ativo' => 1,
 				'id_usuario' => $this->instancia,
-				'OR' => array(
-					'Produto.quantidade_minima <= ' => 'Produto.estoque',
-				),
-				'OR' => array(
-					'Produto.estoque <= ' => $usuario['estoque_minimo']
-				)
+				'Produto.estoque < ' => 'Produto.quantidade_minima',
+				//'OR' => array(
+				//	'Produto.estoque <= ' => $usuario['estoque_minimo']
+				//)
 			)
 		);
 
-		$produtos = $this->Produto->find('all', $conditions);
+		$produtos = $this->Produto->query("select * from produtos as Produto where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1");
 		
 		$html = $this->getProdutosEstoqueMinimoComoHtml($produtos);
 
@@ -275,7 +273,7 @@ class ProdutoController extends AppController{
 		$html .= '';
 		$html .= '</body>';
 		$html .= '</html>';
-
+		echo $html;exit;
 		return $html;
 	}
 

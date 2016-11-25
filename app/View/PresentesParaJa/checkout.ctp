@@ -167,7 +167,7 @@
 
   $('#cep').change(function() {
    	  var cep_destino = $(this).val()
-      	, cep_origem  = '07252-000'
+      	, cep_origem  = '<?php echo $usuario['Usuario']['cep_origem']; ?>'
       	, url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
 
 		$.ajax({

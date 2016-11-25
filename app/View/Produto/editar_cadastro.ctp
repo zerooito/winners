@@ -60,6 +60,27 @@
                                         <input type="number" class="form-control" name="dados[quantidade_minima]" value="<?php echo $produto['Produto']['quantidade_minima'] ?>" required>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label>Destaque E-commerce</label>
+                                        <select class="form-control" name="dados[destaque]">
+                                            <option value="0" 
+                                                <?php if (!$produto['Produto']['destaque']): ?>
+                                                    selected=""
+                                                <?php endif; ?>
+                                            >
+                                                Não
+                                            </option>
+                                            <option 
+                                                <?php if ($produto['Produto']['destaque']): ?>
+                                                    selected=""
+                                                <?php endif; ?>
+                                                value="1"
+                                            >
+                                                Sim
+                                            </option>
+                                        </select>
+                                    </div>
+
 
                                     <div class="form-group">
                                         <label>Categoria</label>

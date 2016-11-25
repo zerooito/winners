@@ -91,3 +91,49 @@
 		</a>
 	</div>
 </div>
+
+
+<script type="text/javascript">
+  $('#cep').mask('99999-999');
+
+  $('#cep').change(function() {
+    var cep_destino = $(this).val()
+      , cep_origem  = '07252-000'
+      , url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
+
+      $.ajax({
+        url: url,
+        data: {
+          cep_origem:  cep_origem, 
+          cep_destino: cep_destino
+        },
+        dataType: 'json',
+        method: "post",
+        success: function(data) {
+          atualizacep(cep_destino);
+          
+          $('#frete').html('R$ ' + data['frete']);
+          
+          $('#total').html('R$ ' + data['total']);
+        }
+      });
+  });
+
+  function atualizacep(cep){
+      cep = cep.replace(/\D/g,"")
+      
+      var url = "http://viacep.com.br/ws/" + cep + "/json/";
+
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        method: "get",
+        success: function(data) {
+          document.getElementById('endereco').value = data['logradouro'];
+          document.getElementById('bairro').value = data['bairro'];
+          document.getElementById('cidade').value = data['localidade'];
+          document.getElementById('estado').value = data['uf'];
+        }
+      });
+  }
+</script>

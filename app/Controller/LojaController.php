@@ -68,6 +68,8 @@ class LojaController extends AppController {
       $this->Session->write('Usuario.id', $this->usuario['Usuario']['id']);//gambi temporaria
       $this->Session->write('Usuario.loja', $this->usuario['Usuario']['loja']);//gambi temporaria
 
+      $this->set('usuario', $this->usuario);
+
       $this->layout = $this->usuario['Usuario']['layout_loja'];
     }
 

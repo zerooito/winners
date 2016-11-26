@@ -72,7 +72,7 @@ class LojaController extends AppController {
 
       $this->layout = $this->usuario['Usuario']['layout_loja'];
     }
-
+    
 	  return true;
 	}
 

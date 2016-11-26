@@ -45,8 +45,7 @@
             <li class="scroll"><a href="/">Inicio</a></li>
             <li class="scroll"><a href="/linha-do-tempo-winners-opensource">Nossa História</a></li>                     
             <li class="scroll"><a href="/canal-para-desenvolvedores-winners">Desenvolvedores</a></li> 
-            <li class="scroll"><a href="#portfolio">Portfolio</a></li>
-            <li class="scroll"><a href="#team">Time</a></li>
+            <li class="scroll"><a href="/clientes-erp-ecommerce-software-sob-medida-winners">Cases</a></li>
             <li class="scroll"><a href="/quero-saber-como-funciona-winners-opensource">Contato</a></li>    
           </ul>
         </div>
@@ -60,7 +59,7 @@
     <div class="footer-top">
       <div class="container text-center">
         <div class="footer-logo">
-          <a href="index.html"><img class="img-responsive" src="/images/logo.png" style="width: 300px;" alt=""></a>
+          <a href="index.html"><img class="img-responsive" src="/images/logo.png" style="width: 200px;" alt=""></a>
         </div>
         <div class="social-icons">
           <ul>

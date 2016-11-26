@@ -1,21 +1,4 @@
-
-<nav class="custom-color">
-	<div class="nav-wrapper">
-		<a href="#" class="brand-logo">Presentes Para Já</a>
-		<ul id="nav-mobile" class="right hide-on-med-and-down">
-			<li><a href="sass.html">Como Funciona</a></li>
-        	<?php foreach($categorias as $indice => $valor): ?>
-				<li>
-					<a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>">
-						<?php echo $valor['Categoria']['nome'] ?>
-					</a>
-				</li>
-			<?php endforeach; ?>
-			<li><a href="collapsible.html">Monte Sua Cesta</a></li>
-			<li><a href="collapsible.html">Contato</a></li>
-		</ul>
-	</div>
-</nav>
+<?php require('menu.ctp'); ?>
 
 <div class="container cart flow-text" style="margin-top: 10px;">
 
@@ -78,10 +61,9 @@
 	</div>
 
 	<div class="row text-right">
-		<p>Subtotal: R$ 30,00</p>
-		<p>Frete: R$ 30,00</p>
-		<p>Desconto: R$ 30,00</p>
-		<p>Total: R$ <?php echo number_format($total, 2, ',', '.') ?></p>
+		<p>Subtotal: R$ <?php echo number_format($total, 2, ',', '.') ?></p>
+		<p id="frete">Frete: R$ 0,00</p>
+		<p id="total">Total: R$ <?php echo number_format($total, 2, ',', '.') ?></p>
 	</div>
 
 	<div class="row">
@@ -91,3 +73,30 @@
 		</a>
 	</div>
 </div>
+
+<!--Mascaras-->
+<?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+
+<script type="text/javascript">
+  $('#cep').mask('99999-999');
+
+  $('#cep').change(function() {
+    var cep_destino = $(this).val()
+      , cep_origem  = '<?php echo $usuario['Usuario']['cep_origem']; ?>'
+      , url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
+
+      $.ajax({
+        url: url,
+        data: {
+          cep_origem:  cep_origem, 
+          cep_destino: cep_destino
+        },
+        dataType: 'json',
+        method: "post",
+        success: function(data) {          
+          $('#frete').html('Frete: R$ ' + data['frete']);
+          $('#total').html('Total: R$ ' + data['total']);
+        }
+      });
+  });
+</script>

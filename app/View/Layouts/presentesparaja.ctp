@@ -17,11 +17,31 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="/presentesparaja/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
     <?php echo $this->fetch('content'); ?>
-    
+
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+		<a class="btn-floating btn-large custom-color">
+			<i class="fa fa-bars"></i>
+		</a>
+		<ul>
+			<li>
+				<a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/cart" class="btn-floating red" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;">
+					<i class="fa fa-shopping-cart"></i>
+				</a>
+			</li>
+
+			<li>
+				<a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/checkout" class="btn-floating red" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;">
+					<i class="fa fa-money"></i>
+				</a>
+			</li>
+		</ul>
+    </div>
 	<footer class="page-footer custom-color">
 		<div class="container custom-color">
 			<div class="row">
@@ -33,16 +53,20 @@
 				<div class="col l3 s12">
 					<h5 class="white-text">Mapa do Site</h5>
 					<ul>
-						<li><a class="white-text" href="#!">Como Funciona</a></li>
-						<li><a class="white-text" href="#!">Cestas Prontas</a></li>
-						<li><a class="white-text" href="#!">Quadros</a></li>
-						<li><a class="white-text" href="#!">Monte sua Cesta</a></li>
+			        	<?php foreach($categorias as $indice => $valor): ?>
+							<li>
+								<a class="white-text" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>">
+									<?php echo $valor['Categoria']['nome'] ?>
+								</a>
+							</li>
+						<?php endforeach; ?>
+						<li><a class="white-text" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/monte-sua-cesta-o-presente-perfeito"">Monte sua Cesta</a></li>
 					</ul>
 				</div>
 				<div class="col l3 s12">
 					<h5 class="white-text">Institucional</h5>
 					<ul>
-						<li><a class="white-text" href="#!">Contato</a></li>
+						<li><a class="white-text" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/contato"">Contato</a></li>
 					</ul>
 				</div>
 			</div>

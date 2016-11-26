@@ -60,6 +60,14 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label>Destaque E-commerce</label>
+                                        <select class="form-control" name="dados[destaque]">
+                                            <option value="0" selected="">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label>Categoria</label>
                                         <select class="form-control js-example-basic-single" name="dados[categoria_id]">
                                             <?php foreach ($categorias as $key => $categoria): ?>

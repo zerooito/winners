@@ -9,25 +9,41 @@
 
 	<div class="col-md-6 col-xs-12">
 
-		<form action="/home/sendcontact" method="POST">
+		<form action="/home/enviar_email" method="POST">
 			<div class="form-group">
-				<label class="col-md-12 control-label" >Last Name</label> 
+				<label class="col-md-12 control-label">Nome</label> 
 				<div class="col-md-12">
-					<div class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						<input name="last_name" placeholder="Last Name" class="form-control" type="text">
-					</div>
+					<input name="dados[name]" placeholder="Digite seu nome" class="form-control" type="text" style="border-color: #028fcc;" required="">
 				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-12 control-label">E-mail</label> 
+				<div class="col-md-12">
+					<input name="dados[name]" placeholder="Digite seu e-mail" class="form-control" type="text" style="border-color: #028fcc;" required="">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-12 control-label">Mensagem</label> 
+				<div class="col-md-12">
+					<textarea name="dados[name]" placeholder="Digite sua mensagem" class="form-control" type="text" style="border-color: #028fcc;"></textarea>
+				</div>
+			</div>
+			<div class="form-group text-right" style="margin: 15px;">
+				<button class="btn btn-sucess" style="margin-top: 10px;">Enviar</button>
 			</div>
 		</form>
 		
 	</div>
 	
-	<div class="col-md-5 col-xs-12 text-center">
+	<div class="col-md-5 col-xs-12 text-center" style="padding-top:10px;">
 		
-		<h1>Fale Conosco</h1>
+		<h1>Entre em contato conosco</h1>
 
-		<p>Para você que quer tirar dúvidas e conhecer muito mais sobre a gente preencha o formulário ao lado e podemos marcar um café juntos ;)</p>
+		<p>Envie um e-mail atráves do formulario ou contato@ciawn.com.br. </p>
+
+		<br>
+
+		<p>(11) 9 4661-8708</p>
 
 	</div>
 

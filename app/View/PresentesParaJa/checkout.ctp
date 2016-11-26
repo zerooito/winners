@@ -1,3 +1,4 @@
+<?php require('menu.ctp'); ?>
 
 <nav class="custom-color">
 	<div class="nav-wrapper">

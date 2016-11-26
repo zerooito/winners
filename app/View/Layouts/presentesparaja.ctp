@@ -53,16 +53,20 @@
 				<div class="col l3 s12">
 					<h5 class="white-text">Mapa do Site</h5>
 					<ul>
-						<li><a class="white-text" href="#!">Como Funciona</a></li>
-						<li><a class="white-text" href="#!">Cestas Prontas</a></li>
-						<li><a class="white-text" href="#!">Quadros</a></li>
-						<li><a class="white-text" href="#!">Monte sua Cesta</a></li>
+			        	<?php foreach($categorias as $indice => $valor): ?>
+							<li>
+								<a class="white-text" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>">
+									<?php echo $valor['Categoria']['nome'] ?>
+								</a>
+							</li>
+						<?php endforeach; ?>
+						<li><a class="white-text" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/monte-sua-cesta-o-presente-perfeito"">Monte sua Cesta</a></li>
 					</ul>
 				</div>
 				<div class="col l3 s12">
 					<h5 class="white-text">Institucional</h5>
 					<ul>
-						<li><a class="white-text" href="#!">Contato</a></li>
+						<li><a class="white-text" href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/contato"">Contato</a></li>
 					</ul>
 				</div>
 			</div>

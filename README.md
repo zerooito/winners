@@ -1,5 +1,12 @@
-[![Build Status](https://travis-ci.org/reginaldojunior/winners.svg)](https://travis-ci.org/reginaldojunior/winners)
+Build Status
+=======
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/build-status/master) [![Issue Stats](http://issuestats.com/github/reginaldojunior/winners/badge/pr)](http://issuestats.com/github/reginaldojunior/winners) [![Issue Stats](http://issuestats.com/github/reginaldojunior/winners/badge/issue)](http://issuestats.com/github/reginaldojunior/winners)
 
+Instalação
+=======
+Para instalar a ultima versão no composer você pode rodar o seguinte comando.
+
+`composer require reginaldojunior/winners dev-master`
 
 O Problema
 =======
@@ -38,6 +45,19 @@ Caracteristicas de Desenvolvimento
   - Estrutura MVC com a framework CakePHP
   - Diversas plugins disponiveis devido ao framework utilizado
 Para instalar as dependencias você deve instalar o composer e depois rodar o comando "composer install", pronto.
+
+Demo
+=======
+Para acessar a versão demo do nosso ecommerce use os dados abaixo;
+
+http://www.xbrand.com.br
+
+Para acessar o painel de admin use
+
+http://www.ciawn.com.br/home/login
+
+Email: admin@admin.com
+Senha: 123456
 
 Contribuindo
 =======

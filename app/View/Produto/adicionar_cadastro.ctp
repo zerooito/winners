@@ -17,13 +17,30 @@
                                         <input class="form-control" name="dados[nome]" required>
                                         <!-- <p class="help-block">Example block-level help text here.</p> -->
                                     </div>
-                                    <div class="form-group">
-                                        <label>Preço</label>
-                                        <input class="form-control moeda" name="dados[preco]" required>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Custo</label>
+                                                <input class="form-control moeda" name="dados[custo]" id="custo" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Porcentagem</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" id="porcetagem-custo">
+                                                    <div class="input-group-addon">%</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Custo</label>
-                                        <input class="form-control moeda" name="dados[custo]" required>
+                                        <label>Preço</label>
+                                        <input class="form-control moeda" name="dados[preco]" id="preco" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>SKU</label>
+                                        <input class="form-control" name="dados[sku]" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Peso Bruto</label>
@@ -36,6 +53,10 @@
                                     <div class="form-group">
                                         <label>Estoque</label>
                                         <input type="number" class="form-control" name="dados[estoque]" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estoque Minimo</label>
+                                        <input type="number" class="form-control" name="dados[quantidade_minima]" required>
                                     </div>
 
                                     <div class="form-group">
@@ -138,5 +159,29 @@
         $('#variacoes').data('n-variacao', (parseInt(n_variacao) + 1));
         $('#variacoes').append(html);
       });
+
+        $('#porcetagem-custo').keyup(function(){
+            value = $(this).val();
+            custo = $('#custo').val();
+
+            if (custo == undefined || custo == "") {
+                $(this).val('');
+                return $('#custo').css('border-color', 'red').focus();
+            }
+
+            $('#custo').css('border-color', '1px solid #ccc');
+
+            porcetagem = (custo * value) / 100;
+
+            value = parseFloat(custo) + parseFloat(porcetagem);
+
+            if (value < 1)
+                formatNumber = value;
+            else 
+                formatNumber = number_format(value, 2);
+
+            $('#preco').val('');
+            $('#preco').val(formatNumber);
+        });
     });
 </script>

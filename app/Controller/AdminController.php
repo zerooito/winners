@@ -8,6 +8,7 @@ class AdminController extends AppController{
 
 	public function login() {
 		$this->set('admin', true);
+
 		$this->layout = 'login';
 	}
 
@@ -31,10 +32,31 @@ class AdminController extends AppController{
 		$this->Session->write('Admin.logado', true);
 
 		$this->Session->setFlash('Sucesso!');
+
         return $this->redirect('/admin/usuarios');
+	}
+
+	public function logout() {
+		$this->Session->write('Admin.logado', false);
+
+		$this->Session->setFlash('Sucesso!');
+
+        return $this->redirect('/admin/login');
 	}
 
 	public function usuarios() {
 		$this->verificar_acesso_admin();
+
+		$this->loadModel('Usuario');
+
+		$usuarios = $this->Usuario->find('all',
+			array('conditions' => 
+				array(
+					 'Usuario.ativo' => 1
+				)
+			)
+		);
+
+		$this->set('usuarios', $usuarios);
 	}
 }

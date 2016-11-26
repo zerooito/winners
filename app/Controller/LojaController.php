@@ -15,8 +15,63 @@ use FastShipping\Lib\Shipping;
 class LojaController extends AppController {
 	public $layout = 'lojaexemplo';	
 
+  protected $usuario;
+
 	public function beforeFilter(){
-	   return true;
+    $lojaSession = $this->Session->read('Usuario.loja');
+    
+    if (isset($lojaSession))
+    {
+      if (isset($this->params['loja']))
+      {
+        if ($this->params['loja'] != $lojaSession)
+        {
+          $loja = $this->params['loja'];
+        }
+        else 
+        {
+          $loja = $lojaSession;
+        }
+      }
+      else 
+      {
+        $loja = $lojaSession;
+      }
+    }
+    else
+    {
+      $loja = $this->params['loja'];
+    }
+    
+    if (!isset($loja)) 
+    {
+      echo 'Loja não existe';    
+      exit;
+    }
+    else
+    {
+      $this->loadModel('Usuario');
+
+      $this->usuario = $this->Usuario->find('first', array(
+          'conditions' => array(
+            'Usuario.loja' => $loja
+          )
+        )
+      );
+
+      if (empty($this->usuario))
+      {
+        echo 'Loja não existe';
+        exit;
+      }
+
+      $this->Session->write('Usuario.id', $this->usuario['Usuario']['id']);//gambi temporaria
+      $this->Session->write('Usuario.loja', $this->usuario['Usuario']['loja']);//gambi temporaria
+
+      $this->layout = $this->usuario['Usuario']['layout_loja'];
+    }
+
+	  return true;
 	}
 
 	public function loadProducts($id_categoria = null, $id_produto = null) {
@@ -26,7 +81,8 @@ class LojaController extends AppController {
          array(
             'Produto.ativo' => 1,
             'Produto.id_usuario' => $this->Session->read('Usuario.id')
-         )
+         ),
+         'limit' => 8
       );
 
       if ($id_categoria != null) {
@@ -37,7 +93,7 @@ class LojaController extends AppController {
          $params['conditions']['Produto.id'] = $id_produto;
       }
 
-		$produtos = $this->Produto->find('all', $params);
+		  $produtos = $this->Produto->find('all', $params);
 
 	   return $produtos;
 	}
@@ -45,9 +101,20 @@ class LojaController extends AppController {
    public function loadBanners($id_banner = null) {
       $this->loadModel('Banner');
 
-      $params = array('conditions' => 
-         array('ativo' => 1,
-              'usuario_id' => $this->Session->read('Usuario.id')
+      $params = array(
+         'joins' => array(
+             array(
+                 'table' => 'categoria_banners',
+                 'alias' => 'CategoriaBanner',
+                 'type' => 'LEFT',
+                 'conditions' => array(
+                     'Banner.categoria_banner_id = CategoriaBanner.id',
+                 ),
+             )
+         ),
+         'conditions' => array(
+            'Banner.ativo' => 1,
+            'Banner.usuario_id' => $this->Session->read('Usuario.id')
          )
       );
 
@@ -60,12 +127,12 @@ class LojaController extends AppController {
 		$produto = $this->request->data('produto');
 		
 		if (empty($produto)) {
-			$this->redirect('/');
+			$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/');
 		}
 
       if (!$this->validateProduct($produto)) {
          $this->Session->setFlash('Quantidade de produtos escolhidas é maior do que a disponivel!');
-         $this->redirect('/');
+         $this->redirect('/' . $this->usuario['Usuario']['loja'] . '/');
       }
 
 		$cont = count($this->Session->read('Produto'));
@@ -74,7 +141,7 @@ class LojaController extends AppController {
       $this->Session->write('Produto.'.$produto['id'].'.quantidade' , $produto['quantidade']);
       $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
 
-		$this->redirect('/cart');
+		$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
 	}
 
    public function removeProductCart() {
@@ -82,7 +149,7 @@ class LojaController extends AppController {
          $this->Session->delete( 'Produto.' . $this->params['id'] );
       }
 
-      $this->redirect('/cart');
+      $this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
    }
 
 	public function clearCart() {
@@ -143,6 +210,7 @@ class LojaController extends AppController {
 
    public function payment() {
       $andress = $this->request->data('endereco');
+     
       $client  = $this->request->data('cliente');
 
       $products = $this->loadProductsAndValuesCart();
@@ -150,16 +218,39 @@ class LojaController extends AppController {
       (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
 
       $objVenda = new VendaController();
+     
       $productsSale = $this->prepareProductsSale($products['products_cart']);
+     
       $usuario_id = $this->Session->read('Usuario.id');
 
-      $retorno_venda = $objVenda->salvar_venda($productsSale, array(), array('valor' => $valor_frete + $products['total']), $usuario_id);
+      $retorno_venda = $objVenda->salvar_venda($productsSale, array('forma_pagamento' => 'pagseguro'), array('valor' => $valor_frete + $products['total']), $usuario_id);
       
       $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
    }
 
+   public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id) {
+      $pagamento = new PagamentoController('PagseguroController');   
+
+      $pagamento->setToken($this->usuario['Usuario']['token_pagseguro']);
+      
+      $pagamento->setEmail($this->usuario['Usuario']['email_pagseguro']);
+
+      $pagamento->setProdutos($products);
+      
+      $pagamento->adicionarProdutosGateway();
+
+      $pagamento->setEndereco($andress);
+
+      $pagamento->setReference('#' . $id);
+      
+      $pagamento->setValorFrete($shipping);
+
+      return $this->redirect($pagamento->finalizarPedido());
+   }
+
    public function prepareProductsSale($products) {
       $retorno = array();
+     
       foreach ($products as $i => $product) {
          $retorno[$i]['id_produto'] = $product['Produto']['id'];
          $retorno[$i]['quantidade'] = $product['Produto']['quantidade'];
@@ -175,70 +266,83 @@ class LojaController extends AppController {
       $curl = curl_init('http://cep.correiocontrol.com.br/'.$cep.'.js');
 
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      
       $resultado = curl_exec($curl);
 
       echo $resultado;
+
       exit();
    }
 
    public function calcTransportAjax() {
       $this->layout = 'ajax';
-
+   
       $cep_destino = $this->request->data('cep_destino');
       $cep_origem  = $this->request->data('cep_origem');
-
+   
       $dataProducts = $this->loadProductsAndValuesCart();
-      $fretes = $this->transport($cep_destino, $cep_origem, $dataProducts['products_cart']);
-
+   
+      (float) $peso = 0;
+      foreach ($dataProducts['products_cart'] as $i => $product) {
+         $peso += $product['Produto']['peso_bruto'] * $product['Produto']['quantidade'];
+      }
+   
+      $fretes = $this->transport($cep_destino, $this->usuario['Usuario']['cep_origem'], $peso);
+   
       $disponiveis = array();
+   
       $cont = 0;
       foreach ($fretes as $i => $frete) {
-         $disponiveis[$cont]['valor']  = $frete->price;
-         $disponiveis[$cont]['prazo']  = $frete->estimate;
-         $disponiveis[$cont]['codigo'] = $frete->method;
+         $disponiveis[$cont]['valor']  = (array) $frete->Valor;
+         $disponiveis[$cont]['prazo']  = (array) $frete->PrazoEntrega;
+         $disponiveis[$cont]['codigo'] = (array) $frete->Codigo;
+         $disponiveis[$cont]['valor']  = array_shift($disponiveis[$cont]['valor']);
+         $disponiveis[$cont]['prazo']  = array_shift($disponiveis[$cont]['prazo']);
+         $disponiveis[$cont]['codigo'] = array_shift($disponiveis[$cont]['codigo']);
+         
          $cont++;
       }
-
+   
       $this->Session->write('Frete.valor', $disponiveis[$cont - 1]['valor']);
-
+   
       (float) $total = $disponiveis[$cont - 1]['valor'] + $dataProducts['total'];
+   
       $total = number_format($total, 2, ',', '.');
-
+   
       $retorno = array('frete' => $disponiveis[$cont - 1]['valor'], 'total' => $total);
-
+   
       echo json_encode($retorno);   
       exit();
    }
    
-   public function transport($cep_destino, $cep_origem, $data) {
-      $products = [];
-      foreach ($data as $key => $item) {
-         $products[] = [
-           "weight" => (float) $item['Produto']['peso_bruto'],
-           "height" => (float) '',
-           "length" =>(float)  '',
-           "width" => (float) '',
-           "unit_price" => (float) $item['Produto']['preco'],
-           "quantity" => (integer) $item['Produto']['quantidade'],
-           "sku" => $item['Produto']['id_alias'],
-           "id" => $item['Produto']['id']
-         ];
-      }
+   public function transport($cep_destino, $cep_origem, $peso) {
+      $altura = '2';
+      $largura = '11';
+      $comprimento = '16';
 
-      $shipping = new Shipping(
-          (string) $cep_destino,
-          'BR',
-          'GUARULHOS',
-          (string) $cep_origem,
-          '',
-          '',
-          '',
-          $products
-      );
-
-      $response = $shipping->getPricesShipping();
-
-      return $response;
+      $dados['sCepDestino'] = $cep_destino;
+      $dados['sCepOrigem'] = $cep_origem;
+      $dados['nVlPeso'] = $peso;
+      $dados['nVlComprimento'] = $comprimento;
+      $dados['nVlAltura'] = $altura;
+      $dados['nVlLargura'] = $largura;
+      $dados['nCdServico'] = '41106';
+      $dados['nVlDiametro'] = '2';
+      $dados['nCdFormato'] = '1';
+      $dados['sCdMaoPropria'] = 'n';
+      $dados['nVlValorDeclarado'] = '0';
+      $dados['StrRetorno'] = 'xml';
+      
+      $dados = http_build_query($dados);
+      
+      $curl = curl_init('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx' . '?' . $dados);
+      
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      
+      $resultado = curl_exec($curl);
+      $resultado = simplexml_load_string($resultado);
+      
+      return $resultado;
    }
 
    public function saveEmailNewsletter() {
@@ -332,28 +436,38 @@ class LojaController extends AppController {
 	* Views
 	*/
 	public function index() {
+      $this->set('usuario', $this->usuario);
       $this->set('banners', $this->loadBanners());
       $this->set('categorias', $this->loadCategoriesProducts());
-		$this->set('produtos', $this->loadProducts());
+      $this->set('produtos', $this->loadProducts());
+      
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/index');
 	}
 
    public function cart() {
+      $this->set('usuario', $this->usuario);
       $this->set('categorias', $this->loadCategoriesProducts());
       $products = $this->loadProductsAndValuesCart();
 
       $this->set('products', $products['products_cart']);
       $this->set('total', $products['total']);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/cart');
    }
 
    public function checkout() {
+      $this->set('usuario', $this->usuario);
       $this->set('categorias', $this->loadCategoriesProducts());  
       $products = $this->loadProductsAndValuesCart();
 
       $this->set('products', $products['products_cart']);
       $this->set('total', $products['total']);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/checkout');
    }
 
    public function category() {
+      $this->set('usuario', $this->usuario);
       $id   = $this->params['id'];
       $nome = $this->params['nome'];
 
@@ -362,9 +476,12 @@ class LojaController extends AppController {
       $this->set('categorias', $this->loadCategoriesProducts());
       $this->set('produtos', $products);
       $this->set('nameCategory', $nome);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/category');
    }
 
    public function product() {
+      $this->set('usuario', $this->usuario);
       $this->loadModel('Produto');
 
       $id = $this->params['id'];
@@ -394,6 +511,14 @@ class LojaController extends AppController {
       $this->set('variacoes', $variacoes);
 
       $this->set('produto', $produto);
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/product');
+   }
+
+   public function retornopagseguro() {
+      $code = $_GET['code'];
+
+      pr($code,1);
    }
 
 }

@@ -93,14 +93,13 @@ class AviseMeController extends AppController
 
 			App::uses('CakeEmail', 'Network/Email');
 
-			$email = new CakeEmail('aviseme');
-			
+			$email = new CakeEmail('default');
 			$email->from('jr.design_2010@hotmail.com', 'reginaldo')
-				  ->to($email)
-				  ->subject('Seu produto Chegou');
+				->to('jr.design_2010@hotmail.com')
+				->subject('Produto Aviso');
 			
 			$mensagem = '
-						<p><strong>Nome</strong>: '. $produto['Produto']['nome'] .'</p>
+						<p><strong>Nome</strong>: '. $produto[0]['Produto']['nome'] .'</p>
 					    ';
 			
 			if ($email->send($mensagem)) {
@@ -109,7 +108,7 @@ class AviseMeController extends AppController
 			
 			return false;
 		} catch (Exception $e) {
-			throw new Exception("Error Processing Request", 1);
+			throw new Exception($e->getMessage(), 1);
 		}
 	}
 

@@ -16,7 +16,7 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 
-	public $debug = true;
+	public $debug = false;
 
 	/*
 	* Metodo que funciona como construct para setar os modulos da instancia logada
@@ -44,7 +44,7 @@ class AppController extends Controller {
 			$this->Session->setFlash('Você não tem acesso a esta area do sistema!');
             return $this->redirect('/');
 		}
-
+		
 		$this->instancia = $dados['id'];
 		$this->verificar_modulos();
 		return true;
@@ -66,10 +66,10 @@ class AppController extends Controller {
 		);
 		
 		foreach ($registros as $indice => $modulo) {
-			$this->modulos[$indice]['modulo'] = $modulo['Modulo']['modulo'];
-			$this->modulos[$indice]['funcao'] = $modulo['Modulo']['funcao'];
-			$this->modulos[$indice]['nome']   = $modulo['Modulo']['nome_modulo'];
-			$this->modulos[$indice]['icone']  = $modulo['Modulo']['icone'];
+			$this->modulos[$modulo['Modulo']['modulo']]['modulo'] = $modulo['Modulo']['modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
+			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
 		}
 		
 		return $this->modulos;
@@ -80,7 +80,7 @@ class AppController extends Controller {
 	* @param array modulo
 	*/
 	function verificar_modulo_ativo($modulo) {
-		$retorno = in_array($modulo, $this->modulos);
+		$retorno = array_key_exists($modulo, $this->modulos);
 		return $retorno;
 	}
 
@@ -101,6 +101,7 @@ class AppController extends Controller {
 
 	public function verificar_acesso_admin() {
 		$verificar = $this->Session->read('Admin.logado');
+		
 		if (!$verificar) {
 			$this->Session->setFlash('Você não possui acesso a está área do sistema');
 			$this->redirect('/admin/login');
@@ -108,5 +109,4 @@ class AppController extends Controller {
 
 		return true;
 	}
-
 }

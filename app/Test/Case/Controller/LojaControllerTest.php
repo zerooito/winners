@@ -1,27 +1,19 @@
 <?php
 
+require(APP . 'Controller/AppController.php');
 require(APP . 'Controller/LojaController.php');
 
 /**
 * 
 */
-class LojaControllerTest extends ControllerTestCase
+class LojaControllerTest extends PHPUnit_Framework_TestCase
 {
-
-    public $controllers = array('app.loja');
-
 	protected $Loja;
 
-	public function setUp()
-	{
-		$this->Loja = new LojaController;
-	}
-
-	/**
-	* @test create cliente
-	**/
 	public function testCreateClienteByLojaController()
 	{
+		$this->Loja = new LojaController;
+		
 		$data = array(
 				'nome1' => 'reginaldo',
 				'nome2' => 'luis',
@@ -40,6 +32,8 @@ class LojaControllerTest extends ControllerTestCase
 
 	public function testCreateClientByLojaControllerNextCreateAndress()
 	{
+		$this->Loja = new LojaController;
+
 		$data = array(
 			'nome1' => 'reginaldo',
 			'nome2' => 'luis',
@@ -69,5 +63,4 @@ class LojaControllerTest extends ControllerTestCase
 
 		$this->assertEquals(is_array($result), true);
 	}
-
 }

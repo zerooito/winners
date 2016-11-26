@@ -57,11 +57,21 @@
 
     <!--Start of Zopim Live Chat Script-->
     <script type="text/javascript">
-    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
-    $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
-    type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+    function detectmob() {
+       if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+         return true;
+       } else {
+         return false;
+       }
+    }
+
+    if (detectmob()) {
+        window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+        $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
+        type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+    }
     </script>
     <!--End of Zopim Live Chat Script-->
     
@@ -117,9 +127,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Usuario</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Configurações</a>
+                        <li><a href="/usuario/meus_dados"><i class="fa fa-gear fa-fw"></i> Configurações</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="/usuario/processar_logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -137,40 +145,45 @@
             <!-- /.navbar-static-side -->
         </nav>
 
+
+
+        <!-- /#wrapper -->
+
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <?php echo $this->Html->script('bootstrap.min'); ?>
+        <!--script src="js/bootstrap.min.js"></script-->
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <?php echo $this->Html->script('plugins/metisMenu/metisMenu.min'); ?>
+        <!--script src="js/plugins/metisMenu/metisMenu.min.js"></script-->
+
+        <!-- Morris Charts JavaScript -->
+        <!--script src="js/plugins/morris/raphael.min.js"></script>
+        <script src="js/plugins/morris/morris.min.js"></script>
+        <script src="js/plugins/morris/morris-data.js"></script-->
+
+        <!-- Custom Theme JavaScript -->
+        <?php echo $this->Html->script('sb-admin-2'); ?>
+        <!--script src="js/sb-admin-2.js"></script-->
+
+        <!-- DataTables JavaScript -->
+        <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
+        <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
+
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
         <!-- Conteudo -->
         <?php echo $this->fetch('content'); ?>
 
     </div>
 
-    <!-- /#wrapper -->
-
-
-    <!-- Bootstrap Core JavaScript -->
-    <?php echo $this->Html->script('bootstrap.min'); ?>
-    <!--script src="js/bootstrap.min.js"></script-->
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <?php echo $this->Html->script('plugins/metisMenu/metisMenu.min'); ?>
-    <!--script src="js/plugins/metisMenu/metisMenu.min.js"></script-->
-
-    <!-- Morris Charts JavaScript -->
-    <!--script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script-->
-
-    <!-- Custom Theme JavaScript -->
-    <?php echo $this->Html->script('sb-admin-2'); ?>
-    <!--script src="js/sb-admin-2.js"></script-->
-
-    <!-- DataTables JavaScript -->
-    <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
-    <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
-    $(document).ready(function() {
-        $('#dataTables-cliente').dataTable();
-    });
+        $(document).ready(function() {
+            $('#dataTables-cliente').dataTable();
+        });
     </script>
 
 </body>

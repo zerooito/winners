@@ -1,14 +1,13 @@
 {
 	"name": "reginaldojunior/winners",
-	"description": "The CakePHP framework",
 	"type": "library",
-	"keywords": ["framework"],
-	"homepage": "http://cakephp.org",
+	"keywords": ["opensource", "ecommerce", "winners", "cakephp"],
+	"homepage": "http://www.ciawn.com.br/",
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "CakePHP Community",
-			"homepage": "https://github.com/cakephp/cakephp/graphs/contributors"
+			"name": "Winners Community",
+			"homepage": "https://github.com/reginaldojunior/winners/graphs/contributors"
 		}
 	],
 	"support": {
@@ -18,11 +17,12 @@
 	"require": {
 		"php": ">=5.2.8",
 		"fastshipping/fastshipping-php": "master-dev",
-		"respect/validation": "master-dev"
+        "pluggto/pluggto-php": "master-dev",
+		"dompdf/dompdf": "v0.7.0",
+        "pluggto/pluggto-php": "master-dev"		
 	},
 	"require-dev": {
-		"phpunit/phpunit": "3.7.*",
-		"cakephp/debug_kit" : "2.2.*"
+		"phpunit/phpunit": "3.7.*"
 	},
 	"bin": [
 		"lib/Cake/Console/cake"

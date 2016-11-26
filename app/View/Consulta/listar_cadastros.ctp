@@ -23,6 +23,7 @@
                                     <th>E-mail</th>
                                     <th>Data</th>
                                     <th>Hora</th>
+                                    <th>Telefone</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -35,9 +36,10 @@
                                     <td><?php echo $consulta['Consulta']['email'] ?></td>
                                     <td class="center"><?php echo $consulta['Consulta']['data'] ?></td>
                                     <td class="center"><?php echo $consulta['Consulta']['hora'] ?></td>
+                                    <td class="center"><?php echo $consulta['Consulta']['telefone'] ?></td>
                                     <td class="center">
                                         <button onclick="excluir_consulta(<?php echo $consulta['Consulta']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_consulta(<?php echo $consulta['Consulta']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <!-- <button onclick="editar_consulta(<?php echo $consulta['Consulta']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button> -->
                                     </td>
                                 </tr>   
                             <?php

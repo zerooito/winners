@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-lg-9"></div>
                         <div class="col-lg-3">
-                            <button type="submit" class="btn btn-success">Salvar Produto</button>
+                            <button type="submit" class="btn btn-success">Adicionar Banner</button>
                             <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
                         </div>
                         <!-- /.row (nested) -->
@@ -59,23 +59,5 @@
 <script type="text/javascript">
     $(document).ready(function() {
       $(".js-example-basic-single").select2();
-
-      $('#variacao').click(function() {
-        var n_variacao = $('#variacoes').data('n-variacao')
-          , html       = ''
-          ;
-
-        html  =  '<div class="col-lg-6">';
-        html +=     '<label>Variação</label>';
-        html +=     '<input type="text" class="form-control" name="variacao[' + (parseInt(n_variacao) + 1) + '][variacao]" required>';
-        html +=  '</div>';
-        html +=  '<div class="col-lg-6">';
-        html +=     '<label>Estoque</label>';
-        html +=     '<input type="number" class="form-control" name="variacao[' + (parseInt(n_variacao) + 1) + '][estoque]" required>';
-        html +=  '</div>';
-
-        $('#variacoes').data('n-variacao', (parseInt(n_variacao) + 1));
-        $('#variacoes').append(html);
-      });
     });
 </script>

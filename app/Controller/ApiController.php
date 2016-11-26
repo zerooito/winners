@@ -15,6 +15,7 @@ class ApiController extends AppController {
 	public function client($id_cliente = null)
 	{
 		$api = 'cliente';
+
 	    $this->loadModel('Cliente');
 		$this->autoRender = false;
 		$this->response->type('json');
@@ -185,7 +186,7 @@ class ApiController extends AppController {
 	    }
 	}
 
-	public function newsletter()
+	public function newsletter($sendMail = null)
 	{
 		$api = 'newsletter';
 
@@ -215,12 +216,103 @@ class ApiController extends AppController {
 			'usuario_id' => $this->getIdUser()
 		);
 
+		if ($sendMail == 'enviar_email')
+		{
+			return $this->sendMail($dados);
+		}
+
 		$this->Newsletter->save($dados);
 
-		$this->response->body('{"message": "success", "result":'.json_encode($dados).'}');
+		$this->response->body('{"message": "success", "result":' . json_encode($dados) . '}');
 		return;		
 	}
 
+	public function banner()
+	{
+		$api = 'banner';
+
+		$this->loadModel('Banner');
+
+		$this->autoRender = false;
+		$this->response->type('json');
+
+		$type = $this->request;
+
+		if (!$this->validate_use_api($type, $api)) {
+	    	echo '{message: Você não tem permissão para usar nosso modulo}';
+	    	return;
+	    }
+
+    	$conditions = array(
+			'ativo' => 1,
+			'usuario_id' => $this->getIdUser()
+		);
+
+	    $banner = $this->Banner->find('all', 
+			array('conditions' => 
+				$conditions
+			)
+		);
+
+	    if (!empty($banner)) {
+			$this->response->body('{"message": "success", "result":'.json_encode($banner).'}');
+			return;
+	    }
+		
+		$this->response->body('{"message": "error"}');
+		return;	
+	}
+
+	public function consulta()
+	{
+		$api = 'consulta';
+
+		$this->loadModel('Consulta');
+
+		$this->autoRender = false;
+		$this->response->type('json');
+
+		$type = $this->request;
+
+		if (!$this->validate_use_api($type, $api)) {
+	    	echo '{message: Você não tem permissão para usar nosso modulo}';
+	    	return;
+	    }
+
+
+	    if ($type->is('get')) {
+	    	$conditions = array(
+				'ativo' => 1,
+				'id_usuario' => $this->getIdUser()
+			);
+
+		    $consulta = $this->Consulta->find('all', 
+				array('conditions' => 
+					$conditions
+				)
+			);
+
+		    if (!empty($consulta)) {
+				$this->response->body('{"message": "success", "result":'.json_encode($consulta).'}');
+				return;
+		    }
+		}
+
+		if ($type->is('post'))
+		{
+	    	$dados = $this->request->data;
+	    	
+	    	if (empty($dados)) {
+				$this->response->body(json_encode(array('message' => 'Ocorreu algum erro com os parametros passados')));
+				return;
+	    	}
+
+	    	return $this->postConsulta($dados);			
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;	
+	}
 
 	public function loginClient($dados)
 	{
@@ -297,6 +389,35 @@ class ApiController extends AppController {
 		}	
 	}
 
+	public function sendMail($dados)
+	{
+		App::uses('CakeEmail', 'Network/Email');
+
+		$email = new CakeEmail('default');
+		
+		$email->from('contato@ciawn.com.br', 'OdontoClinic Pimentas')
+			  ->to($dados['email'])
+			  ->subject('Newsletter OdontoClinic Pimentas');
+		
+		$mensagem = 'Obrigado pelo cadastro, em breve você vai receber novidades e promoções!';
+		if (file_exists(APP . 'webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf'))
+		{
+			$email->attachments(APP . '/webroot/odontoclinicpimentas/ebooks/' . $dados['origem'] . '.pdf') ;
+
+			$mensagem = '
+				Obrigado pelo cadastro, para mais informações veja o arquivo em anexo!
+			';
+		}
+		
+		$mensagem .= "\n OdontoClinic Pimentas
+					\n Rua 7, 23
+					\n Jardim Nova Cidade, 07252-380
+					\n (11) 2486-8936";
+
+		$email->send($mensagem);
+
+		return $this->response->body('{"message": "success", "result":' . json_encode($dados) . '}');
+	}
 
 	public function postParent($dados)
 	{
@@ -374,6 +495,27 @@ class ApiController extends AppController {
 		}	
 	}
 
+	public function postConsulta($dados)
+	{
+    	$dados = array(
+			'nome'       => $dados['nome'],
+			'email'      => $dados['email'],
+			'data'       => $dados['date'],
+			'hora'       => $dados['hora'],
+			'telefone'   => $dados['telefone'],
+			'id_usuario' => $this->getIdUser(),
+			'ativo'      => 1,
+		);
+		
+		if ($this->Consulta->save($dados)) {
+			$this->response->body('{"message": "success", "result":' . json_encode($dados) . '}');
+			return;
+		}
+
+		$this->response->body('{"message": "error"}');
+		return;
+	}
+
 	/**
 	* Valida o usuario que está tentando usar a api
 	*/
@@ -382,14 +524,17 @@ class ApiController extends AppController {
 		$this->loadModel('Usuario');
 		
 		$data['auth'] = $req->query;
-		
+
 		$resposta = $this->Usuario->find('all',
 			array('conditions' => 
-				array('Usuario.email' => $data['auth']['email'], 
-					  'Usuario.senha' => sha1($data['auth']['senha'])
-				)
+				array('Usuario.token' => $data['auth']['token'])
 			)
-		)[0];
+		);
+
+		if (isset($resposta[0]) && !empty($resposta[0]))
+		{
+			$resposta = $resposta[0];
+		}
 
 		if (empty($resposta))
 		{

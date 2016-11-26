@@ -1,6 +1,5 @@
 <?php
 
-
 require(APP . 'Controller/AppController.php');
 require(APP . 'Controller/ApiController.php');
 

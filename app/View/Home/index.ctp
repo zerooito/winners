@@ -1,83 +1,44 @@
 
-    <div id="sucesso">
-        <div class="alert">Aviso</div>
-        <div class="conteudo_alert"></div>
-        <span id="ok">Ok, Entedi !</span>
-    </div>
-
-<div class="row">
-  <div class="col-md-8">
-    <div class="tcycle">
-            <?php echo $this->Html->link(
-                    $this->Html->image('1.png', array('alt' => 'Suporte Winners', 'border' => '0', 'width' => '800', 'height' => '450')),
-                    '',
-                    array('target' => '_blank', 'escape' => false)
-                );
-            ?>
-            <?php echo $this->Html->link(
-                    $this->Html->image('2.jpg', array('alt' => 'Suporte Winners', 'border' => '0', 'width' => '800', 'height' => '450')),
-                    '',
-                    array('target' => '_blank', 'escape' => false)
-                );
-            ?>
-    </div>
-  </div>
-  <div class="col-md-4">
-
-  </div>
+<div class="container home">
+	<div class="row">
+		<div class="col-sm-12 text-center">
+			<h1>Winners sua plataforma E-commerce OpenSource</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-9">
+			<img src="https://cloud.githubusercontent.com/assets/7466894/12221967/8e626058-b794-11e5-9dec-a350610bae36.png" width="100%">
+		</div>
+		<div class="col-sm-3">
+			<h1>Produtos</h1>
+			<p>A criação e manutenção do cadastro de produtos de forma correta é de extrema importância nas relações comerciais entre as empresas, garantindo bons resultados.<br>
+			Além disso, no cadastro de produtos, as informações cadastradas possuem impacto em todo o ERP, por isso é importante manter sempre atualizadas as informações sobre preços, logística, tributação, etc.<br>
+			Nós entendemos que estas informações não são simples e que devem haver regras e boas práticas para que esta manutenção aconteça, por isso criamos um passo a passo para te ajudar.</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-3">
+			<h1>PDV</h1>
+			<p>O PDV (frente de caixa) é o terminal utilizado pelo vendedor de um estabelecimento onde o cliente entrega seus produtos para a contabilização e apuração dos valores. É no PDV também onde é feito o pagamento da compra.
+			<br>
+			<b>Equipamentos e periféricos de um PDV:</b>
+			<br>
+			Os periféricos que compõe a frente de caixa podem ser impressoras fiscais (ECF), impressoras não fiscais, assim como impressoras de cheques, coletores óticos de código de barras e terminais POS que são dispositivos para efetuar pagamentos de crédito e débito com cartões.
+			</p>
+		</div>
+		<div class="col-sm-9">
+			<img src="https://cloud.githubusercontent.com/assets/7466894/12221817/22ee6aa4-b791-11e5-94eb-93d544f915a8.png" width="100%">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-9">
+			<img src="https://cloud.githubusercontent.com/assets/7466894/19059467/6bc2cb10-89b6-11e6-9e6a-aa6bca286f13.png" width="100%">
+		</div>
+		<div class="col-sm-3">
+			<h1>Hieraquia</h1>
+			<p>
+				No sistema de hieraquias você pode criar usuários especificos, para cada usar pode acessar parte especifica do sistema, dessa forma, um funcionário da área de produção não vai poder ver e nem fazer alteração da área de vendas.
+			</p>
+		</div>
+	</div>
 </div>
-
-
-    <div id="login" class="login">
-    <div class="panel panel-primary">
-      <div class="panel-heading">Faça seu Login</div>
-      <div class="panel-body">
-        <form action="index.php" method="post">
-            <label>Email: </label><input class="form-control" data-role="input-control" type="text" name="login[login_email]" id="login_email" placeholder="Digite seu email" required />
-            <label>Senha: </label><input class="form-control" data-role="input-control" type="password" name="login[login_senha]" id="login_senha" placeholder="Digite sua senha" required />
-            <a href="#">Esqueceu sua senha ?</a><br>
-            <button type="button" class="btn btn-primary" id="logar">Logar</button>
-        </form>
-      </div>
-    </div>
-    </div>
-
-    <div id="formulario" class="cadastro">
-        <div class="panel panel-primary">
-          <div class="panel-heading">Faça seu Cadastro</div>
-            <div class="panel-body">
-                     <form action="index.php"  method="post">
-                        <label>Nome: </label><input class="form-control" id="nome_cadastro" data-role="input-control" type="text" name="nome" placeholder="Digite seu nome" required />
-                        <label>Email: </label><input class="form-control" id="email_cadastro" data-role="input-control" type="text" name="email" placeholder="Digite seu email" required />
-                        <label>Senha: </label><input class="form-control" id="senha_cadastro" data-role="input-control" type="password" name="senha" placeholder="Digite sua senha" required />
-                        <label>Escolha seus produtos</label>
-                        <div class="input-control">
-                            <label>EAD</label>
-                            <select class="form-control" id="ead">
-                                <option value="1">Sim</option>
-                                <option value="0">Não</option>
-                            </select>
-                            <label>ERP</label>
-                            <select class="form-control" id="erp">
-                                <option value="1">Sim</option>
-                                <option value="0">Não</option>
-                            </select>
-                            <label>Site dinâmico + CMS</label>
-                            <select class="form-control" id="site">
-                                <option value="1">Sim</option>
-                                <option value="0">Não</option>
-                            </select>
-                        </div><br>
-                        <button type="button" class="btn btn-primary" id="enviar">Cadastrar</button>
-                      </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="conteudo" class="conteudo">
-        <div class="jumbotron">
-        <h1>Sistemas Winners</h1>
-        <p>Os sistemas da winners são os melhores por diversos motivos, a facilidade para o usuario, o suporte integrado 24 horas, e os melhores desenvolvedores que você irá ver está aqui, fazendo de tudo para que você obtenha o maior grau de experiencia, em cada um de nossos sistemas, então corra e faça um orçamento.</p>
-          <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
-        </div>
-    </div>

@@ -51,11 +51,10 @@ class AviseMeControllerTest extends ControllerTestCase
 	public function testSendMailOfAviseMe()
 	{
 		$produto_id = 75;
-		$email      = 'email@teste.com';
 
-		$result = $this->testAction(
-			'/aviseme/enviar_email_aviseme/' . $produto_id . '/' . $email
-		);
+		$email = "jr.design_2010@hotmail.com";
+
+		$result = $this->AviseMe->enviar_email_aviseme($produto_id, $email);
 
 		$this->assertEquals(true, $result);
 

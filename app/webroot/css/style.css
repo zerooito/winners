@@ -526,10 +526,10 @@ ul.socialmedia li a {
 	float: right;
 	padding: 24px 0px;
 }
-#mobile-header {
-display: none;
-}
 
+#mobile-header {
+	display: none;
+}
 
 .button-section ul li :hover {
 	text-decoration: none;

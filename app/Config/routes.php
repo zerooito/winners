@@ -30,6 +30,10 @@
  */
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
+	Router::connect('/servicos', array('controller' => 'home', 'action', 'servicos'));
+	Router::connect('/linha-do-tempo-winners-opensource', array('controller' => 'home', 'action' => 'timeline'));
+	Router::connect('/quero-saber-como-funciona-winners-opensource', array('controller' => 'home', 'action', 'teste'));
+	
 	$dominio = verificar_dominio();
 
 	if ($dominio['is_winners']) {
@@ -37,7 +41,7 @@
 	} else {
 		Router::connect('/', array('controller' => $dominio['controller'], 'action' => $dominio['funcao']));
 	}
-	
+
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
@@ -56,9 +60,10 @@
 		$dominiosWinners = array (
 			'winners.local',
 			'blog.winnersdesenvolvimento.com.br',
-			'www.ciawn.com.br',
 			'ciawn.com.br',
+			'www.ciawn.com.br',
 			'api.ciawn.com.br',
+			'winnersopensource.herokuapp.com'
 		);
 
 		$dominiosWinnersRedirect = array(
@@ -67,8 +72,8 @@
 		);
 
 		$varDominio = $_SERVER['SERVER_NAME'];
-
-		if (array_search($varDominio, $dominiosWinnersRedirect) !== false) {
+		
+		if (array_search($varDominio, $dominiosWinnersRedirect) !== false || $varDominio == "ciawn.com.br") {
 			header('Location: http://www.ciawn.com.br');
 			exit();
 		}
@@ -78,8 +83,21 @@
 
 			return $retorno;
 		}
-
-		require(APP . 'Config/Domain/' . $varDominio . '.php');
+		
+		if ($varDominio == "fastshipping.ciawn.com.br")
+		{
+			header('Location: https://fastshipping.ciawn.com.br');
+			exit();
+		}
+		
+		$caminho = APP . 'Config/Domain/' . $varDominio . '.php';
+		if (!file_exists($caminho))
+		{
+			$retorno['is_winners'] = true;
+			return $retorno;
+		}
+		
+		require($caminho);
 
 		$retorno['is_winners'] = false;
 		$retorno['id_usuario'] = $dominio['id_usuario'];

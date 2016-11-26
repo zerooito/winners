@@ -1,18 +1,280 @@
 <?php
 
+require_once(ROOT . DS . 'vendor' . DS . 'autoload.php');
+
+use Dompdf\Dompdf;
+
 class ProdutoController extends AppController{		
 
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';
+	}
 
-		$this->set('produtos', $this->Produto->find('all', 
-				array('conditions' => 
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
-					)
-				)
+	public function listar_cadastros_ajax() {
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'sku', 'imagem', 'nome', 'preco', 'estoque' );
+		
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia
 			)
 		);
+
+		$allProdutos = $this->Produto->find('all', $conditions);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Produto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				$value = $produto['Produto'][$aColumns[$i]];
+
+				if ($aColumns[$i] == "imagem")
+				{
+					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+
+					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					{
+						$value = '<img src="/images/no_image.png" width="120" height="120">';
+					}
+				}
+				
+				$row[] = $value;
+			}
+
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
+
+			$row[] = $btEdit;
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
+
+	public function listar_cadastros_estoque_minimo(){
+		$this->layout = 'wadmin';
+	}
+
+	public function listar_cadastros_estoque_minimo_ajax(){
+
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'sku', 'imagem', 'nome', 'preco', 'estoque' );
+
+		$this->loadModel('Usuario');
+
+		$usuario = $this->Usuario->find('all', array('conditions' =>
+				array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		)[0]['Usuario'];
+		
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia,
+				'Produto.estoque < ' => 'Produto.quantidade_minima',
+				//'OR' => array(
+				//	'Produto.estoque <= ' => $usuario['estoque_minimo']
+				//)
+			)
+		);
+
+		$allProdutos = $this->Produto->query("select * from produtos where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1");
+
+		
+		$sql = "select * from produtos as Produto where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1";
+
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$sql .= ' LIMIT ' . $_GET['iDisplayLength'] . ' OFFSET ' . $_GET['iDisplayStart'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Produto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+		
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+
+		$produtos = $this->Produto->query($sql);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				$value = $produto['Produto'][$aColumns[$i]];
+
+				if ($aColumns[$i] == "imagem")
+				{
+					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+
+					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					{
+						$value = '<img src="/images/no_image.png" width="120" height="120">';
+					}
+				}
+				
+				$row[] = $value;
+			}
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
+
+	public function baixar_estoque_minimo_pdf() {
+		$this->loadModel('Produto');
+		$this->loadModel('Usuario');
+
+		$dompdf = new Dompdf();
+
+		$usuario = $this->Usuario->find('all', array('conditions' =>
+				array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		)[0]['Usuario'];
+
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia,
+				'Produto.estoque < ' => 'Produto.quantidade_minima',
+				//'OR' => array(
+				//	'Produto.estoque <= ' => $usuario['estoque_minimo']
+				//)
+			)
+		);
+
+		$produtos = $this->Produto->query("select * from produtos as Produto where estoque < quantidade_minima and id_usuario = " . $this->instancia . " and ativo = 1");
+		
+		$html = $this->getProdutosEstoqueMinimoComoHtml($produtos);
+
+		$dompdf->loadHtml($html);
+
+		$dompdf->set_paper(array(0, 0, 595.28, count($produtos) * 25));
+
+		$dompdf->render();
+
+		$dompdf->stream();
+
+		exit;
+	}
+
+	public function getProdutosEstoqueMinimoComoHtml($produtos) {
+    	ob_start();
+
+		$html = '';
+		$html .= '<html>';
+		$html .= '<head>';
+		$html .= '	<title></title>';
+		$html .= '</head>';
+		$html .= '<body>';
+		$html .= '';
+		$html .= '	<table style="background-color: #cacaca;"  width="100%" valign="center" align="center">';
+		$html .= '		<tr align="center">';
+		$html .= '			<td>';
+		$html .= '				<h2>Produtos com quantidade de estoque minimo</h2>';
+		$html .= '			</td>';
+		$html .= '		</tr> ';
+		$html .= '	</table>';
+		$html .= '	<br>';
+		$html .= '	<br>';
+		$html .= '	<table  width="100%" valign="center" align="center">';
+		$html .= '		<tr style="background-color: #cacaca;" align="center">';
+		$html .= '			<td>';
+		$html .= '				<h2>Produtos</h2>';
+		$html .= '			</td>';
+		$html .= '		</tr> ';
+		$html .= '	</table>';
+		$html .= '	<br>';
+		$html .= '	<table  width="100%" valign="center" align="center">';
+		$html .= '		<tr>';
+		$html .= '			<td>';
+		$html .= '				<table width="100%" valign="center" align="center">';
+		$html .= '					<tr style="background-color: #cacaca;">';
+		$html .= '						<td>Nome Produto</td>';
+		$html .= '						<td>Quantidade</td>';
+		$html .= '						<td>Custo</td>';
+		$html .= '					</tr>';
+		$html .= '';
+
+		foreach ($produtos as $i => $produto) {
+			$html .= '					<tr>';
+			$html .= '						<td>' . $produto['Produto']['nome'] . '</td>';
+			$html .= '						<td>' . $produto['Produto']['estoque'] . '</td>';
+			$html .= '						<td>R$ ' . number_format($produto['Produto']['custo'], 2, ',', '.') . '</td>';
+			$html .= '					</tr>';
+		}
+
+		$html .= '				</table>';
+		$html .= '			</td>';
+		$html .= '		</tr>';
+		$html .= '	</table>';
+		$html .= '	<br>';
+		$html .= '';
+		$html .= '</body>';
+		$html .= '</html>';
+		echo $html;exit;
+		return $html;
 	}
 
 	public function adicionar_cadastro() {
@@ -49,15 +311,31 @@ class ProdutoController extends AppController{
 
 		if($this->Produto->save($dados)) {
 			$produto_id = $this->Produto->getLastInsertId();
+			
 			require 'VariacaoController.php';
+
 			$objVariacaoController = new VariacaoController();
 
 			$objVariacaoController->s_adicionar_variacao($variacoes, $produto_id, $this->instancia);			
 
+			if ($this->verificar_modulo_ativo('pluggto'))
+			{
+				require 'PluggtoController.php';
+				$objPluggTo = new PluggtoController();
+				$produto_pluggto = $objPluggTo->enviar_produto($dados, $variacoes);
+
+				if (!isset($produto_pluggto->Product->id)) 
+				{
+					$this->Session->setFlash('Produto não foi enviado para o Plugg.to!');
+				}
+			}
+
 			$this->Session->setFlash('Produto salvo com sucesso!');
+            
             return $this->redirect('/produto/listar_cadastros');
 		} else {
 			$this->Session->setFlash('Ocorreu um erro ao salva o produto!');
+            
             return $this->redirect('/produto/listar_cadastros');
 		}
 	}
@@ -148,10 +426,10 @@ class ProdutoController extends AppController{
 
 		$id = $this->request->data('id');
 
-		$dados = array ('ativo' => '0');
-		$parametros = array ('id' => $id);
+		$dados = array('ativo' => '0');
+		$parametros = array('id' => $id);
 
-		if ($this->Produto->updateAll($dados,$parametros)) {
+		if ($this->Produto->updateAll($dados, $parametros)) {
 			echo json_encode(true);
 		} else {
 			echo json_encode(false);
@@ -186,16 +464,34 @@ class ProdutoController extends AppController{
 
 		$retorno['Produto']['total'] = $this->calcular_preco_produto_venda($retorno['Produto']['preco'], $this->request->data('qnt'));
 
-		$retorno['Produto']['preco'] = number_format($retorno['Produto']['preco'], 2, ',', '.');
+		$retorno['Produto']['preco'] = (float) $retorno['Produto']['preco'];
 		
 		echo json_encode($retorno);
 	}
 
+	public function getUserActive($id) {
+		$this->loadModel('Usuario');
+
+		$user = $this->Usuario->find('all', 
+			array('conditions' => 
+				array('Usuario.id' => $id)
+			)
+		);
+		
+		return $user;
+	}
+
 	public function validar_estoque($produto) {
+
+		$user_active = $this->getUserActive($produto['Produto']['id_usuario']);
+
+		if ($user_active[0]['Usuario']['sale_without_stock'])
+			return true;
+
 		if (empty($produto) && !isset($produto)) {
 			return false;
 		}
-
+		
 		if ($produto['Produto']['estoque'] <= 0) {
 			return false;
 		}
@@ -214,7 +510,7 @@ class ProdutoController extends AppController{
 
 		$retorno = $preco * $qnt;
 
-		return number_format($retorno, 2, ',', '.');
+		return (float) $retorno;
 	}
 
 	public function uploadImage(&$image) {
@@ -287,12 +583,161 @@ class ProdutoController extends AppController{
         exit;
     }
 
-    public function exportar_excel_produto() {
-    	
+    public function importar_produtos_planilha() {
+        if (!isset($_FILES['arquivo']['tmp_name']) && empty($_FILES['arquivo']['tmp_name']))
+        {
+			$this->Session->setFlash("Erro ao subir a planilha, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");        	
+        }
+
+        $typesPermissions = ['application/vnd.ms-excel'];
+
+        if (!in_array($_FILES['arquivo']['type'], $typesPermissions))
+        {
+			$this->Session->setFlash("O arquivo deve ser no formato .xls.");
+			$this->redirect("/produto/listar_cadastros");                	
+        }
+
+        $caminho = APP . 'webroot/uploads/produto/planilhas/' . uniqid() . '.xls';
+
+        $inputFileName = $_FILES['arquivo']['tmp_name'];
+
+        move_uploaded_file($inputFileName, $caminho);
+
+        $data = [
+        	'caminho' => $caminho,
+        	'usuario_id' => $this->instancia,
+        	'processado' => 0,
+        	'ativo' => 1
+        ];
+
+        $this->loadModel('QueueProduct');
+
+        if ($this->QueueProduct->save($data))
+        {
+			$this->Session->setFlash("O arquivo está na fila para ser importado, iremos enviar um e-mail quando terminar.");
+			$this->redirect("/produto/listar_cadastros");  
+        }
+        else 
+        {
+			$this->Session->setFlash("Ocorreu um erro, tente novamente.");
+			$this->redirect("/produto/listar_cadastros");          	
+        }
     }
 
-    public function importar_produtos_planilha() {
+    public function processar_planilhas_na_fila() {
+    	$this->loadModel('QueueProduct');
 
+    	$planilhas = $this->QueueProduct->loadPlanilhasNotProcesseds();
+
+    	$response = [];
+    	foreach ($planilhas as $planilha) {
+    		$response[] = $this->processar_planilhas($planilha['caminho'], $planilha['usuario_id'], $planilha['id']);
+    	}
+
+    	return $response;
+    }
+
+    public function processar_planilhas($inputFileName, $usuarioId, $planilhaId) {
+		include(APP . 'Vendor/PHPExcel/PHPExcel.php');
+		include(APP . 'Vendor/PHPExcel/PHPExcel/IOFactory.php');
+    	
+        $objPHPExcel = new PHPExcel();
+
+		try {
+		    $inputFileType 	= PHPExcel_IOFactory::identify($inputFileName);
+		    $objReader 		= PHPExcel_IOFactory::createReader($inputFileType);
+		    $objPHPExcel 	= $objReader->load($inputFileName);
+		} catch(Exception $e) {
+		    die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
+		}
+
+		$dados = [];
+
+		$rows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+
+		for ($row = 2; $row <= $rows; $row++) {
+			
+			$rowInterator = $objPHPExcel->getActiveSheet()->getRowIterator($row)->current();
+
+			$cellIterator = $rowInterator->getCellIterator();
+			$cellIterator->setIterateOnlyExistingCells(false);
+
+			foreach ($cellIterator as $i => $cell) {
+				switch ($i) {
+					case 0: //Codigo/SKU
+						$dados[$row]['sku'] = $cell->getValue();
+					break; 
+					case 1: // Nome/Descrição 
+						$dados[$row]['nome'] = $cell->getValue();						
+					break;
+					case 2: // QtdAtual
+						//$dados[$row]['sku'] = $cell->getValue();						
+					break;
+					case 3: // QtdMinima  
+						$dados[$row]['quantidade_minima'] = $cell->getValue();						
+					break;
+					case 4: // QtdTotal
+						$dados[$row]['estoque'] = $cell->getValue();						
+					break;
+					case 5: // ValCusto
+						$dados[$row]['custo'] = $cell->getValue();						
+					break;
+					case 6:  // ValVenda
+						$dados[$row]['preco'] = $cell->getValue();						
+					break;
+				}
+			}
+
+			$dados[$row]['id_usuario'] = $usuarioId;	
+			$dados[$row]['ativo'] = 1;
+
+		}
+
+		$errors = $this->processar_lista_produtos($dados);
+
+		if (isset($errors) && !empty($errors))
+		{
+			$this->QueueProduct->planilhaProcessedIncomplete($planilhaId);
+		}
+
+		$this->QueueProduct->planilhaProcessedComplete($planilhaId);
+
+		echo json_encode(array('sucess' => true));
+		exit;
+    }
+
+    public function processar_lista_produtos($dados) {
+    	$errors = [];
+
+    	foreach ($dados as $dado) {
+    		$this->loadModel('Produto');
+    		
+    		$existProduto = $this->Produto->find('all',
+    			array(
+    				'conditions' => array(
+    					'Produto.sku' => $dado['sku'],
+    					'Produto.ativo' => 1
+    				)
+    			)
+    		);
+
+    		if (isset($existProduto) && !empty($existProduto))
+    		{
+    			$this->Produto->id = $existProduto[0]['Produto']['id'];
+    			$this->Produto->save($dado);
+    			continue;
+    		}
+
+			$this->Produto->create();
+
+    		if (!$this->Produto->save($dado))
+    		{
+    			$errors[] = $dado;
+    		}
+    	}
+
+    	return $errors;
     }
 
 }

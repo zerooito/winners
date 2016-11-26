@@ -16,10 +16,10 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-cliente">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-produtos">
                             <thead>
                                 <tr>
-                                    <th>#ID</th>
+                                    <th>SKU</th>
                                     <th>Imagem</th>
                                     <th>Nome</th>
                                     <th>Preço</th>
@@ -27,29 +27,8 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>                   
-                            <?php
-                            foreach ($produtos as $indice => $produto) {
-                            ?>             
-                                <tr class="odd gradeX" id="<?php echo $produto['Produto']['id'] ?>">
-                                    <td><?php echo $produto['Produto']['id_alias'] ?></td>
-                                    <td>
-                                        <img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" width="80" height="80" />
-                                    </td>
-                                    <td><?php echo $produto['Produto']['nome'] ?></td>
-                                    <td><?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></td>
-                                    <td class="center"><?php echo $produto['Produto']['estoque'] ?></td>
-                                    <td class="center">
-                                        <button onclick="visualizar_cadastro(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                        
-                                        <button onclick="editar_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
-                                        
-                                        <button onclick="remover_produto(<?php echo $produto['Produto']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                    </td>
-                                </tr>   
-                            <?php
-                            }// fim foreach
-                            ?>
+                            <tbody>   
+
                             </tbody>
                         </table>
                     </div>
@@ -69,25 +48,26 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
 
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i>
-                        </button>
-
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i>
-                        </button>
-
-                        <!-- Split button -->
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-info">Ações</button>
-                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><a href="/produto/exportar_excel_exemplo">Exportar Excel Exemplo</a></li>
-                            <li><a href="/produto/exportar_excel_produto">Exportar Excel Produto</a></li>
-                          </ul>
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i></button>
                         </div>
-                        
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i></button>
+                        </div>
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-excel-o"><a href="/produtos/exportar_excel_exemplo" style="color: #FFF;"> Exportar Excel Exemplo</a></i></button>
+                        </div>
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button  data-toggle="modal" data-target="#importarProdutos" type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-upload"><a style="color: #FFF;"> Importar Produtos</a></i></button>
+                        </div>
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <button type="button" class="btn btn-warning" style="margin-bottom: 10px; width:100%;"><i class="fa fa-warning"><a href="/produto/listar_cadastros_estoque_minimo" style="color: #FFF;"> Produtos com Estoque Minimo</a></i></button>
+                        </div>
+
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -96,7 +76,46 @@
     </div>
 </div>
 
+<div class="modal fade" id="importarProdutos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+    <form method="POST" enctype="multipart/form-data" action="/produto/importar_produtos_planilha">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Importar Produtos</h4>
+          </div>
+          <div class="modal-body">
+            <p>Escolha o arquivo que deseja enviar.</p>
+            <input type="file" name="arquivo">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Importar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </form>
+</div><!-- /.modal -->
+
 <script type="text/javascript">
+    
+    $(document).ready(function(){
+        
+        datatable = $('#dataTables-produtos').dataTable({
+            "bServerSide": true,
+            "iDisplayStart": 0,
+            "sAjaxDataProp": "data",
+            "aaSorting": [[ 1, "desc" ]],
+            "sAjaxSource": "/produto/listar_cadastros_ajax"
+        });
+
+    });
+
+    function fnCallback() {
+        console.log('oi');
+    }
+
     function remover_produto(id) {
         $.ajax({
             type: "post",
@@ -112,10 +131,19 @@
             }
         });
     }
+
     function editar_produto(id) {
         window.location.href = "/produto/editar_cadastro/"+id;
     }
+    
     function visualizar_cadastro(id) {
         window.location.href = "/produto/visualizar_cadastro/"+id;
     }
+    
+    function imgError(image) {
+        image.onerror = "";
+        image.src = "/images/no_image.png";
+        return true;
+    }
+
 </script>

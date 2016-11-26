@@ -6,7 +6,7 @@ class UsuarioController extends AppController{
    	}
 
 	//faz o login no sistema, com a função autentica_email
-	function login(){
+	public function login(){
 		$this->layout = 'ajax';//chama o layout para executar uma função ajax
 
 		$login_email = $this->request->data['email'];//recebe o post email
@@ -54,14 +54,14 @@ class UsuarioController extends AppController{
 		return $this->redirect('/home/login');
 	}
 
-	function logout(){
+	public function logout(){
 		$this->Session->Destroy();
 
 		echo '<script>location.href="/winners/framework/"</script>';
 	}
 
 	//autentica email verifica se o email e senha existem para efetuar o login, ou outra acao.
-	function autentica_email($email,$senha){
+	public function autentica_email($email,$senha){
 		$this->loadModel('Usuario');
 		$resposta = $this->Usuario->find('count', 
 								array('conditions' => array('AND' => array('Usuario.email' => $email, 'Usuario.senha' => sha1($senha))
@@ -74,7 +74,7 @@ class UsuarioController extends AppController{
 	}			
 
 	//se o email estiver livre retorna false, senão retorna true
-	function verificar_email($email){
+	public function verificar_email($email){
 		$this->layout = 'ajax';
 		
 		if(empty($email)){
@@ -94,7 +94,7 @@ class UsuarioController extends AppController{
 		}
 	}
 
-	function recuperar_dados($email,$senha){
+	public function recuperar_dados($email,$senha){
 		$this->loadModel('Usuario');
 		$resposta = $this->Usuario->find('all', 
 								array('conditions' => array('AND' => array('Usuario.email' => $email, 'Usuario.senha' => sha1($senha))
@@ -175,6 +175,127 @@ class UsuarioController extends AppController{
 		$this->ModuloRelacionaUsuario->saveAll($modulos);
 
 		return true;
+	}
+
+	public function s_editar_dados() {
+		$this->verificar_acesso();
+
+		$this->layout = 'wadmin';
+
+		$estoque_minimo = $this->request->data['estoque_minimo'];
+
+		$sale_without_stock = $this->request->data['sale_without_stock'];
+
+		$template = $_FILES['template'];
+		
+		$layout_loja = $this->request->data['layout_loja'];
+		
+		if (!empty($template['name']) && isset($template['name']))
+			$layout_loja = $this->uploadZipTemplate($template);
+		
+		$data = array(
+			'estoque_minimo' => $estoque_minimo, 
+			'sale_without_stock' => $sale_without_stock,
+			'loja_active' => $this->request->data['loja_active'],
+			'loja' => $this->request->data['loja'],
+			'layout_loja' => $layout_loja	,
+			'cep_origem' => $this->request->data['cep_origem'],
+			'descricao' => $this->request->data['descricao'],
+			'token_pagseguro' => $this->request->data['token_pagseguro'],
+			'email_pagseguro' => $this->request->data['email_pagseguro']
+		);
+
+		$this->loadModel('Usuario');
+
+		$this->Usuario->id = $this->instancia;
+
+		$retorno = $this->Usuario->save($data);
+
+		if(!$retorno) {
+			$this->Session->setFlash('Ocorreu um erro ao salvar as novas infomações, tente novamente!');
+            
+            return $this->redirect('/usuario/meus_dados');
+		}
+
+		$this->Session->setFlash('Dados atualizados com sucesso!');
+        
+        return $this->redirect('/usuario/meus_dados');
+	}
+
+	public function meus_dados() {
+		$this->verificar_acesso();
+
+		$this->layout = 'wadmin';
+
+		$dadosUsuario = $this->Usuario->find('all', array(
+				'conditions' => array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		);
+
+    	$this->set('modulos', $this->modulos);
+    	$this->set('usuario', $dadosUsuario);
+	}
+
+	public function new_token() {
+		$this->verificar_acesso();
+
+		$this->loadModel('Usuario');
+
+		$response = $this->Usuario->find('all', array(
+				'conditions' => array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		);
+
+		$token = md5(uniqid());
+
+		$this->Usuario->id = $this->instancia;
+
+		$dados['token'] = $token;
+
+		$this->Usuario->save($dados);
+
+		echo json_encode($token);
+		exit();
+	}
+
+	public function uploadZipTemplate($template) {
+		$z = new ZipArchive();
+		
+		$abriu = $z->open($template['tmp_name']);
+		
+		if ($abriu === true) {
+
+		    // Listando os nomes dos elementos
+		    for ($i = 0; $i < $z->numFiles; $i++) {
+
+        		$nome = $z->getNameIndex($i);
+
+		        $response = $z->extractTo(ROOT . DS . "app/View/");
+
+		    }
+
+		    // Fechando o arquivo
+
+		    $z->close();
+
+		} else {
+		    echo 'Erro: ' . $abriu;
+		}
+        
+        $nomeLayout = substr($template['name'], 0, -4);
+
+        $origem  = ROOT . DS . "app/View/" . $nomeLayout . DS . "Layouts" . DS . $nomeLayout . ".ctp";
+        $destino = ROOT . DS . "app/View/" . "Layouts" . DS . $nomeLayout . ".ctp";
+        
+		shell_exec("mv " . $origem . " " . $destino);
+
+		shell_exec("rm -R " . ROOT . DS . "app/View/" . $nomeLayout . "Layouts/");
+
+		return $nomeLayout;
 	}
 
 }

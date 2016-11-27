@@ -68,9 +68,11 @@ class LojaController extends AppController {
       $this->Session->write('Usuario.id', $this->usuario['Usuario']['id']);//gambi temporaria
       $this->Session->write('Usuario.loja', $this->usuario['Usuario']['loja']);//gambi temporaria
 
+      $this->set('usuario', $this->usuario);
+
       $this->layout = $this->usuario['Usuario']['layout_loja'];
     }
-
+    
 	  return true;
 	}
 
@@ -80,9 +82,10 @@ class LojaController extends AppController {
       $params = array('conditions' => 
          array(
             'Produto.ativo' => 1,
-            'Produto.id_usuario' => $this->Session->read('Usuario.id')
+            'Produto.id_usuario' => $this->Session->read('Usuario.id'),
+            'Produto.destaque' => 1
          ),
-         'limit' => 8
+         'limit' => 9
       );
 
       if ($id_categoria != null) {

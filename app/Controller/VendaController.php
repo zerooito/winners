@@ -476,6 +476,7 @@ class VendaController extends AppController {
 	public function clear_session_venda($id)
 	{
 		$this->Session->write('UltimoIdVendaSalvo', null);
+		exit;
 	}
 
 	public function relatorio() {

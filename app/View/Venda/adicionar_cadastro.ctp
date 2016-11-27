@@ -150,7 +150,8 @@
             <h3>Deseja imprimir cupom fiscal da última venda</h3>
           </div>
           <div class="modal-footer">
-            <a class="btn btn-success" href="javascript:printNotaNaoFiscal(<?php echo $vendaId; ?>);">Imprimir</a>
+            <a class="btn btn-info" href="javascript:printNotaNaoFiscal(<?php echo $vendaId; ?>);">Preparar Impressão</a>
+            <a href="javascript:;" style="display: none;" class="btn btn-success" id="download-txt-sale" download>Pronto Para Imprimir</a>
             <a class="btn btn-danger" href="javascript:hideModalNota(<?php echo $vendaId; ?>);">Cancelar</a>
           </div>
         </div>
@@ -352,7 +353,6 @@
             dataType: "json",
             url: "/venda/clear_session_venda/" + id,
             error: function(data){
-                alert('Ocorreu um erro.');
                 console.log(data);
             },
             success: function(data){
@@ -373,7 +373,7 @@
             },
             success: function(data){
                 url = '/uploads/venda/fiscal/' + data['file'];
-                openInNewTab(url);
+                $('#download-txt-sale').css('display', 'initial').attr('href', url);
             }
         });
 
@@ -388,8 +388,6 @@
                 console.log(data);
             }
         });
-              
-        $('#showCupomUltimaVenda').modal('hide');
     }
 
     function openInNewTab(url) {

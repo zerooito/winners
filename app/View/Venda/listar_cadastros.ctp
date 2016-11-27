@@ -103,6 +103,26 @@
     </div>
 </div>
 
+<!-- Modal -->
+
+<div class="modal fade" id="showModalCupomFiscal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Imprimir Cupom Fiscal</h4>
+      </div>
+      <div class="modal-body text-center">
+        <h3>Deseja imprimir cupom fiscal da venda</h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <a href="javascript:;" class="btn btn-success" id="download-txt-sale" download>Imprimir</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <iframe id="textfile" src=""></iframe>
 
 <script type="text/javascript">
@@ -152,7 +172,8 @@
             },
             success: function(data){
                 url = '/uploads/venda/fiscal/' + data['file'];
-                openInNewTab(url);
+                $('#download-txt-sale').attr('href', url);
+                $('#showModalCupomFiscal').modal('show');
             }
         });
 

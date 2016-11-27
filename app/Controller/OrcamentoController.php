@@ -72,7 +72,7 @@ class OrcamentoController extends AppController
 
 		$dompdf->loadHtml($html);
 
-		$dompdf->setPaper(array(0, 0, 450, 306));
+		$dompdf->set_paper('a4');
 
 		$dompdf->render();
 

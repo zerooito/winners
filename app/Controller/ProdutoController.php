@@ -308,6 +308,7 @@ class ProdutoController extends AppController{
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
+		$dados['preco'] = str_replace(',', '', $dados['preco']);
 
 		if($this->Produto->save($dados)) {
 			$produto_id = $this->Produto->getLastInsertId();
@@ -403,6 +404,7 @@ class ProdutoController extends AppController{
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
+		$dados['preco'] = str_replace(',', '', $dados['preco']);
 
 		$this->Produto->id = $id;
 		

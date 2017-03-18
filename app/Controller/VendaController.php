@@ -72,7 +72,8 @@ class VendaController extends AppController {
 					'Venda.id_usuario' => $this->instancia,
 					'Venda.orcamento' => 0
 				)
-			)
+			),
+			array('order' => array('Venda.id DESC'))
 		);
 
 		foreach ($vendas as $i => $venda) {

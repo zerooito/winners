@@ -39,6 +39,10 @@
                                         <input class="form-control moeda" name="dados[preco]" id="preco" required>
                                     </div>
                                     <div class="form-group">
+                                        <label>Preço Promocional</label>
+                                        <input class="form-control moeda" name="dados[preco_promocional]" id="preco" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label>SKU</label>
                                         <input class="form-control" name="dados[sku]" required>
                                     </div>

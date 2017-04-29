@@ -176,7 +176,14 @@ class LojaController extends AppController {
             )
          );
 
-         $total     += $produto[0]['Produto']['preco'] * $item['quantidade'];
+        if (
+          isset($produto[0]['Produto']['preco_promocional']) &&
+          $produto[0]['Produto']['preco_promocional'] != $produto[0]['Produto']['preco']
+        ) {
+          $total += $produto[0]['Produto']['preco_promocional'] * $item['quantidade'];
+        } else {
+          $total += $produto[0]['Produto']['preco'] * $item['quantidade'];
+        }
 
          $produto[0]['Produto']['quantidade'] = $item['quantidade'];
 
@@ -193,7 +200,7 @@ class LojaController extends AppController {
 
          $produtos[] = $produto[0];
       }
-
+      
       return array('products_cart' => $produtos, 'total' => $total);
    }
 

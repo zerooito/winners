@@ -16,6 +16,10 @@
 /blog/uploads
 /blog/wp-content
 /blog/wp-config.php
+/app/Controller/Demontie.php
+/app/View/Demontie
+/app/View/Layouts/demontie.ctp
+/app/webroot/demontie-assets
 
 
 # OS generated files #

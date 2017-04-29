@@ -40,6 +40,10 @@
                                         <input id="preco" class="form-control moeda" name="dados[preco]" value="<?php echo number_format($produto['Produto']['preco'], '2') ?>" required>
                                     </div>
                                     <div class="form-group">
+                                        <label>Preço Promocional</label>
+                                        <input class="form-control moeda" name="dados[preco_promocional]" id="preco" value="<?php echo number_format($produto['Produto']['preco_promocional'], '2') ?>" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label>SKU</label>
                                         <input class="form-control" name="dados[sku]" value="<?php echo $produto['Produto']['sku'] ?>" required>
                                     </div>

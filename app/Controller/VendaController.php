@@ -85,6 +85,10 @@ class VendaController extends AppController {
 		$this->set('vendas', $vendas);
 	}
 
+	public function listar_cadastros_ajax() {
+		
+	}
+
 	public function adicionar_cadastro() {
 		$this->layout = 'wadmin';
 

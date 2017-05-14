@@ -61,32 +61,100 @@ class VendaController extends AppController {
 	}
 
 	public function listar_cadastros() {
-		$this->loadModel('LancamentoVenda');
-
 		$this->layout = 'wadmin';
-
-		$vendas = $this->Venda->find('all',
-			array('conditions' =>
-				array(
-					'Venda.ativo' => 1,
-					'Venda.id_usuario' => $this->instancia,
-					'Venda.orcamento' => 0
-				)
-			),
-			array('order' => array('Venda.id DESC'))
-		);
-
-		foreach ($vendas as $i => $venda) {
-			$lancamento = $this->LancamentoVenda->find('first', array('conditions' => array('LancamentoVenda.venda_id' => $venda['Venda']['id'])));
-
-			$vendas[$i]['Lancamento'] = (isset($lancamento['LancamentoVenda'])) ? $lancamento['LancamentoVenda'] : array();
-		}
-
-		$this->set('vendas', $vendas);
 	}
 
 	public function listar_cadastros_ajax() {
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'id', 'valor', 'forma_pagamento', 'data_venda', 'actions' );
+
+		$this->loadModel('LancamentoVenda');
+
+		$conditions = array('conditions' =>
+			array(
+				'Venda.ativo' => 1,
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.orcamento' => 0
+			)
+		);
+
+		$todasVendas = $this->Venda->find('all',
+			$conditions,
+			array('order' => array('Venda.id DESC'))
+		);
 		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Venda.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Venda.id LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$vendas = $this->Venda->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($todasVendas),
+			"iTotalRecords" => count($vendas),
+			"aaData" => array()
+		);
+
+		foreach ($vendas as $venda) {
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				if ($aColumns[$i] == "forma_pagamento") {
+					$lancamento = $this->LancamentoVenda->find('first', array(
+						'conditions' => array(
+								'LancamentoVenda.venda_id' => $venda['Venda']['id']
+							)
+						)
+					);
+
+					$value = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
+					$value = str_replace('_', ' ', $value);
+					$value = ucwords($value);
+				} else if ($aColumns[$i] == "actions") {
+		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
+		            $value .= '<i class="fa fa-file-text" aria-hidden="true"></i>';
+		            $value .= '</a> ';
+
+					$value .= ' <button onclick="remover_venda(' . $venda['Venda']['id'] . ');" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>';
+				} else if ($aColumns[$i] == "valor") { 
+					$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
+				} else {
+					$value = $venda['Venda'][$aColumns[$i]];
+				}
+				
+				$row[] = $value;
+			}
+
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $venda['Venda']['id'] . '"><i class="fa fa-pencil"></i></a>';
+
+			$row[] = $btEdit;
+
+			$output['aaData'][] = $row;
+		}
+
+		echo json_encode($output);
+		exit;
 	}
 
 	public function adicionar_cadastro() {

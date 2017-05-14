@@ -16,7 +16,7 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-cliente">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-vendas">
                             <thead>
                                 <tr>
                                     <th>#ID</th>
@@ -27,28 +27,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($vendas as $i => $venda): ?>
-                                <tr class="odd gradeX" id="<?php echo $venda['Venda']['id'] ?>">
-                                    <td><?php echo $venda['Venda']['id'] ?></td>
-                                    <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
 
-                                    <?php if (isset($venda['Lancamento']['forma_pagamento'])): ?>
-                                        <td><?php echo strtoupper($venda['Lancamento']['forma_pagamento']) ?></td>
-                                    <?php else: ?>
-                                        <td>Não informado</td>
-                                    <?php endif; ?>
-
-                                    <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
-
-                                    <td class="center">
-                                        <button onclick="remover_venda(<?php echo $venda['Venda']['id'] ?>);" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-
-                                        <a href="javascript:printNotaNaoFiscal(<?php echo $venda['Venda']['id'] ?>);" target="_blank" class="btn btn-info">
-                                            <i class="fa fa-file-text" aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -123,10 +102,22 @@
   </div>
 </div>
 
-<iframe id="textfile" src=""></iframe>
+<iframe id="textfile" src="" style="display: none;"></iframe>
 
 <script type="text/javascript">
     var url;
+    
+    $(document).ready(function(){
+        
+        datatable = $('#dataTables-vendas').dataTable({
+            "bServerSide": true,
+            "iDisplayStart": 0,
+            "sAjaxDataProp": "data",
+            "aaSorting": [[ 1, "desc" ]],
+            "sAjaxSource": "/venda/listar_cadastros_ajax"
+        });
+
+    });
 
     function printSalesPeriod() {
         var from = $('#from').val();

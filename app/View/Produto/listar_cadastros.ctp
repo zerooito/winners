@@ -106,7 +106,7 @@
             "bServerSide": true,
             "iDisplayStart": 0,
             "sAjaxDataProp": "data",
-            "aaSorting": [[ 1, "desc" ]],
+            "aaSorting": [[ 0, "desc" ]],
             "sAjaxSource": "/produto/listar_cadastros_ajax"
         });
 

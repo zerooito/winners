@@ -129,8 +129,12 @@ class VendaController extends AppController {
 					);
 
 					$value = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
-					$value = str_replace('_', ' ', $value);
-					$value = ucwords($value);
+					
+					if (isset($value) && !empty($value))
+						$value = str_replace('_', ' ', $value);
+					
+					if (isset($value) && !empty($value))
+						$value = ucwords($value);
 				} else if ($aColumns[$i] == "actions") {
 		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
 		            $value .= '<i class="fa fa-file-text" aria-hidden="true"></i>';

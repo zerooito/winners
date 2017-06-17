@@ -161,7 +161,7 @@
                         'Seu registro foi deletado do sistema.',
                         'success'
                     );      
-
+                    
                     $('#' + idGlobal).parents('tr').remove();
                 }
             });

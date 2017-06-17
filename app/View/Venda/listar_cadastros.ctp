@@ -109,7 +109,7 @@
     
     $(document).ready(function(){
         
-        datatable = $('#dataTables-vendas').dataTable({
+        var datatable = $('#dataTables-vendas').dataTable({
             "bServerSide": true,
             "iDisplayStart": 0,
             "sAjaxDataProp": "data",
@@ -137,18 +137,34 @@
     }
 
     function remover_venda(id) {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/venda/excluir_cadastro",
-            async: true,
-            data: {id: id},
-            error: function(x){
-                window.reload();
-            },
-            success: function(x){
-                window.location.reload();
-            }
+        var idGlobal = id;
+    
+        swal({
+          title: 'Você tem certeza?',
+          text: "Somente confirme se você tiver certeza desta ação!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sim!',
+          cancelButtonText: 'Não.'
+        }).then(function(){ 
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/venda/excluir_cadastro",
+                async: true,
+                data: {id: idGlobal},
+                success: function(data){
+                    swal(
+                        'Deletado!',
+                        'Seu registro foi deletado do sistema.',
+                        'success'
+                    );      
+
+                    $('#' + idGlobal).parents('tr').remove();
+                }
+            });
         });
     }
 

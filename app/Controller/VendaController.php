@@ -140,7 +140,7 @@ class VendaController extends AppController {
 		            $value .= '<i class="fa fa-file-text" aria-hidden="true"></i>';
 		            $value .= '</a> ';
 
-					$value .= ' <button onclick="remover_venda(' . $venda['Venda']['id'] . ');" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>';
+					$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="fa fa-times"></i></a>';
 				} else if ($aColumns[$i] == "valor") { 
 					$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
 				} else {

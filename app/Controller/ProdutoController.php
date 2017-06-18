@@ -78,7 +78,9 @@ class ProdutoController extends AppController{
 
 			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
 
-			$row[] = $btEdit;
+			$btRemove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
+
+			$row[] = $btEdit . ' ' . $btRemove;
 
 			$output['aaData'][] = $row;
 		}
@@ -741,5 +743,91 @@ class ProdutoController extends AppController{
 
     	return $errors;
     }
+
+    public function movimentacoes_estoque($produtoId) {
+    	$this->layout = 'wadmin';
+
+    	$this->set('id', $produtoId);
+    }
+
+	public function listar_cadastros_estoque_ajax($produtoId) {
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'id', 'produto_id', 'venda_id', 'quantidade' );
+		
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'id_usuario' => $this->instancia
+			)
+		);
+
+		$allProdutos = $this->Produto->find('all', $conditions);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Produto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Produto.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				$value = $produto['Produto'][$aColumns[$i]];
+
+				if ($aColumns[$i] == "imagem")
+				{
+					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+
+					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					{
+						$value = '<img src="/images/no_image.png" width="120" height="120">';
+					}
+				}
+				
+				$row[] = $value;
+			}
+
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
+
+			$btRemove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
+
+			$row[] = $btEdit . ' ' . $btRemove;
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
+
 
 }

@@ -298,6 +298,7 @@ class VendaController extends AppController {
 		$this->loadModel('Produto');
 
 		(float) $preco = 0.00;
+
 		foreach ($produtos as $indice => $item) {
 			$produto = $this->Produto->find('all',
 				array('conditions' =>
@@ -504,9 +505,6 @@ class VendaController extends AppController {
 		
 		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
 
-		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
-		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($dados_venda['Venda']['desconto'], 2, ',', '.') . "\n\n";
-		
 		$dados_lancamento = $this->LancamentoVenda->find('first',
 			array('conditions' => 
 				array(
@@ -516,8 +514,6 @@ class VendaController extends AppController {
 			)
 		);
 
-		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
-		
 		$produtos = $this->VendaItensProduto->find('all', 
 			array('conditions' =>
 				array(
@@ -527,6 +523,7 @@ class VendaController extends AppController {
 		);
 
 		$itens = array();
+		$totalGeral = 0.00;
 		foreach ($produtos as $i => $item) {
 			$produto = $this->Produto->find('first',
 				array('conditions' =>
@@ -536,6 +533,8 @@ class VendaController extends AppController {
 
 			$total = $produto['Produto']['preco'] * $item['VendaItensProduto']['quantidade_produto'];
 
+			$totalGeral += $total;
+
 			$ImpressaoFiscalController->corpoTxt .= ""
 						   . "Produto: " . $produto['Produto']['nome']
 						   . "\nQuantidade: " . $item['VendaItensProduto']['quantidade_produto'] 
@@ -543,6 +542,13 @@ class VendaController extends AppController {
 						   . "\nTotal: R$ " . number_format($total, 2, ',', '.')
 						   . "\n--------------------------\n";
 		}
+
+		$desconto = $totalGeral - $dados_venda['Venda']['valor'];
+
+		$ImpressaoFiscalController->corpoTxt .= "Valor Total: " . number_format($totalGeral, 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Valor Pago: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
+		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($desconto, 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
 
 		$file = $ImpressaoFiscalController->gerar_arquivo();
 		

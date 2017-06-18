@@ -504,7 +504,8 @@ class VendaController extends AppController {
 		
 		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
 
-		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
+		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($dados_venda['Venda']['desconto'], 2, ',', '.') . "\n\n";
 		
 		$dados_lancamento = $this->LancamentoVenda->find('first',
 			array('conditions' => 

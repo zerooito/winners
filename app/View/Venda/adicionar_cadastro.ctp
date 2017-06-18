@@ -53,19 +53,28 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Desconto %</label>
-                                            <input class="form-control" id="valor_desconto">
-                                            <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+                                    <div class="col-lg-3">
+                                        <label>Desconto</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon3">%</span>
+                                            <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-3">
+                                        <label>Desconto</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon3">R$</span>
+                                            <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" value="0" name="venda[desconto]" id="desconto">
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Valor Pago</label>
                                             <input class="form-control moeda" id="valor_pago">
-                                            <!-- <p class="help-block">Example block-level help text here.</p> -->
                                         </div>
 
                                         <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Finalizar Venda</a>
@@ -83,6 +92,11 @@
                                   <h3 id="desconto-label" data-troco="0.00" style="color: red">R$ 0.00</h3>
                                   <p>Valor troco</p>
                                   <h3 id="troco" data-troco="0.00" style="color: red">R$ 0.00</h3>
+
+                                  <hr>
+
+                                  <h5>Valor sem desconto </h5>
+                                  <h5 id="valor-original" data-preco="0.00" style="color: gray">R$ 0.00</h5>
                                 </div>                                
                             </div>
                             <!-- /.col-lg-6 (nested) -->
@@ -421,6 +435,9 @@
     }
 
     function adicionar_produto(id=null, quantidade_produto=null) {
+        $('#desconto').val('');
+        $('#desconto-label').html('R$ 0.00');
+        
         var produto_item        = (id != null) ? id : $('#produto_item').val();
         var quantidade_produto  = quantidade_produto != null ? quantidade_produto : parseFloat($('#quantidade_produto').val());
         var valor_venda_atual   = $('#valor-atual').attr('data-preco');
@@ -462,7 +479,11 @@
                 
                 $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
+                $('#valor-original').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
                 $('#quantidade_produto').val('');
+                $('#valor_desconto_porcento').removeAttr('disabled')
+                $('#valor_desconto_fixo').removeAttr('disabled')
             }
         });
     }
@@ -470,7 +491,7 @@
     function removeItem(id) {
         total = $('#' + id + '-total').html();
 
-        var valor_venda_atual   = $('#valor-atual').attr('data-preco');
+        var valor_venda_atual = $('#valor-atual').attr('data-preco');
 
         var novo_valor_venda = parseFloat(valor_venda_atual) - parseFloat(total);
 
@@ -504,15 +525,30 @@
         $('#form-venda').submit();
     }
 
-    $('#valor_desconto').change(function(){
-        var valor_venda_atual = $('#valor-atual').attr('data-preco');
-        var valor_desconto    = $('#valor_desconto').val();
+    $('#valor_desconto_porcento').change(function(){
+        var valor_venda_atual = $('#valor-original').attr('data-preco');
+        var valor_desconto    = $('#valor_desconto_porcento').val();
 
         novo_valor_venda = parseFloat(valor_venda_atual) - ((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100);
 
         $('#desconto').val((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100);
         $('#desconto-label').html(number_format(((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
+        $('#valor_desconto_fixo').val('');
+    });
+
+    $('#valor_desconto_fixo').change(function(){
+        var valor_venda_atual = $('#valor-original').attr('data-preco');
+        var valor_desconto    = $('#valor_desconto_fixo').val();
+
+        novo_valor_venda = parseFloat(valor_venda_atual) - parseFloat(valor_desconto);
+
+        $('#desconto').val(parseFloat(valor_venda_atual) - parseFloat(valor_desconto));
+        $('#desconto-label').html(number_format(parseFloat(valor_venda_atual) - parseFloat(valor_desconto)  , 2, ',', '.'));
+        $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
+        $('#valor_desconto_porcento').val('');
     });
 
     $("#quantidade_produto").keyup(function() {

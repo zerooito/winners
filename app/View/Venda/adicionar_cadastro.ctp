@@ -40,7 +40,9 @@
                                     </div>
 
                                 </div>
+                                
                                 <hr>
+
                                 <div class="row" id="opcoes_pagamento">
 
                                     <div class="col-lg-12">
@@ -80,7 +82,24 @@
 
                                         <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Finalizar Venda</a>
                                     </div>
+                                </div>
 
+                                <hr>
+
+                                <div class="row" id="opcoes_cliente">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Cliente</label>
+                                            <select class="form-control" id="cliente" name="venda[cliente_id]">
+                                                <option value="">Escolha o Cliente</option>
+                                                <?php foreach ($clientes as $cliente): ?>
+                                                    <option value="<?php echo $cliente['Cliente']['id']; ?>">
+                                                        <?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>  
 

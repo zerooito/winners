@@ -15,10 +15,14 @@ class ClienteController extends AppController{
 		$dados = $this->request->data('dados');
 		$dados['ativo'] = 1;
 		$dados['id_usuario'] = $this->instancia;
+		$dados['data_de_nascimento'] = date('y-m-d', strtotime($dados['data_de_nascimento']));
+		$dados['senha'] = md5(uniqid());
 
 		$endereco = $this->request->data('endereco');
 		$endereco['uf'] = $endereco['estado'];
+
 		unset($endereco['estado']);
+		
 		//falta fazer o cadastro e relacionamento dos dados de endereco
 
 		if ($this->Cliente->save($dados)) {
@@ -96,4 +100,50 @@ class ClienteController extends AppController{
         $this->layout = 'ajax'; 
         $this->set('event', $this->Cliente->find('all')); 
 	}
+
+	function listar_pedidos($id) {
+		$this->layout = 'wadmin';
+
+		$this->loadModel('Venda');
+		$this->loadModel('LancamentoVenda');
+
+		$vendas = $this->Venda->find('all', array(
+				'conditions' => array(
+					'Venda.cliente_id' => $id
+				)
+			)
+		);
+
+		$total = 0;
+		$devendo = 0;
+		foreach ($vendas as $i => $venda) {
+			$lancamento = $this->LancamentoVenda->find('first', array(
+					'conditions' => array(
+						'LancamentoVenda.venda_id' => $venda['Venda']['id']
+					)
+				)
+			);
+
+			$vendas[$i]['LancamentoVenda'] = $lancamento['LancamentoVenda'];
+
+			if ($lancamento['LancamentoVenda']['valor'] == $lancamento['LancamentoVenda']['valor_pago']) {
+				$total += $lancamento['LancamentoVenda']['valor_pago'];
+			} else {
+				$devendo += $lancamento['LancamentoVenda']['valor'];
+			}
+		}
+		
+		$cliente = $this->Cliente->find('first', array(
+				'conditions' => array(
+					'Cliente.id' => $id
+				)
+			)
+		);
+
+		$this->set('cliente', $cliente);
+		$this->set('vendas', $vendas);
+		$this->set('total', $total);
+		$this->set('devendo', $devendo);
+	}
+
 }

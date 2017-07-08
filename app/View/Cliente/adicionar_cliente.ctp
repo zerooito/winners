@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Telefone</label>
-                                    <input class="form-control" name="dados[data_de_nascimento]" id="telefone">
+                                    <input class="form-control" name="dados[telefone]" id="telefone">
                                 </div>
                             </div>
                             <div class="col-lg-6">

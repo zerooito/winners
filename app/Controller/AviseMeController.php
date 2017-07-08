@@ -11,15 +11,15 @@ class AviseMeController extends AppController
 
 		$query = array (
 			'joins' => array(
-				    array(
-				        'table' => 'produtos',
-				        'alias' => 'Produto',
-				        'type' => 'LEFT',
-				        'conditions' => array(
-				            'AviseMe.produto_id = Produto.id',
-				        ),
-				    )
-				),
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'AviseMe.produto_id = Produto.id',
+			        ),
+			    )
+			),
 	        'conditions' => array('AviseMe.ativo' => 1, 'AviseMe.usuario_id' => $this->instancia),
 	        'fields' => array('Produto.nome, AviseMe.email, AviseMe.id, Produto.id'),
 		);

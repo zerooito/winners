@@ -58,9 +58,9 @@ class AsaasController extends AppController
 	// \"value\": 100,
 	// \"description\": \"Pedido 056984\",
 	// \"externalReference\": \"056984\"
-	public function criarCobranca($data)
+	public function criar_cobranca($data)
 	{
-		pr($data,1);
+		return $this->request($data, '/payments', 'POST');
 	}
 
 	// {
@@ -78,9 +78,9 @@ class AsaasController extends AppController
 	// 	  \"notificationDisabled\": false,
 	// 	  \"additionalEmails\": \"marcelo.almeida2@gmail.com,marcelo.almeida3@gmail.com\"
 	// 	}
-	public function criarCliente($data, $clientId)
+	public function criar_cliente($data)
 	{
-		pr($data,1);
+		return $this->request($data, '/customers', 'POST');
 	}
 
 	public function request($data, $method, $type='GET')
@@ -98,13 +98,30 @@ class AsaasController extends AppController
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 		  "Content-Type: application/json",
-		  "access_token: sua_api_key"
+		  "access_token: " . $this->loadToken()
 		));
 
 		$response = curl_exec($ch);
 		curl_close($ch);
 
-		pr($response,1);
+		return json_decode($response);
+	}
+
+	public function loadToken()
+	{
+		$this->loadModel('Asaas');
+
+		$response = $this->Asaas->find('first', array(
+				array('conditions' => array(
+						'Asaas.usuario_id' => $this->instancia
+					)
+				)
+			)
+		);
+
+		if (!empty($response)) {
+			return $response['Asaas']['api_key'];
+		}
 	}
 	
 }

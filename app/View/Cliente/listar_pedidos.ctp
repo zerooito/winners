@@ -57,7 +57,11 @@
                                                 <i class="fa fa-check" aria-hidden="true"></i>
                                             </a>
                                         <?php endif; ?>
-
+                                        <?php if (isset($modulos['asaas'])): ?>
+                                            <a class="btn btn-primary btn-circle" href="/cliente/emitir_boleto/<?php echo $venda['Venda']['id'] ?>">
+                                                <i class="fa fa-university"></i>
+                                            </a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>   
                             <?php endforeach; ?>

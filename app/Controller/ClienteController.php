@@ -1,5 +1,7 @@
 <?php
 
+require 'AsaasController.php';
+
 class ClienteController extends AppController{	
 	// public $helpers = array('Excel');
 
@@ -144,6 +146,63 @@ class ClienteController extends AppController{
 		$this->set('vendas', $vendas);
 		$this->set('total', $total);
 		$this->set('devendo', $devendo);
+	}
+
+	function emitir_boleto($venda_id) {
+		$AsaasController = new AsaasController;
+
+		$this->loadModel('Venda');
+
+		$venda = $this->Venda->find('first', array(
+				'conditions' => array(
+					'Venda.id' => $venda_id
+				)
+			)
+		);
+
+		$this->loadModel('Cliente');
+
+		$cliente = $this->Cliente->find('first', array(
+				'conditions' => array(
+					'Cliente.id' => $venda['Venda']['cliente_id']
+				)
+			)
+		);
+
+		$cliente_data = array(
+			"name" => $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2'],
+			"email" => $cliente['Cliente']['email'],
+			"cpfCnpj" => $cliente['Cliente']['documento1'],
+			"externalReference" => $cliente['Cliente']['id']
+		);
+		
+		$response = $AsaasController->criar_cliente($cliente_data);
+
+		$venda = array(
+			"customer" => $response->id,
+			"billingType" => "BOLETO",
+			"dueDate" => date('Y-m-d'),
+			"value" => $venda['Venda']['valor'],
+			"description" => "Boleto referente a venda no sistema winners REFº " . $venda['Venda']['id'],
+			"externalReference" => $venda['Venda']['id']
+		);
+
+		$response = $AsaasController->criar_cobranca($venda);
+
+		$this->Venda->id = $venda_id;
+		
+		$data = [
+			'asaas_boleto' => $response->bankSlipUrl,
+			'asaas_status' => $response->status
+		];
+
+		if (!$this->Venda->save($data)) {
+			$this->Session->setFlash('Erro ao emitir cobrança!');
+            return $this->redirect('/cliente/listar_pedidos/' . $cliente['Cliente']['id']);
+		}
+
+		$this->Session->setFlash('Cobrança emitida com sucesso!');
+        return $this->redirect('/cliente/listar_pedidos/' . $cliente['Cliente']['id']);
 	}
 
 }

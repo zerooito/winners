@@ -374,7 +374,7 @@ class VendaController extends AppController {
 
 		$objLancamentoVendasController = new LancamentoVendasController();
 
-		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario']) === false) {
+		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario'], $informacoes['orcamento']) === false) {
 			return false;
 		}
 

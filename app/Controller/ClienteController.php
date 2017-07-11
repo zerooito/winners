@@ -126,6 +126,11 @@ class ClienteController extends AppController{
 				)
 			);
 
+			if (!isset($lancamento['LancamentoVenda'])) {
+				unset($vendas[$i]);
+				continue;
+			}
+
 			$vendas[$i]['LancamentoVenda'] = $lancamento['LancamentoVenda'];
 
 			if ($lancamento['LancamentoVenda']['valor'] == $lancamento['LancamentoVenda']['valor_pago']) {

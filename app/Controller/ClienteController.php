@@ -169,17 +169,26 @@ class ClienteController extends AppController{
 			)
 		);
 
-		$cliente_data = array(
-			"name" => $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2'],
-			"email" => $cliente['Cliente']['email'],
-			"cpfCnpj" => $cliente['Cliente']['documento1'],
-			"externalReference" => $cliente['Cliente']['id']
-		);
-		
-		$response = $AsaasController->criar_cliente($cliente_data);
+		if (empty($cliente['Cliente']['asaas_id'])) {
+			$cliente_data = array(
+				"name" => $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2'],
+				"email" => $cliente['Cliente']['email'],
+				"cpfCnpj" => $cliente['Cliente']['documento1'],
+				"externalReference" => $cliente['Cliente']['id']
+			);
+			
+			$response = $AsaasController->criar_cliente($cliente_data);
+
+			$asaas_id = $response->id;
+
+			$this->Cliente->id = $cliente['Cliente']['id'];
+			$this->Cliente->save(['asaas_id' => $asaas_id]);
+		} else {
+			$asaas_id = $cliente['Cliente']['asaas_id'];
+		}
 
 		$venda = array(
-			"customer" => $response->id,
+			"customer" => $asaas_id,
 			"billingType" => "BOLETO",
 			"dueDate" => date('Y-m-d'),
 			"value" => $venda['Venda']['valor'],
@@ -188,12 +197,21 @@ class ClienteController extends AppController{
 		);
 
 		$response = $AsaasController->criar_cobranca($venda);
+		
+		if (isset($response->errors)) {
+			foreach ($response->errors as $i => $error) {
+				$this->Session->setFlash($error->description);
+			}
+
+			return $this->redirect('/cliente/listar_pedidos/' . $cliente['Cliente']['id']);
+		}
 
 		$this->Venda->id = $venda_id;
 		
 		$data = [
 			'asaas_boleto' => $response->bankSlipUrl,
-			'asaas_status' => $response->status
+			'asaas_status' => $response->status,
+			'asaas_transaction_id' => $response->id
 		];
 
 		if (!$this->Venda->save($data)) {

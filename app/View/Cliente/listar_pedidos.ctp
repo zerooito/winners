@@ -58,8 +58,19 @@
                                             </a>
                                         <?php endif; ?>
                                         <?php if (isset($modulos['asaas'])): ?>
-                                            <a class="btn btn-primary btn-circle" href="/cliente/emitir_boleto/<?php echo $venda['Venda']['id'] ?>">
-                                                <i class="fa fa-university"></i>
+                                            <a class="btn btn-primary btn-circle" 
+                                                <?php if (isset($venda['Venda']['asaas_boleto'])): ?>
+                                                    href="<?php echo $venda['Venda']['asaas_boleto'] ?>"
+                                                    target="_blank"
+                                                <?php else: ?>
+                                                    href="/cliente/emitir_boleto/<?php echo $venda['Venda']['id'] ?>"
+                                                <?php endif; ?>
+                                            >
+                                                <?php if ($venda['Venda']['asaas_boleto']): ?>
+                                                    <i class="fa fa-list"></i>
+                                                <?php else: ?>
+                                                    <i class="fa fa-university"></i>
+                                                <?php endif; ?>
                                             </a>
                                         <?php endif; ?>
                                     </td>

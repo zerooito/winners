@@ -16,4 +16,49 @@ class LancamentoVendasController extends AppController {
 		return true;
  	}
 
+ 	public function cancelar($id_venda, $id_cliente) {
+ 		$response = $this->LancamentoVenda->find('first', array(
+    			'conditions' => array(
+    				'LancamentoVenda.venda_id' => $id_venda
+    			)
+    		)
+    	);
+
+ 		$this->LancamentoVenda->id = $response['LancamentoVenda']['id'];
+
+ 		$this->LancamentoVenda->save(
+ 			['valor_pago' => 0]
+ 		);
+
+ 		echo json_encode(
+ 			[
+ 				'valor' => $response['LancamentoVenda']['valor']
+ 			]
+ 		);
+ 		exit;
+
+ 	}
+
+ 	public function aprovar($id_venda, $id_cliente) {
+ 		$response = $this->LancamentoVenda->find('first', array(
+    			'conditions' => array(
+    				'LancamentoVenda.venda_id' => $id_venda
+    			)
+    		)
+    	);
+
+ 		$this->LancamentoVenda->id = $response['LancamentoVenda']['id'];
+
+ 		$this->LancamentoVenda->save(
+ 			['valor_pago' => $response['LancamentoVenda']['valor']]
+ 		);
+ 		
+ 		echo json_encode(
+ 			[
+ 				'valor' => $response['LancamentoVenda']['valor']
+ 			]
+ 		);
+ 		exit;
+ 	}
+
 }

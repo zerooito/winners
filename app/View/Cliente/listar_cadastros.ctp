@@ -27,22 +27,33 @@
                                 </tr>
                             </thead>
                             <tbody>                   
-                            <?php
-                            foreach ($clientes as $indice => $cliente) {
-                            ?>             
+                            <?php foreach ($clientes as $indice => $cliente): ?>             
                                 <tr class="odd gradeX" id="<?php echo $cliente['Cliente']['id'] ?>">
-                                    <td><?php echo $cliente['Cliente']['nome1'] ?></td>
-                                    <td><?php echo $cliente['Cliente']['nome2'] ?></td>
-                                    <td><?php echo $cliente['Cliente']['email'] ?></td>
-                                    <td class="center"><?php echo $cliente['Cliente']['documento1'] ?></td>
+                                    <td>
+                                        <?php echo $cliente['Cliente']['nome1'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $cliente['Cliente']['nome2'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $cliente['Cliente']['email'] ?>
+                                    </td>
                                     <td class="center">
-                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <?php echo $cliente['Cliente']['documento1'] ?>
+                                    </td>
+                                    <td class="center">
+                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger btn-circle">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info btn-circle">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <a class="btn btn-primary btn-circle" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
+                                            <i class="fa fa-list"></i>
+                                        </a>
                                     </td>
                                 </tr>   
-                            <?php
-                            }// fim foreach
-                            ?>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

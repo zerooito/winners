@@ -358,7 +358,7 @@ class VendaController extends AppController {
 		$informacoes['desconto']   = (float) @$informacoes['desconto'];
 		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
 		$informacoes['orcamento']  = @$informacoes['orcamento'];
-
+		
 		if (!$this->Venda->save($informacoes)) {
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
 			return false;

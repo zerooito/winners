@@ -93,7 +93,7 @@ class CaixaController extends AppController {
 		}
 
 		$LancamentoVendas = $this->LancamentoVenda->find('all', $conditions);	
-
+		
 		$total = 0;
 
 		foreach ($LancamentoVendas as $i => $LancamentoVenda) {

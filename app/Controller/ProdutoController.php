@@ -78,13 +78,19 @@ class ProdutoController extends AppController{
 
 			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
 
-			$row[] = $btEdit;
+			$btImage = ' <a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fa fa-picture-o"></i></a>';
+
+			$row[] = $btEdit . $btImage;
 
 			$output['aaData'][] = $row;
 		}
 		
 		echo json_encode($output);
 		exit;
+	}
+
+	public function imagens() {
+		$this->layout = 'wadmin';
 	}
 
 	public function listar_cadastros_estoque_minimo(){

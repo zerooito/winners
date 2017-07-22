@@ -89,8 +89,28 @@ class ProdutoController extends AppController{
 		exit;
 	}
 
-	public function imagens() {
+	public function imagens($id) {
 		$this->layout = 'wadmin';
+
+		$produto = $this->Produto->find('first', array(
+				'conditions' => array(
+					'Produto.id' => $id
+				)
+			)
+		);
+
+		$this->loadModel('Imagen');
+		$imagens = $this->Imagen->find('all', array(
+				'conditions' => array(
+					'Imagen.produto_id' => $id,
+					'Imagen.usuario_id' => $this->instancia,
+					'Imagen.ativo' => 1
+				)
+			)
+		);
+
+		$this->set('imagens', $imagens);
+		$this->set('produto', $produto);
 	}
 
 	public function listar_cadastros_estoque_minimo(){
@@ -746,6 +766,52 @@ class ProdutoController extends AppController{
     	}
 
     	return $errors;
+    }
+
+    public function salvar_imagem($id) {
+		$image  = $_FILES['arquivo'];
+		
+		$retorno = $this->uploadImage($image);
+
+		if (!$retorno['status']) {
+			$this->Session->setFlash('A imagem não foi salva tente novamente ou contate o suporte!');
+            return $this->redirect('/produto/imagens/' . $id);
+		}
+
+		$photo = $this->request->data('photo');
+
+		$data = array(
+			'arquivo' => $retorno['nome'],
+			'order' => $photo['order'],
+			'alt' => $photo['alt'],
+			'title' => $photo['title'],
+			'ativo' => 1,
+			'usuario_id' => $this->instancia,
+			'produto_id' => $id
+		);
+
+		$this->loadModel('Imagen');
+
+		$retorno = $this->Imagen->save($data);
+
+		if (!$retorno) {
+			$this->Session->setFlash('A imagem não foi salva tente novamente ou contate o suporte!');
+            return $this->redirect('/produto/imagens/' . $id);
+		}
+
+		$this->Session->setFlash('A salva com sucesso!');
+        return $this->redirect('/produto/imagens/' . $id);
+    }
+
+    public function imagem_excluir_cadastro($id) {
+    	$this->loadModel('Imagen');
+
+    	$this->Imagen->id = $id;
+
+    	$this->Imagen->save(['ativo' => 0]);
+
+    	echo json_encode(array('success' => true));
+    	exit;
     }
 
 }

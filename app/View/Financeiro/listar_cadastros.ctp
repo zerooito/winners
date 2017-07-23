@@ -7,7 +7,7 @@
         <!-- /.col-lg-12 -->
     </div>
     <?php
-        pr($lancamentos);
+        // pr($lancamentos);
     ?>
     <div class="row">
         <div class="col-lg-3">  
@@ -118,17 +118,50 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <a href="/cupom/adicionar_cupom" style="color: #FFF;" class="btn btn-primary"> 
+                    <a href="/cupom/adicionar_cupom" style="color: #FFF;width:100%;" class="btn btn-primary"> 
                         <i class="fa fa-plus"></i> 
                         Adicionar Transação
                     </a>
-                    
-                    <hr>
 
-                    <a href="javascript:$('#addCategoria').modal('show');" style="color: #FFF;" class="btn btn-success"> 
+                    <a href="javascript:$('#addCategoria').modal('show');" style="margin-top:10px;width:100%;" class="btn btn-success"> 
                         <i class="fa fa-plus"></i> 
                         Cadastrar Categorias
                     </a>
+
+                    <hr>
+
+                    <h3>Filtros</h3>
+
+                    <div class="form-group">
+                        <label>Por categoria: </label>
+                        <select id="categorias" style="width:100%;"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo: </label>
+                        <select id="tipo" style="width:100%;">
+                            <option>Despesa</option>
+                            <option>Receita</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vencimento: </label>
+                        <input type="date" name="vencimento" id="vencimento" style="width:100%;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cliente: </label>
+                        <select id="clientes" style="width:100%;"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fornecedor: </label>
+                        <select id="fornecedor" style="width:100%;">
+                            <option>Global Center</option>
+                        </select>
+                    </div>
+
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -169,7 +202,6 @@
         </div>
     </form>
 </div>
-
 <script type="text/javascript">
     
     $(document).ready(function(){
@@ -178,8 +210,56 @@
             "bServerSide": true,
             "iDisplayStart": 0,
             "sAjaxDataProp": "data",
-            "aaSorting": [[ 0, "desc" ]],
+            "aaSorting": [
+                [ 0, "desc" ]
+            ],
             "sAjaxSource": "/financeiro/listar_cadastros_ajax"
+        });
+
+        $(document.body).on("change", "#clientes", function() {
+            datatable.search( 'clientes-' + this.value ).draw();
+        });
+
+        $(document.body).on("change", "#categorias", function() {
+            datatable.search( 'categoria-' + this.value ).draw();
+        });
+
+        $('#categorias').select2({
+            placeholder: 'Escolha a categoria',
+            ajax: {
+                url: "/financeiro/carregar_categorias",
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term, page) {
+                    return {
+                        term: term, //search term
+                        page_limit: 10 // page size
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data.results };
+                }
+
+            }
+        });
+
+        $('#clientes').select2({
+            placeholder: 'Escolha o cliente',
+            ajax: {
+                url: "/cliente/carregar_clientes",
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term, page) {
+                    return {
+                        term: term, //search term
+                        page_limit: 10 // page size
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data.results };
+                }
+
+            }
         });
 
     });
@@ -191,6 +271,5 @@
     .huge {
         font-size: 25px;
     }
-
 
 </style>

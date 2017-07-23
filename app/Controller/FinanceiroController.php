@@ -25,8 +25,8 @@ class FinanceiroController extends AppController
 			array(
 				'LancamentoVenda.ativo' => 1,
 				'LancamentoVenda.usuario_id' => $this->instancia,
-				'LancamentoVenda.data_pgt > ' => $start,
-				'LancamentoVenda.data_pgt < ' => $end
+				// 'LancamentoVenda.data_pgt > ' => $start,
+				// 'LancamentoVenda.data_pgt < ' => $end
 			)
 		);
 
@@ -85,6 +85,46 @@ class FinanceiroController extends AppController
 		];
 
 		return $data;
+	}
+
+	public function carregar_categorias($id = null)
+	{
+		$this->loadModel('LancamentoCategoria');
+
+		$filter = $this->request->query('term');
+
+		$conditions = array('conditions' => array(
+				'LancamentoCategoria.usuario_id' => $this->instancia,
+				'LancamentoCategoria.ativo' => 1
+			)
+		);
+
+		if (!empty($filter['term'])) {
+			$conditions['conditions']['LancamentoCategoria.nome LIKE '] = '%' . $filter['term'] . '%';
+		}
+
+		$conditions['limit'] = $this->request->query('page_limit');
+
+		$categorias = $this->LancamentoCategoria->find('all', $conditions);
+
+		$response = [];
+
+		$response['results'][0]['id'] = -1;
+		$response['results'][0]['text'] = 'Todos';
+
+		$response['results'][1]['id'] = 0;
+		$response['results'][1]['text'] = 'Sem categoria';
+
+		$i = 1;
+		foreach ($categorias as $categoria) {
+			$i++; 
+			
+			$response['results'][$i]['id'] = $categoria['LancamentoCategoria']['id'];
+			$response['results'][$i]['text'] = $categoria['LancamentoCategoria']['nome'];
+		}
+
+		echo json_encode($response);
+		exit;
 	}
 
 	public function listar_cadastros_ajax()

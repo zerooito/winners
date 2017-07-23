@@ -118,7 +118,7 @@ class FinanceiroController extends AppController
 		$i = 1;
 		foreach ($categorias as $categoria) {
 			$i++; 
-			
+
 			$response['results'][$i]['id'] = $categoria['LancamentoCategoria']['id'];
 			$response['results'][$i]['text'] = $categoria['LancamentoCategoria']['nome'];
 		}
@@ -143,14 +143,6 @@ class FinanceiroController extends AppController
 			)
 		);
 
-		$allLancamentos = $this->LancamentoVenda->find('count', $conditions);
-
-		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
-		{
-			$conditions['offset'] = $_GET['iDisplayStart'];
-			$conditions['limit'] = $_GET['iDisplayLength'];
-		}
-
 		if ( isset( $_GET['iSortCol_0'] ) )
 		{
 			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
@@ -164,9 +156,21 @@ class FinanceiroController extends AppController
 
 		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
 		{
-			$conditions['conditions']['LancamentoCategoria.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
+			$search = explode(':', $_GET['sSearch']);
+
+			if ($search[0] == "lancamento_categoria_id" && $search[1] != -1) {
+				$conditions['conditions']['LancamentoVenda.lancamento_categoria_id'] = $search[1];				
+			}
 		}
-		
+
+		$allLancamentos = $this->LancamentoVenda->find('count', $conditions);
+
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
 
 		$output = array(

@@ -202,6 +202,7 @@
         </div>
     </form>
 </div>
+
 <script type="text/javascript">
     
     $(document).ready(function(){
@@ -217,11 +218,11 @@
         });
 
         $(document.body).on("change", "#clientes", function() {
-            datatable.search( 'clientes-' + this.value ).draw();
+            $('#datatable-financeiro').dataTable().fnFilter('lancamento_categoria_id:' + this.value);
         });
 
         $(document.body).on("change", "#categorias", function() {
-            datatable.search( 'categoria-' + this.value ).draw();
+            $('#datatable-financeiro').dataTable().fnFilter('lancamento_categoria_id:' + this.value);
         });
 
         $('#categorias').select2({

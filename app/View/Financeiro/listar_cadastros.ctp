@@ -8,7 +8,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-4">  
+        <div class="col-lg-3">  
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="row">
@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-xs-10 text-right">
                             <div class="huge">
-                                R$ 34,90
+                                <b>R$</b> 34,90
                             </div>
                             <div>A Receber</div>
                         </div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">  
+        <div class="col-lg-3">  
             <div class="panel panel-danger">
                 <div class="panel-heading">
                     <div class="row">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="col-xs-10 text-right">
                             <div class="huge">
-                                R$ 34,90
+                                <b>R$</b> 34,90
                             </div>
                             <div>A Pagar</div>
                         </div>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">  
+        <div class="col-lg-3">  
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="row">
@@ -51,9 +51,23 @@
                         </div>
                         <div class="col-xs-10 text-right">
                             <div class="huge">
-                                R$ 34,90
+                                <b>R$</b> 34,90
                             </div>
                             <div>Pago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">  
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-12 text-right">
+                            <div class="huge">
+                                <b>R$</b> 23.4320,90<br>
+                                <small style="font-size:12px;">-<b>R$</b> 43,90</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,6 +92,7 @@
                                     <th>Categoria</th>
                                     <th>Vencimento</th>
                                     <th>Valor</th>
+                                    <th>Categoria</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -119,7 +134,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="addCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -169,3 +183,12 @@
     });
 
 </script>
+
+<style type="text/css">
+    
+    .huge {
+        font-size: 25px;
+    }
+
+
+</style>

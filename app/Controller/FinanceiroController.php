@@ -5,16 +5,18 @@ class FinanceiroController extends AppController
 
 	public function listar_cadastros()
 	{
+		$this->loadModel('LancamentoVenda');
+
 		$this->layout = 'wadmin';
 
-		$this->set('total', $this->carregar_total_periodo(
-				date('Y-m-d'),
+		$this->set('lancamentos', $this->carregar_lancamentos_periodo(
+				'2017-04-02',
 				date('Y-m-d')
 			)
 		);
 	}
 
-	public function carregar_total_periodo($start, $end)
+	public function carregar_lancamentos_periodo($start, $end)
 	{
 		$this->loadModel('LancamentoVenda');
 		$this->loadModel('LancamentoCategoria');
@@ -22,22 +24,67 @@ class FinanceiroController extends AppController
 		$conditions = array('conditions' =>
 			array(
 				'LancamentoVenda.ativo' => 1,
-				'LancamentoVenda.usuario_id' => $this->instancia
+				'LancamentoVenda.usuario_id' => $this->instancia,
+				'LancamentoVenda.data_pgt > ' => $start,
+				'LancamentoVenda.data_pgt < ' => $end
 			)
 		);
 
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
-
-		$categorias = $this->LancamentoCategoria->find('all', array('conditions' =>
-				array(
-					'LancamentoCategoria.ativo' => 1,
-					'LancamentoCategoria.usuario_id' => $this->instancia
+		
+		$a_receber = 0;
+		$a_pagar = 0;
+		$pago = 0;
+		$total = 0;
+		$total_entradas = 0;
+		$total_saidas = 0;
+		foreach ($lancamentos as $i => $lancamento)
+		{
+			$categoria = $this->LancamentoCategoria->find('first', array('conditions' =>
+					array(
+						'LancamentoCategoria.ativo' => 1,
+						'LancamentoCategoria.usuario_id' => $this->instancia,
+						'LancamentoCategoria.id' => $lancamento['LancamentoVenda']['lancamento_categoria_id']
+					)
 				)
-			)
-		);
+			);
 
-		// pr($categorias);
-		// pr($end, 1);
+			$lancamentos[$i]['Categoria'] = isset($categoria['LancamentoCategoria']) ? $categoria['LancamentoCategoria'] : array();
+
+			if (empty($categoria) || $categoria['LancamentoCategoria']['tipo'] == "receita") {
+				if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
+					$a_receber += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
+				}
+
+				if ($lancamento['LancamentoVenda']['valor'] >= $lancamento['LancamentoVenda']['valor_pago']) {
+					$total_entradas += $lancamento['LancamentoVenda']['valor'];
+				}
+			}
+
+			if (empty($categoria))
+				continue;
+
+			if ($categoria['LancamentoCategoria']['tipo'] == "despesa") {
+				if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
+					$a_pagar += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
+				} else {
+					$pago += $lancamento['LancamentoVenda']['valor'];
+					$total_saidas += $lancamento['LancamentoVenda']['valor'];
+				}
+			}
+
+		}
+		
+		$data = [
+			'lancamentos' => $lancamentos,
+			'a_receber' => $a_receber,
+			'a_pagar' => $a_pagar,
+			'pago' => $pago,
+			'total' => $total_entradas,
+			'total_saidas' => $total_saidas
+		];
+
+		return $data;
 	}
 
 	public function listar_cadastros_ajax()
@@ -79,7 +126,7 @@ class FinanceiroController extends AppController
 		{
 			$conditions['conditions']['LancamentoCategoria.nome LIKE '] = '%' . $_GET['sSearch'] . '%';
 		}
-
+		
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
 
 		$output = array(
@@ -117,6 +164,15 @@ class FinanceiroController extends AppController
 					}
 				} else {
 					$value = $lancamento['LancamentoVenda'][$aColumns[$i]];
+				}
+
+				if ($aColumns[$i] == "valor") {
+					$value = 'R$ ' . number_format($lancamento['LancamentoVenda'][$aColumns[$i]], 2, ',', '.');
+				}
+
+				if ($aColumns[$i] == "data_pgt") {
+					$date = new \DateTime($lancamento['LancamentoVenda'][$aColumns[$i]]);
+					$value = $date->format('d/m/Y');
 				}
 				
 				$row[] = $value;

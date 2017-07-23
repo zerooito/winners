@@ -7,6 +7,7 @@ class LancamentoVenda extends AppModel {
 	        'className' => 'LancamentoCategoriaModel',
 	        'foreignKey' => 'lancamento_categoria_id'
 	    )
-    );
+    );    
+
 
 }

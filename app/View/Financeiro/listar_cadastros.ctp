@@ -6,7 +6,9 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-
+    <?php
+        pr($lancamentos);
+    ?>
     <div class="row">
         <div class="col-lg-3">  
             <div class="panel panel-primary">
@@ -17,7 +19,7 @@
                         </div>
                         <div class="col-xs-10 text-right">
                             <div class="huge">
-                                <b>R$</b> 34,90
+                                <b>R$</b> <?php echo number_format($lancamentos['a_receber'], 2, ',', '.'); ?>
                             </div>
                             <div>A Receber</div>
                         </div>
@@ -34,7 +36,7 @@
                         </div>
                         <div class="col-xs-10 text-right">
                             <div class="huge">
-                                <b>R$</b> 34,90
+                                <b>R$</b> <?php echo number_format($lancamentos['a_pagar'], 2, ',', '.'); ?>
                             </div>
                             <div>A Pagar</div>
                         </div>
@@ -51,7 +53,7 @@
                         </div>
                         <div class="col-xs-10 text-right">
                             <div class="huge">
-                                <b>R$</b> 34,90
+                                <b>R$</b> <?php echo number_format($lancamentos['pago'], 2, ',', '.'); ?>
                             </div>
                             <div>Pago</div>
                         </div>
@@ -65,8 +67,8 @@
                     <div class="row">
                         <div class="col-xs-12 text-right">
                             <div class="huge">
-                                <b>R$</b> 23.4320,90<br>
-                                <small style="font-size:12px;">-<b>R$</b> 43,90</small>
+                                <b>R$</b> <?php echo number_format($lancamentos['total'], 2, ',', '.'); ?><br>
+                                <small style="font-size:12px;">-<b>R$</b> <?php echo number_format($lancamentos['total_saidas'], 2, ',', '.'); ?></small>
                             </div>
                         </div>
                     </div>
@@ -89,7 +91,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Categoria</th>
+                                    <th>Pedido</th>
                                     <th>Vencimento</th>
                                     <th>Valor</th>
                                     <th>Categoria</th>

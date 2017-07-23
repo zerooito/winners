@@ -136,10 +136,23 @@ class FinanceiroController extends AppController
 
 		$aColumns = array( 'id', 'venda_id', 'data_pgt', 'valor', 'lancamento_categoria_id' );
 
-		$conditions = array('conditions' =>
-			array(
+		$conditions = array(
+			'conditions' => array(
 				'LancamentoVenda.ativo' => 1,
 				'LancamentoVenda.usuario_id' => $this->instancia
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'lancamento_categorias',
+			        'alias' => 'LancamentoCategoria',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'LancamentoVenda.lancamento_categoria_id = LancamentoCategoria.id',
+			        ),
+			    )
+			),
+			'fields' => array(
+				'LancamentoCategoria.*', 'LancamentoVenda.*'
 			)
 		);
 
@@ -149,7 +162,8 @@ class FinanceiroController extends AppController
 			{
 				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
 				{
-					$conditions['order'] = array('LancamentoVenda.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+					$conditions['order'] = array(
+						'LancamentoVenda.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_' . $i]);
 				}
 			}
 		}
@@ -158,8 +172,12 @@ class FinanceiroController extends AppController
 		{
 			$search = explode(':', $_GET['sSearch']);
 
-			if ($search[0] == "lancamento_categoria_id" && $search[1] != -1) {
-				$conditions['conditions']['LancamentoVenda.lancamento_categoria_id'] = $search[1];				
+			if ($search[0] == "lancamento_categoria_id" && $search[0] != -1) {
+				$conditions['conditions']['LancamentoCategoria.id'] = $search[1];				
+			}
+
+			if ($search[0] == "tipo" && $search[0] != -1) {
+				$conditions['conditions']['LancamentoCategoria.tipo'] = $search[1];
 			}
 		}
 

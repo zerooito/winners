@@ -140,8 +140,9 @@
                     <div class="form-group">
                         <label>Tipo: </label>
                         <select id="tipo" style="width:100%;">
-                            <option>Despesa</option>
-                            <option>Receita</option>
+                            <option value="-1">Todos</option>
+                            <option value="despesa">Despesa</option>
+                            <option value="receita">Receita</option>
                         </select>
                     </div>
 
@@ -217,12 +218,16 @@
             "sAjaxSource": "/financeiro/listar_cadastros_ajax"
         });
 
-        $(document.body).on("change", "#clientes", function() {
-            $('#datatable-financeiro').dataTable().fnFilter('lancamento_categoria_id:' + this.value);
-        });
+        // $(document.body).on("change", "#clientes", function() {
+        //     $('#datatable-financeiro').dataTable().fnFilter('lancamento_categoria_id:' + this.value);
+        // });
 
         $(document.body).on("change", "#categorias", function() {
             $('#datatable-financeiro').dataTable().fnFilter('lancamento_categoria_id:' + this.value);
+        });
+
+        $(document.body).on("change", "#tipo", function() {
+            $('#datatable-financeiro').dataTable().fnFilter('tipo:' + this.value);
         });
 
         $('#categorias').select2({

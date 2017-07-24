@@ -173,14 +173,14 @@ class FinanceiroController extends AppController
 			$search = explode(':', $_GET['sSearch']);
 
 			if ($search[0] == "lancamento_categoria_id" && $search[0] != -1) {
-				$conditions['conditions']['LancamentoCategoria.id'] = $search[1];				
+				$conditions['conditions']['LancamentoCategoria.id'] = empty($search[1]) ? "" : $search[1];
 			}
 
 			if ($search[0] == "tipo" && $search[0] != -1) {
 				$conditions['conditions']['LancamentoCategoria.tipo'] = $search[1];
 			}
 		}
-
+		pr($conditions);
 		$allLancamentos = $this->LancamentoVenda->find('count', $conditions);
 
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )

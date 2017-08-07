@@ -285,13 +285,13 @@ class VendaController extends AppController {
 		
 		if (!$salvar_venda) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');
-			$this->redirect('/venda/adicionar_cadastro');
+			return $this->redirect('/venda/adicionar_cadastro');
 		}
 
 		$this->Session->write('UltimoIdVendaSalvo', $salvar_venda['id']);
 		
 		$this->Session->setFlash('Venda salva com sucesso');
-		$this->redirect('/venda/adicionar_cadastro');
+		return $this->redirect('/venda/adicionar_cadastro');
 	}
 
 	public function calcular_valor_venda($produtos) {

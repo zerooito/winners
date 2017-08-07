@@ -374,15 +374,15 @@ class ProdutoController extends AppController{
 
 		$query = array (
 			'joins' => array(
-				    array(
-				        'table' => 'produtos',
-				        'alias' => 'Produto',
-				        'type' => 'LEFT',
-				        'conditions' => array(
-				            'Variacao.produto_id = Produto.id',
-				        ),
-				    )
-				),
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Variacao.produto_id = Produto.id',
+			        ),
+			    )
+			),
 	        'conditions' => array('Variacao.produto_id' => $id, 'Variacao.ativo' => 1),
 	        'fields' => array('Produto.id, Variacao.*'),
 		);

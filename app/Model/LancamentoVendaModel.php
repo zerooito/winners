@@ -1,12 +1,18 @@
 <?php
 
-class LancamentoVenda extends AppModel {
+App::uses('AppModel', 'Model');
 
-    public $hasOne = 'Venda';
-    public $hasMany = array(
-        'Venda' => array(
-            'className' => 'Venda'
-        )
-    );
+class LancamentoVenda extends AppModel {
+	
+	public $belongsTo = array(
+		'LancamentoCategoria' => array(
+			'className' => 'LancamentoCategoria',
+			'foreignKey' => 'lancamento_categoria_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
 
 }

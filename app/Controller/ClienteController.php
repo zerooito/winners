@@ -228,4 +228,39 @@ class ClienteController extends AppController{
         return $this->redirect('/cliente/listar_pedidos/' . $cliente['Cliente']['id']);
 	}
 
+	public function carregar_clientes($id = null)
+	{
+		$filter = $this->request->query('term');
+
+		$conditions = array('conditions' => array(
+				'Cliente.id_usuario' => $this->instancia,
+				'Cliente.ativo' => 1
+			)
+		);
+
+		if (!empty($filter['term'])) {
+			$conditions['conditions']['Cliente.nome1 LIKE '] = '%' . $filter['term'] . '%';
+		}
+
+		$conditions['limit'] = $this->request->query('page_limit');
+
+		$clientes = $this->Cliente->find('all', $conditions);
+
+		$response = [];
+
+		$response['results'][0]['id'] = -1;
+		$response['results'][0]['text'] = 'Todos';
+
+		$i = 0;
+		foreach ($clientes as $cliente) {
+			$i++; 
+			
+			$response['results'][$i]['id'] = $cliente['Cliente']['id'];
+			$response['results'][$i]['text'] = $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2'];
+		}
+
+		echo json_encode($response);
+		exit;
+	}
+
 }

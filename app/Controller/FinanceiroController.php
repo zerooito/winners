@@ -38,7 +38,7 @@ class FinanceiroController extends AppController
 					array(
 						'LancamentoCategoria.ativo' => 1,
 						'LancamentoCategoria.usuario_id' => $this->instancia,
-						'LancamentoCategoria.id' => $lancamento['LancamentoVenda']['lancamento_categoria_id']
+						'LancamentoCategoria.id' => !empty($lancamento['LancamentoVenda']['lancamento_categoria_id']) ? $lancamento['LancamentoVenda']['lancamento_categoria_id'] : ''
 					)
 				)
 			);

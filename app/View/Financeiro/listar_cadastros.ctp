@@ -6,28 +6,9 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <?php
-        // pr($lancamentos);
-    ?>
-    <div class="row">
-        <div class="col-lg-3">  
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <i class="fa fa-level-up fa-5x"></i>
-                        </div>
-                        <div class="col-xs-10 text-right">
-                            <div class="huge">
-                                <b>R$</b> <?php echo number_format($lancamentos['a_receber'], 2, ',', '.'); ?>
-                            </div>
-                            <div>A Receber</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">  
+    
+    <div class="row">   
+        <div class="col-lg-4">  
             <div class="panel panel-danger">
                 <div class="panel-heading">
                     <div class="row">
@@ -44,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">  
+        <div class="col-lg-4">  
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="row">
@@ -61,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">  
+        <div class="col-lg-4">  
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
@@ -118,7 +99,13 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <a href="/cupom/adicionar_cupom" style="color: #FFF;width:100%;" class="btn btn-primary"> 
+
+                    <a href="javascript:$('#addFornecedor').modal('show');" style="width:100%;" class="btn btn-primary"> 
+                        <i class="fa fa-truck"></i>
+                        Fornecedores
+                    </a>
+
+                    <a href="javascript:$('#addTransacao').modal('show');" style="margin-top:10px;color: #FFF;width:100%;" class="btn btn-primary"> 
                         <i class="fa fa-plus"></i> 
                         Adicionar Transação
                     </a>
@@ -147,21 +134,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Vencimento: </label>
+                        <label>Data Pagamento: </label>
+                        <input type="date" name="pagamento" id="pagamento" style="width:100%;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data Vencimento: </label>
                         <input type="date" name="vencimento" id="vencimento" style="width:100%;">
                     </div>
 
                     <div class="form-group">
-                        <label>Cliente: </label>
-                        <select id="clientes" style="width:100%;"></select>
+                        <label>Fornecedor: </label>
+                        <select id="fornecedor" style="width:100%;"></select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Fornecedor: </label>
-                        <select id="fornecedor" style="width:100%;">
-                            <option>Global Center</option>
-                        </select>
-                    </div>
+                    <a href="javascript:;" style="margin-top:10px;width:100%;" class="btn btn-default" id="clear-filter"> 
+                        <i class="fa fa-eraser"></i> 
+                        Limpar Filtros
+                    </a>
 
                 </div>
                 <!-- /.panel-body -->
@@ -204,12 +194,88 @@
     </form>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="addFornecedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form class="form" action="/financeiro/adicionar_fornecedor" method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Adicionar Fornecedor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="nome" class="form-control" id="nome" name="fornecedor[nome]">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addTransacao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form class="form" action="/financeiro/adicionar_transacao" method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Adicionar Transação</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="date">Data de Vencimento:</label>
+                        <input type="date" class="form-control" id="data_vencimento" name="transacao[data_vencimento]">
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Data de Pagamento:</label>
+                        <input type="date" class="form-control" id="data_pgt" name="transacao[data_pgt]">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo: </label>
+                        <select class="form-control" name="transacao[tipo]" style="width:100%;">
+                            <option value="receita">Receita</option>
+                            <option value="despesa">Despesa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria">Categoria:</label>
+                        <select class="form-control" name="transacao[lancamento_categoria_id]" id="categoria-transacao" style="width:100%;"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria">Fornecedor:</label>
+                        <select class="form-control" name="transacao[fornecedore_id]" id="fornecedor-transacao" style="width:100%;"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="valor">Valor:</label>
+                        <input type="valor" class="form-control moeda" id="valor" name="transacao[valor]">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script type="text/javascript">
     
     $(document).ready(function(){
         
         var datatable = $('#datatable-financeiro').dataTable({
             "bServerSide": true,
+            // "bFilter": false,
             "iDisplayStart": 0,
             "sAjaxDataProp": "data",
             "aaSorting": [
@@ -227,13 +293,45 @@
         });
 
         $(document.body).on("change", "#tipo", function() {
+            console.log(this.value);
             $('#datatable-financeiro').dataTable().fnFilter('tipo:' + this.value);
         });
 
-        $('#categorias').select2({
+        $(document.body).on("change", "#pagamento", function() {
+            $('#datatable-financeiro').dataTable().fnFilter('pagamento:' + this.value);
+        });
+
+        $(document.body).on("change", "#vencimento", function() {
+            $('#datatable-financeiro').dataTable().fnFilter('vencimento:' + this.value);
+        });
+
+        $(document.body).on("change", "#fornecedor", function() {
+            $('#datatable-financeiro').dataTable().fnFilter('fornecedor:' + this.value);
+        });
+
+        $('#categorias, #categoria-transacao').select2({
             placeholder: 'Escolha a categoria',
             ajax: {
                 url: "/financeiro/carregar_categorias",
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term, page) {
+                    return {
+                        term: term, //search term
+                        page_limit: 10 // page size
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data.results };
+                }
+
+            }
+        });
+
+        $('#fornecedor, #fornecedor-transacao').select2({
+            placeholder: 'Escolha um fornecedor',
+            ajax: {
+                url: "/financeiro/carregar_fornecedores",
                 dataType: 'json',
                 quietMillis: 100,
                 data: function (term, page) {
@@ -268,6 +366,12 @@
             }
         });
 
+        $('#clear-filter').click(function(){
+            $('#categorias').val("-1").change();
+            $('#tipo').val("-1").change();
+            $('#pagamento').val("");
+            $('#vencimento').val("");
+        });
     });
 
 </script>
@@ -276,6 +380,10 @@
     
     .huge {
         font-size: 25px;
+    }
+
+    select {
+         width: 100%;
     }
 
 </style>

@@ -9,14 +9,10 @@ class FinanceiroController extends AppController
 
 		$this->layout = 'wadmin';
 
-		$this->set('lancamentos', $this->carregar_lancamentos_periodo(
-				'2017-04-02',
-				date('Y-m-d')
-			)
-		);
+		$this->set('lancamentos', $this->carregar_lancamentos_periodo());
 	}
 
-	public function carregar_lancamentos_periodo($start, $end)
+	public function carregar_lancamentos_periodo()
 	{
 		$this->loadModel('LancamentoVenda');
 		$this->loadModel('LancamentoCategoria');
@@ -24,10 +20,8 @@ class FinanceiroController extends AppController
 		$conditions = array('conditions' =>
 			array(
 				'LancamentoVenda.ativo' => 1,
-				'LancamentoVenda.usuario_id' => $this->instancia,
-				// 'LancamentoVenda.data_pgt > ' => $start,
-				// 'LancamentoVenda.data_pgt < ' => $end
-			)
+				'LancamentoVenda.usuario_id' => $this->instancia
+			),
 		);
 
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
@@ -127,6 +121,46 @@ class FinanceiroController extends AppController
 		exit;
 	}
 
+	public function carregar_fornecedores($id = null)
+	{
+		$this->loadModel('Fornecedore');
+
+		$filter = $this->request->query('term');
+
+		$conditions = array('conditions' => array(
+				'Fornecedore.usuario_id' => $this->instancia,
+				'Fornecedore.ativo' => 1
+			)
+		);
+
+		if (!empty($filter['term'])) {
+			$conditions['conditions']['Fornecedore.nome LIKE '] = '%' . $filter['term'] . '%';
+		}
+
+		$conditions['limit'] = $this->request->query('page_limit');
+
+		$fornecedores = $this->Fornecedore->find('all', $conditions);
+
+		$response = [];
+
+		$response['results'][0]['id'] = -1;
+		$response['results'][0]['text'] = 'Todos';
+
+		$response['results'][1]['id'] = 0;
+		$response['results'][1]['text'] = 'Sem Fornecedor';
+
+		$i = 1;
+		foreach ($fornecedores as $fornecedor) {
+			$i++; 
+
+			$response['results'][$i]['id'] = $fornecedor['Fornecedore']['id'];
+			$response['results'][$i]['text'] = $fornecedor['Fornecedore']['nome'];
+		}
+
+		echo json_encode($response);
+		exit;
+	}
+
 	public function listar_cadastros_ajax()
 	{
 		$this->layout = 'ajax';
@@ -134,7 +168,7 @@ class FinanceiroController extends AppController
 		$this->loadModel('LancamentoVenda');
 		$this->loadModel('LancamentoCategoria');
 
-		$aColumns = array( 'id', 'venda_id', 'data_pgt', 'valor', 'lancamento_categoria_id' );
+		$aColumns = array( 'id', 'venda_id', 'data_vencimento', 'valor', 'lancamento_categoria_id' );
 
 		$conditions = array(
 			'conditions' => array(
@@ -149,10 +183,18 @@ class FinanceiroController extends AppController
 			        'conditions' => array(
 			            'LancamentoVenda.lancamento_categoria_id = LancamentoCategoria.id',
 			        ),
+			    ),
+			    array(
+			        'table' => 'fornecedores',
+			        'alias' => 'Fornecedore',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'LancamentoVenda.fornecedore_id = Fornecedore.id',
+			        ),
 			    )
 			),
 			'fields' => array(
-				'LancamentoCategoria.*', 'LancamentoVenda.*'
+				'LancamentoCategoria.*', 'LancamentoVenda.*', 'Fornecedore.*'
 			)
 		);
 
@@ -167,20 +209,28 @@ class FinanceiroController extends AppController
 				}
 			}
 		}
-
+		
 		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
 		{
 			$search = explode(':', $_GET['sSearch']);
 
-			if ($search[0] == "lancamento_categoria_id" && $search[0] != -1) {
+			if ($search[0] == "lancamento_categoria_id" && $search[1] != -1) {
 				$conditions['conditions']['LancamentoCategoria.id'] = empty($search[1]) ? "" : $search[1];
 			}
 
-			if ($search[0] == "tipo" && $search[0] != -1) {
+			if ($search[0] == "tipo" && $search[1] != -1) {
 				$conditions['conditions']['LancamentoCategoria.tipo'] = $search[1];
 			}
+
+			if ($search[0] == "pagamento" && $search[1] != -1) {
+				$conditions['conditions']['LancamentoVenda.data_pgt'] = $search[1];
+			}
+
+			if ($search[0] == "fornecedor" && $search[1] != -1) {
+				$conditions['conditions']['Fornecedore.id'] = $search[1];
+			}
 		}
-		pr($conditions);
+		// pr($conditions);
 		$allLancamentos = $this->LancamentoVenda->find('count', $conditions);
 
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
@@ -190,7 +240,7 @@ class FinanceiroController extends AppController
 		}
 
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
-
+		// pr($lancamentos,1);
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),
 			"iTotalDisplayRecords" => $allLancamentos,
@@ -202,9 +252,11 @@ class FinanceiroController extends AppController
 		{
 			$row = array();
 
+			$btPaid = '';
 			for ( $i=0 ; $i < count($aColumns) ; $i++ )
 			{
 				if ($aColumns[$i] == "lancamento_categoria_id") {
+
 					$conditions = array('conditions' =>
 						array(
 							'LancamentoCategoria.id' => $lancamento['LancamentoVenda'][$aColumns[$i]],
@@ -218,31 +270,46 @@ class FinanceiroController extends AppController
 					if (!empty($categoria_lancamento)) {
 						if ($categoria_lancamento['LancamentoCategoria']['tipo'] == "receita") {
 							$value = '<span class="label label-success">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
+
+							$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Não é uma despesa.\');"><i class="fa fa-child"></i></a>';
 						} else {
 							$value = '<span class="label label-danger">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
+
+							if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor']) {
+								$btPaid = '<a class="btn btn-success" href="/produto/imagens/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-check"></i></a>';
+							} else {
+								$btPaid = '<a class="btn btn-default" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fa fa-money"></i></a>';
+							}
 						}
 					} else {
 						$value = '<span class="label label-default">Sem Categoria</span>';
 					}
+
 				} else {
 					$value = $lancamento['LancamentoVenda'][$aColumns[$i]];
+				}
+
+				if ($aColumns[$i] == "venda_id" && empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
+					$value = '<b>Não é uma venda</b>';
+				} elseif ($aColumns[$i] == "venda_id" && !empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
+					$value = '<a href="http://www.ciawn.com.br/venda/listar_cadastros?venda_id=' . $lancamento['LancamentoVenda'][$aColumns[$i]] . '">Ver Pedido</a>';
 				}
 
 				if ($aColumns[$i] == "valor") {
 					$value = 'R$ ' . number_format($lancamento['LancamentoVenda'][$aColumns[$i]], 2, ',', '.');
 				}
 
-				if ($aColumns[$i] == "data_pgt") {
+				if ($aColumns[$i] == "data_vencimento" && $lancamento['LancamentoVenda'][$aColumns[$i]] != "") {
 					$date = new \DateTime($lancamento['LancamentoVenda'][$aColumns[$i]]);
 					$value = $date->format('d/m/Y');
+				} else if ($aColumns[$i] == "data_vencimento" && empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
+					$value = "Não informado";
 				}
 				
 				$row[] = $value;
 			}
 
-			$btImage = '<a class="btn btn-primary" href="/produto/imagens/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-picture-o"></i></a>';
-
-			$row[] = $btImage;
+			$row[] = isset($btPaid) ? $btPaid : '';
 
 			$output['aaData'][] = $row;
 		}
@@ -268,6 +335,43 @@ class FinanceiroController extends AppController
 		}
 
 		$this->Session->setFlash('Categoria salva com sucesso');
+		return $this->redirect('/financeiro/listar_cadastros');
+	}
+
+	public function adicionar_fornecedor()
+	{
+		$data = $this->request->data('fornecedor');
+
+		$this->loadModel('Fornecedore');
+
+		$data['usuario_id'] = $this->instancia;
+		$data['ativo'] = 1;
+		
+		if (!$this->Fornecedore->save($data)) {
+			$this->Session->setFlash('Ocorreu um erro ao inserir o fornecedor');
+			return $this->redirect('/financeiro/listar_cadastros');
+		}
+
+		$this->Session->setFlash('Fornecedor inserido com sucesso!');
+		return $this->redirect('/financeiro/listar_cadastros');		
+	}
+
+	public function adicionar_transacao()
+	{
+		$transacao = $this->request->data('transacao');
+
+		$transacao['valor_pago'] = 0;
+		$transacao['ativo'] = 1;
+		$transacao['usuario_id'] = $this->instancia;
+
+		$this->loadModel('LancamentoVenda');
+
+		if (!$this->LancamentoVenda->save($transacao)) {
+			$this->Session->setFlash('Ocorreu um erro ao cadastrar o lançamento');
+			return $this->redirect('/financeiro/listar_cadastros');
+		}
+
+		$this->Session->setFlash('Lançamento inserido com sucesso!');
 		return $this->redirect('/financeiro/listar_cadastros');
 	}
 

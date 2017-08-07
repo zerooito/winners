@@ -46,18 +46,7 @@ Caracteristicas de Desenvolvimento
   - Diversas plugins disponiveis devido ao framework utilizado
 Para instalar as dependencias você deve instalar o composer e depois rodar o comando "composer install", pronto.
 
-Demo
-=======
-Para acessar a versão demo do nosso ecommerce use os dados abaixo;
-
-http://www.xbrand.com.br
-
-Para acessar o painel de admin use
-
-http://www.ciawn.com.br/home/login
-
-Email: admin@admin.com
-Senha: 123456
+![winners-login](https://user-images.githubusercontent.com/7466894/29029796-3c8264aa-7b5f-11e7-9883-74c0d22cb44e.jpg)
 
 Contribuindo
 =======

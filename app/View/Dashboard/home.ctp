@@ -10,35 +10,35 @@
 </div>
 <!-- /#page-wrapper -->
 <script type="text/javascript">
-    $(function () {
-    $('#container').highcharts({
-        title: {
-            text: 'Gráfico de Vendas',
-            x: -20 //center
-        },
-        xAxis: {
-            categories: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Domingo']
-        },
-        yAxis: {
+    $(function() {
+        $('#container').highcharts({
             title: {
-                text: 'Valor R$'
+                text: 'Gráfico de Vendas',
+                x: -20 //center
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valuePrefix: 'R$ '
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [<?php echo $vendas; ?>]
+            xAxis: {
+                categories: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Domingo']
+            },
+            yAxis: {
+                title: {
+                    text: 'Valor R$'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valuePrefix: 'R$ '
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [<?php echo $vendas; ?>]
+        });
     });
-});
 </script>

@@ -72,15 +72,22 @@ class ProdutoController extends AppController{
 						$value = '<img src="/images/no_image.png" width="120" height="120">';
 					}
 				}
+
+				if ($aColumns[$i] == "preco") 
+				{
+					$value = 'R$ ' . number_format($value, 2, ',', '.');
+				}
 				
 				$row[] = $value;
 			}
 
 			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
 
+			$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
+
 			$btImage = ' <a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fa fa-picture-o"></i></a>';
 
-			$row[] = $btEdit . $btImage;
+			$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage;
 
 			$output['aaData'][] = $row;
 		}
@@ -767,6 +774,94 @@ class ProdutoController extends AppController{
 
     	return $errors;
     }
+
+    public function movimentacoes_estoque($produtoId) {
+    	$this->layout = 'wadmin';
+
+    	$this->set('id', $produtoId);
+    }
+
+	public function listar_cadastros_estoque_ajax($produtoId) {
+		$this->loadModel('VendaItensProduto');
+
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'id', 'produto_id', 'venda_id', 'quantidade_produto' );
+		
+		$conditions = array(
+			'conditions' => array(
+				'VendaItensProduto.ativo' => 1,
+				'VendaItensProduto.produto_id' => $produtoId
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'VendaItensProduto.produto_id = Produto.id',
+			        ),
+			    )
+			),
+	        'fields' => array('VendaItensProduto.*, Produto.*'),
+		);
+
+		$allProdutos = $this->VendaItensProduto->find('all', $conditions);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('VendaItensProduto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['VendaItensProduto.id LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->VendaItensProduto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				if ($aColumns[$i] == "produto_id") {
+					$value = $produto['Produto']['nome'];
+				} else if ($aColumns[$i] == "quantidade_produto") {
+					$value = -$produto['VendaItensProduto'][$aColumns[$i]];
+				} else {
+					$value = $produto['VendaItensProduto'][$aColumns[$i]];
+				}
+				
+				$row[] = $value;
+			}
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
 
     public function salvar_imagem($id) {
 		$image  = $_FILES['arquivo'];

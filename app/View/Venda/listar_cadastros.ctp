@@ -46,14 +46,13 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-    
-                    <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;">
-                        <i class="fa fa-plus">
-                            <a href="/venda/adicionar_cadastro" style="color: #FFF;"> 
-                                Adicionar venda
-                            </a>
-                        </i>
-                    </button>
+
+                    <a href="/venda/adicionar_cadastro" class="btn btn-primary" 
+                        style="margin-bottom: 10px; width:100%;color: #FFF;"
+                    > 
+                        <i class="fa fa-plus"></i>
+                        Adicionar venda
+                    </a>
 
                     <hr>
 

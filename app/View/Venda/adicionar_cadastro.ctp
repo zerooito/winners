@@ -22,7 +22,9 @@
                                             <label>Produto</label>
                                             <select class="form-control" id="produto_item">
                                                 <?php foreach ($produtos as $produto): ?>
-                                                    <option value="<?php echo $produto['Produto']['id'] ?>"><?php echo $produto['Produto']['nome'] ?></option>
+                                                    <option value="<?php echo $produto['Produto']['id'] ?>">
+                                                        <?php echo $produto['Produto']['nome'] ?>
+                                                    </option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -32,14 +34,15 @@
                                         <div class="form-group">
                                             <label>Quantidade</label>
                                             <input class="form-control" id="quantidade_produto">
-                                            <!-- <p class="help-block">Example block-level help text here.</p> -->
                                         </div>
 
                                         <a href="javascript:;" class="btn btn-primary" id="adicionar_item" onclick="adicionar_produto();">Adicionar Item</a>
                                     </div>
 
                                 </div>
+                                
                                 <hr>
+
                                 <div class="row" id="opcoes_pagamento">
 
                                     <div class="col-lg-12">
@@ -79,7 +82,24 @@
 
                                         <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Finalizar Venda</a>
                                     </div>
+                                </div>
 
+                                <hr>
+
+                                <div class="row" id="opcoes_cliente">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Cliente</label>
+                                            <select class="form-control" id="cliente" name="venda[cliente_id]">
+                                                <option value="">Escolha o Cliente</option>
+                                                <?php foreach ($clientes as $cliente): ?>
+                                                    <option value="<?php echo $cliente['Cliente']['id']; ?>">
+                                                        <?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>  
 
@@ -482,6 +502,7 @@
                 $('#valor-original').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
                 $('#quantidade_produto').val('');
+
                 $('#valor_desconto_porcento').removeAttr('disabled')
                 $('#valor_desconto_fixo').removeAttr('disabled')
             }
@@ -544,8 +565,8 @@
 
         novo_valor_venda = parseFloat(valor_venda_atual) - parseFloat(valor_desconto);
 
-        $('#desconto').val(parseFloat(valor_venda_atual) - parseFloat(valor_desconto));
-        $('#desconto-label').html(number_format(parseFloat(valor_venda_atual) - parseFloat(valor_desconto)  , 2, ',', '.'));
+        $('#desconto').val(parseFloat(valor_desconto));
+        $('#desconto-label').html(number_format(parseFloat(valor_desconto), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
         $('#valor_desconto_porcento').val('');

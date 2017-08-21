@@ -23,7 +23,6 @@
                                     <th>Produto</th>
                                     <th>Venda</th>
                                     <th>Quantidade</th>
-                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>   

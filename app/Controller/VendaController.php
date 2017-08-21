@@ -285,19 +285,20 @@ class VendaController extends AppController {
 		
 		if (!$salvar_venda) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');
-			$this->redirect('/venda/adicionar_cadastro');
+			return $this->redirect('/venda/adicionar_cadastro');
 		}
 
 		$this->Session->write('UltimoIdVendaSalvo', $salvar_venda['id']);
 		
 		$this->Session->setFlash('Venda salva com sucesso');
-		$this->redirect('/venda/adicionar_cadastro');
+		return $this->redirect('/venda/adicionar_cadastro');
 	}
 
 	public function calcular_valor_venda($produtos) {
 		$this->loadModel('Produto');
 
 		(float) $preco = 0.00;
+
 		foreach ($produtos as $indice => $item) {
 			$produto = $this->Produto->find('all',
 				array('conditions' =>
@@ -357,7 +358,7 @@ class VendaController extends AppController {
 		$informacoes['desconto']   = (float) @$informacoes['desconto'];
 		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
 		$informacoes['orcamento']  = @$informacoes['orcamento'];
-
+		
 		if (!$this->Venda->save($informacoes)) {
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
 			return false;
@@ -373,7 +374,7 @@ class VendaController extends AppController {
 
 		$objLancamentoVendasController = new LancamentoVendasController();
 
-		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario']) === false) {
+		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario'], $informacoes['orcamento']) === false) {
 			return false;
 		}
 
@@ -504,9 +505,6 @@ class VendaController extends AppController {
 		
 		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
 
-		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
-		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($dados_venda['Venda']['desconto'], 2, ',', '.') . "\n\n";
-		
 		$dados_lancamento = $this->LancamentoVenda->find('first',
 			array('conditions' => 
 				array(
@@ -516,8 +514,6 @@ class VendaController extends AppController {
 			)
 		);
 
-		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
-		
 		$produtos = $this->VendaItensProduto->find('all', 
 			array('conditions' =>
 				array(
@@ -527,6 +523,7 @@ class VendaController extends AppController {
 		);
 
 		$itens = array();
+		$totalGeral = 0.00;
 		foreach ($produtos as $i => $item) {
 			$produto = $this->Produto->find('first',
 				array('conditions' =>
@@ -536,6 +533,8 @@ class VendaController extends AppController {
 
 			$total = $produto['Produto']['preco'] * $item['VendaItensProduto']['quantidade_produto'];
 
+			$totalGeral += $total;
+
 			$ImpressaoFiscalController->corpoTxt .= ""
 						   . "Produto: " . $produto['Produto']['nome']
 						   . "\nQuantidade: " . $item['VendaItensProduto']['quantidade_produto'] 
@@ -543,6 +542,13 @@ class VendaController extends AppController {
 						   . "\nTotal: R$ " . number_format($total, 2, ',', '.')
 						   . "\n--------------------------\n";
 		}
+
+		$desconto = $totalGeral - $dados_venda['Venda']['valor'];
+
+		$ImpressaoFiscalController->corpoTxt .= "Valor Total: " . number_format($totalGeral, 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Valor Pago: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
+		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($desconto, 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
 
 		$file = $ImpressaoFiscalController->gerar_arquivo();
 		

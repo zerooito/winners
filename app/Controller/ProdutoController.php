@@ -909,4 +909,25 @@ class ProdutoController extends AppController{
     	exit;
     }
 
+    public function produto_item()
+    {
+		$search = strip_tags(trim($_GET['q'])); 
+
+		$conditions['limit'] = 10;
+		$conditions['conditions']['Produto.nome LIKE '] = '%' . $search . '%';
+		
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$data = [];
+		foreach ($produtos as $produto) {
+			$data[] = [
+				'id' => $produto['Produto']['id'],
+				'text' => $produto['Produto']['nome']
+			];
+		}
+
+		echo json_encode($data);
+		exit;
+    }
+
 }

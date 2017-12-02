@@ -20,13 +20,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Produto</label>
-                                            <select class="form-control" id="produto_item">
-                                                <?php foreach ($produtos as $produto): ?>
-                                                    <option value="<?php echo $produto['Produto']['id'] ?>">
-                                                        <?php echo $produto['Produto']['nome'] ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
+                                            <select class="form-control" id="produto_item"></select>
                                         </div>
                                     </div>
 
@@ -322,9 +316,7 @@
 
 <script type="text/javascript">
 
-    /* ATALHOS TECLADO */
-    
-  
+    /* ATALHOS TECLADO */  
     $('body').keydown(function(e){  
         var evt = evt || window.event;
         
@@ -570,6 +562,31 @@
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
         $('#valor_desconto_porcento').val('');
+    });
+
+    $(window).load(function(){
+        $('#produto_item').select2({        
+            ajax: {
+                url: "/produto/produto_item",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // parse the results into the format expected by Select2.
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
     });
 
     $("#quantidade_produto").keyup(function() {

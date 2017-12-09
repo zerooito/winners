@@ -913,7 +913,7 @@ class ProdutoController extends AppController{
     {
 		$search = strip_tags(trim($_GET['q'])); 
 
-		$conditions['limit'] = 10;
+		$conditions['limit'] = 25;
 		$conditions['conditions']['Produto.nome LIKE '] = '%' . $search . '%';
 		
 		$produtos = $this->Produto->find('all', $conditions);

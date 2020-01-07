@@ -76,14 +76,17 @@ class UsuarioController extends AppController{
 	//se o email estiver livre retorna false, senão retorna true
 	public function verificar_email($email){
 		$this->layout = 'ajax';
-		
+
 		if(empty($email)){
 			$email = $this->request->data['email'];
 		}
 
 		$this->loadModel('Usuario');
+
 		$resposta = $this->Usuario->find('count',
-											array('conditions' => array('Usuario.email' => $email))
+											array(
+												'conditions' => array('Usuario.email' => $email)
+											)
 										);
 		$this->set('resposta', $resposta);
 
@@ -109,6 +112,15 @@ class UsuarioController extends AppController{
 
 	public function novo_usuario() {
 		$dados = $this->request->data('dados');
+
+		if (isset($dados['senha']) && !empty($dados['senha_repeat'])) {
+			if ($dados['senha'] != $dados['senha_repeat']) {
+				$this->Session->setFlash('Senhas digitadas não estão corretas.');
+				$this->redirect('/');
+			}
+		}
+		
+		unset($dados['senha_repeat']);
 		$dados['senha'] = sha1($dados['senha']);
 
 		if ($this->verificar_email($dados['email']) !== false) {
@@ -143,7 +155,7 @@ class UsuarioController extends AppController{
 	public function notificar_cadastro($nome, $email) {
 		$headers = "From: noreply@ciawn.com.br\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
 		$headers .= "Reply-To: $email_address";	
-		mail('winnersdevelopers@gmail.com, jr.design_2010@hotmail.com, reginaldo@ciawn.com.br, victor@ciawn.com.br', 'Notificação de cadastro', 'O usuario ' . $nome . ' email ' . $email . ' ', $headers);
+		mail('winnersdevelopers@gmail.com, reginaldo@ciawn.com.br', 'Notificação de cadastro', 'O usuario ' . $nome . ' email ' . $email . ' ', $headers);
 	}
 
 	public function relacionar_modulos_teste($id) {

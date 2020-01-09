@@ -122,7 +122,16 @@ class UsuarioController extends AppController{
 		
 		unset($dados['senha_repeat']);
 		$dados['senha'] = sha1($dados['senha']);
-
+		$dados['name'] = $dados['nome'];
+		$dados['loja'] = 0;
+		$dados['loja_active'] = 0;
+		$dados['layout_loja'] = 'default';
+		$dados['cep_origem'] = '';
+		$dados['descricao'] = '';
+		$dados['email_pagseguro'] = '';
+		$dados['folder_view'] = '';
+		$dados['token_pagseguro'] = '';
+		
 		if ($this->verificar_email($dados['email']) !== false) {
 			$this->Session->setFlash('Email já cadastrado no sistema!');
 			$this->redirect('/');
@@ -179,7 +188,12 @@ class UsuarioController extends AppController{
 			),
 			4 => array(
 				'id_usuario' => $id,
-				'id_modulo' => 4,
+				'id_modulo' => 11,
+				'ativo' => 1
+			),
+			4 => array(
+				'id_usuario' => $id,
+				'id_modulo' => 13,
 				'ativo' => 1
 			)		
 		);

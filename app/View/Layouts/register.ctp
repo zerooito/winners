@@ -70,42 +70,62 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
-
                 <div class="login-panel text-center">
                     <img src="/images/logo.png" style="width: 230px;" class="logo">
                 </div>
-
             </div>
             
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="register-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Entre com seus dados
-                        <?php if ($admin): ?>
-                            <b>FRAMEWORK</b>
-                        <?php endif; ?>
-                        </h3>
+                        <h3 class="panel-title">Cadastre-se</h3>
                     </div>
                     <div class="panel-body">
-
-
-                        <form <?php if ($admin) { echo 'action="/admin/processar_login"'; } else { echo 'action="/usuario/processar_login"'; }?> role="form" id="form-login" method="post">
+                        <form action="/usuario/novo_usuario" role="form" id="form-login" method="post">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Digite seu e-mail:</label>
+                                        <input class="form-control" placeholder="E-mail" name="dados[email]" type="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Digite seu nome:</label>
+                                        <input class="form-control" placeholder="Nome" name="dados[nome]" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Digite seu telefone:</label>
+                                        <input class="form-control" placeholder="Nome" name="dados[telefone]" type="text" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-md-12">
+                                    <div class="form-group">
+                                        <label>Digite sua senha:</label>
+                                        <input class="form-control" placeholder="Senha" name="dados[senha]" type="password" value="" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-md-12">
+                                    <div class="form-group">
+                                        <label>Repita sua senha:</label>
+                                        <input class="form-control" placeholder="Repita a senha" name="dados[senha_repeat]" type="password" value="" required>
+                                    </div>
+                                </div>
+                            </div>
                             <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="dados[email]" type="email" autofocus required>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Senha" name="dados[senha]" type="password" value="" required>
-                                </div>
-                                <div class="checkbox">
-                                    <a href="#">Esqueceu a sua senha ?</a> <br>
-                                    <a href="/cadastre-se">Quero me cadastrar</a> <br>
+                                <div class="checkbox pull-right">
+                                    <a href="/home/login">Já possui cadastro?</a>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block" id="login">Login</a>
+                                <button type="submit" class="btn btn-lg btn-success btn-block" id="cadastrar">Cadastrar</a>
                             </fieldset>
                         </form>
-
                     </div>
                 </div>
             </div>

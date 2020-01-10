@@ -47,7 +47,7 @@ class VendaController extends AppController {
 		$produto = $this->Produto->find('all',
 			array('conditions' =>
 				array('ativo' => 1,
-					  'id_alias' => $dados['codigo_produto']
+					'id_alias' => $dados['codigo_produto']
 				)
 			)
 		);

@@ -913,6 +913,8 @@ class ProdutoController extends AppController{
     {
 		$search = strip_tags(trim($_GET['q'])); 
 
+		$conditions['usuario_id'] = $this->instancia;
+		$conditions['ativo'] = 1;
 		$conditions['limit'] = 25;
 		$conditions['conditions']['Produto.nome LIKE '] = '%' . $search . '%';
 		

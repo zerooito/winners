@@ -212,24 +212,27 @@ class UsuarioController extends AppController{
 
 		$sale_without_stock = $this->request->data['sale_without_stock'];
 
-		$template = $_FILES['template'];
-		
-		$layout_loja = $this->request->data['layout_loja'];
+		$template = isset($_FILES['template']) ? $_FILES['template'] : '';
+		$layout_loja = isset($this->request->data['layout_loja']) ? $this->request->data['layout_loja'] : '';
 		
 		if (!empty($template['name']) && isset($template['name']))
 			$layout_loja = $this->uploadZipTemplate($template);
 		
 		$data = array(
 			'estoque_minimo' => $estoque_minimo, 
-			'sale_without_stock' => $sale_without_stock,
-			'loja_active' => $this->request->data['loja_active'],
-			'loja' => $this->request->data['loja'],
-			'layout_loja' => $layout_loja	,
-			'cep_origem' => $this->request->data['cep_origem'],
-			'descricao' => $this->request->data['descricao'],
-			'token_pagseguro' => $this->request->data['token_pagseguro'],
-			'email_pagseguro' => $this->request->data['email_pagseguro']
+			'sale_without_stock' => $sale_without_stock
 		);
+
+		$data['loja'] = 0;
+		$data['loja_active'] = 0;
+		$data['layout_loja'] = 'default';
+		$data['cep_origem'] = '';
+		$data['descricao'] = '';
+		$data['email_pagseguro'] = '';
+		$data['folder_view'] = '';
+		$data['token_pagseguro'] = '';
+		$data['template'] = '';
+		
 
 		$this->loadModel('Usuario');
 

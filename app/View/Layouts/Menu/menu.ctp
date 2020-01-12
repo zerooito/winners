@@ -1,41 +1,59 @@
 
-<div class="navbar-default sidebar" role="navigation">
-    <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
-<!--             <li class="sidebar-search">
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="Procurar...">
-                    <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </span>
-                </div>
-                <!-- /input-group -->
-            <!-- </li> -->
-            <li>
-                <a href="/dashboard/home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-            </li>
-            <?php
-                foreach ($modulos as $i => $valor) {
-                    echo '<li>';
-                        echo '<a href="/'.$valor['modulo'].'/'.$valor['funcao'].'"><i class="fa '.$valor['icone'].' fa-fw"></i> '.$valor['nome'].'</a>';
-                    echo '</li>';
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">
+            <?php 
+                if ($this->Session->read('Usuario') != "") {
+                    echo $this->Session->read('Usuario.nome'); 
+                } else {
+                    echo "Winners Desenvolvimento";                
                 }
             ?>
-            <!--             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Vendas<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="flot.html">Ecommerce</a>
-                    </li>
-                    <li>
-                        <a href="/venda/pdv/">PDV</a>
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
-            <!-- </li> -->
-        </ul>
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+    <a class="nav-link" href="/dashboard/home">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Módulos
     </div>
-    <!-- /.sidebar-collapse -->
-</div>
+
+    <?php
+        foreach ($modulos as $i => $valor) {
+            echo '<li class="nav-item">';
+                echo '<a class="nav-link" href="/'.$valor['modulo'].'/'.$valor['funcao'].'">';
+                echo '<i class="fas fa-fw ' . $valor['icone'] . '"></i>';
+                echo '<span>' . $valor['nome'] . '</span></a>';
+            echo '</li>';
+        }
+    ?> 
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<!-- End of Sidebar -->

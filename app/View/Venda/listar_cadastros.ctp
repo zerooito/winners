@@ -99,10 +99,6 @@
 
 <iframe id="textfile" src="" style="display: none;"></iframe>
 
-<!-- DataTables JavaScript -->
-<?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
-<?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
-
 <script type="text/javascript">
     var url;
     

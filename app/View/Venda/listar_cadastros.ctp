@@ -1,18 +1,16 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Venda - Listar Cadastros</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Vendas - Listar Cadastros</h1>
     </div>
-    <!-- /.row -->
+
+    <!-- Content Row -->
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Listagem das vendas
-                </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -26,9 +24,7 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                     <!-- /.table-responsive -->
@@ -103,11 +99,14 @@
 
 <iframe id="textfile" src="" style="display: none;"></iframe>
 
+<!-- DataTables JavaScript -->
+<?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
+<?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
+
 <script type="text/javascript">
     var url;
     
     $(document).ready(function(){
-        
         var datatable = $('#dataTables-vendas').dataTable({
             "bServerSide": true,
             "iDisplayStart": 0,
@@ -115,7 +114,6 @@
             "aaSorting": [[ 0, "desc" ]],
             "sAjaxSource": "/venda/listar_cadastros_ajax"
         });
-
     });
 
     function printSalesPeriod() {

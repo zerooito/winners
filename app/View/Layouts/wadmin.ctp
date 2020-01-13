@@ -18,6 +18,57 @@
   <!-- Custom styles for this template-->
   <link href="/sb-admin-2/css/sb-admin-2.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+  <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!--Start of Zopim Live Chat Script-->
+  <script type="text/javascript">
+  function detectmob() {
+      if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+        return true;
+      } else {
+        return false;
+      }
+  }
+
+  if (detectmob()) {
+      window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+      d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+      _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+      $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
+      type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+  }
+  </script>
+  <!--End of Zopim Live Chat Script-->
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-60234652-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $('select').select2();
+      });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -84,7 +135,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; Winners <?php echo date('Y'); ?></span>
           </div>
         </div>
       </footer>
@@ -119,13 +170,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="/sb-admin-2/vendor/jquery/jquery.min.js"></script>
-  <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="/sb-admin-2/js/sb-admin-2.min.js"></script>

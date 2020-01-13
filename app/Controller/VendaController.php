@@ -137,10 +137,10 @@ class VendaController extends AppController {
 						$value = ucwords($value);
 				} else if ($aColumns[$i] == "actions") {
 		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
-		            $value .= '<i class="fa fa-file-text" aria-hidden="true"></i>';
+		            $value .= '<i class="far fa-sticky-note"></i>';
 		            $value .= '</a> ';
 
-					$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="fa fa-times"></i></a>';
+					$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';
 				} else if ($aColumns[$i] == "valor") { 
 					$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
 				} else {

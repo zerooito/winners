@@ -1,11 +1,12 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Cliente - Listar Cadastros</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Clientes - Listar Cadastros</h1>
     </div>
+
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-9">
@@ -74,6 +75,7 @@
                 <div class="panel-body">
                     <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/cliente/adicionar_cliente" style="color: #FFF;"> Adicionar Cliente</a></i>
                 </div>
+                <hr>
                 <div class="panel-body">
                     <button type="button" class="btn btn-info"><i class="fa fa-export"><a href="/cliente/exportar_clientes" style="color: #FFF;"> Exportar Clientes</a></i>
                 </div>

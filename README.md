@@ -15,7 +15,9 @@ Instalação
 Para instalar a ultima versão no composer você pode rodar o seguinte comando.
 
 `cp app/Config/database.example.php app/Config/database.php`
+
 `composer install`
+
 `cd app/webroot && php -S localhost:8000`
 
 Contribuindo

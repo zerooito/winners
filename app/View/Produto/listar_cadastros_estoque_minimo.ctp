@@ -1,11 +1,12 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Produto - Listar Cadastros Estoque Minimo</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Produtos - Estoque minimo</h1>
     </div>
+
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-9">
@@ -47,7 +48,7 @@
                 <div class="panel-body">
 
                     <div class="row" style="padding-left:10px;padding-right:10px;">
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-pdf-o"><a href="/produto/baixar_estoque_minimo_pdf" style="color: #FFF;"> Baixar como PDF</a></i></button>
+                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-pdf-o"><a href="/produto/baixar_estoque_minimo_pdf" style="color: #FFF;" target="_blank"> Baixar como PDF</a></i></button>
                     </div>
 
                 </div>

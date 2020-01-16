@@ -1,20 +1,15 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                Pedidos cliente <?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2']; ?>
-            </h1>
-        </div>
-        <!-- /.col-lg-12 -->
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Pedidos cliente <?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2']; ?></h1>
     </div>
+
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Listagem dos Clientes
-                </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">

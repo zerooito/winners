@@ -122,7 +122,8 @@ class UsuarioController extends AppController{
 		
 		unset($dados['senha_repeat']);
 		$dados['senha'] = sha1($dados['senha']);
-		$dados['name'] = $dados['nome'];
+		$dados['name'] = $dados['nome1'] . ' ' . $dados['nome2'];
+		$dados['nome'] = $dados['nome1'] . ' ' . $dados['nome2'];
 		$dados['loja'] = 0;
 		$dados['loja_active'] = 0;
 		$dados['layout_loja'] = 'default';

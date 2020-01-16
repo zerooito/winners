@@ -1,70 +1,51 @@
 
-<div id="page-wrapper">
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Financeiro - Geral</h1>
+    </div>
+
+    <!-- /.row -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Financeiro - Geral</h1>
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
-    
-    <div class="row">   
         <div class="col-lg-4">  
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <i class="fa fa-level-down fa-5x"></i>
-                        </div>
-                        <div class="col-xs-10 text-right">
-                            <div class="huge">
-                                <b>R$</b> <?php echo number_format($lancamentos['a_pagar'], 2, ',', '.'); ?>
-                            </div>
-                            <div>A Pagar</div>
-                        </div>
+            <div class="text-right">
+                <div class="card bg-danger text-white shadow">
+                    <div class="card-body">
+                        <b>R$</b> <?php echo number_format($lancamentos['a_pagar'], 2, ',', '.'); ?>
+                        <div class="text-white-50 small">A Pagar</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-4">  
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <i class="fa fa-thumbs-up fa-5x"></i>
-                        </div>
-                        <div class="col-xs-10 text-right">
-                            <div class="huge">
-                                <b>R$</b> <?php echo number_format($lancamentos['pago'], 2, ',', '.'); ?>
-                            </div>
-                            <div>Pago</div>
-                        </div>
+            <div class="text-right">
+                <div class="card bg-success text-white shadow">
+                    <div class="card-body">
+                        <b>R$</b> <?php echo number_format($lancamentos['pago'], 2, ',', '.'); ?>
+                        <div class="text-white-50 small">Pago</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-4">  
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-12 text-right">
-                            <div class="huge">
-                                <b>R$</b> <?php echo number_format($lancamentos['total'], 2, ',', '.'); ?><br>
-                                <small style="font-size:12px;">-<b>R$</b> <?php echo number_format($lancamentos['total_saidas'], 2, ',', '.'); ?></small>
-                            </div>
-                        </div>
+            <div class="text-right">
+                <div class="card bg-info text-white shadow">
+                    <div class="card-body">
+                        <b>R$</b> <?php echo number_format($lancamentos['total'], 2, ',', '.'); ?><br>
+                        <div class="text-white-50 small"><b>R$</b> <?php echo number_format($lancamentos['total_saidas'], 2, ',', '.'); ?></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br>
 
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Transações Financeiras
-                </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -148,7 +129,7 @@
                         <select id="fornecedor" style="width:100%;"></select>
                     </div>
 
-                    <a href="javascript:;" style="margin-top:10px;width:100%;" class="btn btn-default" id="clear-filter"> 
+                    <a href="javascript:;" style="margin-top:10px;width:100%;" class="btn btn-primary" id="clear-filter"> 
                         <i class="fa fa-eraser"></i> 
                         Limpar Filtros
                     </a>

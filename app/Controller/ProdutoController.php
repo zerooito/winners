@@ -81,11 +81,11 @@ class ProdutoController extends AppController{
 				$row[] = $value;
 			}
 
-			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="text-white fas fa-pencil-alt"></i></a>';
 
 			$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
 
-			$btImage = ' <a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fa fa-picture-o"></i></a>';
+			$btImage = ' <a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
 
 			$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage;
 

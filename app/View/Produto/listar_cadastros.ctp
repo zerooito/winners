@@ -1,11 +1,12 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Produto - Listar Cadastros</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Produtos - Listar Cadastros</h1>
     </div>
+
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-9">
@@ -101,7 +102,6 @@
 <script type="text/javascript">
     
     $(document).ready(function(){
-        
         datatable = $('#dataTables-produtos').dataTable({
             "bServerSide": true,
             "iDisplayStart": 0,
@@ -109,7 +109,6 @@
             "aaSorting": [[ 0, "desc" ]],
             "sAjaxSource": "/produto/listar_cadastros_ajax"
         });
-
     });
 
     function fnCallback() {

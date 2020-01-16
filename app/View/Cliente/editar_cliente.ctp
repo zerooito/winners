@@ -1,5 +1,12 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-<div id="page-wrapper">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Editar cliente <?php echo $cliente[0]['Cliente']['nome1'] . ' ' . $cliente[0]['Cliente']['nome2']; ?></h1>
+    </div>
+
+    <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default" style="margin-top: 12px;">
@@ -44,7 +51,9 @@
                             </div>
                             <!-- /.col-lg-6 (nested) -->
                         </div>
+
                         <input type="hidden" value="<?php echo $cliente[0]['Cliente']['id']; ?>" name="dados[id]"/>
+                        
                         <button type="submit" class="btn btn-success">Editar Cliente</button>
                         <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
                     </form>

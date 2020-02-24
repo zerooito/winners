@@ -563,6 +563,27 @@ class VendaController extends AppController {
 		exit;
 	}
 
+	public function obter_total_vendas_periodo_atual($id_usuario, $from, $to)
+	{
+		$conditions = array(
+			'conditions' => array(
+				'Venda.id_usuario' => $id_usuario,
+				'Venda.data_venda >=' => $from,
+				'Venda.data_venda <=' => $to,
+				'Venda.orcamento <>' => 1
+			),
+			'fields' => array(
+				'Venda.valor'
+			)
+		);
+
+		$vendas = $this->Venda->find('all', $conditions);
+
+		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
+
+		return $valorTotalVendasPeriodo;
+	}
+
 	public function relatorio() {
 		$this->layout = 'wadmin';
 

@@ -1,8 +1,31 @@
 
 <div class="container home">
 	<div class="row">
+		<div class="col-sm-4">
+			<ul>
+				<li style="list-style: none;">				
+					<img src="/images/cityscape.png" style="float: left;padding-top: 5px;">
+
+					<p style="float: left;width: 70%;margin-left: 22px;font-size: 18px;">
+						Solução eficiente para seu negócio. 100% escalável, customizavel e eficiente.
+					</p>
+				</li>
+				<li style="list-style: none;">				
+					<p style="float: left;width: 70%;margin-right: 20px;font-size: 18px;margin-top: 20px;">
+						Código opensource, licença MIT, livre para compatilhar e redistribuir.
+					</p>
+
+					<img src="/images/settings.png" style="float: left;padding-top: 25px;">
+				</li>
+			</ul>
+		</div>
+		<div class="col-sm-8">
+			<iframe width="750" height="350" src="https://www.youtube.com/embed/fqAVAmts3sg" frameborder="0" allowfullscreen autoplay></iframe>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-sm-12 text-center">
-			<h1>Winners sua plataforma E-commerce OpenSource</h1>
+			<h2>Winners sua plataforma ERP opensource 100% modular</h2>
 		</div>
 	</div>
 	<div class="row">

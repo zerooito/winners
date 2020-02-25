@@ -47,7 +47,7 @@ class VendaController extends AppController {
 		$produto = $this->Produto->find('all',
 			array('conditions' =>
 				array('ativo' => 1,
-					  'id_alias' => $dados['codigo_produto']
+					'id_alias' => $dados['codigo_produto']
 				)
 			)
 		);
@@ -61,27 +61,104 @@ class VendaController extends AppController {
 	}
 
 	public function listar_cadastros() {
+		$this->layout = 'wadmin';
+	}
+
+	public function listar_cadastros_ajax() {
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'id', 'valor', 'forma_pagamento', 'data_venda', 'actions' );
+
 		$this->loadModel('LancamentoVenda');
 
-		$this->layout = 'wadmin';
-
-		$vendas = $this->Venda->find('all',
-			array('conditions' =>
-				array(
-					'Venda.ativo' => 1,
-					'Venda.id_usuario' => $this->instancia,
-					'Venda.orcamento' => 0
-				)
+		$conditions = array('conditions' =>
+			array(
+				'Venda.ativo' => 1,
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.orcamento' => 0
 			)
 		);
 
-		foreach ($vendas as $i => $venda) {
-			$lancamento = $this->LancamentoVenda->find('first', array('conditions' => array('LancamentoVenda.venda_id' => $venda['Venda']['id'])));
-
-			$vendas[$i]['Lancamento'] = (isset($lancamento['LancamentoVenda'])) ? $lancamento['LancamentoVenda'] : array();
+		$todasVendas = $this->Venda->find('all',
+			$conditions,
+			array('order' => array('Venda.id DESC'))
+		);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
 		}
 
-		$this->set('vendas', $vendas);
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Venda.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Venda.id LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$vendas = $this->Venda->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($todasVendas),
+			"iTotalRecords" => count($vendas),
+			"aaData" => array()
+		);
+
+		foreach ($vendas as $venda) {
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				if ($aColumns[$i] == "forma_pagamento") {
+					$lancamento = $this->LancamentoVenda->find('first', array(
+						'conditions' => array(
+								'LancamentoVenda.venda_id' => $venda['Venda']['id']
+							)
+						)
+					);
+
+					$value = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
+					
+					if (isset($value) && !empty($value))
+						$value = str_replace('_', ' ', $value);
+					
+					if (isset($value) && !empty($value))
+						$value = ucwords($value);
+				} else if ($aColumns[$i] == "actions") {
+		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
+		            $value .= '<i class="far fa-sticky-note"></i>';
+		            $value .= '</a> ';
+
+					$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';
+				} else if ($aColumns[$i] == "valor") { 
+					$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
+				} else {
+					$value = $venda['Venda'][$aColumns[$i]];
+				}
+				
+				$row[] = $value;
+			}
+
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $venda['Venda']['id'] . '"><i class="fa fa-pencil"></i></a>';
+
+			$row[] = $btEdit;
+
+			$output['aaData'][] = $row;
+		}
+
+		echo json_encode($output);
+		exit;
 	}
 
 	public function adicionar_cadastro() {
@@ -208,19 +285,20 @@ class VendaController extends AppController {
 		
 		if (!$salvar_venda) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');
-			$this->redirect('/venda/adicionar_cadastro');
+			return $this->redirect('/venda/adicionar_cadastro');
 		}
 
 		$this->Session->write('UltimoIdVendaSalvo', $salvar_venda['id']);
 		
 		$this->Session->setFlash('Venda salva com sucesso');
-		$this->redirect('/venda/adicionar_cadastro');
+		return $this->redirect('/venda/adicionar_cadastro');
 	}
 
 	public function calcular_valor_venda($produtos) {
 		$this->loadModel('Produto');
 
 		(float) $preco = 0.00;
+
 		foreach ($produtos as $indice => $item) {
 			$produto = $this->Produto->find('all',
 				array('conditions' =>
@@ -280,7 +358,7 @@ class VendaController extends AppController {
 		$informacoes['desconto']   = (float) @$informacoes['desconto'];
 		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
 		$informacoes['orcamento']  = @$informacoes['orcamento'];
-
+		
 		if (!$this->Venda->save($informacoes)) {
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
 			return false;
@@ -296,7 +374,7 @@ class VendaController extends AppController {
 
 		$objLancamentoVendasController = new LancamentoVendasController();
 
-		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario']) === false) {
+		if ($objLancamentoVendasController->salvar_lancamento($id_venda, $lancamento, $informacoes['valor'], $informacoes['id_usuario'], $informacoes['orcamento']) === false) {
 			return false;
 		}
 
@@ -427,8 +505,6 @@ class VendaController extends AppController {
 		
 		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
 
-		$ImpressaoFiscalController->corpoTxt .= "Valor: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n\n";
-		
 		$dados_lancamento = $this->LancamentoVenda->find('first',
 			array('conditions' => 
 				array(
@@ -438,8 +514,6 @@ class VendaController extends AppController {
 			)
 		);
 
-		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
-		
 		$produtos = $this->VendaItensProduto->find('all', 
 			array('conditions' =>
 				array(
@@ -449,6 +523,7 @@ class VendaController extends AppController {
 		);
 
 		$itens = array();
+		$totalGeral = 0.00;
 		foreach ($produtos as $i => $item) {
 			$produto = $this->Produto->find('first',
 				array('conditions' =>
@@ -458,6 +533,8 @@ class VendaController extends AppController {
 
 			$total = $produto['Produto']['preco'] * $item['VendaItensProduto']['quantidade_produto'];
 
+			$totalGeral += $total;
+
 			$ImpressaoFiscalController->corpoTxt .= ""
 						   . "Produto: " . $produto['Produto']['nome']
 						   . "\nQuantidade: " . $item['VendaItensProduto']['quantidade_produto'] 
@@ -465,6 +542,13 @@ class VendaController extends AppController {
 						   . "\nTotal: R$ " . number_format($total, 2, ',', '.')
 						   . "\n--------------------------\n";
 		}
+
+		$desconto = $totalGeral - $dados_venda['Venda']['valor'];
+
+		$ImpressaoFiscalController->corpoTxt .= "Valor Total: " . number_format($totalGeral, 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Valor Pago: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
+		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($desconto, 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
 
 		$file = $ImpressaoFiscalController->gerar_arquivo();
 		
@@ -476,6 +560,28 @@ class VendaController extends AppController {
 	public function clear_session_venda($id)
 	{
 		$this->Session->write('UltimoIdVendaSalvo', null);
+		exit;
+	}
+
+	public function obter_total_vendas_periodo_atual($id_usuario, $from, $to)
+	{
+		$conditions = array(
+			'conditions' => array(
+				'Venda.id_usuario' => $id_usuario,
+				'Venda.data_venda >=' => $from,
+				'Venda.data_venda <=' => $to,
+				'Venda.orcamento <>' => 1
+			),
+			'fields' => array(
+				'Venda.valor'
+			)
+		);
+
+		$vendas = $this->Venda->find('all', $conditions);
+
+		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
+
+		return $valorTotalVendasPeriodo;
 	}
 
 	public function relatorio() {

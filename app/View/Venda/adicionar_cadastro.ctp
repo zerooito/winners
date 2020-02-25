@@ -1,7 +1,13 @@
-<div id="page-wrapper">
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Vendas - PDV</h1>
+    </div>
+
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default" style="margin-top: 12px;">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     Dados da Venda 
 
@@ -20,11 +26,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Produto</label>
-                                            <select class="form-control" id="produto_item">
-                                                <?php foreach ($produtos as $produto): ?>
-                                                    <option value="<?php echo $produto['Produto']['id'] ?>"><?php echo $produto['Produto']['nome'] ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
+                                            <select class="form-control" id="produto_item"></select>
                                         </div>
                                     </div>
 
@@ -32,14 +34,15 @@
                                         <div class="form-group">
                                             <label>Quantidade</label>
                                             <input class="form-control" id="quantidade_produto">
-                                            <!-- <p class="help-block">Example block-level help text here.</p> -->
                                         </div>
 
                                         <a href="javascript:;" class="btn btn-primary" id="adicionar_item" onclick="adicionar_produto();">Adicionar Item</a>
                                     </div>
 
                                 </div>
+                                
                                 <hr>
+
                                 <div class="row" id="opcoes_pagamento">
 
                                     <div class="col-lg-12">
@@ -53,28 +56,53 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Desconto %</label>
-                                            <input class="form-control" id="valor_desconto">
-                                            <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+                                    <div class="col-lg-3">
+                                        <label>Desconto</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon3">%</span>
+                                            <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-3">
+                                        <label>Desconto</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon3">R$</span>
+                                            <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" value="0" name="venda[desconto]" id="desconto">
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Valor Pago</label>
                                             <input class="form-control moeda" id="valor_pago">
-                                            <!-- <p class="help-block">Example block-level help text here.</p> -->
                                         </div>
 
                                         <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Finalizar Venda</a>
                                     </div>
+                                </div>
 
+                                <hr>
+
+                                <div class="row" id="opcoes_cliente">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Cliente</label>
+                                            <select class="form-control" id="cliente" name="venda[cliente_id]">
+                                                <option value="">Escolha o Cliente</option>
+                                                <?php foreach ($clientes as $cliente): ?>
+                                                    <option value="<?php echo $cliente['Cliente']['id']; ?>">
+                                                        <?php echo $cliente['Cliente']['nome1'] . ' ' . $cliente['Cliente']['nome2']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>  
 
-                            <div class="col-lg-6"></div>
                             <div class="col-lg-6">
                                 <div class="jumbotron" style="padding-left: 15px;">
                                   <p>Valor total </p>
@@ -83,6 +111,11 @@
                                   <h3 id="desconto-label" data-troco="0.00" style="color: red">R$ 0.00</h3>
                                   <p>Valor troco</p>
                                   <h3 id="troco" data-troco="0.00" style="color: red">R$ 0.00</h3>
+
+                                  <hr>
+
+                                  <h5>Valor sem desconto </h5>
+                                  <h5 id="valor-original" data-preco="0.00" style="color: gray">R$ 0.00</h5>
                                 </div>                                
                             </div>
                             <!-- /.col-lg-6 (nested) -->
@@ -150,7 +183,8 @@
             <h3>Deseja imprimir cupom fiscal da última venda</h3>
           </div>
           <div class="modal-footer">
-            <a class="btn btn-success" href="javascript:printNotaNaoFiscal(<?php echo $vendaId; ?>);">Imprimir</a>
+            <a class="btn btn-info" href="javascript:printNotaNaoFiscal(<?php echo $vendaId; ?>);">Preparar Impressão</a>
+            <a href="javascript:;" style="display: none;" class="btn btn-success" id="download-txt-sale" download>Pronto Para Imprimir</a>
             <a class="btn btn-danger" href="javascript:hideModalNota(<?php echo $vendaId; ?>);">Cancelar</a>
           </div>
         </div>
@@ -287,9 +321,7 @@
 
 <script type="text/javascript">
 
-    /* ATALHOS TECLADO */
-    
-  
+    /* ATALHOS TECLADO */  
     $('body').keydown(function(e){  
         var evt = evt || window.event;
         
@@ -352,7 +384,6 @@
             dataType: "json",
             url: "/venda/clear_session_venda/" + id,
             error: function(data){
-                alert('Ocorreu um erro.');
                 console.log(data);
             },
             success: function(data){
@@ -373,7 +404,7 @@
             },
             success: function(data){
                 url = '/uploads/venda/fiscal/' + data['file'];
-                openInNewTab(url);
+                $('#download-txt-sale').css('display', 'initial').attr('href', url);
             }
         });
 
@@ -388,8 +419,6 @@
                 console.log(data);
             }
         });
-              
-        $('#showCupomUltimaVenda').modal('hide');
     }
 
     function openInNewTab(url) {
@@ -423,6 +452,9 @@
     }
 
     function adicionar_produto(id=null, quantidade_produto=null) {
+        $('#desconto').val('');
+        $('#desconto-label').html('R$ 0.00');
+        
         var produto_item        = (id != null) ? id : $('#produto_item').val();
         var quantidade_produto  = quantidade_produto != null ? quantidade_produto : parseFloat($('#quantidade_produto').val());
         var valor_venda_atual   = $('#valor-atual').attr('data-preco');
@@ -464,7 +496,12 @@
                 
                 $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
+                $('#valor-original').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
                 $('#quantidade_produto').val('');
+
+                $('#valor_desconto_porcento').removeAttr('disabled')
+                $('#valor_desconto_fixo').removeAttr('disabled')
             }
         });
     }
@@ -472,7 +509,7 @@
     function removeItem(id) {
         total = $('#' + id + '-total').html();
 
-        var valor_venda_atual   = $('#valor-atual').attr('data-preco');
+        var valor_venda_atual = $('#valor-atual').attr('data-preco');
 
         var novo_valor_venda = parseFloat(valor_venda_atual) - parseFloat(total);
 
@@ -506,15 +543,55 @@
         $('#form-venda').submit();
     }
 
-    $('#valor_desconto').change(function(){
-        var valor_venda_atual = $('#valor-atual').attr('data-preco');
-        var valor_desconto    = $('#valor_desconto').val();
+    $('#valor_desconto_porcento').change(function(){
+        var valor_venda_atual = $('#valor-original').attr('data-preco');
+        var valor_desconto    = $('#valor_desconto_porcento').val();
 
         novo_valor_venda = parseFloat(valor_venda_atual) - ((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100);
 
         $('#desconto').val((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100);
         $('#desconto-label').html(number_format(((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
+        $('#valor_desconto_fixo').val('');
+    });
+
+    $('#valor_desconto_fixo').change(function(){
+        var valor_venda_atual = $('#valor-original').attr('data-preco');
+        var valor_desconto    = $('#valor_desconto_fixo').val();
+
+        novo_valor_venda = parseFloat(valor_venda_atual) - parseFloat(valor_desconto);
+
+        $('#desconto').val(parseFloat(valor_desconto));
+        $('#desconto-label').html(number_format(parseFloat(valor_desconto), 2, ',', '.'));
+        $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+
+        $('#valor_desconto_porcento').val('');
+    });
+
+    $(window).load(function(){
+        $('#produto_item').select2({        
+            ajax: {
+                url: "/produto/produto_item",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // parse the results into the format expected by Select2.
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
     });
 
     $("#quantidade_produto").keyup(function() {

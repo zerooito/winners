@@ -2,62 +2,23 @@ Build Status
 =======
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/reginaldojunior/winners/badges/build.png?b=master)](https://scrutinizer-ci.com/g/reginaldojunior/winners/build-status/master) [![Issue Stats](http://issuestats.com/github/reginaldojunior/winners/badge/pr)](http://issuestats.com/github/reginaldojunior/winners) [![Issue Stats](http://issuestats.com/github/reginaldojunior/winners/badge/issue)](http://issuestats.com/github/reginaldojunior/winners)
 
+![winners-login](https://user-images.githubusercontent.com/7466894/29029796-3c8264aa-7b5f-11e7-9883-74c0d22cb44e.jpg)
+
+Dependências
+=======
+PHP 5.6
+Mysql 5
+Composer
+
 Instalação
 =======
 Para instalar a ultima versão no composer você pode rodar o seguinte comando.
 
-`composer require reginaldojunior/winners dev-master`
+`cp app/Config/database.example.php app/Config/database.php`
 
-O Problema
-=======
-Motivo pelo qual iniciei este projeto foi basicamente isso "eu queria fazer algo e tinha tempo livre". Porém ao passar do tempo notei que ele podia ser algo melhor que imaginei e comecei implementar varias features legais, como controle de estoque de produto, uma classe pai para lojas e etc...
+`composer install`
 
-Objetivo
-=======
-Ter uma sistema pronto no qual tenha os conceitos atuais de programação, entre eles, MVC, SOLID, TDD e outros. Tudo isso em cima de uma framework robusta nesse caso CakePHP, coisa que as plataforma atuais não tem, entre elas Wordpress, magento, opencart e etc...
-
-Erros Conhecidos
-=======
-Como iniciei o projeto tinha muito pouco conhecimento nos paradigmas citados acima, ela está com algumas GAMBIARRAS feita entre os controllers e os models
-
-Proximos Passos
-=======
-Meus próximos passos que espero para a plataforma e ter um auxilio da comunidade para o desenvolvimento, criando issues, testando e usando em produção ;)
-
-Winners - Plataforma OpenSource
-=======
-Essa plataforma tem como funcionalidade auxiliar o desenvolvedor a entregar novos projetos em pouco tempo.
-Algumas das caracteristicas delas são estas a seguir
-  - Venda
-  - Produto
-  - Usuarios
-  - Funcionarios
-  - Gerenciamento de Site
-  - Integração com o PagSeguro
-  - Emissão de DANFE
-  - Cliente
-  - API Cliente 
-  - Desenvolvimento de E-Commerce 
-Caracteristicas de Desenvolvimento
-  - Muitos módulos já prontos
-  - TDD com phpunit
-  - Dependencias com o composer
-  - Estrutura MVC com a framework CakePHP
-  - Diversas plugins disponiveis devido ao framework utilizado
-Para instalar as dependencias você deve instalar o composer e depois rodar o comando "composer install", pronto.
-
-Demo
-=======
-Para acessar a versão demo do nosso ecommerce use os dados abaixo;
-
-http://www.xbrand.com.br
-
-Para acessar o painel de admin use
-
-http://www.ciawn.com.br/home/login
-
-Email: admin@admin.com
-Senha: 123456
+`cd app/webroot && php -S localhost:8000`
 
 Contribuindo
 =======

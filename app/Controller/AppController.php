@@ -44,9 +44,10 @@ class AppController extends Controller {
 			$this->Session->setFlash('Você não tem acesso a esta area do sistema!');
             return $this->redirect('/');
 		}
-		
+
 		$this->instancia = $dados['id'];
 		$this->verificar_modulos();
+		
 		return true;
 	}
 

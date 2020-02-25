@@ -26,6 +26,16 @@ class HomeController extends AppController{
 		$this->layout = 'winners';
 	}
 
+	function cases(){
+		$this->layout = 'winners';
+	}
+
+	function register() {
+		$this->set('admin', false);
+
+		$this->layout = 'register';
+	}
+
 	function login() {
 		$this->set('admin', false);
 		
@@ -61,9 +71,11 @@ class HomeController extends AppController{
 		$email_body = "A sua mensagem foi recebida, em breve responderemos";
 		$headers = "From: noreply@winnersdevelopers.com\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
 		$headers .= "Reply-To: $email_address";	
+
 		mail($to,$email_subject,$email_body,$headers);
 
-		$this->Session->setFlash('Seu e-mail foi enviado com sucesso em breve responderemos!');
+		$this->Session->setFlash('O e-mail foi enviado em breve entraremos em contato!');
+
         return $this->redirect('/');
 	}
 

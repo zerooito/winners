@@ -72,19 +72,52 @@ class ProdutoController extends AppController{
 						$value = '<img src="/images/no_image.png" width="120" height="120">';
 					}
 				}
+
+				if ($aColumns[$i] == "preco") 
+				{
+					$value = 'R$ ' . number_format($value, 2, ',', '.');
+				}
 				
 				$row[] = $value;
 			}
 
-			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="fa fa-pencil"></i></a>';
+			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="text-white fas fa-pencil-alt"></i></a>';
 
-			$row[] = $btEdit;
+			$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
+
+			$btImage = ' <a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
+
+			$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage;
 
 			$output['aaData'][] = $row;
 		}
 		
 		echo json_encode($output);
 		exit;
+	}
+
+	public function imagens($id) {
+		$this->layout = 'wadmin';
+
+		$produto = $this->Produto->find('first', array(
+				'conditions' => array(
+					'Produto.id' => $id
+				)
+			)
+		);
+
+		$this->loadModel('Imagen');
+		$imagens = $this->Imagen->find('all', array(
+				'conditions' => array(
+					'Imagen.produto_id' => $id,
+					'Imagen.usuario_id' => $this->instancia,
+					'Imagen.ativo' => 1
+				)
+			)
+		);
+
+		$this->set('imagens', $imagens);
+		$this->set('produto', $produto);
 	}
 
 	public function listar_cadastros_estoque_minimo(){
@@ -308,6 +341,7 @@ class ProdutoController extends AppController{
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
+		$dados['preco'] = str_replace(',', '', $dados['preco']);
 
 		if($this->Produto->save($dados)) {
 			$produto_id = $this->Produto->getLastInsertId();
@@ -347,15 +381,15 @@ class ProdutoController extends AppController{
 
 		$query = array (
 			'joins' => array(
-				    array(
-				        'table' => 'produtos',
-				        'alias' => 'Produto',
-				        'type' => 'LEFT',
-				        'conditions' => array(
-				            'Variacao.produto_id = Produto.id',
-				        ),
-				    )
-				),
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Variacao.produto_id = Produto.id',
+			        ),
+			    )
+			),
 	        'conditions' => array('Variacao.produto_id' => $id, 'Variacao.ativo' => 1),
 	        'fields' => array('Produto.id, Variacao.*'),
 		);
@@ -403,6 +437,7 @@ class ProdutoController extends AppController{
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
+		$dados['preco'] = str_replace(',', '', $dados['preco']);
 
 		$this->Produto->id = $id;
 		
@@ -738,6 +773,163 @@ class ProdutoController extends AppController{
     	}
 
     	return $errors;
+    }
+
+    public function movimentacoes_estoque($produtoId) {
+    	$this->layout = 'wadmin';
+
+    	$this->set('id', $produtoId);
+    }
+
+	public function listar_cadastros_estoque_ajax($produtoId) {
+		$this->loadModel('VendaItensProduto');
+
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'id', 'produto_id', 'venda_id', 'quantidade_produto' );
+		
+		$conditions = array(
+			'conditions' => array(
+				'VendaItensProduto.ativo' => 1,
+				'VendaItensProduto.produto_id' => $produtoId
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'VendaItensProduto.produto_id = Produto.id',
+			        ),
+			    )
+			),
+	        'fields' => array('VendaItensProduto.*, Produto.*'),
+		);
+
+		$allProdutos = $this->VendaItensProduto->find('all', $conditions);
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('VendaItensProduto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['VendaItensProduto.id LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->VendaItensProduto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		foreach ( $produtos as $i => $produto )
+		{
+			$row = array();
+
+			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+			{
+				if ($aColumns[$i] == "produto_id") {
+					$value = $produto['Produto']['nome'];
+				} else if ($aColumns[$i] == "quantidade_produto") {
+					$value = -$produto['VendaItensProduto'][$aColumns[$i]];
+				} else {
+					$value = $produto['VendaItensProduto'][$aColumns[$i]];
+				}
+				
+				$row[] = $value;
+			}
+
+			$output['aaData'][] = $row;
+		}
+		
+		echo json_encode($output);
+		exit;
+	}
+
+    public function salvar_imagem($id) {
+		$image  = $_FILES['arquivo'];
+		
+		$retorno = $this->uploadImage($image);
+
+		if (!$retorno['status']) {
+			$this->Session->setFlash('A imagem não foi salva tente novamente ou contate o suporte!');
+            return $this->redirect('/produto/imagens/' . $id);
+		}
+
+		$photo = $this->request->data('photo');
+
+		$data = array(
+			'arquivo' => $retorno['nome'],
+			'order' => $photo['order'],
+			'alt' => $photo['alt'],
+			'title' => $photo['title'],
+			'ativo' => 1,
+			'usuario_id' => $this->instancia,
+			'produto_id' => $id
+		);
+
+		$this->loadModel('Imagen');
+
+		$retorno = $this->Imagen->save($data);
+
+		if (!$retorno) {
+			$this->Session->setFlash('A imagem não foi salva tente novamente ou contate o suporte!');
+            return $this->redirect('/produto/imagens/' . $id);
+		}
+
+		$this->Session->setFlash('A salva com sucesso!');
+        return $this->redirect('/produto/imagens/' . $id);
+    }
+
+    public function imagem_excluir_cadastro($id) {
+    	$this->loadModel('Imagen');
+
+    	$this->Imagen->id = $id;
+
+    	$this->Imagen->save(['ativo' => 0]);
+
+    	echo json_encode(array('success' => true));
+    	exit;
+    }
+
+    public function produto_item()
+    {
+		$search = strip_tags(trim($_GET['q'])); 
+
+		$conditions['usuario_id'] = $this->instancia;
+		$conditions['ativo'] = 1;
+		$conditions['limit'] = 25;
+		$conditions['conditions']['Produto.nome LIKE '] = '%' . $search . '%';
+		
+		$produtos = $this->Produto->find('all', $conditions);
+
+		$data = [];
+		foreach ($produtos as $produto) {
+			$data[] = [
+				'id' => $produto['Produto']['id'],
+				'text' => $produto['Produto']['nome']
+			];
+		}
+
+		echo json_encode($data);
+		exit;
     }
 
 }

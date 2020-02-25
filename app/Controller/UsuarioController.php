@@ -76,14 +76,17 @@ class UsuarioController extends AppController{
 	//se o email estiver livre retorna false, senão retorna true
 	public function verificar_email($email){
 		$this->layout = 'ajax';
-		
+
 		if(empty($email)){
 			$email = $this->request->data['email'];
 		}
 
 		$this->loadModel('Usuario');
+
 		$resposta = $this->Usuario->find('count',
-											array('conditions' => array('Usuario.email' => $email))
+											array(
+												'conditions' => array('Usuario.email' => $email)
+											)
 										);
 		$this->set('resposta', $resposta);
 
@@ -109,8 +112,27 @@ class UsuarioController extends AppController{
 
 	public function novo_usuario() {
 		$dados = $this->request->data('dados');
-		$dados['senha'] = sha1($dados['senha']);
 
+		if (isset($dados['senha']) && !empty($dados['senha_repeat'])) {
+			if ($dados['senha'] != $dados['senha_repeat']) {
+				$this->Session->setFlash('Senhas digitadas não estão corretas.');
+				$this->redirect('/');
+			}
+		}
+		
+		unset($dados['senha_repeat']);
+		$dados['senha'] = sha1($dados['senha']);
+		$dados['name'] = $dados['nome1'] . ' ' . $dados['nome2'];
+		$dados['nome'] = $dados['nome1'] . ' ' . $dados['nome2'];
+		$dados['loja'] = 0;
+		$dados['loja_active'] = 0;
+		$dados['layout_loja'] = 'default';
+		$dados['cep_origem'] = '';
+		$dados['descricao'] = '';
+		$dados['email_pagseguro'] = '';
+		$dados['folder_view'] = '';
+		$dados['token_pagseguro'] = '';
+		
 		if ($this->verificar_email($dados['email']) !== false) {
 			$this->Session->setFlash('Email já cadastrado no sistema!');
 			$this->redirect('/');
@@ -143,7 +165,7 @@ class UsuarioController extends AppController{
 	public function notificar_cadastro($nome, $email) {
 		$headers = "From: noreply@ciawn.com.br\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
 		$headers .= "Reply-To: $email_address";	
-		mail('winnersdevelopers@gmail.com, jr.design_2010@hotmail.com, reginaldo@ciawn.com.br, victor@ciawn.com.br', 'Notificação de cadastro', 'O usuario ' . $nome . ' email ' . $email . ' ', $headers);
+		mail('winnersdevelopers@gmail.com, reginaldo@ciawn.com.br', 'Notificação de cadastro', 'O usuario ' . $nome . ' email ' . $email . ' ', $headers);
 	}
 
 	public function relacionar_modulos_teste($id) {
@@ -167,7 +189,12 @@ class UsuarioController extends AppController{
 			),
 			4 => array(
 				'id_usuario' => $id,
-				'id_modulo' => 4,
+				'id_modulo' => 11,
+				'ativo' => 1
+			),
+			4 => array(
+				'id_usuario' => $id,
+				'id_modulo' => 13,
 				'ativo' => 1
 			)		
 		);
@@ -186,24 +213,27 @@ class UsuarioController extends AppController{
 
 		$sale_without_stock = $this->request->data['sale_without_stock'];
 
-		$template = $_FILES['template'];
-		
-		$layout_loja = $this->request->data['layout_loja'];
+		$template = isset($_FILES['template']) ? $_FILES['template'] : '';
+		$layout_loja = isset($this->request->data['layout_loja']) ? $this->request->data['layout_loja'] : '';
 		
 		if (!empty($template['name']) && isset($template['name']))
 			$layout_loja = $this->uploadZipTemplate($template);
 		
 		$data = array(
 			'estoque_minimo' => $estoque_minimo, 
-			'sale_without_stock' => $sale_without_stock,
-			'loja_active' => $this->request->data['loja_active'],
-			'loja' => $this->request->data['loja'],
-			'layout_loja' => $layout_loja	,
-			'cep_origem' => $this->request->data['cep_origem'],
-			'descricao' => $this->request->data['descricao'],
-			'token_pagseguro' => $this->request->data['token_pagseguro'],
-			'email_pagseguro' => $this->request->data['email_pagseguro']
+			'sale_without_stock' => $sale_without_stock
 		);
+
+		$data['loja'] = 0;
+		$data['loja_active'] = 0;
+		$data['layout_loja'] = 'default';
+		$data['cep_origem'] = '';
+		$data['descricao'] = '';
+		$data['email_pagseguro'] = '';
+		$data['folder_view'] = '';
+		$data['token_pagseguro'] = '';
+		$data['template'] = '';
+		
 
 		$this->loadModel('Usuario');
 

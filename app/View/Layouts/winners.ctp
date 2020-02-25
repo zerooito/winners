@@ -45,8 +45,7 @@
             <li class="scroll"><a href="/">Inicio</a></li>
             <li class="scroll"><a href="/linha-do-tempo-winners-opensource">Nossa História</a></li>                     
             <li class="scroll"><a href="/canal-para-desenvolvedores-winners">Desenvolvedores</a></li> 
-            <li class="scroll"><a href="#portfolio">Portfolio</a></li>
-            <li class="scroll"><a href="#team">Time</a></li>
+            <li class="scroll"><a href="/clientes-erp-ecommerce-software-sob-medida-winners">Cases</a></li>
             <li class="scroll"><a href="/quero-saber-como-funciona-winners-opensource">Contato</a></li>    
           </ul>
         </div>
@@ -60,7 +59,7 @@
     <div class="footer-top">
       <div class="container text-center">
         <div class="footer-logo">
-          <a href="index.html"><img class="img-responsive" src="/images/logo.png" style="width: 300px;" alt=""></a>
+          <a href="index.html"><img class="img-responsive" src="/images/logo.png" style="width: 200px;" alt=""></a>
         </div>
         <div class="social-icons">
           <ul>
@@ -108,6 +107,16 @@
 	  ga('create', 'UA-62527798-1', 'auto');
 	  ga('send', 'pageview');
 	</script>
+  
+  <script type="text/javascript">
+      window.smartlook||(function(d) {
+      var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+      var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+      c.charset='utf-8';c.src='https://rec.smartlook.com/recorder.js';h.appendChild(c);
+      })(document);
+      smartlook('init', 'ffbcd0d07f5b3d894b7ee2f30a77b0a513db76ee');
+  </script>
+
 
 
 </body>

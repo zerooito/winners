@@ -1,3 +1,4 @@
+<?php require('menu.ctp'); ?>
 
 <nav class="custom-color">
 	<div class="nav-wrapper">
@@ -105,33 +106,6 @@
 	    	</div>         
   		</div>  
 
-		<div class="shipping-method">
-		<h2>Forma de Entrega</h2>
-			<div class="col s12">
-			  	<div class="row">
-					<div class=" col l6 m12">
-						<input type="checkbox" class="filled-in" id="express" />
-						<label for="express">
-							<strong>Sedex:</strong>
-							3 à 4 dias úteis
-							<br />
-							R$ 38,90
-						</label>              
-					</div> 
-					<div class=" col l6 m12">
-						<input type="checkbox" class="filled-in" id="express" />
-						<label for="express">
-							<strong>PAC:</strong>
-							3 à 4 dias úteis
-							<br />
-							R$ 38,90
-						</label>              
-					</div>    
-				 </div>
-			</div>
-		</div>
-
-
 		<div class="row">
 			<div class="col s6 m3 l3">
 				Produto
@@ -153,23 +127,26 @@
 					<img class="responsive-img" src="/uploads/produto/imagens/<?php echo $product['Produto']['imagem'] ?>">
 				</div>
 				<div class="col s3 m3 m3">
-					R$ <?php echo $product['Produto']['preco'] ?>
+					R$ <?php echo number_format($product['Produto']['preco'], 2, ',', '.') ?>
 				</div>
 				<div class="col s3 m3 m3">
 					<?php echo $product['Produto']['quantidade'] ?>
 				</div>
 				<div class="col s3 m3 m3">
-					R$ <?php echo $product['Produto']['preco'] ?>
+					R$ <?php echo number_format($product['Produto']['preco'], 2, ',', '.') ?>
 				</div>
 			</div>
 		<?php endforeach; ?>
 
+		<br>
+
 		<div class="row text-right">
 			<p>Subtotal: R$ <?php echo number_format($total, 2, ',', '.') ?></p>
-			<p>Frete: R$ 0,00</p>
-			<p>Desconto: R$ 0,00</p>
-			<p>Total: R$ <?php echo number_format($total, 2, ',', '.') ?></p>
+			<p id="frete">Frete: R$ 0,00</p>
+			<p id="total">Total: R$ <?php echo number_format($total, 2, ',', '.') ?></p>
 		</div>
+
+		<br>
 
 		<div class="row">
 			<a class="waves-effect waves-light btn red">Continuar Comprando</a>
@@ -181,3 +158,52 @@
 	</form>
 
 </div>
+
+<!--Mascaras-->
+<?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+
+<script type="text/javascript">
+  $('#cep').mask('99999-999');
+  $('#cpf').mask('999.999.999-99');
+
+  $('#cep').change(function() {
+   	  var cep_destino = $(this).val()
+      	, cep_origem  = '<?php echo $usuario['Usuario']['cep_origem']; ?>'
+      	, url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
+
+		$.ajax({
+			url: url,
+			data: {
+				cep_origem:  cep_origem, 
+				cep_destino: cep_destino
+			},
+			dataType: 'json',
+			method: "post",
+			success: function(data) {
+				atualizacep(cep_destino);
+
+				$('#frete').html('Frete: R$ ' + data['frete']);
+
+				$('#total').html('Total: R$ ' + data['total']);
+			}
+		});
+  });
+
+  function atualizacep(cep){
+      cep = cep.replace(/\D/g,"")
+      
+      var url = "http://viacep.com.br/ws/" + cep + "/json/";
+
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        method: "get",
+        success: function(data) {
+          document.getElementById('endereco').value = data['logradouro'];
+          document.getElementById('bairro').value = data['bairro'];
+          document.getElementById('cidade').value = data['localidade'];
+          document.getElementById('estado').value = data['uf'];
+        }
+      });
+  }
+</script>

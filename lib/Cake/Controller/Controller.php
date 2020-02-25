@@ -736,9 +736,11 @@ class Controller extends Object implements CakeEventListener {
 		$this->{$modelClass} = ClassRegistry::init(array(
 			'class' => $plugin . $modelClass, 'alias' => $modelClass, 'id' => $id
 		));
+
 		if (!$this->{$modelClass}) {
 			throw new MissingModelException($modelClass);
 		}
+
 		return true;
 	}
 

@@ -3,189 +3,228 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>Gestor Winners</title>
+  <title>Winners - Dashboard</title>
 
-    <!-- jQuery Version 1.11.0 -->
-    <?php echo $this->Html->script('jquery-1.11.0'); ?>
-    <!--script src="js/jquery-1.11.0.js"></script-->
+  <!-- Custom fonts for this template-->
+  <link href="/sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!--Mascaras-->
-    <?php echo $this->Html->script('jquery.maskedinput.min'); ?>
-    <?php echo $this->Html->script('jquery.maskMoney'); ?>
-    <?php echo $this->Html->script('mascaras'); ?>
+  <!-- Custom styles for this template-->
+  <link href="/sb-admin-2/css/sb-admin-2.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css">
 
-    <?php echo $this->Html->script('funcoes'); ?>
+  <!-- Bootstrap core JavaScript-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+  <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+  <!--Start of Zopim Live Chat Script-->
+  <script type="text/javascript">
+  function detectmob() {
+      if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+        return true;
+      } else {
+        return false;
+      }
+  }
 
-    <!-- Bootstrap Core CSS -->
-    <?php echo $this->Html->css('bootstrap.min'); ?>
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+  if (detectmob()) {
+      window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+      d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+      _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+      $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
+      type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+  }
+  </script>
+  <!--End of Zopim Live Chat Script-->
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    <!-- MetisMenu CSS -->
-    <?php echo $this->Html->css('plugins/metisMenu/metisMenu.min'); ?>
-    <!-- <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet"> -->
+    ga('create', 'UA-60234652-1', 'auto');
+    ga('send', 'pageview');
+  </script>
 
-    <!-- Timeline CSS -->
-    <?php echo $this->Html->css('plugins/timeline'); ?>
-    <!-- <link href="css/plugins/timeline.css" rel="stylesheet"> -->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
-    <?php echo $this->Html->css('sb-admin-2'); ?>
-    <!-- <link href="css/sb-admin-2.css" rel="stylesheet"> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
-    <!-- Morris Charts CSS -->
-    <?php echo $this->Html->css('plugins/morris'); ?>
-    <!-- <link href="css/plugins/morris.css" rel="stylesheet"> -->
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $('select').select2();
+      });
+  </script>
 
-    <!-- Custom Fonts -->
-    <?php echo $this->Html->css('font-awesome/css/font-awesome.min'); ?>
-    <!-- <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <!-- Core plugin JavaScript-->
+  <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!--Start of Zopim Live Chat Script-->
-    <script type="text/javascript">
-    function detectmob() {
-       if(window.innerWidth <= 800 && window.innerHeight <= 600) {
-         return true;
-       } else {
-         return false;
-       }
-    }
-
-    if (detectmob()) {
-        window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
-        $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
-        type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
-    }
-    </script>
-    <!--End of Zopim Live Chat Script-->
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('select').select2();
-        });
-    </script>
-
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-60234652-1', 'auto');
-      ga('send', 'pageview');
-    </script>
+  <!-- DataTables JavaScript -->
+  <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
+  <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
 </head>
 
-<body>
+<body id="page-top">
 
-    <?php echo $this->Session->flash(); ?>
-    <div id="wrapper">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    <?php include('Menu/menu.ctp'); ?>
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/dashboard/home">
-                <?php 
-                    if ($this->Session->read('Usuario') != "") {
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                  <?php 
+                      if ($this->Session->read('Usuario') != "") {
                         echo $this->Session->read('Usuario.nome'); 
-                    } else {
+                      } else {
                         echo "Winners Desenvolvimento";                
-                    }
-                ?>
+                      }
+                  ?>
+                </span>
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="/usuario/meus_dados">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Dados Pessoais
                 </a>
-            </div>
-            <?php if ($this->Session->read('Usuario') != "") { ?>
-            <!-- /.navbar-header -->
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/usuario/meus_dados"><i class="fa fa-gear fa-fw"></i> Configurações</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/usuario/processar_logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-            <?php } ?>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
 
-            <!-- Inclui o menu -->
-            <?php include('Menu/menu.ctp'); ?>
-            <!-- /.navbar-static-side -->
+          </ul>
+
         </nav>
+        <!-- End of Topbar -->
 
-
-
-        <!-- /#wrapper -->
-
-        <script src="http://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
-        <!-- Bootstrap Core JavaScript -->
-        <?php echo $this->Html->script('bootstrap.min'); ?>
-        <!--script src="js/bootstrap.min.js"></script-->
-
-        <!-- Metis Menu Plugin JavaScript -->
-        <?php echo $this->Html->script('plugins/metisMenu/metisMenu.min'); ?>
-        <!--script src="js/plugins/metisMenu/metisMenu.min.js"></script-->
-
-        <!-- Morris Charts JavaScript -->
-        <!--script src="js/plugins/morris/raphael.min.js"></script>
-        <script src="js/plugins/morris/morris.min.js"></script>
-        <script src="js/plugins/morris/morris-data.js"></script-->
-
-        <!-- Custom Theme JavaScript -->
-        <?php echo $this->Html->script('sb-admin-2'); ?>
-        <!--script src="js/sb-admin-2.js"></script-->
-
-        <!-- DataTables JavaScript -->
-        <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
-        <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
-
-        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-
+        <div class="container-fluid">
+          <?php echo $this->Session->flash(); ?>
+        </div>
+        
         <!-- Conteudo -->
         <?php echo $this->fetch('content'); ?>
 
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Winners <?php echo date('Y'); ?></span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
     </div>
+    <!-- End of Content Wrapper -->
 
-    <script>
-        $(document).ready(function() {
-            $('#dataTables-cliente').dataTable();
-        });
-    </script>
+  </div>
+  <!-- End of Page Wrapper -->
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Está pronto para ir?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Ao selecionar sim, você deixará a área administrativa e precisará fazer login novamente.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-primary" href="/usuario/logout">Sim</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/sb-admin-2/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="/sb-admin-2/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/sb-admin-2/js/demo/chart-area-demo.js"></script>
+  <script src="/sb-admin-2/js/demo/chart-pie-demo.js"></script>
+  <!--Start of Zopim Live Chat Script-->
+  <script type="text/javascript">
+  function detectmob() {
+      if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+        return true;
+      } else {
+        return false;
+      }
+  }
+
+  if (detectmob()) {
+      window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+      d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+      _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+      $.src='//v2.zopim.com/?29Cgb0x8PWQ3X1FKXZXUNJx4D9TjDD5d';z.t=+new Date;$.
+      type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+  }
+  </script>
+  <!--End of Zopim Live Chat Script-->
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+  
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $('select').select2();
+      });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-60234652-1', 'auto');
+    ga('send', 'pageview');
+  </script>
 </body>
 
 </html>

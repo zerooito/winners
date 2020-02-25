@@ -1,11 +1,12 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Categoria - Listar Cadastros</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Categorias de Produtos - Listar Cadastros</h1>
     </div>
+
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-9">

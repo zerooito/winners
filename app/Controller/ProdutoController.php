@@ -82,12 +82,11 @@ class ProdutoController extends AppController{
 			}
 
 			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="text-white fas fa-pencil-alt"></i></a>';
-
 			$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
+			$btImage = '<a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
+			$btDelete = '<a class="btn btn-danger" href="javascript:remover_produto(' . $produto['Produto']['id'] . ');"><i class="fas fa-trash"></i></a>';
 
-			$btImage = ' <a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
-
-			$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage;
+			$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage . ' ' . $btDelete;
 
 			$output['aaData'][] = $row;
 		}
@@ -340,6 +339,7 @@ class ProdutoController extends AppController{
 		$dados['imagem'] = $retorno['nome'];
 		$dados['id_usuario'] = $this->instancia;
 		$dados['ativo'] = 1;
+		$dados['destaque'] = 0;
 		$dados['id_alias'] = $this->id_alias();
 		$dados['preco'] = str_replace(',', '', $dados['preco']);
 
@@ -913,10 +913,11 @@ class ProdutoController extends AppController{
     {
 		$search = strip_tags(trim($_GET['q'])); 
 
-		$conditions['usuario_id'] = $this->instancia;
-		$conditions['ativo'] = 1;
-		$conditions['limit'] = 25;
+		$conditions['conditions']['Produto.id_usuario'] = $this->instancia;
+		$conditions['conditions']['Produto.ativo'] = 1;
 		$conditions['conditions']['Produto.nome LIKE '] = '%' . $search . '%';
+
+		$conditions['limit'] = 25;
 		
 		$produtos = $this->Produto->find('all', $conditions);
 

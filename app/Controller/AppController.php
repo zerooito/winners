@@ -58,10 +58,11 @@ class AppController extends Controller {
 		$this->loadModel('ModuloRelacionaUsuario');
 
 		$registros = $this->ModuloRelacionaUsuario->find('all',
-		array('conditions' => 
-			array('ModuloRelacionaUsuario.id_usuario' => $this->instancia, 
-				  'ModuloRelacionaUsuario.ativo' => 1,
-				  'Modulo.ativo' => 1
+			array('conditions' => 
+				array(
+					'ModuloRelacionaUsuario.id_usuario' => $this->instancia, 
+					'ModuloRelacionaUsuario.ativo' => 1,
+				  	'Modulo.ativo' => 1
 				)
 			)
 		);
@@ -72,7 +73,7 @@ class AppController extends Controller {
 			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
 			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
 		}
-		
+
 		return $this->modulos;
 	}
 

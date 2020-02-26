@@ -177,33 +177,33 @@ class UsuarioController extends AppController{
 	public function relacionar_modulos_teste($id) {
 		$this->loadModel('ModuloRelacionaUsuario');
 		
-		$modulos = array(
-			0 => array(
+		$modulos = [
+			[
 				'id_usuario' => $id,
-				'id_modulo' => MODULO_VENDA,
+				'id_modulo' => self::MODULO_VENDA,
 				'ativo' => 1
-			),
-			2 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => MODULO_PRODUTO,
+				'id_modulo' => self::MODULO_PRODUTO,
 				'ativo' => 1
-			),
-			3 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => MODULO_CLIENTE,
+				'id_modulo' => self::MODULO_CLIENTE,
 				'ativo' => 1
-			),
-			4 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => MODULO_ORCAMENTO,
+				'id_modulo' => self::MODULO_ORCAMENTO,
 				'ativo' => 1
-			),
-			4 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => MODULO_FINANCEIRO,
+				'id_modulo' => self::MODULO_FINANCEIRO,
 				'ativo' => 1
-			)
-		);
+			]
+		];
 
 		$this->ModuloRelacionaUsuario->saveAll($modulos);
 

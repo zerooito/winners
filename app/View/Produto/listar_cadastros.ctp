@@ -56,10 +56,10 @@
                         <div class="row" style="padding-left:10px;padding-right:10px;">
                             <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i></button>
                         </div>
-
+<!-- 
                         <div class="row" style="padding-left:10px;padding-right:10px;">
                             <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-excel-o"><a href="/produtos/exportar_excel_exemplo" style="color: #FFF;"> Exportar Excel Exemplo</a></i></button>
-                        </div>
+                        </div> -->
 
                         <div class="row" style="padding-left:10px;padding-right:10px;">
                             <button  data-toggle="modal" data-target="#importarProdutos" type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-upload"><a style="color: #FFF;"> Importar Produtos</a></i></button>

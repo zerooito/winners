@@ -116,19 +116,29 @@
     }
 
     function remover_produto(id) {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/produto/excluir_cadastro",
-            async: true,
-            data: {id: id},
-            error: function(x){
-                window.reload();
-            },
-            success: function(x){
-                window.location.reload();                
-            }
-        });
+        swal({
+            title: "Você tem certeza?",
+            text: "Uma vez deletado essa informação não poderá mais ser recuperada",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: 'Sim, tenho certeza!',
+            cancelButtonText: 'Não!',
+            reverseButtons: true
+        }).then((willDelete) => {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/produto/excluir_cadastro",
+                async: true,
+                data: {id: id},
+                error: function(x){
+                    window.reload();
+                },
+                success: function(x){
+                    window.location.reload();                
+                }
+            });
+        })
     }
 
     function editar_produto(id) {

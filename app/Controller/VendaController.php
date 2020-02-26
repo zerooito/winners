@@ -281,7 +281,7 @@ class VendaController extends AppController {
 		$dados_venda['valor'] = $this->calcular_valor_venda($produtos);
 		$dados_venda['custo'] = $this->calcular_custo_venda($produtos);
 		
-		$salvar_venda = $this->salvar_venda($produtos, $dados_lancamento, $dados_venda);
+		$salvar_venda = $this->salvar_venda($produtos, $dados_lancamento, $dados_venda, $this->instancia);
 		
 		if (!$salvar_venda) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');

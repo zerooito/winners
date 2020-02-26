@@ -76,7 +76,7 @@ class OrcamentoController extends AppController
 
 		$dompdf->render();
 
-		$dompdf->stream();
+		$dompdf->stream('orcamento-venda-' . $vendaId);
 
 		exit;
 	}
@@ -145,12 +145,6 @@ class OrcamentoController extends AppController
 		$html .= '		</tr>';
 		$html .= '	</table>';
 		$html .= '	<br>';
-/*		$html .= '	<table width="100%" valign="center" align="center">';
-		$html .= '		<tr  style="background-color: #ccc;">';
-		$html .= '			<td>Total: </td>';
-		$html .= '			<td>R$ ' . number_format($desconto, 2, ',', '.') . '</td>';
-		$html .= '		</tr>';
-		$html .= '	</table>'; */
 		$html .= '';
 		$html .= '</body>';
 		$html .= '</html>';

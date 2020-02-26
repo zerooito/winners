@@ -1,11 +1,20 @@
 
-<div id="page-wrapper">
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Cliente - Adicionar Cadastro</h1>
+    </div>
+
+    <!-- Content Row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default" style="margin-top: 12px;">
                 <div class="panel-heading">
                     Dados do Cliente
                 </div>
+
                 <div class="panel-body">
                     <form role="form" action="/cliente/s_adicionar_cliente" method="post">
                         <div class="row">
@@ -69,8 +78,8 @@
                             <!-- /.col-lg-6 (nested) -->
                         </div>
 
-                        <button type="submit" class="btn btn-success">Salvar Cliente</button>
-                        <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
+                        <button type="submit" class="btn btn-success pull-right">Salvar Cliente</button>
+                        <button type="reset" class="btn btn-danger pull-right" onclick="history.go(-1);">Cancelar</button>
                     </form>
                     <!-- /.row (nested) -->
                 </div>

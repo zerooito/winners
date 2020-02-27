@@ -20,7 +20,7 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-cliente">
                             <thead>
                                 <tr>
-                                    <th>#ID</th>
+                                    <th>ID</th>
                                     <th>Cliente</th>
                                     <th>Valor</th>
                                     <th>Data Cadastro</th>
@@ -29,11 +29,17 @@
                             </thead>
                             <tbody>
                             <?php
-                            foreach ($vendas as $indice => $venda) {
+                            foreach ($vendas as $indice => $venda):
                             ?>
                                 <tr class="odd gradeX" id="<?php echo $venda['Venda']['id'] ?>">
                                     <td><?php echo $venda['Venda']['id'] ?></td>
-                                    <td></td>
+                                    <td>
+                                        <?php if (isset($venda['Cliente']['nome1']) && !empty($venda['Cliente']['nome2'])): ?>
+                                            <?php echo $venda['Cliente']['nome1'] . ' ' . $venda['Cliente']['nome2']; ?>
+                                        <?php else: ?>
+                                            N/C
+                                        <?php endif ?>
+                                    </td>
                                     <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
                                     <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
                                     <td class="center">
@@ -49,7 +55,7 @@
                                     </td>
                                 </tr>
                             <?php
-                            }// fim foreach
+                            endforeach;
                             ?>
                             </tbody>
                         </table>

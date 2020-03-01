@@ -196,8 +196,9 @@ class VendaController extends AppController {
 		
 		$this->set('clientes', $this->Cliente->find('all',
 				array('conditions' =>
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -207,8 +208,9 @@ class VendaController extends AppController {
 
 		$this->set('produtos', $this->Produto->find('all',
 				array('conditions' =>
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -219,7 +221,7 @@ class VendaController extends AppController {
 					array(
 						'Venda.ativo' => 1,
 						'Venda.id' => $vendaId,
-						'id_usuario' => $this->instancia
+						'Venda.id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -231,7 +233,7 @@ class VendaController extends AppController {
 			array('conditions' => 
 				array(
 					'VendaItensProduto.ativo' => 1,
-					'VendaItensProduto.id' => $vendaId
+					'VendaItensProduto.venda_id' => $vendaId
 				)
 			)
 		);
@@ -249,11 +251,17 @@ class VendaController extends AppController {
 					)
 				)
 			);
-
-			if ($produto[0]['Produto']['estoque'] <= 0)
-			{
-				$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+			
+			if (empty($produto)) {
+				$this->Session->setFlash('Ocorreu algum erro no produto (' . $venda_produto['VendaItensProduto']['produto_id'] .')');
 				continue;
+			}
+
+			if (isset($produto) && !empty($produto)) {
+				if ($produto[0]['Produto']['estoque'] <= 0) {
+					$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+					continue;
+				}
 			}
 			
 			$produtos[$i] = $produto[0]['Produto'];

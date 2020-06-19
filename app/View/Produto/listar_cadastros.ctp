@@ -88,6 +88,7 @@
           </div>
           <div class="modal-body">
             <p>Escolha o arquivo que deseja enviar.</p>
+            <p>Para baixar a planilha de exemplo <a href="/produto/exportar_excel_exemplo" target="_blank">Clique aqui</a></p>
             <input type="file" name="arquivo">
           </div>
           <div class="modal-footer">

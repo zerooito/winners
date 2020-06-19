@@ -43,13 +43,13 @@
                                         <?php echo $cliente['Cliente']['documento1'] ?>
                                     </td>
                                     <td class="center">
-                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger btn-circle">
+                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger">
                                             <i class="fa fa-times"></i>
                                         </button>
-                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info btn-circle">
+                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <a class="btn btn-primary btn-circle" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
+                                        <a class="btn btn-primary" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
                                             <i class="fa fa-list"></i>
                                         </a>
                                     </td>

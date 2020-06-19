@@ -700,33 +700,30 @@ class ProdutoController extends AppController{
 
 			foreach ($cellIterator as $i => $cell) {
 				switch ($i) {
-					case 0: //Codigo/SKU
-						$dados[$row]['sku'] = $cell->getValue();
-					break; 
-					case 1: // Nome/Descrição 
+					case 0: // Nome
 						$dados[$row]['nome'] = $cell->getValue();						
 					break;
-					case 2: // QtdAtual
-						//$dados[$row]['sku'] = $cell->getValue();						
-					break;
-					case 3: // QtdMinima  
-						$dados[$row]['quantidade_minima'] = $cell->getValue();						
-					break;
-					case 4: // QtdTotal
-						$dados[$row]['estoque'] = $cell->getValue();						
-					break;
-					case 5: // ValCusto
-						$dados[$row]['custo'] = $cell->getValue();						
-					break;
-					case 6:  // ValVenda
+					case 1: // preço
 						$dados[$row]['preco'] = $cell->getValue();						
+					break;
+					case 2: // peso bruto
+						$dados[$row]['peso_bruto'] = $cell->getValue();						
+					break;
+					case 3: // peso liquido
+						$dados[$row]['peso_liquido'] = $cell->getValue();						
+					break;
+					case 4: // estoque
+						$dados[$row]['estoque'] = $cell->getValue();
+					break;
+					case 5: // estoque
+						$dados[$row]['descricao'] = $cell->getValue();
 					break;
 				}
 			}
 
+			$dados[$row]['destaque'] = 0;
 			$dados[$row]['id_usuario'] = $usuarioId;	
 			$dados[$row]['ativo'] = 1;
-
 		}
 
 		$errors = $this->processar_lista_produtos($dados);
@@ -751,7 +748,7 @@ class ProdutoController extends AppController{
     		$existProduto = $this->Produto->find('all',
     			array(
     				'conditions' => array(
-    					'Produto.sku' => $dado['sku'],
+    					'Produto.sku' => $dado['nome'],
     					'Produto.ativo' => 1
     				)
     			)

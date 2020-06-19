@@ -196,8 +196,9 @@ class VendaController extends AppController {
 		
 		$this->set('clientes', $this->Cliente->find('all',
 				array('conditions' =>
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -207,8 +208,9 @@ class VendaController extends AppController {
 
 		$this->set('produtos', $this->Produto->find('all',
 				array('conditions' =>
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -219,7 +221,7 @@ class VendaController extends AppController {
 					array(
 						'Venda.ativo' => 1,
 						'Venda.id' => $vendaId,
-						'id_usuario' => $this->instancia
+						'Venda.id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -231,7 +233,7 @@ class VendaController extends AppController {
 			array('conditions' => 
 				array(
 					'VendaItensProduto.ativo' => 1,
-					'VendaItensProduto.id' => $vendaId
+					'VendaItensProduto.venda_id' => $vendaId
 				)
 			)
 		);
@@ -239,6 +241,7 @@ class VendaController extends AppController {
 		$this->loadModel('Produto');
 
 		$produtos = [];
+		$total_venda = 0;
 		foreach ($venda_produtos as $i => $venda_produto) 
 		{
 			$produto = $this->Produto->find('all',
@@ -249,11 +252,17 @@ class VendaController extends AppController {
 					)
 				)
 			);
-
-			if ($produto[0]['Produto']['estoque'] <= 0)
-			{
-				$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+			
+			if (empty($produto)) {
+				$this->Session->setFlash('Ocorreu algum erro no produto (' . $venda_produto['VendaItensProduto']['produto_id'] .')');
 				continue;
+			}
+
+			if (isset($produto) && !empty($produto)) {
+				if ($produto[0]['Produto']['estoque'] <= 0) {
+					$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+					continue;
+				}
 			}
 			
 			$produtos[$i] = $produto[0]['Produto'];
@@ -263,9 +272,11 @@ class VendaController extends AppController {
 
 			$produtos[$i]['preco'] = number_format($produtos[$i]['preco'], 2, ',', '.');
 			$produtos[$i]['total'] = number_format($total, 2, ',', '.');
+			$total_venda += $total;
 		}
 
 		$this->set('venda_produtos', $produtos);
+		$this->set('total_venda', $total_venda);
 	}
 
 	public function s_adicionar_cadastro() {

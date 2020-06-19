@@ -21,6 +21,7 @@ class OrcamentoController extends AppController
 						'Venda.orcamento' => 1
 					)
 				),
+				'order' => array('Venda.id DESC'),
 				'joins' => array(
 					array(
 						'table' => 'clientes',
@@ -31,7 +32,7 @@ class OrcamentoController extends AppController
 						)
 					)
 				),
-				'fields' => array('Venda.*, Cliente.*')
+				'fields' => array('Venda.*, Cliente.*'),
 			)
 		);
 

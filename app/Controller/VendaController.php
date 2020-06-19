@@ -241,6 +241,7 @@ class VendaController extends AppController {
 		$this->loadModel('Produto');
 
 		$produtos = [];
+		$total_venda = 0;
 		foreach ($venda_produtos as $i => $venda_produto) 
 		{
 			$produto = $this->Produto->find('all',
@@ -271,9 +272,11 @@ class VendaController extends AppController {
 
 			$produtos[$i]['preco'] = number_format($produtos[$i]['preco'], 2, ',', '.');
 			$produtos[$i]['total'] = number_format($total, 2, ',', '.');
+			$total_venda += $total;
 		}
 
 		$this->set('venda_produtos', $produtos);
+		$this->set('total_venda', $total_venda);
 	}
 
 	public function s_adicionar_cadastro() {

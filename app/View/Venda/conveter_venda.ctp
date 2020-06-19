@@ -106,7 +106,7 @@
                             <div class="col-lg-6">
                                 <div class="jumbotron" style="padding-left: 15px;">
                                   <p>Valor total </p>
-                                  <h1 id="valor-atual" data-preco="0.00" style="color: green">R$ 0.00</h1>
+                                  <h1 id="valor-atual" data-preco="<?php echo $total_venda; ?>" style="color: green">R$ <?php echo number_format($total_venda, 2, '.', ','); ?></h1>
                                   <p>Desconto</p>
                                   <h3 id="desconto-label" data-troco="0.00" style="color: red">R$ 0.00</h3>
                                   <p>Valor troco</p>
@@ -141,27 +141,26 @@
                                         </thead>
                                         <tbody id="produtos">
                                             <?php foreach ($venda_produtos as $i => $produto): ?>
-                                                <tr>
+                                                <tr id="<?php echo $produto['id'] ?>">
                                                     <input type="hidden" name="produto[<?php echo $produto['id']; ?>][id_produto]" value="<?php echo $produto['id']; ?>"/>
                                                     <input type="hidden" name="produto[<?php echo $produto['id']; ?>][quantidade]" value="<?php echo $produto['quantidade'] ?>"/>
                                                     <td><?php echo $produto['id']; ?></td>
                                                     <td><?php echo $produto['nome']; ?></td>
                                                     <td><?php echo $produto['preco']; ?></td>
                                                     <td>
-                                                        <input type="number" class="form-control" onchange="changeItem(<?php echo $produto['id']; ?>);" id="qnt-<?php echo $produto['id']; ?>" value="<?php echo $produto['id']; ?>">
+                                                        <input type="number" class="form-control" onchange="changeItem(<?php echo $produto['id']; ?>);" id="qnt-<?php echo $produto['id']; ?>" value="<?php echo $produto['quantidade']; ?>">
                                                     </td>
-                                                    <td><?php echo $produto['estoque']; ?><td>
+                                                    <td><?php echo $produto['estoque']; ?></td>
                                                     <td><?php echo $produto['total']; ?></td> 
-                                                    <td></td>                                    
+                                                    <td class="center">
+                                                        <button onclick="remover_produto('<?php echo $produto['id']; ?>', '<?php echo $produto['total']; ?>');" type="button" class="btn btn-danger btn-circle">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
-
-
-                                    <div class="panel-footer">
-
-                                    </div>
                                 </div>
                             </div>                          
                         </div>
@@ -407,6 +406,14 @@
 
     }
 
+    function remover_produto(id,valor) {
+        var total = $('#total').html();
+
+        total = parseInt(total) - valor;
+        $('#total').html(total);
+        $('#'+id).remove();
+    }
+
     function printNotaNaoFiscal(id) {
         $.ajax({
             type: "get",
@@ -501,7 +508,7 @@
                 html +=    '<td><input type="number" class="form-control" onchange="changeItem(' + data['Produto']['id'] + ');" id="qnt-' + data['Produto']['id'] + '" value="' + quantidade_produto + '"></td>';
                 html +=    '<td>' + data['Produto']['estoque'] + '</td>';
                 html +=    '<td id="' + data['Produto']['id'] + '-total">' + data['Produto']['total'] + '</td>';
-                html +=    '<td><a href="javascript:removeItem(\'' + data['Produto']['id'] + '\');" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a></td>';
+                html +=    '<td><a href="javascript:removeItem(\'' + data['Produto']['id'] + '\');" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></a></td>';
                 html += '</tr>';
 
                 $('#produtos').append(html);

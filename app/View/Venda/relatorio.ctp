@@ -1,117 +1,102 @@
 <div id="page-wrapper">
+    <div class="row" style="margin:10px;">
+        <div class="col-lg-4">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="far fa-money-bill-alt fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$dinheiro, 2, ',', '.'); ?>
+                        </h4>
+                        <i>Total dinheiro</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="far fa-credit-card fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$cartao_credito, 2, ',', '.'); ?>
+                        </h4>
+                        <i>Total Cartão de Crédito</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="fas fa-credit-card fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$cartao_debito, 2, ',', '.'); ?>
+                        </h4>
+                        <i>Total Cartão de Debito</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin:10px;">
+        <div class="col-lg-4">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-success text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="fas fa-search-dollar fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$valorTotalVendasPeriodo, 2, ',', '.'); ?>
+                        </h4>
+                        <i>Total Faturamento</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-warning text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="fas fa-box fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$totalCustoPeriodo, 2, ',', '.'); ?>
+                        </h4>
+                        <i>Total Custo</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-info text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="far fa-smile fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$totalLucro, 2, ',', '.'); ?>
+                        </h4>
+                        <i><b>Total:</b> Custo - Lucro</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
-        <!-- /.row -->
-        <div class="row"  style="margin-top:10px;">
-            <div class="col-lg-4 col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-2">
-                                <i class="fa fa-money fa-5x"></i>
-                            </div>
-                            <div class="col-xs-10 text-right">
-                                <div class="huge">
-                                    R$ <?php echo number_format($dinheiro, 2, ',', '.'); ?>
-                                </div>
-                                <div>Total Dinheiro</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-credit-card fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">
-                                    R$ <?php echo number_format($cartao_credito, 2, ',', '.'); ?>
-                                </div>
-                                <div>Total Cartão Credito</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-credit-card fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">
-                                    R$ <?php echo number_format($cartao_debito, 2, ',', '.'); ?>
-                                </div>
-                                <div>Total Cartão Debito</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-12">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-usd fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">
-                                    R$ <?php echo number_format($valorTotalVendasPeriodo, 2, ',', '.'); ?>
-                                </div>
-                                <div>Total Vendas</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-12">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-minus-square fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">
-                                    R$ <?php echo number_format($totalCustoPeriodo, 2, ',', '.'); ?>
-                                </div>
-                                <div>Total Custo</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-12">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-minus-square fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">
-                                    R$ <?php echo number_format($totalLucro, 2, ',', '.'); ?>
-                                </div>
-                                <div>Total Lucro</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div id="container" style="min-width: 310px; height: 400px;margin-top:20px;"></div>
-        </div>
+        <div id="container" style="min-width: 310px; height: 400px;margin-top:20px;"></div>
     </div>
 </div>
 

@@ -635,9 +635,9 @@ class VendaController extends AppController {
 
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
 
-		$this->set('dinheiro', $valorTotalPgt['dinheiro']);
-		$this->set('cartao_credito', $valorTotalPgt['cartao_credito']);
-		$this->set('cartao_debito', $valorTotalPgt['cartao_debito']);
+		$this->set('dinheiro', @$valorTotalPgt['dinheiro']);
+		$this->set('cartao_credito', @$valorTotalPgt['cartao_credito']);
+		$this->set('cartao_debito', @$valorTotalPgt['cartao_debito']);
 		$this->set('valorTotalVendasPeriodo', $valorTotalVendasPeriodo);
 		$this->set('totalCustoPeriodo', $totalCustoPeriodo);
 		$this->set('totalLucro', $valorTotalVendasPeriodo - $totalCustoPeriodo);

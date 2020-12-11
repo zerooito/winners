@@ -1,0 +1,29 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+      - "8090:80"
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+  db:
+    image: mysql:5.6
+    ports:
+      - "3306:3306"
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=development
+  app:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - db
+    ports:
+      - 80:80
+    environment:
+      - PMA_ARBITRARY=1
+volumes:
+  data:

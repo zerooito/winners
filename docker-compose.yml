@@ -3,7 +3,7 @@ services:
   web:
     build: .
     ports:
-      - "8090:80"
+      - 80:80
     volumes:
       - ./:/var/www/html
     links:
@@ -22,8 +22,9 @@ services:
     links:
       - db
     ports:
-      - 80:80
+      - "3000:3000"
     environment:
       - PMA_ARBITRARY=1
+
 volumes:
   data:

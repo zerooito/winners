@@ -39,8 +39,8 @@ docker-compose build
 docker-compose up -d
 docker-compose run --rm web cp app/Config/database.php.default app/Config/database.php
 docker-compose run --rm web bash
-mkdir app/webroot/uploads && mkdir app/tmp
-chmod 777 -R app/webroot/uploads app/tmp
+mkdir app/webroot/uploads && mkdir app/tmp && mkdir app/webroot/uploads/venda && mkdir app/webroot/uploads/venda/fiscal
+chmod 777 -R app/webroot/uploads app/tmp app/webroot/uploads/venda/fiscal
 composer install
 exit
 ```

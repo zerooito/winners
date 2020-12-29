@@ -278,6 +278,6 @@
                 }
             );
         }
-        $.getJSON("/venda/recoverDataToDashboardOneWeek", addData);
+        $.getJSON("/venda/recoverDataToDashboardOneMonth", addData);
     });
 </script>

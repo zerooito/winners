@@ -450,7 +450,7 @@ class VendaController extends AppController {
         exit;
 	}
 
-	public function recoverDataToDashboardOneWeek($id_usuario = null) {
+	public function recoverDataToDashboardOneMonth($id_usuario = null) {
 		if (is_null($id_usuario)) {
 			$id_usuario = $this->instancia;
 		}
@@ -458,7 +458,8 @@ class VendaController extends AppController {
 		$this->layout = 'ajax';
 
 		$datas = [];
-		$data_fim = mktime(23, 59, 59, date('m'), date("t"), date('Y'));
+		$data_inicio = mktime(0, 0, 0, date('m') , 1 , date('Y'));
+		$data_fim = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
 		$numeros_dias_mes = date('d', $data_fim);
 
 		for ($i = 1; $i <= $numeros_dias_mes; $i++) {
@@ -467,11 +468,14 @@ class VendaController extends AppController {
 
 		$vendas = $this->Venda->find('all',
 			array('conditions' =>
-				array(
-					'Venda.ativo' => 1,
-					'Venda.id_usuario' => $id_usuario,
-				),
-				'limit' => 6
+				array('and' => array(
+					array(
+						'Venda.ativo' => 1,
+						'Venda.id_usuario' => $id_usuario,
+						'Venda.data_venda >= ' => date('Y/m/d', $data_inicio),
+						'Venda.data_venda <= ' => date('Y/m/d', $data_fim)
+					)
+				))
 			)
 		);
 		

@@ -481,7 +481,7 @@ class VendaController extends AppController {
 		
 		$resposta = [];
 		foreach ($vendas as $i => $venda) {
-			$resposta[] = (float) number_format($venda['Venda']['valor'], 2, '.', ',');
+			$resposta[] = $venda['Venda']['valor'];
 		}
 
 		$resposta = [

@@ -694,7 +694,7 @@ CREATE TABLE `vendas` (
 INSERT INTO `admins` (`login`, `senha`, `ativo`) VALUES ('email@email.com', '123456', '1');
 
 INSERT INTO `modulos` (`id`, `modulo`, `nome_modulo`, `ativo`, `padrao`, `funcao`, `icone`) VALUES
-                      (1, 'venda', 'Vendas', 1, 1, 'listar_cadastros', 'fa fa-money'),
+                      (1, 'venda', 'Vendas', 1, 1, 'listar_cadastros', 'fa fa-money-bill-wave-alt'),
                       (2, 'produto', 'Produtos', 1, 1, 'listar_cadastros', 'fa fa-shopping-cart'),
                       (3, 'cliente', 'Clientes', 1, 1, 'listar_cadastros', 'fa fa-users'),
                       -- (4, 'banner', 'Banners', 1, 0, 'listar_cadastros', 'fa fa-file-image-o'),
@@ -706,4 +706,4 @@ INSERT INTO `modulos` (`id`, `modulo`, `nome_modulo`, `ativo`, `padrao`, `funcao
                       (10, 'hieraquia', 'Hieraquia', 1, 0, 'listar_cadastros', 'fa-user'),
                       (11, 'orcamento', 'Orçamentos', 1, 0, 'listar_cadastros', 'fa fa-list'),
                       (12, 'asaas', 'Asaas', 1, 1, 'configuracoes', 'fa fa-level-up'),
-                      (13, 'financeiro', 'Financeiro', 1, 1, 'listar_cadastros', 'fa fa-usd');
+                      (13, 'financeiro', 'Financeiro', 1, 1, 'listar_cadastros', 'fa fa-sort-amount-up-alt');

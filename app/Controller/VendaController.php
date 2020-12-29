@@ -469,19 +469,29 @@ class VendaController extends AppController {
 		$vendas = $this->Venda->find('all',
 			array('conditions' =>
 				array('and' => array(
-					array(
 						'Venda.ativo' => 1,
 						'Venda.id_usuario' => $id_usuario,
 						'Venda.data_venda >= ' => date('Y/m/d', $data_inicio),
 						'Venda.data_venda <= ' => date('Y/m/d', $data_fim)
 					)
-				))
+				)
 			)
 		);
 		
-		$resposta = [];
+		$soma = [];
 		foreach ($vendas as $i => $venda) {
-			$resposta[] = $venda['Venda']['valor'];
+			$indice = substr($venda['Venda']['data_venda'], -2);
+			if (isset($soma[$indice]) && !empty($soma[$indice])) {
+				$soma[$indice] += $venda['Venda']['valor'];
+				continue;
+			}
+
+			$soma[$indice] = $venda['Venda']['valor'];
+		}
+
+		$resposta = [];
+		foreach ($soma as $i => $sum) {
+			$resposta[] = $sum;
 		}
 
 		$resposta = [

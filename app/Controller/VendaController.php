@@ -450,7 +450,21 @@ class VendaController extends AppController {
         exit;
 	}
 
-	public function recoverDataToDashboardOneWeek($id_usuario){
+	public function recoverDataToDashboardOneWeek($id_usuario = null) {
+		if (is_null($id_usuario)) {
+			$id_usuario = $this->instancia;
+		}
+
+		$this->layout = 'ajax';
+
+		$datas = [];
+		$data_fim = mktime(23, 59, 59, date('m'), date("t"), date('Y'));
+		$numeros_dias_mes = date('d', $data_fim);
+
+		for ($i = 1; $i <= $numeros_dias_mes; $i++) {
+			$datas[] = 'Dia ' . $i;
+		}
+
 		$vendas = $this->Venda->find('all',
 			array('conditions' =>
 				array(
@@ -467,11 +481,11 @@ class VendaController extends AppController {
 		}
 
 		$resposta = [
-			'name' => 'Valor',
+			'labels' => $datas,
 			'data' => $resposta
 		];
 
-		return json_encode($resposta);
+		echo json_encode($resposta);
 	}
 
 	public function excluir_cadastro() {

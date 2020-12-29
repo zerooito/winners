@@ -181,9 +181,6 @@
   <!-- Page level plugins -->
   <script src="/sb-admin-2/vendor/chart.js/Chart.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="/sb-admin-2/js/demo/chart-area-demo.js"></script>
-  <script src="/sb-admin-2/js/demo/chart-pie-demo.js"></script>
   <!--Start of Zopim Live Chat Script-->
   <script type="text/javascript">
   function detectmob() {

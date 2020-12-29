@@ -50,7 +50,7 @@
                         <label>Telefone: </label>
                         <div class="row">
                             <div class="col-md-8 col-xs-12">
-                                <input class="form-control" type="text" id="telephone" name="telephone" value="<?php echo $usuario[0]['Usuario']['telefone']; ?>">
+                                <input class="form-control" type="text" id="telephone" name="telephone" value="<?php echo @$usuario[0]['Usuario']['telefone']; ?>">
                             </div>
                         </div>                       
                     </div>

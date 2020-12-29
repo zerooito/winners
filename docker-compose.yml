@@ -8,6 +8,7 @@ services:
       - ./:/var/www/html
     links:
       - db
+
   db:
     image: mysql:5.6
     ports:
@@ -17,14 +18,17 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=development
-  app:
-    image: phpmyadmin/phpmyadmin:latest
-    links:
+
+  phpmyadmin:
+    depends_on:
       - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
     ports:
-      - "3000:3000"
+      - "8000:80"
     environment:
-      - PMA_ARBITRARY=1
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password 
 
 volumes:
   data:

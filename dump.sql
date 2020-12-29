@@ -589,6 +589,7 @@ CREATE TABLE `usuarios` (
   `nome` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `senha` varchar(255) DEFAULT NULL,
+  `telefone` varchar(255) DEFAULT NULL,
   `ead` tinyint(4) DEFAULT NULL,
   `erp` tinyint(4) DEFAULT NULL,
   `site` tinyint(4) DEFAULT NULL,
@@ -690,4 +691,19 @@ CREATE TABLE `vendas` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2017-11-05 12:15:39
-INSERT INTO `winners`.`admins` (`login`, `senha`, `ativo`) VALUES ('email@email.com', '123456', '1');
+INSERT INTO `admins` (`login`, `senha`, `ativo`) VALUES ('email@email.com', '123456', '1');
+
+INSERT INTO `modulos` (`id`, `modulo`, `nome_modulo`, `ativo`, `padrao`, `funcao`, `icone`) VALUES
+                      (1, 'venda', 'Vendas', 1, 1, 'listar_cadastros', 'fa fa-money'),
+                      (2, 'produto', 'Produtos', 1, 1, 'listar_cadastros', 'fa fa-shopping-cart'),
+                      (3, 'cliente', 'Clientes', 1, 1, 'listar_cadastros', 'fa fa-users'),
+                      -- (4, 'banner', 'Banners', 1, 0, 'listar_cadastros', 'fa fa-file-image-o'),
+                      -- (5, 'cupom', 'Cupom', 1, 0, 'listar_cadastros', 'fa fa-money'),
+                      -- (6, 'avise_me', 'Avise Me', 1, 0, 'listar_cadastros', NULL),
+                      -- (7, 'loja', 'Loja', 1, 0, 'listar_cadastos', NULL),
+                      -- (8, 'newsletter', 'Newsletter', 1, 0, 'listar_cadastros', NULL),
+                      (9, 'usuario', 'Usuarios', 1, 0, 'listar_cadastros', NULL),
+                      (10, 'hieraquia', 'Hieraquia', 1, 0, 'listar_cadastros', 'fa-user'),
+                      (11, 'orcamento', 'Orçamentos', 1, 0, 'listar_cadastros', 'fa fa-list'),
+                      (12, 'asaas', 'Asaas', 1, 1, 'configuracoes', 'fa fa-level-up'),
+                      (13, 'financeiro', 'Financeiro', 1, 1, 'listar_cadastros', 'fa fa-usd');

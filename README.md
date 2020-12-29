@@ -41,7 +41,17 @@ docker-compose run --rm web cp app/Config/database.php.default app/Config/databa
 docker-compose run --rm web bash
 mkdir app/webroot/uploads && mkdir app/tmp
 chmod 777 -R app/webroot/uploads app/tmp
+composer install
+exit
 ```
+
+## Subindo a estrutura e os dados do banco
+
+Acesse o PHPMyAdmin da instancia do docker que ficae em:
+
+`http://localhost:8000`
+
+Vá até o banco de dados `development` no menu do lado esquerdo. Vá na opção importar no topo e selecione o arquivo `dump.sql` que está na raiz do projeto
 
 ## Contribuindo
 

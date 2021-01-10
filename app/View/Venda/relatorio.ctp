@@ -88,7 +88,7 @@
                         <h4 class="card-title">
                             R$ <?php echo number_format(@$totalLucro, 2, ',', '.'); ?>
                         </h4>
-                        <i><b>Total:</b> Custo - Lucro</i>
+                        <i><b>Total:</b> Custo - Faturamento</i>
                     </div>
                 </div>
             </div>

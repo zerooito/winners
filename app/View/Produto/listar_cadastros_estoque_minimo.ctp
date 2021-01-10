@@ -48,7 +48,7 @@
                 <div class="panel-body">
 
                     <div class="row" style="padding-left:10px;padding-right:10px;">
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-pdf-o"><a href="/produto/baixar_estoque_minimo_pdf" style="color: #FFF;" target="_blank"> Baixar como PDF</a></i></button>
+                        <a href="/produto/baixar_estoque_minimo_pdf" class="btn btn-primary" target="_blank" style="color: #FFF; margin-bottom: 10px; width:100%;"><i class="fa fa-file-pdf-o"></i> Baixar como PDF</a>
                     </div>
 
                 </div>

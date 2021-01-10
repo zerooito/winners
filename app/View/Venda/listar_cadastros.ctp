@@ -59,14 +59,11 @@
                     <p>Até: </p>
 
                     <input type="date" id="to" class="col-lg-12" style="margin-bottom: 10px;">
-
-                    <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;">
-                        <i class="fa fa-eye">
-                            <a href="javascript:;" onclick="printSalesPeriod();" style="color: #FFF;"> 
-                                Relatório Período
-                            </a>
-                        </i>
-                    </button>
+                    
+                    <a class="btn btn-info" href="javascript:printSalesPeriod();" style="color: #FFF;margin-bottom: 10px; width:100%;"> 
+                        <i class="fa fa-eye"></i>
+                        Relatório Período
+                    </a>
                     
                 </div>
                 <!-- /.panel-body -->

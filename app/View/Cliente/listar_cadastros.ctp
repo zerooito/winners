@@ -73,12 +73,12 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/cliente/adicionar_cliente" style="color: #FFF;"> Adicionar Cliente</a></i>
+                    <a href="/cliente/adicionar_cliente" class="btn btn-primary" style="width: 100%; color: #FFF;"><i class="fa fa-plus"></i> Adicionar Cliente</a>
                 </div>
-                <hr>
-                <div class="panel-body">
-                    <button type="button" class="btn btn-info"><i class="fa fa-export"><a href="/cliente/exportar_clientes" style="color: #FFF;"> Exportar Clientes</a></i>
-                </div>
+                <!-- <hr> -->
+                <!-- <div class="panel-body">
+                    <a href="/cliente/exportar_clientes" class="btn btn-info" style="width: 100%; color: #FFF;"><i class="fa fa-export"></i> Exportar Clientes</a>
+                </div> -->
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->

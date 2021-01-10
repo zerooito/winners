@@ -33,8 +33,8 @@
                                     <td><?php echo $categoria['Categoria']['id'] ?></td>
                                     <td class="center"><?php echo $categoria['Categoria']['nome'] ?></td>
                                     <td class="center">
-                                        <button onclick="remover_categoria(<?php echo $categoria['Categoria']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_cadastro(<?php echo $categoria['Categoria']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <button onclick="editar_cadastro(<?php echo $categoria['Categoria']['id'] ?>);" type="button" class="btn btn-info"><i class="fa fa-edit"></i></button>
+                                        <button onclick="remover_categoria(<?php echo $categoria['Categoria']['id'] ?>);" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
                                     </td>
                                 </tr>   
                             <?php
@@ -58,7 +58,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/categoria/adicionar_cadastro" style="color: #FFF;"> Adicionar categoria</a></i>
+                    <a href="/categoria/adicionar_cadastro" style="color: #FFF;width: 100%;" class="btn btn-primary"><i class="fa fa-plus"></i> Adicionar categoria</a>
                 </div>
                 <!-- /.panel-body -->
             </div>

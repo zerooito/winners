@@ -70,6 +70,8 @@
   <!-- Core plugin JavaScript-->
   <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
 
+  <script src="/js/funcoes.js"></script>
+
   <!-- DataTables JavaScript -->
   <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
   <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>

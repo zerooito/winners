@@ -135,6 +135,8 @@ class VendaController extends AppController {
 					
 					if (isset($value) && !empty($value))
 						$value = ucwords($value);
+
+					$value = '<span class="badge badge-success">' . $value . '</span>';
 				} else if ($aColumns[$i] == "actions") {
 		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
 		            $value .= '<i class="far fa-sticky-note"></i>';

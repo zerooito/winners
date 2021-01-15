@@ -11,7 +11,13 @@
         <div class="sidebar-brand-text mx-3">
             <?php 
                 if ($this->Session->read('Usuario') != "") {
-                    echo $this->Session->read('Usuario.nome'); 
+                    echo substr($this->Session->read('Usuario.nome'), 0, 12);
+                    
+                    if (strlen($this->Session->read('Usuario.nome') > -1)) { 
+                        echo '...'; 
+                    } else {
+                        echo '';
+                    } 
                 } else {
                     echo "Winners Desenvolvimento";                
                 }
@@ -42,7 +48,7 @@
             echo '<li class="nav-item">';
                 echo '<a class="nav-link" href="/'.$valor['modulo'].'/'.$valor['funcao'].'">';
                 echo '<i class="fas fa-fw ' . $valor['icone'] . '"></i>';
-                echo '<span>' . $valor['nome'] . '</span></a>';
+                echo '<span>' . utf8_encode($valor['nome']) . '</span></a>';
             echo '</li>';
         }
     ?> 

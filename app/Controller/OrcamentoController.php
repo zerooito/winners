@@ -12,17 +12,31 @@ class OrcamentoController extends AppController
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Venda');
-
-		$this->set('vendas', $this->Venda->find('all',
-				array('conditions' =>
+		$vendas = $this->Venda->find('all',
+			 array(
+				'conditions' => array(
 					array(
-						'ativo' => 1,
-						'id_usuario' => $this->instancia,
-						'orcamento' => 1
+						'Venda.ativo' => 1,
+						'Venda.id_usuario' => $this->instancia,
+						'Venda.orcamento' => 1
 					)
-				)
+				),
+				'order' => array('Venda.id DESC'),
+				'joins' => array(
+					array(
+						'table' => 'clientes',
+						'alias' => 'Cliente',
+						'type' => 'LEFT',
+						'conditions' => array(
+							'Cliente.id = Venda.cliente_id'
+						)
+					)
+				),
+				'fields' => array('Venda.*, Cliente.*'),
 			)
 		);
+
+		$this->set('vendas',  $vendas);
 	}
 
 	public function excluir_cadastro($vendaId)
@@ -76,7 +90,7 @@ class OrcamentoController extends AppController
 
 		$dompdf->render();
 
-		$dompdf->stream();
+		$dompdf->stream('orcamento-venda-' . $vendaId);
 
 		exit;
 	}
@@ -145,12 +159,6 @@ class OrcamentoController extends AppController
 		$html .= '		</tr>';
 		$html .= '	</table>';
 		$html .= '	<br>';
-/*		$html .= '	<table width="100%" valign="center" align="center">';
-		$html .= '		<tr  style="background-color: #ccc;">';
-		$html .= '			<td>Total: </td>';
-		$html .= '			<td>R$ ' . number_format($desconto, 2, ',', '.') . '</td>';
-		$html .= '		</tr>';
-		$html .= '	</table>'; */
 		$html .= '';
 		$html .= '</body>';
 		$html .= '</html>';

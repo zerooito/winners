@@ -1,22 +1,26 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dados da Hieraquia</h1>
+    </div>
 
-<div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default" style="margin-top: 12px;">
-                <div class="panel-heading">
-                    Dados da Hieraquia
-                </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
                 <div class="panel-body">
                     <form role="form" action="/hieraquia/s_adicionar_hieraquia" method="post">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Nome</label>
                                     <input class="form-control" name="dados[nome]">
                                     <!-- <p class="help-block">Example block-level help text here.</p> -->
                                 </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Modulos</label>
+                                    <span class="badge badge-success">Modulos</span>
                                 </div>
                                 <div class="form-group">
                                 <?php
@@ -24,7 +28,7 @@
                                 ?>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="dados[modulos][]" value="<?php echo $modulo['modulo'] ?>"><?php echo $modulo['nome'] ?>
+                                            <input type="checkbox" name="dados[modulos][]" value="<?php echo $modulo['modulo'] ?>"> <?php echo utf8_encode($modulo['nome']) ?>
                                         </label>
                                     </div>
                                 <?php

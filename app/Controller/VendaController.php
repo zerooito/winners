@@ -135,6 +135,8 @@ class VendaController extends AppController {
 					
 					if (isset($value) && !empty($value))
 						$value = ucwords($value);
+
+					$value = '<span class="badge badge-success">' . $value . '</span>';
 				} else if ($aColumns[$i] == "actions") {
 		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
 		            $value .= '<i class="far fa-sticky-note"></i>';
@@ -196,8 +198,9 @@ class VendaController extends AppController {
 		
 		$this->set('clientes', $this->Cliente->find('all',
 				array('conditions' =>
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -207,8 +210,9 @@ class VendaController extends AppController {
 
 		$this->set('produtos', $this->Produto->find('all',
 				array('conditions' =>
-					array('ativo' => 1,
-						  'id_usuario' => $this->instancia
+					array(
+						'ativo' => 1,
+						'id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -219,7 +223,7 @@ class VendaController extends AppController {
 					array(
 						'Venda.ativo' => 1,
 						'Venda.id' => $vendaId,
-						'id_usuario' => $this->instancia
+						'Venda.id_usuario' => $this->instancia
 					)
 				)
 			)
@@ -231,7 +235,7 @@ class VendaController extends AppController {
 			array('conditions' => 
 				array(
 					'VendaItensProduto.ativo' => 1,
-					'VendaItensProduto.id' => $vendaId
+					'VendaItensProduto.venda_id' => $vendaId
 				)
 			)
 		);
@@ -239,6 +243,7 @@ class VendaController extends AppController {
 		$this->loadModel('Produto');
 
 		$produtos = [];
+		$total_venda = 0;
 		foreach ($venda_produtos as $i => $venda_produto) 
 		{
 			$produto = $this->Produto->find('all',
@@ -249,11 +254,17 @@ class VendaController extends AppController {
 					)
 				)
 			);
-
-			if ($produto[0]['Produto']['estoque'] <= 0)
-			{
-				$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+			
+			if (empty($produto)) {
+				$this->Session->setFlash('Ocorreu algum erro no produto (' . $venda_produto['VendaItensProduto']['produto_id'] .')');
 				continue;
+			}
+
+			if (isset($produto) && !empty($produto)) {
+				if ($produto[0]['Produto']['estoque'] <= 0) {
+					$this->Session->setFlash('O produto (' . $produto[0]['Produto']['nome'] .') não tem mais estoque disponivel!');
+					continue;
+				}
 			}
 			
 			$produtos[$i] = $produto[0]['Produto'];
@@ -263,9 +274,11 @@ class VendaController extends AppController {
 
 			$produtos[$i]['preco'] = number_format($produtos[$i]['preco'], 2, ',', '.');
 			$produtos[$i]['total'] = number_format($total, 2, ',', '.');
+			$total_venda += $total;
 		}
 
 		$this->set('venda_produtos', $produtos);
+		$this->set('total_venda', $total_venda);
 	}
 
 	public function s_adicionar_cadastro() {
@@ -281,7 +294,7 @@ class VendaController extends AppController {
 		$dados_venda['valor'] = $this->calcular_valor_venda($produtos);
 		$dados_venda['custo'] = $this->calcular_custo_venda($produtos);
 		
-		$salvar_venda = $this->salvar_venda($produtos, $dados_lancamento, $dados_venda);
+		$salvar_venda = $this->salvar_venda($produtos, $dados_lancamento, $dados_venda, $this->instancia);
 		
 		if (!$salvar_venda) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar a venda tente novamento');
@@ -439,28 +452,56 @@ class VendaController extends AppController {
         exit;
 	}
 
-	public function recoverDataToDashboardOneWeek($id_usuario){
+	public function recoverDataToDashboardOneMonth($id_usuario = null) {
+		if (is_null($id_usuario)) {
+			$id_usuario = $this->instancia;
+		}
+
+		$this->layout = 'ajax';
+
+		$datas = [];
+		$data_inicio = mktime(0, 0, 0, date('m') , 1 , date('Y'));
+		$data_fim = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+		$numeros_dias_mes = date('d', $data_fim);
+
+		for ($i = 1; $i <= $numeros_dias_mes; $i++) {
+			$datas[] = 'Dia ' . $i;
+		}
+
 		$vendas = $this->Venda->find('all',
 			array('conditions' =>
-				array(
-					'Venda.ativo' => 1,
-					'Venda.id_usuario' => $id_usuario,
-				),
-				'limit' => 6
+				array('and' => array(
+						'Venda.ativo' => 1,
+						'Venda.id_usuario' => $id_usuario,
+						'Venda.data_venda >= ' => date('Y/m/d', $data_inicio),
+						'Venda.data_venda <= ' => date('Y/m/d', $data_fim)
+					)
+				)
 			)
 		);
 		
-		$resposta = [];
+		$soma = [];
 		foreach ($vendas as $i => $venda) {
-			$resposta[] = (float) number_format($venda['Venda']['valor'], 2, '.', ',');
+			$indice = substr($venda['Venda']['data_venda'], -2);
+			if (isset($soma[$indice]) && !empty($soma[$indice])) {
+				$soma[$indice] += $venda['Venda']['valor'];
+				continue;
+			}
+
+			$soma[$indice] = $venda['Venda']['valor'];
+		}
+
+		$resposta = [];
+		foreach ($soma as $i => $sum) {
+			$resposta[] = $sum;
 		}
 
 		$resposta = [
-			'name' => 'Valor',
+			'labels' => $datas,
 			'data' => $resposta
 		];
 
-		return json_encode($resposta);
+		echo json_encode($resposta);
 	}
 
 	public function excluir_cadastro() {
@@ -624,9 +665,9 @@ class VendaController extends AppController {
 
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
 
-		$this->set('dinheiro', $valorTotalPgt['dinheiro']);
-		$this->set('cartao_credito', $valorTotalPgt['cartao_credito']);
-		$this->set('cartao_debito', $valorTotalPgt['cartao_debito']);
+		$this->set('dinheiro', @$valorTotalPgt['dinheiro']);
+		$this->set('cartao_credito', @$valorTotalPgt['cartao_credito']);
+		$this->set('cartao_debito', @$valorTotalPgt['cartao_debito']);
 		$this->set('valorTotalVendasPeriodo', $valorTotalVendasPeriodo);
 		$this->set('totalCustoPeriodo', $totalCustoPeriodo);
 		$this->set('totalLucro', $valorTotalVendasPeriodo - $totalCustoPeriodo);

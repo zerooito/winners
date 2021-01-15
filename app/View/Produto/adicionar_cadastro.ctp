@@ -64,7 +64,7 @@
                                     <input type="number" class="form-control" name="dados[quantidade_minima]" required>
                                 </div>
                                 
-                                <input type="hidden" class="form-control" name="dados[estoque]" value="0">
+                                <!-- <input type="hidden" class="form-control" name="dados[estoque]" value="0"> -->
 <!-- 
                                 <div class="form-group">
                                     <label>Destaque E-commerce</label>

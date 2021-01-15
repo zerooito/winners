@@ -1,18 +1,16 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Hieraquias - Listar Hieraquias</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Hieraquias - Listar Hieraquias</h1>
     </div>
-    <!-- /.row -->
+
+    <!-- Content Row -->
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Listagem das Hieraquias
-                </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -55,9 +53,13 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/hieraquia/adicionar_hieraquia" style="color: #FFF;"> Adicionar Hieraquia</a></i>
+                    <a href="/hieraquia/adicionar_hieraquia" style="color: #FFF;width: 100%;" class="btn btn-primary">
+                        <i class="fa fa-plus"></i> Adicionar Hieraquia
+                    </a>
 
-                    <button type="button" class="btn btn-success" style="margin-top: 10px;"><i class="fa fa-plus"><a href="/usuario/listar_subusuarios" style="color: #FFF;"> Usuarios</a></i>
+                    <a href="/hieraquia/listar_subusuarios" class="btn btn-success" style="color: #FFF;margin-top: 10px;width: 100%;">
+                        <i class="fa fa-plus"></i> Usuarios
+                    </a>
                 </div>
                 <!-- /.panel-body -->
             </div>

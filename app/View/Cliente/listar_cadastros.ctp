@@ -43,13 +43,13 @@
                                         <?php echo $cliente['Cliente']['documento1'] ?>
                                     </td>
                                     <td class="center">
-                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger btn-circle">
+                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger">
                                             <i class="fa fa-times"></i>
                                         </button>
-                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info btn-circle">
+                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <a class="btn btn-primary btn-circle" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
+                                        <a class="btn btn-primary" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
                                             <i class="fa fa-list"></i>
                                         </a>
                                     </td>
@@ -73,12 +73,12 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/cliente/adicionar_cliente" style="color: #FFF;"> Adicionar Cliente</a></i>
+                    <a href="/cliente/adicionar_cliente" class="btn btn-primary" style="width: 100%; color: #FFF;"><i class="fa fa-plus"></i> Adicionar Cliente</a>
                 </div>
-                <hr>
-                <div class="panel-body">
-                    <button type="button" class="btn btn-info"><i class="fa fa-export"><a href="/cliente/exportar_clientes" style="color: #FFF;"> Exportar Clientes</a></i>
-                </div>
+                <!-- <hr> -->
+                <!-- <div class="panel-body">
+                    <a href="/cliente/exportar_clientes" class="btn btn-info" style="width: 100%; color: #FFF;"><i class="fa fa-export"></i> Exportar Clientes</a>
+                </div> -->
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->

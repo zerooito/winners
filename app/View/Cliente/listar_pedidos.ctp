@@ -48,7 +48,7 @@
                                                 <i class="fa fa-reply" aria-hidden="true"></i>
                                             </a>
                                         <?php else: ?>
-                                            <a class="btn btn-success btn-circle" title="Pagamento Realizado" href="javascript:changePayment('<?php echo $venda['Venda']['id'] ?>', '<?php echo $cliente['Cliente']['id'] ?>', 'aprovar');">
+                                            <a class="btn btn-success btn-circle" title="Efetuar pagamento" href="javascript:changePayment('<?php echo $venda['Venda']['id'] ?>', '<?php echo $cliente['Cliente']['id'] ?>', 'aprovar');">
                                                 <i class="fa fa-check" aria-hidden="true"></i>
                                             </a>
                                         <?php endif; ?>

@@ -1,6 +1,12 @@
 <?php
 
 class UsuarioController extends AppController{
+	const MODULO_VENDA = 1;
+	const MODULO_PRODUTO = 2;
+	const MODULO_CLIENTE = 3;
+	const MODULO_ORCAMENTO = 11;
+	const MODULO_FINANCEIRO = 13;
+
 	public function beforeFilter(){
 		return true;
    	}
@@ -171,33 +177,37 @@ class UsuarioController extends AppController{
 	public function relacionar_modulos_teste($id) {
 		$this->loadModel('ModuloRelacionaUsuario');
 		
-		$modulos = array(
-			0 => array(
+		$modulos = [
+			[
 				'id_usuario' => $id,
-				'id_modulo' => 1,
+				'id_modulo' => self::MODULO_VENDA,
 				'ativo' => 1
-			),
-			2 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => 2,
+				'id_modulo' => self::MODULO_PRODUTO,
 				'ativo' => 1
-			),
-			3 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => 3,
+				'id_modulo' => self::MODULO_CLIENTE,
 				'ativo' => 1
-			),
-			4 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => 11,
+				'id_modulo' => self::MODULO_ORCAMENTO,
 				'ativo' => 1
-			),
-			4 => array(
+			],
+			[
 				'id_usuario' => $id,
-				'id_modulo' => 13,
+				'id_modulo' => self::MODULO_FINANCEIRO,
 				'ativo' => 1
-			)		
-		);
+			],
+			[
+				'id_usuario' => $id,
+				'id_modulo' => self::MODULO_HIERAQUIA,
+				'ativo' => 1			]
+		];
 
 		$this->ModuloRelacionaUsuario->saveAll($modulos);
 

@@ -1,27 +1,28 @@
-function number_format(number, decimals, decPoint, thousandsSep){
-	decimals = decimals || 0;
-	number = parseFloat(number);
- 
-	if(!decPoint || !thousandsSep){
-		decPoint = '.';
-		thousandsSep = ',';
-	}
- 
-	var roundedNumber = Math.round( Math.abs( number ) * ('1e' + decimals) ) + '';
-	var numbersString = decimals ? roundedNumber.slice(0, decimals * -1) : roundedNumber;
-	var decimalsString = decimals ? roundedNumber.slice(decimals * -1) : '';
-	var formattedNumber = "";
- 
-	while(numbersString.length > 3){
-		formattedNumber += thousandsSep + numbersString.slice(-3)
-		numbersString = numbersString.slice(0,-3);
-	}
- 	
-	number = (number < 0 ? '-' : '') + numbersString + formattedNumber + (decimalsString ? (decPoint + decimalsString) : '');
+function number_format(number, decimals, dec_point, thousands_sep) {
+	// *     example: number_format(1234.56, 2, ',', ' ');
+	// *     return: '1 234,56'
+	number = (number + '').replace(',', '').replace(' ', '');
+	var n = !isFinite(+number) ? 0 : + number,
+		prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+		sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+		dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+		s = '',
+		toFixedFix = function(n, prec) {
+			var k = Math.pow(10, prec);
+			return '' + Math.round(n * k) / k;
+		};
 
-	if (number.charAt(0) == ',')
-		return "0" + number;
+	// Fix for IE parseFloat(0.55).toFixed(0) = 0;
+	s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+	if (s[0].length > 3) {
+		s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+	}
 
-	return number;
+	if ((s[1] || '').length < prec) {
+		s[1] = s[1] || '';
+		s[1] += new Array(prec - s[1].length + 1).join('0');
+	}
+
+	return s.join(dec);
 }
  

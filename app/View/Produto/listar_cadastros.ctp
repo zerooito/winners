@@ -50,23 +50,23 @@
                 <div class="panel-body">
 
                         <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/produto/adicionar_cadastro" style="color: #FFF;"> Adicionar produto</a></i></button>
+                            <a href="/produto/adicionar_cadastro" style="width: 100%; margin-bottom: 5px; color: #FFF;" class="btn btn-primary"> <i class="fa fa-plus"></i> Adicionar produto</a>
                         </div>
 
                         <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width:100%;"><i class="fa fa-plus"><a href="/categoria/listar_cadastros" style="color: #FFF;"> Categorias</a></i></button>
+                            <a href="/categoria/listar_cadastros" style="width: 100%; margin-bottom: 5px; color: #FFF;" class="btn btn-primary"> <i class="fa fa-plus"></i> Categorias</a>
                         </div>
-
+<!-- 
                         <div class="row" style="padding-left:10px;padding-right:10px;">
                             <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-excel-o"><a href="/produtos/exportar_excel_exemplo" style="color: #FFF;"> Exportar Excel Exemplo</a></i></button>
+                        </div> -->
+
+                        <div class="row" style="padding-left:10px;padding-right:10px;">
+                            <a data-toggle="modal" data-target="#importarProdutos" class="btn btn-info" style="margin-bottom: 10px; width:100%;color: #FFF;"> <i class="fa fa-upload"></i> Importar Produtos</a>
                         </div>
 
                         <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <button  data-toggle="modal" data-target="#importarProdutos" type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-upload"><a style="color: #FFF;"> Importar Produtos</a></i></button>
-                        </div>
-
-                        <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <button type="button" class="btn btn-warning" style="margin-bottom: 10px; width:100%;"><i class="fa fa-warning"><a href="/produto/listar_cadastros_estoque_minimo" style="color: #FFF;"> Produtos com Estoque Minimo</a></i></button>
+                            <a href="/produto/listar_cadastros_estoque_minimo" class="btn btn-warning" style="margin-bottom: 10px; width:100%;color: #FFF;"> <i class="fa fa-warning"></i>  Produtos com Estoque Minimo</a>
                         </div>
 
                 </div>
@@ -88,6 +88,7 @@
           </div>
           <div class="modal-body">
             <p>Escolha o arquivo que deseja enviar.</p>
+            <p>Para baixar a planilha de exemplo <a href="/produto/exportar_excel_exemplo" target="_blank">Clique aqui</a></p>
             <input type="file" name="arquivo">
           </div>
           <div class="modal-footer">

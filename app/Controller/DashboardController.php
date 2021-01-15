@@ -11,7 +11,6 @@ class DashboardController extends AppController
 		
 		$vendaController = new VendaController;
 
-		$this->set('vendas', $vendaController->recoverDataToDashboardOneWeek($this->instancia));
 		$this->set('total_vendas', $vendaController->obter_total_vendas_periodo_atual(
 			$this->instancia, date('Y-m-01'), date('Y-m-31')
 		));

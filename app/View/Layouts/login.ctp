@@ -52,7 +52,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="/recuperar-senha">Esqueceu a senha?</a>
+                    <!-- <a class="small" href="/recuperar-senha">Esqueceu a senha?</a> -->
                   </div>
                   <div class="text-center">
                     <a class="small" href="/cadastre-se">Crie sua conta!</a>

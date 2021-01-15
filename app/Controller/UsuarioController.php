@@ -6,6 +6,7 @@ class UsuarioController extends AppController{
 	const MODULO_CLIENTE = 3;
 	const MODULO_ORCAMENTO = 11;
 	const MODULO_FINANCEIRO = 13;
+	// const MODULO_HIERAQUIA = 1
 
 	public function beforeFilter(){
 		return true;
@@ -170,7 +171,7 @@ class UsuarioController extends AppController{
 
 	public function notificar_cadastro($nome, $email) {
 		$headers = "From: noreply@ciawn.com.br\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
-		$headers .= "Reply-To: $email_address";	
+		$headers .= "Reply-To: $email";	
 		mail('winnersdevelopers@gmail.com, reginaldo@ciawn.com.br', 'Notificação de cadastro', 'O usuario ' . $nome . ' email ' . $email . ' ', $headers);
 	}
 
@@ -202,11 +203,12 @@ class UsuarioController extends AppController{
 				'id_usuario' => $id,
 				'id_modulo' => self::MODULO_FINANCEIRO,
 				'ativo' => 1
-			],
-			[
-				'id_usuario' => $id,
-				'id_modulo' => self::MODULO_HIERAQUIA,
-				'ativo' => 1			]
+			]
+			// [
+			// 	'id_usuario' => $id,
+			// 	'id_modulo' => self::MODULO_HIERAQUIA,
+			// 	'ativo' => 1			]
+			// ];
 		];
 
 		$this->ModuloRelacionaUsuario->saveAll($modulos);
@@ -243,7 +245,7 @@ class UsuarioController extends AppController{
 		$data['folder_view'] = '';
 		$data['token_pagseguro'] = '';
 		$data['template'] = '';
-		
+		$data['telefone'] = $this->request->data['telephone'];
 
 		$this->loadModel('Usuario');
 

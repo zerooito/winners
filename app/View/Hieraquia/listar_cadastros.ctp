@@ -57,7 +57,7 @@
                         <i class="fa fa-plus"></i> Adicionar Hieraquia
                     </a>
 
-                    <a href="/usuario/listar_subusuarios" class="btn btn-success" style="color: #FFF;margin-top: 10px;width: 100%;">
+                    <a href="/hieraquia/listar_subusuarios" class="btn btn-success" style="color: #FFF;margin-top: 10px;width: 100%;">
                         <i class="fa fa-plus"></i> Usuarios
                     </a>
                 </div>

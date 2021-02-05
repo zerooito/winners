@@ -75,6 +75,11 @@
   <!-- DataTables JavaScript -->
   <?php echo $this->Html->script('plugins/dataTables/jquery.dataTables'); ?>
   <?php echo $this->Html->script('plugins/dataTables/dataTables.bootstrap'); ?>
+
+  <!--Mascaras-->
+  <?php echo $this->Html->script('jquery.maskedinput.min'); ?>
+  <?php echo $this->Html->script('jquery.maskMoney'); ?>
+  <?php echo $this->Html->script('mascaras'); ?>
 </head>
 
 <body id="page-top">

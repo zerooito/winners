@@ -46,7 +46,10 @@
             <li class="scroll"><a href="/linha-do-tempo-winners-opensource">Nossa História</a></li>                     
             <li class="scroll"><a href="/canal-para-desenvolvedores-winners">Desenvolvedores</a></li> 
             <li class="scroll"><a href="/clientes-erp-ecommerce-software-sob-medida-winners">Cases</a></li>
-            <li class="scroll"><a href="/quero-saber-como-funciona-winners-opensource">Contato</a></li>    
+            <li class="scroll"><a href="/quero-saber-como-funciona-winners-opensource">Contato</a></li> 
+            <li>
+              <a href="/home/login" class="btn btn-success"> Acesse Já </a>
+            </li>
           </ul>
         </div>
       </div>

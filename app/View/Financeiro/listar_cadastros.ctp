@@ -9,7 +9,7 @@
 
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-4">  
+        <div class="col-lg-6">  
             <div class="text-right">
                 <div class="card bg-danger text-white shadow">
                     <div class="card-body">
@@ -19,22 +19,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">  
+        <div class="col-lg-6">  
             <div class="text-right">
                 <div class="card bg-success text-white shadow">
                     <div class="card-body">
                         <b>R$</b> <?php echo number_format($lancamentos['pago'], 2, ',', '.'); ?>
                         <div class="text-white-50 small">Pago</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">  
-            <div class="text-right">
-                <div class="card bg-info text-white shadow">
-                    <div class="card-body">
-                        <b>R$</b> <?php echo number_format($lancamentos['total'], 2, ',', '.'); ?><br>
-                        <div class="text-white-50 small"><b>R$</b> <?php echo number_format($lancamentos['total_saidas'], 2, ',', '.'); ?></div>
                     </div>
                 </div>
             </div>
@@ -53,7 +43,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Pedido</th>
+                                    <th>Tipo</th>
                                     <th>Vencimento</th>
                                     <th>Valor</th>
                                     <th>Categoria</th>
@@ -81,17 +71,17 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
 
-                    <a href="javascript:$('#addFornecedor').modal('show');" style="width:100%;" class="btn btn-primary"> 
+                    <a href="#" style="width:100%;" class="btn btn-primary add-fornecedor"> 
                         <i class="fa fa-truck"></i>
                         Fornecedores
                     </a>
 
-                    <a href="javascript:$('#addTransacao').modal('show');" style="margin-top:10px;color: #FFF;width:100%;" class="btn btn-primary"> 
+                    <a href="#" style="margin-top:10px;color: #FFF;width:100%;" class="btn btn-primary add-transacao"> 
                         <i class="fa fa-plus"></i> 
                         Adicionar Transação
                     </a>
 
-                    <a href="javascript:$('#addCategoria').modal('show');" style="margin-top:10px;width:100%;" class="btn btn-success"> 
+                    <a href="#" style="margin-top:10px;width:100%;" class="btn btn-success add-categoria"> 
                         <i class="fa fa-plus"></i> 
                         Cadastrar Categorias
                     </a>
@@ -143,7 +133,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="addCategoria" role="dialog" aria-labelledby="myModalLabel">
     <form class="form" action="/financeiro/adicionar_categoria" method="POST">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -176,7 +166,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addFornecedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="addFornecedor" role="dialog" aria-labelledby="myModalLabel">
     <form class="form" action="/financeiro/adicionar_fornecedor" method="POST">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -202,7 +192,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addTransacao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="addTransacao" role="dialog" aria-labelledby="myModalLabel">
     <form class="form" action="/financeiro/adicionar_transacao" method="POST">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -240,6 +230,13 @@
                         <label for="valor">Valor:</label>
                         <input type="valor" class="form-control moeda" id="valor" name="transacao[valor]">
                     </div>
+                    <div class="form-group">
+                        <label for="valor">Pago:</label>
+                        <select class="form-control" name="transacao[pago]" style="width:100%;">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Salvar</button>
@@ -251,8 +248,94 @@
 </div>
 
 <script type="text/javascript">
+    $(window).load(function(){
+        $('#categorias, #categoria-transacao').select2({
+            dropdownParent: "#addTransacao",
+            placeholder: 'Escolha a categoria',
+            ajax: {
+                url: "/financeiro/carregar_categorias",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // parse the results into the format expected by Select2.
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+
+        $('#fornecedor, #fornecedor-transacao').select2({
+            dropdownParent: "#addTransacao",
+            placeholder: 'Escolha um fornecedor',
+            ajax: {
+                url: "/financeiro/carregar_fornecedores",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // parse the results into the format expected by Select2.
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+
+        $('#clientes').select2({
+            placeholder: 'Escolha o cliente',
+            ajax: {
+                url: "/cliente/carregar_clientes",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // parse the results into the format expected by Select2.
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+    });
     
     $(document).ready(function(){
+        $('.add-fornecedor').click(function() { 
+            $('#addFornecedor').modal('show');
+        });
+
+        $('.add-transacao').click(function() { 
+            $('#addTransacao').modal('show');
+        });
+
+        $('.add-categoria').click(function() { 
+            $('#addCategoria').modal('show');
+        });
         
         var datatable = $('#datatable-financeiro').dataTable({
             "bServerSide": true,
@@ -288,63 +371,6 @@
 
         $(document.body).on("change", "#fornecedor", function() {
             $('#datatable-financeiro').dataTable().fnFilter('fornecedor:' + this.value);
-        });
-
-        $('#categorias, #categoria-transacao').select2({
-            placeholder: 'Escolha a categoria',
-            ajax: {
-                url: "/financeiro/carregar_categorias",
-                dataType: 'json',
-                quietMillis: 100,
-                data: function (term, page) {
-                    return {
-                        term: term, //search term
-                        page_limit: 10 // page size
-                    };
-                },
-                results: function (data, page) {
-                    return { results: data.results };
-                }
-
-            }
-        });
-
-        $('#fornecedor, #fornecedor-transacao').select2({
-            placeholder: 'Escolha um fornecedor',
-            ajax: {
-                url: "/financeiro/carregar_fornecedores",
-                dataType: 'json',
-                quietMillis: 100,
-                data: function (term, page) {
-                    return {
-                        term: term, //search term
-                        page_limit: 10 // page size
-                    };
-                },
-                results: function (data, page) {
-                    return { results: data.results };
-                }
-
-            }
-        });
-
-        $('#clientes').select2({
-            placeholder: 'Escolha o cliente',
-            ajax: {
-                url: "/cliente/carregar_clientes",
-                dataType: 'json',
-                quietMillis: 100,
-                data: function (term, page) {
-                    return {
-                        term: term, //search term
-                        page_limit: 10 // page size
-                    };
-                },
-                results: function (data, page) {
-                    return { results: data.results };
-                }
-
-            }
         });
 
         $('#clear-filter').click(function(){

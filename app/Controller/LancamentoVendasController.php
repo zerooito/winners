@@ -16,6 +16,7 @@ class LancamentoVendasController extends AppController {
 		$lancamento['ativo']	  = 1;
 		$lancamento['usuario_id'] = $id_usuario;
 		$lancamento['forma_pagamento'] = $dados['forma_pagamento'];
+		$lancamento['tipo'] = 'receita';
 
 		$this->LancamentoVenda->save($lancamento);
 

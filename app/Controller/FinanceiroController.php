@@ -50,9 +50,9 @@ class FinanceiroController extends AppController
 					$a_receber += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
 				}
 
-				if ($lancamento['LancamentoVenda']['valor'] >= $lancamento['LancamentoVenda']['valor_pago']) {
-					$total_entradas += $lancamento['LancamentoVenda']['valor'];
-				}
+				// if ($lancamento['LancamentoVenda']['valor'] >= $lancamento['LancamentoVenda']['valor_pago']) {
+				// 	$total_entradas += $lancamento['LancamentoVenda']['valor'];
+				// }
 			}
 
 			if (empty($categoria))
@@ -63,7 +63,7 @@ class FinanceiroController extends AppController
 					$a_pagar += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
 				} else {
 					$pago += $lancamento['LancamentoVenda']['valor'];
-					$total_saidas += $lancamento['LancamentoVenda']['valor'];
+					// $total_saidas += $lancamento['LancamentoVenda']['valor'];
 				}
 			}
 
@@ -103,18 +103,18 @@ class FinanceiroController extends AppController
 
 		$response = [];
 
-		$response['results'][0]['id'] = -1;
-		$response['results'][0]['text'] = 'Todos';
+		$response[0]['id'] = -1;
+		$response[0]['text'] = 'Todos';
 
-		$response['results'][1]['id'] = 0;
-		$response['results'][1]['text'] = 'Sem categoria';
+		$response[1]['id'] = 0;
+		$response[1]['text'] = 'Sem categoria';
 
 		$i = 1;
 		foreach ($categorias as $categoria) {
 			$i++; 
 
-			$response['results'][$i]['id'] = $categoria['LancamentoCategoria']['id'];
-			$response['results'][$i]['text'] = $categoria['LancamentoCategoria']['nome'];
+			$response[$i]['id'] = $categoria['LancamentoCategoria']['id'];
+			$response[$i]['text'] = $categoria['LancamentoCategoria']['nome'];
 		}
 
 		echo json_encode($response);
@@ -143,18 +143,18 @@ class FinanceiroController extends AppController
 
 		$response = [];
 
-		$response['results'][0]['id'] = -1;
-		$response['results'][0]['text'] = 'Todos';
+		$response[0]['id'] = -1;
+		$response[0]['text'] = 'Todos';
 
-		$response['results'][1]['id'] = 0;
-		$response['results'][1]['text'] = 'Sem Fornecedor';
+		$response[1]['id'] = 0;
+		$response[1]['text'] = 'Sem Fornecedor';
 
 		$i = 1;
 		foreach ($fornecedores as $fornecedor) {
 			$i++; 
 
-			$response['results'][$i]['id'] = $fornecedor['Fornecedore']['id'];
-			$response['results'][$i]['text'] = $fornecedor['Fornecedore']['nome'];
+			$response[$i]['id'] = $fornecedor['Fornecedore']['id'];
+			$response[$i]['text'] = $fornecedor['Fornecedore']['nome'];
 		}
 
 		echo json_encode($response);
@@ -270,29 +270,34 @@ class FinanceiroController extends AppController
 					if (!empty($categoria_lancamento)) {
 						if ($categoria_lancamento['LancamentoCategoria']['tipo'] == "receita") {
 							$value = '<span class="label label-success">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
-
+							
 							$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Não é uma despesa.\');"><i class="fa fa-child"></i></a>';
 						} else {
 							$value = '<span class="label label-danger">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
-
-							if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor']) {
-								$btPaid = '<a class="btn btn-success" href="/produto/imagens/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-check"></i></a>';
-							} else {
-								$btPaid = '<a class="btn btn-default" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fa fa-money"></i></a>';
-							}
 						}
 					} else {
 						$value = '<span class="label label-default">Sem Categoria</span>';
 					}
-
+		
+					if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor']) {
+						$btPaid = '<a class="btn btn-success" href="/financeiro/pago/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-check"></i></a>';
+					} else {
+						$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fas fa-dollar-sign"></i></a>';
+					}
 				} else {
 					$value = $lancamento['LancamentoVenda'][$aColumns[$i]];
 				}
 
-				if ($aColumns[$i] == "venda_id" && empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
-					$value = '<b>Não é uma venda</b>';
-				} elseif ($aColumns[$i] == "venda_id" && !empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
-					$value = '<a href="http://www.ciawn.com.br/venda/listar_cadastros?venda_id=' . $lancamento['LancamentoVenda'][$aColumns[$i]] . '">Ver Pedido</a>';
+				if ($aColumns[$i] == "venda_id") {
+					$value = '<span class="badge badge-info">Desconhecido</span>';
+
+					if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'receita') {
+						$value = '<span class="badge badge-success">Receita</span>'; 
+					}
+
+					if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
+						$value = '<span class="badge badge-warning">Despesa</span>'; 
+					}
 				}
 
 				if ($aColumns[$i] == "valor") {
@@ -316,6 +321,24 @@ class FinanceiroController extends AppController
 
 		echo json_encode($output);
 		exit;
+	}
+
+	public function pago($id)
+	{
+		$this->loadModel('LancamentoVenda');
+		$lancamento = $this->LancamentoVenda->find('first', 
+			array('conditions' => 
+				array('LancamentoVenda.id' => $id)
+			)
+		);
+
+		$this->LancamentoVenda->id = $id;
+		
+		$dados['valor_pago'] = $lancamento['LancamentoVenda']['valor'];
+		$this->LancamentoVenda->save($dados);
+		
+		$this->Session->setFlash('Lançamento pago com sucesso');
+		return $this->redirect('/financeiro/listar_cadastros');
 	}
 
 	public function adicionar_categoria()
@@ -361,6 +384,11 @@ class FinanceiroController extends AppController
 		$transacao = $this->request->data('transacao');
 
 		$transacao['valor_pago'] = 0;
+		if ($transacao['pago'] == 1) {
+			$transacao['valor_pago'] = $transacao['valor'];
+		}
+		unset($transacao['pago']);
+
 		$transacao['ativo'] = 1;
 		$transacao['usuario_id'] = $this->instancia;
 

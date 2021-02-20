@@ -168,7 +168,7 @@ class FinanceiroController extends AppController
 		$this->loadModel('LancamentoVenda');
 		$this->loadModel('LancamentoCategoria');
 
-		$aColumns = array( 'id', 'venda_id', 'data_vencimento', 'valor', 'lancamento_categoria_id' );
+		$aColumns = array( 'id', 'venda_id', 'data_vencimento', 'valor', 'lancamento_categoria_id', 'descricao' );
 
 		$conditions = array(
 			'conditions' => array(
@@ -309,6 +309,10 @@ class FinanceiroController extends AppController
 					$value = $date->format('d/m/Y');
 				} else if ($aColumns[$i] == "data_vencimento" && empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
 					$value = "Não informado";
+				}
+
+				if ($aColumns[$i] == "descricao") {
+					$value = $lancamento['LancamentoVenda'][$aColumns[$i]] ? $lancamento['LancamentoVenda'][$aColumns[$i]] : 'Sem descrição';
 				}
 				
 				$row[] = $value;

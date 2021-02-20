@@ -47,6 +47,7 @@
                                     <th>Vencimento</th>
                                     <th>Valor</th>
                                     <th>Categoria</th>
+                                    <th>Descrição</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -229,6 +230,10 @@
                     <div class="form-group">
                         <label for="valor">Valor:</label>
                         <input type="valor" class="form-control moeda" id="valor" name="transacao[valor]">
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição:</label>
+                        <input type="descricao" class="form-control descricao" id="descricao" name="transacao[descricao]">
                     </div>
                     <div class="form-group">
                         <label for="valor">Pago:</label>

@@ -625,11 +625,51 @@ class VendaController extends AppController {
 		return $valorTotalVendasPeriodo;
 	}
 
+	public function imprimir_relatorio()
+	{
+		$ImpressaoFiscalController = new ImpressaoFiscalController;
+
+		$from = $_GET['from'];
+		$to   = $_GET['to'];
+
+
+		$relatorio = $this->obter_relatorio_por_data($from, $to);
+
+		$itens = array();
+		$totalGeral = 0.00;
+
+		$ImpressaoFiscalController->corpoTxt .= "Dinheiro: " . number_format($relatorio['dinheiro'], 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Cartão de Crédito: " . number_format($relatorio['cartao_credito'], 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Cartão de Débito: " . number_format($relatorio['cartao_debito'], 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Total de vendas: " . number_format($relatorio['valorTotalVendasPeriodo'], 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Total Custo: " . number_format($relatorio['totalCustoPeriodo'], 2, ',', '.') . "\n\n";
+		$ImpressaoFiscalController->corpoTxt .= "Total Lucro - Custo: " . number_format($relatorio['totalLucro'], 2, ',', '.') . "\n\n";
+
+		$file = $ImpressaoFiscalController->gerar_arquivo();
+		
+		echo json_encode(array('file' => $file));
+
+		exit;
+	}
+
 	public function relatorio() {
 		$this->layout = 'wadmin';
 
 		$from = $_GET['from'];
 		$to   = $_GET['to'];
+
+		$relatorio = $this->obter_relatorio_por_data($from, $to);
+
+		$this->set('dinheiro', $relatorio['dinheiro']);
+		$this->set('cartao_credito', $relatorio['cartao_credito']);
+		$this->set('cartao_debito', $relatorio['cartao_debito']);
+		$this->set('valorTotalVendasPeriodo', $relatorio['valorTotalVendasPeriodo']);
+		$this->set('totalCustoPeriodo', $relatorio['totalCustoPeriodo']);
+		$this->set('totalLucro', $relatorio['totalLucro']);
+	}
+
+	public function obter_relatorio_por_data($from, $to)
+	{
 
 		$this->loadModel('Venda');
 		$this->loadModel('LancamentoVenda');
@@ -665,12 +705,14 @@ class VendaController extends AppController {
 
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
 
-		$this->set('dinheiro', @$valorTotalPgt['dinheiro']);
-		$this->set('cartao_credito', @$valorTotalPgt['cartao_credito']);
-		$this->set('cartao_debito', @$valorTotalPgt['cartao_debito']);
-		$this->set('valorTotalVendasPeriodo', $valorTotalVendasPeriodo);
-		$this->set('totalCustoPeriodo', $totalCustoPeriodo);
-		$this->set('totalLucro', $valorTotalVendasPeriodo - $totalCustoPeriodo);
+		return [
+			'dinheiro' => @$valorTotalPgt['dinheiro'],
+			'cartao_credito' => @$valorTotalPgt['cartao_credito'],
+			'cartao_debito' => @$valorTotalPgt['cartao_debito'],
+			'valorTotalVendasPeriodo' => $valorTotalVendasPeriodo,
+			'totalCustoPeriodo' => $totalCustoPeriodo,
+			'totalLucro' => $valorTotalVendasPeriodo - $totalCustoPeriodo
+		];
 	}
 
 	public function calcularTotalVendas($lancamentos)

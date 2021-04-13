@@ -25,7 +25,7 @@
                             </thead>
                             <tbody>                   
                             <?php
-                            foreach ($SubUsuarios as $i => $hieraquia) {
+                            foreach ($usuarios as $i => $hieraquia) {
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $hieraquia['Hieraquia']['id'] ?>">
                                     <td><?php echo $hieraquia['Hieraquia']['nome'] ?></td>

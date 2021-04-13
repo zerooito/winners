@@ -23,28 +23,32 @@
                                     <span class="badge badge-success">Modulos</span>
                                 </div>
                                 <div class="form-group">
-                                <?php
-                                    foreach ($modulos as $i => $modulo) {
-                                ?>
+                                <?php foreach ($modulos as $i => $modulo): ?>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="dados[modulos][]" value="<?php echo $modulo['modulo'] ?>"> <?php echo utf8_encode($modulo['nome']) ?>
+                                            <b>
+                                                <?php echo utf8_encode($modulo['nome']) ?>
+                                            </b>
+                                            <br>
+                                            <input type="checkbox" name="dados[modulos][read][]" value="<?php echo $modulo['id'] ?>" id="modulo-read-<? echo $i; ?>"> <label for="modulo-read-<? echo $i; ?>">Leitura</label><br>
+                                            <input type="checkbox" name="dados[modulos][write][]" value="<?php echo $modulo['id'] ?>" id="modulo-write-<? echo $i; ?>"> <label for="modulo-write-<? echo $i; ?>">Escrita</label>
+                                            <hr>
                                         </label>
                                     </div>
-                                <?php
-                                    }
-                                ?>
+                                <?php endforeach; ?>
                                 </div>
                             </div>
                             <!-- /.col-lg-6 (nested) -->
                         </div>
-
-                        <button type="submit" class="btn btn-success">Salvar Hieraquia</button>
-                        <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
                     </form>
                     <!-- /.row (nested) -->
                 </div>
                 <!-- /.panel-body -->
+
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success">Salvar Hieraquia</button>
+                    <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
+                </div>
             </div>
             <!-- /.panel -->
         </div>

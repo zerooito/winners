@@ -68,6 +68,7 @@ class AppController extends Controller {
 		);
 		
 		foreach ($registros as $indice => $modulo) {
+			$this->modulos[$modulo['Modulo']['modulo']]['id'] = $modulo['Modulo']['id'];
 			$this->modulos[$modulo['Modulo']['modulo']]['modulo'] = $modulo['Modulo']['modulo'];
 			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
 			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];

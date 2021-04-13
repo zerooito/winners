@@ -17,7 +17,7 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-cliente">
                             <thead>
                                 <tr>
-                                    <th>Nome</th>
+                                    <th width="80%">Nome</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -27,9 +27,10 @@
                             ?>             
                                 <tr class="odd gradeX" id="<?php echo $hieraquia['Hieraquia']['id'] ?>">
                                     <td><?php echo $hieraquia['Hieraquia']['nome'] ?></td>
-                                    <td class="center">
-                                        <button onclick="remover_hieraquia(<?php echo $hieraquia['Hieraquia']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar(<?php echo $hieraquia['Hieraquia']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                    <td class="right">
+                                        <a href="/hieraquia/visualizar/<?php echo $hieraquia['Hieraquia']['id'] ?>" class="btn btn-info">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </a>
                                     </td>
                                 </tr>   
                             <?php

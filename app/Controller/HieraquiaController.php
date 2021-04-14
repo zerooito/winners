@@ -57,16 +57,31 @@ class HieraquiaController extends AppController {
 	}
 	
 	public function listar_subusuarios() {
+		$this->loadModel('Usuario');
 		$this->loadModel('SubUsuarios');
 
-		$usuarios = $this->SubUsuarios->find('all', 
+		$subusuarios = $this->SubUsuarios->find('all', 
 			array('conditions' => 
 				array(
 					'id_usuario' => $this->instancia
 				)
 			)
 		);
+		
+		$usuarios = [];
+		foreach ($subusuarios as $subusuario) {
+			$usuario = $this->Usuario->find('first', array(
+					'conditions' => array(
+						'subusuario_id' => $subusuario['SubUsuarios']['id']
+					)
+				)
+			);
 
+			if (!empty($usuario)) { 
+				$usuarios[] = $usuario;
+			}
+		}
+		
 		$this->layout = 'wadmin';
 		$this->set('usuarios', $usuarios);
 	}
@@ -101,6 +116,69 @@ class HieraquiaController extends AppController {
 
 		$this->set('hieraquias', $hieraquias);
 		$this->layout = 'wadmin';
+	}
+
+	public function s_adicionar_usuario()
+	{
+		$this->loadModel('SubUsuarios');
+
+		$dados = $this->request->data('dados');
+
+		if ($dados['password'] != $dados['password_confirm']) {
+			$this->Session->setFlash('As senhas não coincidem, digite as mesmas senhas em ambos campos.');
+			return $this->redirect('/hieraquia/adicionar_subusuario');
+		}
+
+		if ($this->verificar_email($dados['email'])) {
+			$this->Session->setFlash('E-mail já está sendo utilizado no sistema, utilize outro acesso.');
+			return $this->redirect('/hieraquia/adicionar_subusuario');
+		}
+
+		unset($dados['password_confirm']);
+
+		$dados_subusuario = [
+			'id_usuario' => $this->instancia,
+			'id_hieraquia' => $dados['hieraquia_id'],
+			'ativo' => 1
+		];
+		$subusuario = $this->SubUsuarios->save($dados_subusuario);
+
+		$dados_usuario = [
+			'nome' => $dados['nome'],
+			'email' => $dados['email'],
+			'senha' => sha1($dados['password']),
+			'subusuario_id' => $subusuario['SubUsuarios']['id'],
+			'loja' => 0,
+			'loja_active' => 0,
+			'layout_loja' => 'default',
+			'cep_origem' => '',
+			'descricao' => '',
+			'email_pagseguro' => '',
+			'folder_view' => '',
+			'token_pagseguro' => ''
+		];
+		$usuario = $this->Usuario->save($dados_usuario);
+
+		if (!$usuario) {
+			$this->Session->setFlash('Ocorreu algum erro, tente novamente ou contate o suporte.');
+			return $this->redirect('/hieraquia/adicionar_subusuario');
+		}
+		
+		$this->Session->setFlash('Usuario ' . $dados['email'] . ' foi cadastrado com sucesso.');
+		return $this->redirect('/hieraquia/listar_subusuarios');
+	}
+
+	public function verificar_email($email)
+	{
+		$this->loadModel('Usuario');
+
+		$resposta = $this->Usuario->find('count',
+			array(
+				'conditions' => array('Usuario.email' => $email)
+			)
+		);
+
+		return $resposta > 0 ? true : false;
 	}
 
 }

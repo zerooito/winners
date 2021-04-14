@@ -5,11 +5,11 @@ class SubUsuario extends AppModel
 	public $belongsTo = array(
         'Hieraquia' => array(
             'className' => 'Hieraquia',
-            'foreignKey'  =>  'hieraquia_id' 
+            'foreignKey'  =>  'id_hieraquia' 
         ),
         'Usuario' => array(
             'className' => 'Usuario',
-            'foreignKey'  =>  'usuario_id' 
+            'foreignKey'  =>  'id_usuario' 
         )
     );
 }

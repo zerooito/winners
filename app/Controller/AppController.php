@@ -45,8 +45,28 @@ class AppController extends Controller {
             return $this->redirect('/');
 		}
 
-		$this->instancia = $dados['id'];
-		$this->verificar_modulos();
+		if (isset($dados['subusuario_id']) && !empty($dados['subusuario_id'])) {
+			$this->loadModel('SubUsuarios');
+			$this->loadModel('Usuario');
+			$dados_subusuario = $this->SubUsuarios->find('first', array(
+					'conditions' => array(
+						'SubUsuarios.id' => $dados['subusuario_id']
+					)
+				)
+			);
+
+			$dados_usuario_root = $this->Usuario->find('first', array(
+					'conditions' => array(
+						'Usuario.id' => $dados_subusuario['SubUsuarios']['id_usuario']
+					)
+				)
+			);
+			
+			$this->instancia = $dados_subusuario[]
+		} else {
+			$this->instancia = $dados['id'];
+			$this->verificar_modulos();
+		}
 		
 		return true;
 	}

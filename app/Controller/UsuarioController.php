@@ -50,9 +50,10 @@ class UsuarioController extends AppController{
 			$this->Session->write('Usuario.erp',  $valor['Usuario']['erp']);//situacao ativa(1) ou nao(0) no erp
 			$this->Session->write('Usuario.ead',  $valor['Usuario']['ead']);//situacao ativa(1) ou nao(0) no ead
 			$this->Session->write('Usuario.site', $valor['Usuario']['site']);//situacao ativa(1) ou nao(0) no site
+			$this->Session->write('Usuario.subusuario_id', $valor['Usuario']['subusuario_id']);
 		}
 
-		$this->Session->setFlash('Bem vindo, '.$this->Session->read('Usuario.nome').'!');
+		$this->Session->setFlash('Bem vindo, ' . $this->Session->read('Usuario.nome') . '!');
         return $this->redirect('/dashboard/home');
 	}
 

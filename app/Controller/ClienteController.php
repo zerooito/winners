@@ -6,14 +6,29 @@ class ClienteController extends AppController{
 	// public $helpers = array('Excel');
 
 	function home() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 	}
 
 	function adicionar_cliente() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 	}
 
 	function s_adicionar_cliente() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$dados = $this->request->data('dados');
 		$dados['ativo'] = 1;
 		$dados['id_usuario'] = $this->instancia;
@@ -44,6 +59,12 @@ class ClienteController extends AppController{
 	}
 
 	function excluir_cliente() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			echo json_encode(false);
+			return;
+		}
+
 		$this->layout = 'ajax';
 
 		$id = $this->request->data('id');
@@ -59,6 +80,11 @@ class ClienteController extends AppController{
 	}
 
 	function listar_cadastros() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->set('clientes', $this->Cliente->find('all', 
@@ -72,6 +98,11 @@ class ClienteController extends AppController{
 	}
 
 	function editar_cliente() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 		$id = $this->params->pass[0];
 
@@ -86,6 +117,11 @@ class ClienteController extends AppController{
 	}
 
 	function s_editar_cliente() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$dados = $this->request->data('dados');
 		$this->Cliente->id = $this->request->data('id');
 
@@ -99,11 +135,21 @@ class ClienteController extends AppController{
 	}		
 
 	function exportar_clientes() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
         $this->layout = 'ajax'; 
         $this->set('event', $this->Cliente->find('all')); 
 	}
 
 	function listar_pedidos($id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Venda');
@@ -154,6 +200,11 @@ class ClienteController extends AppController{
 	}
 
 	function emitir_boleto($venda_id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/cliente/listar_cadastros');
+		}
+
 		$AsaasController = new AsaasController;
 
 		$this->loadModel('Venda');
@@ -230,6 +281,11 @@ class ClienteController extends AppController{
 
 	public function carregar_clientes($id = null)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'read')) {
+			echo json_encode([]);
+			return;
+		}
+
 		$filter = $this->request->query('term');
 
 		$conditions = array('conditions' => array(

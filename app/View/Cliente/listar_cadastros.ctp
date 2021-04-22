@@ -28,33 +28,44 @@
                                 </tr>
                             </thead>
                             <tbody>                   
-                            <?php foreach ($clientes as $indice => $cliente): ?>             
-                                <tr class="odd gradeX" id="<?php echo $cliente['Cliente']['id'] ?>">
-                                    <td>
-                                        <?php echo $cliente['Cliente']['nome1'] ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $cliente['Cliente']['nome2'] ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $cliente['Cliente']['email'] ?>
-                                    </td>
-                                    <td class="center">
-                                        <?php echo $cliente['Cliente']['documento1'] ?>
-                                    </td>
-                                    <td class="center">
-                                        <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                        <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <a class="btn btn-primary" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
-                                            <i class="fa fa-list"></i>
-                                        </a>
-                                    </td>
-                                </tr>   
-                            <?php endforeach; ?>
+                            <?php if (!$this->Permissoes->usuario_possui_permissao_para('cliente', 'read')): ?>
+                                <tr>
+                                    <td>Você não possui permissão para visualizar clientes.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($clientes as $indice => $cliente): ?>             
+                                    <tr class="odd gradeX" id="<?php echo $cliente['Cliente']['id'] ?>">
+                                        <td>
+                                            <?php echo $cliente['Cliente']['nome1'] ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $cliente['Cliente']['nome2'] ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $cliente['Cliente']['email'] ?>
+                                        </td>
+                                        <td class="center">
+                                            <?php echo $cliente['Cliente']['documento1'] ?>
+                                        </td>
+                                        <td class="center">
+                                            <?php if ($this->Permissoes->usuario_possui_permissao_para('cliente', 'write')): ?>
+                                                <button onclick="remover_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                                <button onclick="editar_cliente(<?php echo $cliente['Cliente']['id'] ?>);" type="button" class="btn btn-info">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                            <?php endif; ?>
+
+                                            <?php  if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
+                                                <a class="btn btn-primary" title="Listar Pedidos deste Cliente" href="/cliente/listar_pedidos/<?php echo $cliente['Cliente']['id'] ?>">
+                                                    <i class="fa fa-list"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>   
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -72,13 +83,11 @@
                     Ações
                 </div>
                 <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <a href="/cliente/adicionar_cliente" class="btn btn-primary" style="width: 100%; color: #FFF;"><i class="fa fa-plus"></i> Adicionar Cliente</a>
-                </div>
-                <!-- <hr> -->
-                <!-- <div class="panel-body">
-                    <a href="/cliente/exportar_clientes" class="btn btn-info" style="width: 100%; color: #FFF;"><i class="fa fa-export"></i> Exportar Clientes</a>
-                </div> -->
+                <?php if ($this->Permissoes->usuario_possui_permissao_para('cliente', 'write')): ?>
+                    <div class="panel-body">
+                        <a href="/cliente/adicionar_cliente" class="btn btn-primary" style="width: 100%; color: #FFF;"><i class="fa fa-plus"></i> Adicionar Cliente</a>
+                    </div>
+                <?php endif; ?>
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->

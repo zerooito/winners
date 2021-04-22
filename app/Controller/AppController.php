@@ -129,6 +129,8 @@ class AppController extends Controller {
 			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
 			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
 			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
+			$this->modulos[$modulo['Modulo']['modulo']]['permissao']['read'] = 'read';
+			$this->modulos[$modulo['Modulo']['modulo']]['permissao']['write'] = 'write';
 		}
 
 		return $this->modulos;

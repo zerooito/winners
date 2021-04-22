@@ -10,82 +10,48 @@
     <!-- Content Row -->
     <div class="row">
 
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-6 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-6 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Vendas (Mês)</div>
+                            <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?php echo number_format($total_vendas, 2, ',', '.'); ?></div>
+                            <?php else: ?>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ --.--</div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-6 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Vendas (Mês)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?php echo number_format($total_vendas, 2, ',', '.'); ?></div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Vendas (Anual)</div>
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?php echo number_format($total_vendas_anual, 2, ',', '.'); ?></div>
+                    <?php else: ?>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$ --.--</div>
+                    <?php endif; ?>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-6 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Vendas (Anual)</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?php echo number_format($total_vendas_anual, 2, ',', '.'); ?></div>
-            </div>
-            <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-            </div>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <!-- <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Produtos sem estoque</div>
-                <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                </div>
-                <div class="col">
-                    <div class="progress progress-sm mr-2">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                 </div>
                 </div>
-            </div>
-            <div class="col-auto">
-                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
             </div>
             </div>
         </div>
-        </div>
-    </div> -->
 
-    <!-- Pending Requests Card Example -->
-    <!-- <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Contas pendentes</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-            </div>
-            <div class="col-auto">
-                <i class="fas fa-comments fa-2x text-gray-300"></i>
-            </div>
-            </div>
-        </div>
-        </div>
-    </div> -->
     </div>
 
     <!-- Content Row -->
@@ -112,7 +78,11 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
+                        <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
+                            <canvas id="myAreaChart"></canvas>
+                        <?php else: ?>
+                            Você não possui permissão para visualizar as vendas.
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -129,6 +99,9 @@
             </div>
             <div class="card-body">
                 <ol>
+                    <li>
+                        <p>Módulo de controle de subusuarios.</p>
+                    </li>
                     <li>
                         <p>Sistema de cara nova, mudamos toda a interface e usabilidade do sistema para facilitar o uso no seu dia a dia.</p>
                     </li>

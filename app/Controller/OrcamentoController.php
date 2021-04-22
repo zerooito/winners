@@ -9,6 +9,11 @@ class OrcamentoController extends AppController
 
 	public function listar_cadastros()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('orcamento', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/dashboard/home');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Venda');
@@ -41,6 +46,12 @@ class OrcamentoController extends AppController
 
 	public function excluir_cadastro($vendaId)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('orcamento', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			echo json_encode(false);
+			return;
+		}
+
 		$this->layout = 'ajax';
 
 		$this->loadModel('Venda');
@@ -56,11 +67,21 @@ class OrcamentoController extends AppController
 
 	public function salvar_orcamento()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('orcamento', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/orcamento/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 	}
 
 	public function pdf($vendaId)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('orcamento', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/orcamento/listar_cadastros');
+		}
+
 		$this->loadModel('Venda');
 		$this->loadModel('VendaItensProduto');
 

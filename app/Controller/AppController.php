@@ -15,6 +15,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
+	public $subusuario = null;
 
 	public $debug = false;
 
@@ -28,7 +29,14 @@ class AppController extends Controller {
 			return true;
 		}
 
+		App::import('Helper', 'Permissoes');
+		
 		$this->verificar_acesso();
+		
+		$GLOBALS['subusuario'] = $this->subusuario;
+		$GLOBALS['modulos'] = $this->modulos;
+		
+		$this->PermissoesHelper = new PermissoesHelper(new View());
 
     	$this->set('modulos', $this->modulos);
    	}
@@ -45,10 +53,58 @@ class AppController extends Controller {
             return $this->redirect('/');
 		}
 
-		$this->instancia = $dados['id'];
-		$this->verificar_modulos();
+		if (isset($dados['subusuario_id']) && !empty($dados['subusuario_id'])) {
+			$this->loadModel('SubUsuarios');
+			$this->loadModel('Usuario');
+
+			$dados_subusuario = $this->SubUsuarios->find('first', array(
+					'conditions' => array(
+						'SubUsuarios.id' => $dados['subusuario_id']
+					)
+				)
+			);
+
+			$dados_usuario_root = $this->Usuario->find('first', array(
+					'conditions' => array(
+						'Usuario.id' => $dados_subusuario['SubUsuarios']['id_usuario']
+					)
+				)
+			);
+			
+			$this->instancia = $dados_usuario_root['Usuario']['id'];
+			$this->subusuario = $dados['subusuario_id'];
+			$this->verificar_modulos_subusuario($dados_subusuario['SubUsuarios']['id_hieraquia']);
+		} else {
+			$this->instancia = $dados['id'];
+			$this->verificar_modulos();
+		}
 		
 		return true;
+	}
+
+	public function verificar_modulos_subusuario($hieraquia_id)
+	{
+		$this->loadModel('ModuloRelacionaUsuario');
+		$this->loadModel('Hieraquia');
+		$this->loadModel('HieraquiaModulo');
+
+		$modulos_hieraquia = $this->HieraquiaModulo->find('all', array('conditions' => 
+				array(
+					'Hieraquia.id' => $hieraquia_id
+				)
+			)
+		);
+
+		foreach ($modulos_hieraquia as $i => $modulo) {
+			$this->modulos[$modulo['Modulo']['modulo']]['id'] = $modulo['Modulo']['id'];
+			$this->modulos[$modulo['Modulo']['modulo']]['modulo'] = $modulo['Modulo']['modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
+			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
+			$this->modulos[$modulo['Modulo']['modulo']]['permissao'][$modulo['HieraquiaModulo']['tipo_de_permissao']]  = $modulo['HieraquiaModulo']['tipo_de_permissao'];
+		}
+
+		return $this->modulos;
 	}
 
 	/*
@@ -68,10 +124,13 @@ class AppController extends Controller {
 		);
 		
 		foreach ($registros as $indice => $modulo) {
+			$this->modulos[$modulo['Modulo']['modulo']]['id'] = $modulo['Modulo']['id'];
 			$this->modulos[$modulo['Modulo']['modulo']]['modulo'] = $modulo['Modulo']['modulo'];
 			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
 			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
 			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
+			$this->modulos[$modulo['Modulo']['modulo']]['permissao']['read'] = 'read';
+			$this->modulos[$modulo['Modulo']['modulo']]['permissao']['write'] = 'write';
 		}
 
 		return $this->modulos;
@@ -84,21 +143,6 @@ class AppController extends Controller {
 	function verificar_modulo_ativo($modulo) {
 		$retorno = array_key_exists($modulo, $this->modulos);
 		return $retorno;
-	}
-
-	/*
-	* Metodo que verifica o pagamento
-	*/
-	function verificar_pagamento() {
-		$this->loadModel('Usuario');
-
-		$pagamento = $this->Usuario->find('all', 
-			array('conditions' => 
-				array('Usuario.id' => $this->instancia)
-			)
-		);
-
-		return $pagamento[0]['Usuario']['ativo'];
 	}
 
 	public function verificar_acesso_admin() {

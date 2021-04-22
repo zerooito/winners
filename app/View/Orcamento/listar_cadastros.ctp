@@ -28,29 +28,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($vendas as $indice => $venda): ?>
-                                <tr class="odd gradeX" id="<?php echo $venda['Venda']['id'] ?>">
-                                    <td><?php echo $venda['Venda']['id'] ?></td>
-                                    <td>
-                                        <?php if (isset($venda['Cliente']['nome1']) && !empty($venda['Cliente']['nome2'])): ?>
-                                            <?php echo $venda['Cliente']['nome1'] . ' ' . $venda['Cliente']['nome2']; ?>
-                                        <?php else: ?>
-                                            N/C
-                                        <?php endif ?>
-                                    </td>
-                                    <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
-                                    <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
-                                    <td class="center">
-                                        <a target="_blank" href="/venda/conveter_venda/<?php echo $venda['Venda']['id'] ?>" class="btn btn-info" style="margin-right: 5px;">
-                                            <i class="fa fa-reply"></i> 
-                                        </button>
-
-                                        <a target="_blank" href="/orcamento/pdf/<?php echo $venda['Venda']['id'] ?>" class="btn btn-primary">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </a>
+                            <?php if (!$this->Permissoes->usuario_possui_permissao_para('orcamento', 'read')): ?>
+                                <tr>
+                                    <td colspan="5">
+                                        Você não possui permissão para visualizar orçamentos.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php else: ?>
+                                <?php foreach ($vendas as $indice => $venda): ?>
+                                    <tr class="odd gradeX" id="<?php echo $venda['Venda']['id'] ?>">
+                                        <td><?php echo $venda['Venda']['id'] ?></td>
+                                        <td>
+                                            <?php if (isset($venda['Cliente']['nome1']) && !empty($venda['Cliente']['nome2'])): ?>
+                                                <?php echo $venda['Cliente']['nome1'] . ' ' . $venda['Cliente']['nome2']; ?>
+                                            <?php else: ?>
+                                                N/C
+                                            <?php endif ?>
+                                        </td>
+                                        <td><?php echo number_format($venda['Venda']['valor'], '2', ',', '.') ?></td>
+                                        <td><?php echo receber_data($venda['Venda']['data_venda']) ?></td>
+                                        <td class="center">
+                                            <?php if ($this->Permissoes->usuario_possui_permissao_para('orcamento', 'write')): ?>
+                                                <a target="_blank" href="/venda/conveter_venda/<?php echo $venda['Venda']['id'] ?>" class="btn btn-info" style="margin-right: 5px;">
+                                                    <i class="fa fa-reply"></i> 
+                                                </button>
+                                            <?php endif; ?>
+                                            
+                                            <?php if ($this->Permissoes->usuario_possui_permissao_para('orcamento', 'read')): ?>
+                                                <a target="_blank" href="/orcamento/pdf/<?php echo $venda['Venda']['id'] ?>" class="btn btn-primary">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                             </tbody>
                         </table>
                     </div>

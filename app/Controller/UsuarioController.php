@@ -6,9 +6,11 @@ class UsuarioController extends AppController{
 	const MODULO_CLIENTE = 3;
 	const MODULO_ORCAMENTO = 11;
 	const MODULO_FINANCEIRO = 13;
-	// const MODULO_HIERAQUIA = 1
+	const MODULO_HIERAQUIA = 1;
 
 	public function beforeFilter(){
+		App::import('Helper', 'Permissoes');
+		$this->PermissoesHelper = new PermissoesHelper(new View());
 		return true;
    	}
 
@@ -50,9 +52,10 @@ class UsuarioController extends AppController{
 			$this->Session->write('Usuario.erp',  $valor['Usuario']['erp']);//situacao ativa(1) ou nao(0) no erp
 			$this->Session->write('Usuario.ead',  $valor['Usuario']['ead']);//situacao ativa(1) ou nao(0) no ead
 			$this->Session->write('Usuario.site', $valor['Usuario']['site']);//situacao ativa(1) ou nao(0) no site
+			$this->Session->write('Usuario.subusuario_id', $valor['Usuario']['subusuario_id']);
 		}
 
-		$this->Session->setFlash('Bem vindo, '.$this->Session->read('Usuario.nome').'!');
+		$this->Session->setFlash('Bem vindo, ' . $this->Session->read('Usuario.nome') . '!');
         return $this->redirect('/dashboard/home');
 	}
 
@@ -203,12 +206,12 @@ class UsuarioController extends AppController{
 				'id_usuario' => $id,
 				'id_modulo' => self::MODULO_FINANCEIRO,
 				'ativo' => 1
+			],
+			[
+				'id_usuario' => $id,
+				'id_modulo' => self::MODULO_HIERAQUIA,
+				'ativo' => 1			
 			]
-			// [
-			// 	'id_usuario' => $id,
-			// 	'id_modulo' => self::MODULO_HIERAQUIA,
-			// 	'ativo' => 1			]
-			// ];
 		];
 
 		$this->ModuloRelacionaUsuario->saveAll($modulos);

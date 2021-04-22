@@ -71,60 +71,63 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('financeiro', 'write')): ?>
+                        <a href="#" style="width:100%;" class="btn btn-primary add-fornecedor"> 
+                            <i class="fa fa-truck"></i>
+                            Fornecedores
+                        </a>
 
-                    <a href="#" style="width:100%;" class="btn btn-primary add-fornecedor"> 
-                        <i class="fa fa-truck"></i>
-                        Fornecedores
-                    </a>
+                        <a href="#" style="margin-top:10px;color: #FFF;width:100%;" class="btn btn-primary add-transacao"> 
+                            <i class="fa fa-plus"></i> 
+                            Adicionar Transação
+                        </a>
 
-                    <a href="#" style="margin-top:10px;color: #FFF;width:100%;" class="btn btn-primary add-transacao"> 
-                        <i class="fa fa-plus"></i> 
-                        Adicionar Transação
-                    </a>
-
-                    <a href="#" style="margin-top:10px;width:100%;" class="btn btn-success add-categoria"> 
-                        <i class="fa fa-plus"></i> 
-                        Cadastrar Categorias
-                    </a>
-
+                        <a href="#" style="margin-top:10px;width:100%;" class="btn btn-success add-categoria"> 
+                            <i class="fa fa-plus"></i> 
+                            Cadastrar Categorias
+                        </a>
+                    <?php else: ?>
+                        <b>Você nao possui acesso para executar ações</b>
+                    <?php endif; ?>
                     <hr>
 
-                    <h3>Filtros</h3>
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('financeiro', 'read')): ?>
+                        <h3>Filtros</h3>
 
-                    <div class="form-group">
-                        <label>Por categoria: </label>
-                        <select id="categorias" style="width:100%;"></select>
-                    </div>
+                        <div class="form-group">
+                            <label>Por categoria: </label>
+                            <select id="categorias" style="width:100%;"></select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Tipo: </label>
-                        <select id="tipo" style="width:100%;">
-                            <option value="-1">Todos</option>
-                            <option value="despesa">Despesa</option>
-                            <option value="receita">Receita</option>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Tipo: </label>
+                            <select id="tipo" style="width:100%;">
+                                <option value="-1">Todos</option>
+                                <option value="despesa">Despesa</option>
+                                <option value="receita">Receita</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Data Pagamento: </label>
-                        <input type="date" name="pagamento" id="pagamento" style="width:100%;">
-                    </div>
+                        <div class="form-group">
+                            <label>Data Pagamento: </label>
+                            <input type="date" name="pagamento" id="pagamento" style="width:100%;">
+                        </div>
 
-                    <div class="form-group">
-                        <label>Data Vencimento: </label>
-                        <input type="date" name="vencimento" id="vencimento" style="width:100%;">
-                    </div>
+                        <div class="form-group">
+                            <label>Data Vencimento: </label>
+                            <input type="date" name="vencimento" id="vencimento" style="width:100%;">
+                        </div>
 
-                    <div class="form-group">
-                        <label>Fornecedor: </label>
-                        <select id="fornecedor" style="width:100%;"></select>
-                    </div>
+                        <div class="form-group">
+                            <label>Fornecedor: </label>
+                            <select id="fornecedor" style="width:100%;"></select>
+                        </div>
 
-                    <a href="javascript:;" style="margin-top:10px;width:100%;" class="btn btn-primary" id="clear-filter"> 
-                        <i class="fa fa-eraser"></i> 
-                        Limpar Filtros
-                    </a>
-
+                        <a href="javascript:;" style="margin-top:10px;width:100%;" class="btn btn-primary" id="clear-filter"> 
+                            <i class="fa fa-eraser"></i> 
+                            Limpar Filtros
+                        </a>
+                    <?php endif; ?>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -133,124 +136,126 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addCategoria" role="dialog" aria-labelledby="myModalLabel">
-    <form class="form" action="/financeiro/adicionar_categoria" method="POST">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Adicionar Categorias Financeiro</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nome">Nome:</label>
-                        <input type="nome" class="form-control" id="nome" name="categoria[nome]">
+<?php if ($this->Permissoes->usuario_possui_permissao_para('financeiro', 'write')): ?>
+    <!-- Modal -->
+    <div class="modal fade" id="addCategoria" role="dialog" aria-labelledby="myModalLabel">
+        <form class="form" action="/financeiro/adicionar_categoria" method="POST">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Adicionar Categorias Financeiro</h4>
                     </div>
-                    <div class="form-group">
-                        <label for="tipo">Tipo: </label>
-                        <select class="form-control" style="width: 100%;" name="categoria[tipo]">
-                            <option value="receita">Receita</option>
-                            <option value="despesa">Despesa</option>
-                        </select>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="nome" class="form-control" id="nome" name="categoria[nome]">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo">Tipo: </label>
+                            <select class="form-control" style="width: 100%;" name="categoria[tipo]">
+                                <option value="receita">Receita</option>
+                                <option value="despesa">Despesa</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Salvar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addFornecedor" role="dialog" aria-labelledby="myModalLabel">
-    <form class="form" action="/financeiro/adicionar_fornecedor" method="POST">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Adicionar Fornecedor</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nome">Nome:</label>
-                        <input type="nome" class="form-control" id="nome" name="fornecedor[nome]">
+    <!-- Modal -->
+    <div class="modal fade" id="addFornecedor" role="dialog" aria-labelledby="myModalLabel">
+        <form class="form" action="/financeiro/adicionar_fornecedor" method="POST">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Adicionar Fornecedor</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="nome" class="form-control" id="nome" name="fornecedor[nome]">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Salvar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addTransacao" role="dialog" aria-labelledby="myModalLabel">
-    <form class="form" action="/financeiro/adicionar_transacao" method="POST">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Adicionar Transação</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="date">Data de Vencimento:</label>
-                        <input type="date" class="form-control" id="data_vencimento" name="transacao[data_vencimento]">
+    <!-- Modal -->
+    <div class="modal fade" id="addTransacao" role="dialog" aria-labelledby="myModalLabel">
+        <form class="form" action="/financeiro/adicionar_transacao" method="POST">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Adicionar Transação</h4>
                     </div>
-                    <div class="form-group">
-                        <label for="date">Data de Pagamento:</label>
-                        <input type="date" class="form-control" id="data_pgt" name="transacao[data_pgt]">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="date">Data de Vencimento:</label>
+                            <input type="date" class="form-control" id="data_vencimento" name="transacao[data_vencimento]">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Data de Pagamento:</label>
+                            <input type="date" class="form-control" id="data_pgt" name="transacao[data_pgt]">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo">Tipo: </label>
+                            <select class="form-control" name="transacao[tipo]" style="width:100%;">
+                                <option value="receita">Receita</option>
+                                <option value="despesa">Despesa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria">Categoria:</label>
+                            <select class="form-control" name="transacao[lancamento_categoria_id]" id="categoria-transacao" style="width:100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria">Fornecedor:</label>
+                            <select class="form-control" name="transacao[fornecedore_id]" id="fornecedor-transacao" style="width:100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="valor">Valor:</label>
+                            <input type="valor" class="form-control moeda" id="valor" name="transacao[valor]">
+                        </div>
+                        <div class="form-group">
+                            <label for="descricao">Descrição:</label>
+                            <input type="descricao" class="form-control descricao" id="descricao" name="transacao[descricao]">
+                        </div>
+                        <div class="form-group">
+                            <label for="valor">Pago:</label>
+                            <select class="form-control" name="transacao[pago]" style="width:100%;">
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="tipo">Tipo: </label>
-                        <select class="form-control" name="transacao[tipo]" style="width:100%;">
-                            <option value="receita">Receita</option>
-                            <option value="despesa">Despesa</option>
-                        </select>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     </div>
-                    <div class="form-group">
-                        <label for="categoria">Categoria:</label>
-                        <select class="form-control" name="transacao[lancamento_categoria_id]" id="categoria-transacao" style="width:100%;"></select>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoria">Fornecedor:</label>
-                        <select class="form-control" name="transacao[fornecedore_id]" id="fornecedor-transacao" style="width:100%;"></select>
-                    </div>
-                    <div class="form-group">
-                        <label for="valor">Valor:</label>
-                        <input type="valor" class="form-control moeda" id="valor" name="transacao[valor]">
-                    </div>
-                    <div class="form-group">
-                        <label for="descricao">Descrição:</label>
-                        <input type="descricao" class="form-control descricao" id="descricao" name="transacao[descricao]">
-                    </div>
-                    <div class="form-group">
-                        <label for="valor">Pago:</label>
-                        <select class="form-control" name="transacao[pago]" style="width:100%;">
-                            <option value="1">Sim</option>
-                            <option value="0">Não</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Salvar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+<?php endif; ?>
 
 <script type="text/javascript">
     $(window).load(function(){

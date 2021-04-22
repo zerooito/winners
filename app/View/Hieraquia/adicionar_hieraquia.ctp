@@ -5,11 +5,11 @@
         <h1 class="h3 mb-0 text-gray-800">Dados da Hieraquia</h1>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form role="form" action="/hieraquia/s_adicionar_hieraquia" method="post">
+    <form role="form" action="/hieraquia/s_adicionar_hieraquia" method="post">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -23,31 +23,35 @@
                                     <span class="badge badge-success">Modulos</span>
                                 </div>
                                 <div class="form-group">
-                                <?php
-                                    foreach ($modulos as $i => $modulo) {
-                                ?>
+                                <?php foreach ($modulos as $i => $modulo): ?>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="dados[modulos][]" value="<?php echo $modulo['modulo'] ?>"> <?php echo utf8_encode($modulo['nome']) ?>
+                                            <b>
+                                                <?php echo utf8_encode($modulo['nome']) ?>
+                                            </b>
+                                            <br>
+                                            <input type="checkbox" name="dados[modulos][read][]" value="<?php echo $modulo['id'] ?>" id="modulo-read-<? echo $i; ?>"> <label for="modulo-read-<? echo $i; ?>">Leitura</label><br>
+                                            <input type="checkbox" name="dados[modulos][write][]" value="<?php echo $modulo['id'] ?>" id="modulo-write-<? echo $i; ?>"> <label for="modulo-write-<? echo $i; ?>">Escrita</label>
+                                            <hr>
                                         </label>
                                     </div>
-                                <?php
-                                    }
-                                ?>
+                                <?php endforeach; ?>
                                 </div>
                             </div>
                             <!-- /.col-lg-6 (nested) -->
                         </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
 
-                        <button type="submit" class="btn btn-success">Salvar Hieraquia</button>
+                    <div class="pull-right" style="float: right;">
+                        <input type="submit" class="btn btn-success" value="Salvar Hieraquia">
                         <button type="reset" class="btn btn-danger" onclick="history.go(-1);">Cancelar</button>
-                    </form>
-                    <!-- /.row (nested) -->
+                    </div>
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
+    </form>
 </div>

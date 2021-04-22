@@ -7,6 +7,11 @@ use Dompdf\Dompdf;
 class ProdutoController extends AppController{		
 
 	public function listar_cadastros() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/dashboard/home');
+		}
+
 		$this->layout = 'wadmin';
 	}
 
@@ -55,47 +60,54 @@ class ProdutoController extends AppController{
 			"aaData" => array()
 		);
 
-		foreach ( $produtos as $i => $produto )
-		{
-			$row = array();
-
-			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			foreach ( $produtos as $i => $produto )
 			{
-				$value = $produto['Produto'][$aColumns[$i]];
+				$row = array();
 
-				if ($aColumns[$i] == "imagem")
+				for ( $i=0 ; $i < count($aColumns) ; $i++ )
 				{
-					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+					$value = $produto['Produto'][$aColumns[$i]];
 
-					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					if ($aColumns[$i] == "imagem")
 					{
-						$value = '<img src="/images/no_image.png" width="120" height="120">';
+						$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+
+						if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+						{
+							$value = '<img src="/images/no_image.png" width="120" height="120">';
+						}
 					}
+
+					if ($aColumns[$i] == "preco") 
+					{
+						$value = 'R$ ' . number_format($value, 2, ',', '.');
+					}
+					
+					$row[] = $value;
 				}
 
-				if ($aColumns[$i] == "preco") 
-				{
-					$value = 'R$ ' . number_format($value, 2, ',', '.');
-				}
-				
-				$row[] = $value;
+				$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="text-white fas fa-pencil-alt"></i></a>';
+				$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
+				$btImage = '<a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
+				$btDelete = '<a class="btn btn-danger" href="javascript:remover_produto(' . $produto['Produto']['id'] . ');"><i class="fas fa-trash"></i></a>';
+
+				$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage . ' ' . $btDelete;
+
+				$output['aaData'][] = $row;
 			}
-
-			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="text-white fas fa-pencil-alt"></i></a>';
-			$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
-			$btImage = '<a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
-			$btDelete = '<a class="btn btn-danger" href="javascript:remover_produto(' . $produto['Produto']['id'] . ');"><i class="fas fa-trash"></i></a>';
-
-			$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage . ' ' . $btDelete;
-
-			$output['aaData'][] = $row;
 		}
-		
+
 		echo json_encode($output);
 		exit;
 	}
 
 	public function imagens($id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$produto = $this->Produto->find('first', array(
@@ -120,6 +132,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function listar_cadastros_estoque_minimo(){
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 	}
 
@@ -184,28 +201,31 @@ class ProdutoController extends AppController{
 			"aaData" => array()
 		);
 
-		foreach ( $produtos as $i => $produto )
-		{
-			$row = array();
-
-			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+		$output = [];
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			foreach ( $produtos as $i => $produto )
 			{
-				$value = $produto['Produto'][$aColumns[$i]];
+				$row = array();
 
-				if ($aColumns[$i] == "imagem")
+				for ( $i=0 ; $i < count($aColumns) ; $i++ )
 				{
-					$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
+					$value = $produto['Produto'][$aColumns[$i]];
 
-					if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+					if ($aColumns[$i] == "imagem")
 					{
-						$value = '<img src="/images/no_image.png" width="120" height="120">';
-					}
-				}
-				
-				$row[] = $value;
-			}
+						$value = '<img src="/uploads/produto/imagens/' . $produto['Produto'][$aColumns[$i]] . '" width="120" height="120">';
 
-			$output['aaData'][] = $row;
+						if (!isset($produto['Produto'][$aColumns[$i]]) || empty($produto['Produto'][$aColumns[$i]]))
+						{
+							$value = '<img src="/images/no_image.png" width="120" height="120">';
+						}
+					}
+					
+					$row[] = $value;
+				}
+
+				$output['aaData'][] = $row;
+			}
 		}
 		
 		echo json_encode($output);
@@ -213,6 +233,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function baixar_estoque_minimo_pdf() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->loadModel('Produto');
 		$this->loadModel('Usuario');
 
@@ -310,6 +335,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function adicionar_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->loadModel('Categoria');
 
 		$this->set('categorias', $this->Categoria->find('all', 
@@ -325,6 +355,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function s_adicionar_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$dados  = $this->request->data('dados');
 
 		$variacoes = $this->request->data('variacao');
@@ -375,6 +410,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function editar_cadastro($id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Variacao');
@@ -418,6 +458,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function s_editar_cadastro($id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$dados = $this->request->data('dados');
 
 		$variacoes = $this->request->data('variacao');
@@ -457,6 +502,11 @@ class ProdutoController extends AppController{
 	}
 
 	public function excluir_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			echo json_encode(false);
+			return;
+		}
+
 		$this->layout = 'ajax';
 
 		$id = $this->request->data('id');
@@ -773,6 +823,11 @@ class ProdutoController extends AppController{
     }
 
     public function movimentacoes_estoque($produtoId) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
     	$this->layout = 'wadmin';
 
     	$this->set('id', $produtoId);
@@ -836,24 +891,26 @@ class ProdutoController extends AppController{
 			"aaData" => array()
 		);
 
-		foreach ( $produtos as $i => $produto )
-		{
-			$row = array();
-
-			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			foreach ( $produtos as $i => $produto )
 			{
-				if ($aColumns[$i] == "produto_id") {
-					$value = $produto['Produto']['nome'];
-				} else if ($aColumns[$i] == "quantidade_produto") {
-					$value = -$produto['VendaItensProduto'][$aColumns[$i]];
-				} else {
-					$value = $produto['VendaItensProduto'][$aColumns[$i]];
-				}
-				
-				$row[] = $value;
-			}
+				$row = array();
 
-			$output['aaData'][] = $row;
+				for ( $i=0 ; $i < count($aColumns) ; $i++ )
+				{
+					if ($aColumns[$i] == "produto_id") {
+						$value = $produto['Produto']['nome'];
+					} else if ($aColumns[$i] == "quantidade_produto") {
+						$value = -$produto['VendaItensProduto'][$aColumns[$i]];
+					} else {
+						$value = $produto['VendaItensProduto'][$aColumns[$i]];
+					}
+					
+					$row[] = $value;
+				}
+
+				$output['aaData'][] = $row;
+			}
 		}
 		
 		echo json_encode($output);

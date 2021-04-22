@@ -3,6 +3,11 @@
 class CategoriaController extends AppController {
 
 	public function listar_cadastros() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->loadModel('Categoria');
 
 		$categorias = $this->Categoria->find('all', 
@@ -19,10 +24,20 @@ class CategoriaController extends AppController {
 	}
 
 	public function adicionar_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 	}
 
 	public function s_adicionar_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->loadModel('Categoria');
 
 		$dados = $this->request->data('dados');
@@ -39,6 +54,11 @@ class CategoriaController extends AppController {
 	}
 
 	public function editar_cadastro($id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->loadModel('Categoria');
 
 		$categoria = $this->Categoria->find('first', 
@@ -53,6 +73,11 @@ class CategoriaController extends AppController {
 	}
 
 	public function s_editar_cadastro($id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
 		$this->loadModel('Categoria');
 
 		$dados = $this->request->data('dados');
@@ -69,6 +94,13 @@ class CategoriaController extends AppController {
 	}
 
 	public function excluir_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			echo json_encode(false);
+			return;
+			
+		}
+
 		$this->loadModel('Categoria');
 
 		$this->layout = 'ajax';

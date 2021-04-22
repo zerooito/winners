@@ -15,6 +15,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
+	public $subusuario = null;
 
 	public $debug = false;
 
@@ -48,6 +49,7 @@ class AppController extends Controller {
 		if (isset($dados['subusuario_id']) && !empty($dados['subusuario_id'])) {
 			$this->loadModel('SubUsuarios');
 			$this->loadModel('Usuario');
+
 			$dados_subusuario = $this->SubUsuarios->find('first', array(
 					'conditions' => array(
 						'SubUsuarios.id' => $dados['subusuario_id']
@@ -62,13 +64,40 @@ class AppController extends Controller {
 				)
 			);
 			
-			$this->instancia = $dados_subusuario[]
+			$this->instancia = $dados_usuario_root['Usuario']['id'];
+			$this->subusuario = $dados['subusuario_id'];
+			$this->verificar_modulos_subusuario($dados_subusuario['SubUsuarios']['id_hieraquia']);
 		} else {
 			$this->instancia = $dados['id'];
 			$this->verificar_modulos();
 		}
 		
 		return true;
+	}
+
+	public function verificar_modulos_subusuario($hieraquia_id)
+	{
+		$this->loadModel('ModuloRelacionaUsuario');
+		$this->loadModel('Hieraquia');
+		$this->loadModel('HieraquiaModulo');
+
+		$modulos_hieraquia = $this->HieraquiaModulo->find('all', array('conditions' => 
+				array(
+					'Hieraquia.id' => $hieraquia_id
+				)
+			)
+		);
+
+		foreach ($modulos_hieraquia as $i => $modulo) {
+			$this->modulos[$modulo['Modulo']['modulo']]['id'] = $modulo['Modulo']['id'];
+			$this->modulos[$modulo['Modulo']['modulo']]['modulo'] = $modulo['Modulo']['modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['funcao'] = $modulo['Modulo']['funcao'];
+			$this->modulos[$modulo['Modulo']['modulo']]['nome']   = $modulo['Modulo']['nome_modulo'];
+			$this->modulos[$modulo['Modulo']['modulo']]['icone']  = $modulo['Modulo']['icone'];
+			$this->modulos[$modulo['Modulo']['modulo']]['permissao'][$modulo['HieraquiaModulo']['tipo_de_permissao']]  = $modulo['HieraquiaModulo']['tipo_de_permissao'];
+		}
+
+		return $this->modulos;
 	}
 
 	/*

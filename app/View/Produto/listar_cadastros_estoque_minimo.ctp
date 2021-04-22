@@ -48,7 +48,11 @@
                 <div class="panel-body">
 
                     <div class="row" style="padding-left:10px;padding-right:10px;">
-                        <a href="/produto/baixar_estoque_minimo_pdf" class="btn btn-primary" target="_blank" style="color: #FFF; margin-bottom: 10px; width:100%;"><i class="fa fa-file-pdf-o"></i> Baixar como PDF</a>
+                        <?php if ($this->Permissoes->usuario_possui_permissao_para('produto', 'read')): ?>
+                            <a href="/produto/baixar_estoque_minimo_pdf" class="btn btn-primary" target="_blank" style="color: #FFF; margin-bottom: 10px; width:100%;"><i class="fa fa-file-pdf-o"></i> Baixar como PDF</a>
+                        <?php else: ?>
+                            <b>Sem acesso</b>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -71,19 +75,10 @@
         });
 
     });
-
-    function editar_produto(id) {
-        window.location.href = "/produto/editar_cadastro/"+id;
-    }
-    
-    function visualizar_cadastro(id) {
-        window.location.href = "/produto/visualizar_cadastro/"+id;
-    }
     
     function imgError(image) {
         image.onerror = "";
         image.src = "/images/no_image.png";
         return true;
     }
-
 </script>

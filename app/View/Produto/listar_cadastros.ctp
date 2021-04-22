@@ -49,26 +49,29 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
 
-                        <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <a href="/produto/adicionar_cadastro" style="width: 100%; margin-bottom: 5px; color: #FFF;" class="btn btn-primary"> <i class="fa fa-plus"></i> Adicionar produto</a>
-                        </div>
+                        <?php if ($this->Permissoes->usuario_possui_permissao_para('produto', 'write')): ?>
+                            <div class="row" style="padding-left:10px;padding-right:10px;">
+                                <a href="/produto/adicionar_cadastro" style="width: 100%; margin-bottom: 5px; color: #FFF;" class="btn btn-primary"> <i class="fa fa-plus"></i> Adicionar produto</a>
+                            </div>
+                        <?php endif; ?>
 
-                        <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <a href="/categoria/listar_cadastros" style="width: 100%; margin-bottom: 5px; color: #FFF;" class="btn btn-primary"> <i class="fa fa-plus"></i> Categorias</a>
-                        </div>
-<!-- 
-                        <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <button type="button" class="btn btn-info" style="margin-bottom: 10px; width:100%;"><i class="fa fa-file-excel-o"><a href="/produtos/exportar_excel_exemplo" style="color: #FFF;"> Exportar Excel Exemplo</a></i></button>
-                        </div> -->
+                        <?php if ($this->Permissoes->usuario_possui_permissao_para('produto', 'read')): ?>
+                            <div class="row" style="padding-left:10px;padding-right:10px;">
+                                <a href="/categoria/listar_cadastros" style="width: 100%; margin-bottom: 5px; color: #FFF;" class="btn btn-primary"> <i class="fa fa-plus"></i> Categorias</a>
+                            </div>
+                        <?php endif; ?>
 
-                        <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <a data-toggle="modal" data-target="#importarProdutos" class="btn btn-info" style="margin-bottom: 10px; width:100%;color: #FFF;"> <i class="fa fa-upload"></i> Importar Produtos</a>
-                        </div>
+                        <?php if ($this->Permissoes->usuario_possui_permissao_para('produto', 'write')): ?>
+                            <div class="row" style="padding-left:10px;padding-right:10px;">
+                                <a data-toggle="modal" data-target="#importarProdutos" class="btn btn-info" style="margin-bottom: 10px; width:100%;color: #FFF;"> <i class="fa fa-upload"></i> Importar Produtos</a>
+                            </div>
+                        <?php endif; ?>
 
-                        <div class="row" style="padding-left:10px;padding-right:10px;">
-                            <a href="/produto/listar_cadastros_estoque_minimo" class="btn btn-warning" style="margin-bottom: 10px; width:100%;color: #FFF;"> <i class="fa fa-warning"></i>  Produtos com Estoque Minimo</a>
-                        </div>
-
+                        <?php if ($this->Permissoes->usuario_possui_permissao_para('produto', 'read')): ?>
+                            <div class="row" style="padding-left:10px;padding-right:10px;">
+                                <a href="/produto/listar_cadastros_estoque_minimo" class="btn btn-warning" style="margin-bottom: 10px; width:100%;color: #FFF;"> <i class="fa fa-warning"></i>  Produtos com Estoque Minimo</a>
+                            </div>
+                        <?php endif; ?>
                 </div>
                 <!-- /.panel-body -->
             </div>

@@ -9,6 +9,8 @@ class UsuarioController extends AppController{
 	const MODULO_HIERAQUIA = 1;
 
 	public function beforeFilter(){
+		App::import('Helper', 'Permissoes');
+		$this->PermissoesHelper = new PermissoesHelper(new View());
 		return true;
    	}
 
@@ -204,12 +206,12 @@ class UsuarioController extends AppController{
 				'id_usuario' => $id,
 				'id_modulo' => self::MODULO_FINANCEIRO,
 				'ativo' => 1
+			],
+			[
+				'id_usuario' => $id,
+				'id_modulo' => self::MODULO_HIERAQUIA,
+				'ativo' => 1			
 			]
-			// [
-			// 	'id_usuario' => $id,
-			// 	'id_modulo' => self::MODULO_HIERAQUIA,
-			// 	'ativo' => 1			]
-			// ];
 		];
 
 		$this->ModuloRelacionaUsuario->saveAll($modulos);

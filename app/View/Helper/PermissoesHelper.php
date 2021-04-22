@@ -8,7 +8,7 @@ class PermissoesHelper extends AppHelper
             return false;
         }
 
-        if (!$this->usuarioNaoESubUsuario()) {
+        if (!$this->subUsuarioNull()) {
             return true;
         }
 
@@ -23,7 +23,7 @@ class PermissoesHelper extends AppHelper
         return false;
     }
 
-    public function usuarioNaoESubUsuario() 
+    public function subUsuarioNull() 
     {
         return $this->subusuario === null;
     }

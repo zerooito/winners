@@ -14,7 +14,7 @@ class VendaController extends AppController {
 	public function pdv() {
 		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
 			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
-			return $this->redirect('/venda/listar_cadastros');
+			return $this->redirect('/dashboard/home');
 		}
 
 		$this->layout = 'wadmin';
@@ -119,8 +119,7 @@ class VendaController extends AppController {
 			"iTotalRecords" => count($vendas),
 			"aaData" => array()
 		);
-		
-		$output = [];
+
 		if ($this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {		
 			foreach ($vendas as $venda) {
 				$row = array();

@@ -11,7 +11,7 @@ class OrcamentoController extends AppController
 	{
 		if (!$this->PermissoesHelper->usuario_possui_permissao_para('orcamento', 'read')) {
 			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
-			return $this->redirect('/orcamento/listar_cadastros');
+			return $this->redirect('/dashboard/home');
 		}
 
 		$this->layout = 'wadmin';

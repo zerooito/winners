@@ -8,7 +8,7 @@ class ClienteController extends AppController{
 	function home() {
 		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'read')) {
 			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
-			return $this->redirect('/cliente/listar_cadastros');
+			return $this->redirect('/dashboard/home');
 		}
 
 		$this->layout = 'wadmin';
@@ -82,7 +82,7 @@ class ClienteController extends AppController{
 	function listar_cadastros() {
 		if (!$this->PermissoesHelper->usuario_possui_permissao_para('cliente', 'read')) {
 			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
-			return $this->redirect('/cliente/listar_cadastros');
+			return $this->redirect('/dashboard/home');
 		}
 
 		$this->layout = 'wadmin';

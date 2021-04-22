@@ -3,6 +3,11 @@
 class HieraquiaController extends AppController {
 
 	public function listar_cadastros() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/dashboard/home');
+		}
+
 		$this->loadModel('Hieraquia');
 		$dados = $this->Hieraquia->find('all',
 			array('conditions' => 
@@ -18,11 +23,21 @@ class HieraquiaController extends AppController {
 	}
 
 	public function adicionar_hieraquia() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/hieraquia/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 		$this->set('modulos', $this->modulos);
 	}
 
 	public function s_adicionar_hieraquia() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/hieraquia/listar_cadastros');
+		}
+
 		$this->loadModel('Hieraquia');
 		$this->loadModel('HieraquiaModulo');
 
@@ -57,6 +72,11 @@ class HieraquiaController extends AppController {
 	}
 	
 	public function listar_subusuarios() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/hieraquia/listar_cadastros');
+		}
+
 		$this->loadModel('Usuario');
 		$this->loadModel('SubUsuarios');
 
@@ -88,6 +108,11 @@ class HieraquiaController extends AppController {
 
 	public function visualizar($id)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/hieraquia/listar_cadastros');
+		}
+
 		$this->loadModel('Hieraquia');
 		$this->loadModel('HieraquiaModulo');
 
@@ -105,6 +130,11 @@ class HieraquiaController extends AppController {
 
 	public function adicionar_subusuario()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/hieraquia/listar_cadastros');
+		}
+
 		$this->loadModel('Hieraquia');
 		$hieraquias = $this->Hieraquia->find('all',
 			array('conditions' => 
@@ -120,6 +150,11 @@ class HieraquiaController extends AppController {
 
 	public function s_adicionar_usuario()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('hieraquia', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/hieraquia/listar_cadastros');
+		}
+
 		$this->loadModel('SubUsuarios');
 
 		$dados = $this->request->data('dados');

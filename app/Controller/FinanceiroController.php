@@ -5,6 +5,11 @@ class FinanceiroController extends AppController
 
 	public function listar_cadastros()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/dashboard/home');
+		}
+
 		$this->loadModel('LancamentoVenda');
 
 		$this->layout = 'wadmin';
@@ -32,43 +37,46 @@ class FinanceiroController extends AppController
 		$total = 0;
 		$total_entradas = 0;
 		$total_saidas = 0;
-		foreach ($lancamentos as $i => $lancamento)
-		{
-			$categoria = $this->LancamentoCategoria->find('first', array('conditions' =>
-					array(
-						'LancamentoCategoria.ativo' => 1,
-						'LancamentoCategoria.usuario_id' => $this->instancia,
-						'LancamentoCategoria.id' => !empty($lancamento['LancamentoVenda']['lancamento_categoria_id']) ? $lancamento['LancamentoVenda']['lancamento_categoria_id'] : ''
+
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
+			foreach ($lancamentos as $i => $lancamento)
+			{
+				$categoria = $this->LancamentoCategoria->find('first', array('conditions' =>
+						array(
+							'LancamentoCategoria.ativo' => 1,
+							'LancamentoCategoria.usuario_id' => $this->instancia,
+							'LancamentoCategoria.id' => !empty($lancamento['LancamentoVenda']['lancamento_categoria_id']) ? $lancamento['LancamentoVenda']['lancamento_categoria_id'] : ''
+						)
 					)
-				)
-			);
+				);
 
-			$lancamentos[$i]['Categoria'] = isset($categoria['LancamentoCategoria']) ? $categoria['LancamentoCategoria'] : array();
+				$lancamentos[$i]['Categoria'] = isset($categoria['LancamentoCategoria']) ? $categoria['LancamentoCategoria'] : array();
 
-			if (empty($categoria) || $categoria['LancamentoCategoria']['tipo'] == "receita") {
-				if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
-					$a_receber += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
+				if (empty($categoria) || $categoria['LancamentoCategoria']['tipo'] == "receita") {
+					if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
+						$a_receber += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
+					}
+
+					// if ($lancamento['LancamentoVenda']['valor'] >= $lancamento['LancamentoVenda']['valor_pago']) {
+					// 	$total_entradas += $lancamento['LancamentoVenda']['valor'];
+					// }
 				}
 
-				// if ($lancamento['LancamentoVenda']['valor'] >= $lancamento['LancamentoVenda']['valor_pago']) {
-				// 	$total_entradas += $lancamento['LancamentoVenda']['valor'];
-				// }
-			}
+				if (empty($categoria))
+					continue;
 
-			if (empty($categoria))
-				continue;
-
-			if ($categoria['LancamentoCategoria']['tipo'] == "despesa") {
-				if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
-					$a_pagar += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
-				} else {
-					$pago += $lancamento['LancamentoVenda']['valor'];
-					// $total_saidas += $lancamento['LancamentoVenda']['valor'];
+				if ($categoria['LancamentoCategoria']['tipo'] == "despesa") {
+					if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
+						$a_pagar += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
+					} else {
+						$pago += $lancamento['LancamentoVenda']['valor'];
+						// $total_saidas += $lancamento['LancamentoVenda']['valor'];
+					}
 				}
-			}
 
+			}
 		}
-		
+			
 		$data = [
 			'lancamentos' => $lancamentos,
 			'a_receber' => $a_receber,
@@ -83,6 +91,11 @@ class FinanceiroController extends AppController
 
 	public function carregar_categorias($id = null)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
+			echo json_encode([]);
+			return;
+		}
+
 		$this->loadModel('LancamentoCategoria');
 
 		$filter = $this->request->query('term');
@@ -123,6 +136,11 @@ class FinanceiroController extends AppController
 
 	public function carregar_fornecedores($id = null)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
+			echo json_encode([]);
+			return;
+		}
+
 		$this->loadModel('Fornecedore');
 
 		$filter = $this->request->query('term');
@@ -230,7 +248,7 @@ class FinanceiroController extends AppController
 				$conditions['conditions']['Fornecedore.id'] = $search[1];
 			}
 		}
-		// pr($conditions);
+
 		$allLancamentos = $this->LancamentoVenda->find('count', $conditions);
 
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
@@ -240,7 +258,7 @@ class FinanceiroController extends AppController
 		}
 
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
-		// pr($lancamentos,1);
+
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),
 			"iTotalDisplayRecords" => $allLancamentos,
@@ -248,79 +266,81 @@ class FinanceiroController extends AppController
 			"aaData" => array()
 		);
 
-		foreach ( $lancamentos as $i => $lancamento )
-		{
-			$row = array();
-
-			$btPaid = '';
-			for ( $i=0 ; $i < count($aColumns) ; $i++ )
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
+			foreach ( $lancamentos as $i => $lancamento )
 			{
-				if ($aColumns[$i] == "lancamento_categoria_id") {
+				$row = array();
 
-					$conditions = array('conditions' =>
-						array(
-							'LancamentoCategoria.id' => $lancamento['LancamentoVenda'][$aColumns[$i]],
-							'LancamentoCategoria.usuario_id' => $this->instancia,
-							'LancamentoCategoria.ativo' => 1
-						)
-					);
+				$btPaid = '';
+				for ( $i=0 ; $i < count($aColumns) ; $i++ )
+				{
+					if ($aColumns[$i] == "lancamento_categoria_id") {
 
-					$categoria_lancamento = $this->LancamentoCategoria->find('first', $conditions);
+						$conditions = array('conditions' =>
+							array(
+								'LancamentoCategoria.id' => $lancamento['LancamentoVenda'][$aColumns[$i]],
+								'LancamentoCategoria.usuario_id' => $this->instancia,
+								'LancamentoCategoria.ativo' => 1
+							)
+						);
 
-					if (!empty($categoria_lancamento)) {
-						if ($categoria_lancamento['LancamentoCategoria']['tipo'] == "receita") {
-							$value = '<span class="label label-success">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
-							
-							$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Não é uma despesa.\');"><i class="fa fa-child"></i></a>';
+						$categoria_lancamento = $this->LancamentoCategoria->find('first', $conditions);
+
+						if (!empty($categoria_lancamento)) {
+							if ($categoria_lancamento['LancamentoCategoria']['tipo'] == "receita") {
+								$value = '<span class="label label-success">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
+								
+								$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Não é uma despesa.\');"><i class="fa fa-child"></i></a>';
+							} else {
+								$value = '<span class="label label-danger">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
+							}
 						} else {
-							$value = '<span class="label label-danger">' . $categoria_lancamento['LancamentoCategoria']['nome'] . '</span>';
+							$value = '<span class="label label-default">Sem Categoria</span>';
+						}
+			
+						if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor']) {
+							$btPaid = '<a class="btn btn-success" href="/financeiro/pago/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-check"></i></a>';
+						} else {
+							$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fas fa-dollar-sign"></i></a>';
 						}
 					} else {
-						$value = '<span class="label label-default">Sem Categoria</span>';
-					}
-		
-					if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor']) {
-						$btPaid = '<a class="btn btn-success" href="/financeiro/pago/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-check"></i></a>';
-					} else {
-						$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fas fa-dollar-sign"></i></a>';
-					}
-				} else {
-					$value = $lancamento['LancamentoVenda'][$aColumns[$i]];
-				}
-
-				if ($aColumns[$i] == "venda_id") {
-					$value = '<span class="badge badge-info">Desconhecido</span>';
-
-					if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'receita') {
-						$value = '<span class="badge badge-success">Receita</span>'; 
+						$value = $lancamento['LancamentoVenda'][$aColumns[$i]];
 					}
 
-					if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
-						$value = '<span class="badge badge-warning">Despesa</span>'; 
+					if ($aColumns[$i] == "venda_id") {
+						$value = '<span class="badge badge-info">Desconhecido</span>';
+
+						if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'receita') {
+							$value = '<span class="badge badge-success">Receita</span>'; 
+						}
+
+						if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
+							$value = '<span class="badge badge-warning">Despesa</span>'; 
+						}
 					}
+
+					if ($aColumns[$i] == "valor") {
+						$value = 'R$ ' . number_format($lancamento['LancamentoVenda'][$aColumns[$i]], 2, ',', '.');
+					}
+
+					if ($aColumns[$i] == "data_vencimento" && $lancamento['LancamentoVenda'][$aColumns[$i]] != "") {
+						$date = new \DateTime($lancamento['LancamentoVenda'][$aColumns[$i]]);
+						$value = $date->format('d/m/Y');
+					} else if ($aColumns[$i] == "data_vencimento" && empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
+						$value = "Não informado";
+					}
+
+					if ($aColumns[$i] == "descricao") {
+						$value = $lancamento['LancamentoVenda'][$aColumns[$i]] ? $lancamento['LancamentoVenda'][$aColumns[$i]] : 'Sem descrição';
+					}
+					
+					$row[] = $value;
 				}
 
-				if ($aColumns[$i] == "valor") {
-					$value = 'R$ ' . number_format($lancamento['LancamentoVenda'][$aColumns[$i]], 2, ',', '.');
-				}
+				$row[] = isset($btPaid) ? $btPaid : '';
 
-				if ($aColumns[$i] == "data_vencimento" && $lancamento['LancamentoVenda'][$aColumns[$i]] != "") {
-					$date = new \DateTime($lancamento['LancamentoVenda'][$aColumns[$i]]);
-					$value = $date->format('d/m/Y');
-				} else if ($aColumns[$i] == "data_vencimento" && empty($lancamento['LancamentoVenda'][$aColumns[$i]])) {
-					$value = "Não informado";
-				}
-
-				if ($aColumns[$i] == "descricao") {
-					$value = $lancamento['LancamentoVenda'][$aColumns[$i]] ? $lancamento['LancamentoVenda'][$aColumns[$i]] : 'Sem descrição';
-				}
-				
-				$row[] = $value;
+				$output['aaData'][] = $row;
 			}
-
-			$row[] = isset($btPaid) ? $btPaid : '';
-
-			$output['aaData'][] = $row;
 		}
 
 		echo json_encode($output);
@@ -329,6 +349,11 @@ class FinanceiroController extends AppController
 
 	public function pago($id)
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/financeiro/listar_cadastros');
+		}
+
 		$this->loadModel('LancamentoVenda');
 		$lancamento = $this->LancamentoVenda->find('first', 
 			array('conditions' => 
@@ -347,6 +372,11 @@ class FinanceiroController extends AppController
 
 	public function adicionar_categoria()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/financeiro/listar_cadastros');
+		}
+
 		$data = $this->request->data('categoria');
 
 		$data['usuario_id'] = $this->instancia;
@@ -367,6 +397,11 @@ class FinanceiroController extends AppController
 
 	public function adicionar_fornecedor()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/financeiro/listar_cadastros');
+		}
+
 		$data = $this->request->data('fornecedor');
 
 		$this->loadModel('Fornecedore');
@@ -385,6 +420,11 @@ class FinanceiroController extends AppController
 
 	public function adicionar_transacao()
 	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/financeiro/listar_cadastros');
+		}
+
 		$transacao = $this->request->data('transacao');
 
 		$transacao['valor_pago'] = 0;

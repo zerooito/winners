@@ -9,7 +9,7 @@ class ProdutoController extends AppController{
 	public function listar_cadastros() {
 		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
 			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
-			return $this->redirect('/produto/listar_cadastros');
+			return $this->redirect('/dashboard/home');
 		}
 
 		$this->layout = 'wadmin';
@@ -60,7 +60,6 @@ class ProdutoController extends AppController{
 			"aaData" => array()
 		);
 
-		$output = [];
 		if ($this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
 			foreach ( $produtos as $i => $produto )
 			{

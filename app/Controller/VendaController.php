@@ -12,6 +12,11 @@ include 'ImpressaoFiscalController.php';
 class VendaController extends AppController {
 
 	public function pdv() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Produto');
@@ -115,49 +120,53 @@ class VendaController extends AppController {
 			"aaData" => array()
 		);
 
-		foreach ($vendas as $venda) {
-			$row = array();
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {		
+			foreach ($vendas as $venda) {
+				$row = array();
 
-			for ( $i=0 ; $i < count($aColumns) ; $i++ )
-			{
-				if ($aColumns[$i] == "forma_pagamento") {
-					$lancamento = $this->LancamentoVenda->find('first', array(
-						'conditions' => array(
-								'LancamentoVenda.venda_id' => $venda['Venda']['id']
+				for ( $i=0 ; $i < count($aColumns) ; $i++ )
+				{
+					if ($aColumns[$i] == "forma_pagamento") {
+						$lancamento = $this->LancamentoVenda->find('first', array(
+							'conditions' => array(
+									'LancamentoVenda.venda_id' => $venda['Venda']['id']
+								)
 							)
-						)
-					);
+						);
 
-					$value = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
-					
-					if (isset($value) && !empty($value))
-						$value = str_replace('_', ' ', $value);
-					
-					if (isset($value) && !empty($value))
-						$value = ucwords($value);
-					
-					$value =  empty($value) ? '' : $value;
-					$value = '<span class="badge badge-success">' . $value . '</span>';
-				} else if ($aColumns[$i] == "actions") {
-		            $value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
-		            $value .= '<i class="far fa-sticky-note"></i>';
-		            $value .= '</a> ';
+						$value = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
+						
+						if (isset($value) && !empty($value))
+							$value = str_replace('_', ' ', $value);
+						
+						if (isset($value) && !empty($value))
+							$value = ucwords($value);
+						
+						$value =  empty($value) ? '' : $value;
+						$value = '<span class="badge badge-success">' . $value . '</span>';
+					} else if ($aColumns[$i] == "actions") {
+						$value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
+						$value .= '<i class="far fa-sticky-note"></i>';
+						$value .= '</a> ';
 
-					$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';
-				} else if ($aColumns[$i] == "valor") { 
-					$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
-				} else {
-					$value = $venda['Venda'][$aColumns[$i]];
+						$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';
+					} else if ($aColumns[$i] == "valor") { 
+						$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
+					} else {
+						$value = $venda['Venda'][$aColumns[$i]];
+					}
+					
+					$row[] = $value;
 				}
-				
-				$row[] = $value;
+
+				$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $venda['Venda']['id'] . '"><i class="fa fa-pencil"></i></a>';
+
+				$row[] = $btEdit;
+
+				$output['aaData'][] = $row;
 			}
-
-			$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $venda['Venda']['id'] . '"><i class="fa fa-pencil"></i></a>';
-
-			$row[] = $btEdit;
-
-			$output['aaData'][] = $row;
+		} else {
+			$output['aaData'][] = [];
 		}
 
 		echo json_encode($output);
@@ -165,6 +174,11 @@ class VendaController extends AppController {
 	}
 
 	public function adicionar_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Cliente');
@@ -193,6 +207,11 @@ class VendaController extends AppController {
 	}
 
 	public function conveter_venda($vendaId) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$this->loadModel('Cliente');
@@ -283,6 +302,11 @@ class VendaController extends AppController {
 	}
 
 	public function s_adicionar_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
 		$dados_venda 	  = $this->request->data('venda');
 		$dados_lancamento = $this->request->data('lancamento');
 		$produtos 	      = $this->request->data('produto');
@@ -364,6 +388,11 @@ class VendaController extends AppController {
 	}
 
 	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id) {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
 		unset($informacoes['id_cliente']);
 
 		$informacoes['data_venda'] = date('Y-m-d');
@@ -506,6 +535,11 @@ class VendaController extends AppController {
 	}
 
 	public function excluir_cadastro() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {
+			echo json_encode(false);
+			exit;
+		}
+
 		$this->layout = 'ajax';
 
 		$id = $this->request->data('id');
@@ -653,6 +687,11 @@ class VendaController extends AppController {
 	}
 
 	public function relatorio() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
 		$this->layout = 'wadmin';
 
 		$from = $_GET['from'];

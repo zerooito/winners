@@ -42,14 +42,16 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'write')): ?>
                     <a href="/venda/adicionar_cadastro" class="btn btn-primary" 
                         style="margin-bottom: 10px; width:100%;color: #FFF;"
                     > 
                         <i class="fa fa-plus"></i>
                         Adicionar venda
                     </a>
+                    <?php endif; ?>
 
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
                     <hr>
 
                     <p>De: </p>
@@ -64,7 +66,7 @@
                         <i class="fa fa-eye"></i>
                         Relatório Período
                     </a>
-                    
+                    <?php endif; ?>
                 </div>
                 <!-- /.panel-body -->
 

@@ -29,7 +29,14 @@ class AppController extends Controller {
 			return true;
 		}
 
+		App::import('Helper', 'Permissoes');
+		
 		$this->verificar_acesso();
+		
+		$GLOBALS['subusuario'] = $this->subusuario;
+		$GLOBALS['modulos'] = $this->modulos;
+		
+		$this->PermissoesHelper = new PermissoesHelper(new View());
 
     	$this->set('modulos', $this->modulos);
    	}
@@ -134,21 +141,6 @@ class AppController extends Controller {
 	function verificar_modulo_ativo($modulo) {
 		$retorno = array_key_exists($modulo, $this->modulos);
 		return $retorno;
-	}
-
-	/*
-	* Metodo que verifica o pagamento
-	*/
-	function verificar_pagamento() {
-		$this->loadModel('Usuario');
-
-		$pagamento = $this->Usuario->find('all', 
-			array('conditions' => 
-				array('Usuario.id' => $this->instancia)
-			)
-		);
-
-		return $pagamento[0]['Usuario']['ativo'];
 	}
 
 	public function verificar_acesso_admin() {

@@ -154,10 +154,14 @@
 
                         <div class="text-right">
                             <input type="hidden" name="venda[orcamento]" value="0" id="orcamento">
-                            <?php if (isset($modulos['orcamento'])): ?>
-                                <a href="javascript:salvarOrcamento();" class="btn btn-info">Salvar Orçamento</a>
+                            <?php if ($this->Permissoes->usuario_possui_permissao_para('orcamento', 'write')): ?>
+                                <?php if (isset($modulos['orcamento'])): ?>
+                                    <a href="javascript:salvarOrcamento();" class="btn btn-info">Salvar Orçamento</a>
+                                <?php endif; ?>
                             <?php endif; ?>
-                            <button type="submit" class="btn btn-success">Salvar Venda</button>
+                            <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'write')): ?>
+                                <button type="submit" class="btn btn-success">Salvar Venda</button>
+                            <?php endif; ?>
                         </div>
                     </form>
                     <!-- /.row (nested) -->

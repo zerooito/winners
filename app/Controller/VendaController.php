@@ -119,7 +119,8 @@ class VendaController extends AppController {
 			"iTotalRecords" => count($vendas),
 			"aaData" => array()
 		);
-
+		
+		$output = [];
 		if ($this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {		
 			foreach ($vendas as $venda) {
 				$row = array();
@@ -165,8 +166,6 @@ class VendaController extends AppController {
 
 				$output['aaData'][] = $row;
 			}
-		} else {
-			$output['aaData'][] = [];
 		}
 
 		echo json_encode($output);

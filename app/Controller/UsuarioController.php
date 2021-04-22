@@ -6,7 +6,7 @@ class UsuarioController extends AppController{
 	const MODULO_CLIENTE = 3;
 	const MODULO_ORCAMENTO = 11;
 	const MODULO_FINANCEIRO = 13;
-	const MODULO_HIERAQUIA = 1
+	const MODULO_HIERAQUIA = 1;
 
 	public function beforeFilter(){
 		return true;

@@ -189,17 +189,19 @@ class LojaController extends AppController {
 
          $produto[0]['Produto']['quantidade'] = $item['quantidade'];
 
-         $variacao = $this->Variacao->find('all', 
-            array('conditions' =>
-               array('Variacao.id' => $item['variacao'])
-            ),
-            array('fields' => 
-               array('Variacao.nome_variacao')
-            )
-         );
+         if (isset($item['variacao']) && !empty($item['variacao'])) {
+            $variacao = $this->Variacao->find('all', 
+               array('conditions' =>
+                  array('Variacao.id' => $item['variacao'])
+               ),
+               array('fields' => 
+                  array('Variacao.nome_variacao')
+               )
+            );
 
-         if (isset($variacao) && !empty($variacao)) {
-            $produto[0]['Produto']['variacao'] = $variacao[0]['Variacao']['nome_variacao'];
+            if (isset($variacao) && !empty($variacao)) {
+               $produto[0]['Produto']['variacao'] = $variacao[0]['Variacao']['nome_variacao'];
+            }
          }
 
          $produtos[] = $produto[0];

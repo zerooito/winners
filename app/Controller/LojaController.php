@@ -142,7 +142,9 @@ class LojaController extends AppController {
 
 		$this->Session->write('Produto.'.$produto['id'].'.id' , $produto['id']);
       $this->Session->write('Produto.'.$produto['id'].'.quantidade' , $produto['quantidade']);
-      $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
+      if (isset($produto['variacao']) && !empty($produto['variacao'])) {
+         $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
+      }
 
 		$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
 	}
@@ -196,7 +198,9 @@ class LojaController extends AppController {
             )
          );
 
-         $produto[0]['Produto']['variacao'] = $variacao[0]['Variacao']['nome_variacao'];
+         if (isset($variacao) && !empty($variacao)) {
+            $produto[0]['Produto']['variacao'] = $variacao[0]['Variacao']['nome_variacao'];
+         }
 
          $produtos[] = $produto[0];
       }
@@ -225,7 +229,7 @@ class LojaController extends AppController {
 
       $products = $this->loadProductsAndValuesCart();
 
-      (float) $valor_frete = number_format($this->Session->read('Frete.valor'), 2, '.', ',');
+      $valor_frete = number_format((float) $this->Session->read('Frete.valor'), 2, '.', ',');
 
       $objVenda = new VendaController();
      
@@ -233,7 +237,8 @@ class LojaController extends AppController {
      
       $usuario_id = $this->Session->read('Usuario.id');
 
-      $retorno_venda = $objVenda->salvar_venda($productsSale, array('forma_pagamento' => 'pagseguro'), array('valor' => $valor_frete + $products['total']), $usuario_id);
+      $loja = true;
+      $retorno_venda = $objVenda->salvar_venda($productsSale, array('forma_pagamento' => 'pagseguro'), array('valor' => $valor_frete + $products['total']), $usuario_id, $loja);
       
       $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
    }
@@ -264,7 +269,9 @@ class LojaController extends AppController {
       foreach ($products as $i => $product) {
          $retorno[$i]['id_produto'] = $product['Produto']['id'];
          $retorno[$i]['quantidade'] = $product['Produto']['quantidade'];
-         $retorno[$i]['variacao']   = $product['Produto']['variacao'];
+         if (!empty($product['Produto']['variacao']) && isset($product['Produto']['variacao'])) {
+            $retorno[$i]['variacao']   = $product['Produto']['variacao'];
+         }
       }
 
       return $retorno;
@@ -393,17 +400,19 @@ class LojaController extends AppController {
    public function validateProduct($data) {
       $this->loadModel('Variacao');
 
-      $params = array('conditions' => 
-         array(
-            'Variacao.id' => $data['variacao']
-         )
-      );
+      if (isset($data['variacao']) && !empty($data['variacao'])) {
+         $params = array('conditions' => 
+            array(
+               'Variacao.id' => $data['variacao']
+            )
+         );
 
-      $variacao = $this->Variacao->find('all', $params);
+         $variacao = $this->Variacao->find('all', $params);
 
-      if ($variacao[0]['Variacao']['estoque'] <= 0 || $data['quantidade'] > $variacao[0]['Variacao']['estoque'])
-      {
-         return false;
+         if ($variacao[0]['Variacao']['estoque'] <= 0 || $data['quantidade'] > $variacao[0]['Variacao']['estoque'])
+         {
+            return false;
+         }
       }
 
       return true;   
@@ -528,7 +537,7 @@ class LojaController extends AppController {
    public function retornopagseguro() {
       $code = $_GET['code'];
 
-      pr($code,1);
+      pr($code, 1);
    }
 
 }

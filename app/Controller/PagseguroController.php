@@ -123,9 +123,13 @@ class PagseguroController extends AppController implements GatewayInterface
         }
 
         foreach ($this->getProdutos() as $i => $item) {
+            $nome = $item['Produto']['nome'];
+            if (isset($item['Produto']['variacao']) && !empty($item['Produto']['variacao'])) {
+                $nome .= '    Tamanho: '. $item['Produto']['variacao'];
+            }
             $this->paymentRequest->addItem(
                 '000' . $item['Produto']['id'], 
-                $item['Produto']['nome'] . '    Tamanho: '. $item['Produto']['variacao'], 
+                $nome,
                 $item['Produto']['quantidade'], 
                 number_format($item['Produto']['preco'], 2, '.', '')
             );

@@ -385,10 +385,12 @@ class VendaController extends AppController {
 		return true;
 	}
 
-	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id) {
-		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
-			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
-			return $this->redirect('/venda/listar_cadastros');
+	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id, $loja = false) {
+		if (!$loja) {
+			if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+				$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+				return $this->redirect('/venda/listar_cadastros');
+			}
 		}
 
 		unset($informacoes['id_cliente']);

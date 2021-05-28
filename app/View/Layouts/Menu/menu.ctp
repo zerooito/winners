@@ -48,7 +48,7 @@
             echo '<li class="nav-item">';
                 echo '<a class="nav-link" href="/'.$valor['modulo'].'/'.$valor['funcao'].'">';
                 echo '<i class="fas fa-fw ' . $valor['icone'] . '"></i>';
-                echo '<span>' . utf8_encode($valor['nome']) . '</span></a>';
+                echo '<span>' . $valor['nome'] . '</span></a>';
             echo '</li>';
         }
     ?> 

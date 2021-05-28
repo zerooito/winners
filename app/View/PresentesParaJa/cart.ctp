@@ -1,4 +1,4 @@
-<?php require('menu.ctp'); ?>
+<?php require('menu-transparent.ctp'); ?>
 
 <div class="container cart flow-text" style="margin-top: 10px;">
 

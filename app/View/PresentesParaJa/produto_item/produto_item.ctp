@@ -16,7 +16,7 @@
 			<p>R$ <?php echo number_format($produto['Produto']['preco'], 2, ',', '.') ?></p>
 		</div>
 		<div class="card-action">
-			<a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/product/<?php echo $produto['Produto']['id'] ?>">Ver Mais</a>
+			<a href="/product/<?php echo $produto['Produto']['id'] ?>">Ver Mais</a>
 		</div>
 	</div>
 </div>

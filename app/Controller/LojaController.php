@@ -41,8 +41,11 @@ class LojaController extends AppController {
     else
     {
       $loja = $this->params['loja'];
+      if (empty($loja)) { 
+	$loja = $GLOBALS['information']['loja'];
+      }
     }
-    
+
     if (!isset($loja)) 
     {
       echo 'Loja não existe';    

@@ -41,9 +41,7 @@
 
 		<p>Envie um e-mail atráves do formulario ou contato@ciawn.com.br. </p>
 
-		<br>
-
-		<p>(11) 9 4661-8708</p>
+	
 
 	</div>
 

@@ -31,7 +31,7 @@
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
 	$dominio = verificar_dominio();
-
+	//pr($dominio);exit;
 	if ($dominio['is_winners']) {
 		Router::connect('/', array('controller' => 'home', 'action' => 'index'));
 	} else {
@@ -104,11 +104,11 @@
 		}
 		
 		require($caminho);
-
+		//pr($dominio);
 		$retorno['is_winners'] = false;
 		$retorno['id_usuario'] = $dominio['id_usuario'];
 		$retorno['controller'] = $dominio['controller'];
-		$retorno['funcao']	   = $dominio['funcao'];
+		$retorno['funcao']     = $dominio['funcao'];
 
 		return $retorno;
 	}

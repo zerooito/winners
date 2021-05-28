@@ -1,4 +1,4 @@
-<?php require('menu.ctp'); ?>
+<?php require('menu-transparent.ctp'); ?>
 
 <div class="container cart flow-text" style="margin-top: 10px;">
 
@@ -67,8 +67,8 @@
 	</div>
 
 	<div class="row">
-		<a class="waves-effect waves-light btn red" onclick="window.location.href='/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>'">Continuar Comprando</a>
-		<a class="waves-effect waves-light btn blue" onclick="window.location.href = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/checkout'">
+		<a class="waves-effect waves-light btn red" onclick="window.location.href=''">Continuar Comprando</a>
+		<a class="waves-effect waves-light btn blue" onclick="window.location.href = '/checkout'">
 			<i class="material-icons left"></i> Finalizar Pedido
 		</a>
 	</div>
@@ -83,7 +83,7 @@
   $('#cep').change(function() {
     var cep_destino = $(this).val()
       , cep_origem  = '<?php echo $usuario['Usuario']['cep_origem']; ?>'
-      , url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
+      , url         = '/loja/calcTransportAjax';
 
       $.ajax({
         url: url,

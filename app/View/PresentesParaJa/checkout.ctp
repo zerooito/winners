@@ -7,7 +7,7 @@
 			<li><a href="sass.html">Como Funciona</a></li>
         	<?php foreach($categorias as $indice => $valor): ?>
 				<li>
-					<a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>">
+					<a href="/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>">
 						<?php echo $valor['Categoria']['nome'] ?>
 					</a>
 				</li>
@@ -20,7 +20,7 @@
 
 <div class="container cart flow-text" style="margin-top: 10px;">
 
-	<form action="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/payment" id="payment-form" method="post">
+	<form action="/payment" id="payment-form" method="post">
 
   		<div class="row">
 			<div class="billing-info">
@@ -169,7 +169,7 @@
   $('#cep').change(function() {
    	  var cep_destino = $(this).val()
       	, cep_origem  = '<?php echo $usuario['Usuario']['cep_origem']; ?>'
-      	, url         = '/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/calcTransportAjax';
+      	, url         = '/calcTransportAjax';
 
 		$.ajax({
 			url: url,

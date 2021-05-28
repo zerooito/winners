@@ -10,8 +10,8 @@
 					</a>
 				</li>
 			<?php endforeach; ?>
-			<li><a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/monte-sua-cesta-o-presente-perfeito">Monte Sua Cesta</a></li>
-			<li><a href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/contato">Contato</a></li>
+			<li><a href="/monte-sua-cesta-o-presente-perfeito">Monte Sua Cesta</a></li>
+			<li><a href="/contato">Contato</a></li>
 		</ul>
 	</div>
 </nav>

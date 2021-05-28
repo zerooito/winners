@@ -21,9 +21,9 @@
 
 			<br>
 
-			<div class="fb-like" data-href="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/product/<?php echo $produto['Produto']['id'] ?>" data-send="true" data-layout="button_count" data-width="250" data-show-faces="false"></div>
+			<div class="fb-like" data-href="/product/<?php echo $produto['Produto']['id'] ?>" data-send="true" data-layout="button_count" data-width="250" data-show-faces="false"></div>
 			
-			<form id="addCart" action="/<?php echo explode('/', $_SERVER['REQUEST_URI'])[1] ?>/addCart" method="post">
+			<form id="addCart" action="/addCart" method="post">
 			
 				<div class="row">
 			  		<div class="input-field col s12">

@@ -83,7 +83,7 @@
   $('#cep').change(function() {
     var cep_destino = $(this).val()
       , cep_origem  = '<?php echo $usuario['Usuario']['cep_origem']; ?>'
-      , url         = '/calcTransportAjax';
+      , url         = '/loja/calcTransportAjax';
 
       $.ajax({
         url: url,

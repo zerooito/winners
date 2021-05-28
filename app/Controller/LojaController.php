@@ -133,12 +133,12 @@ class LojaController extends AppController {
 		$produto = $this->request->data('produto');
 		
 		if (empty($produto)) {
-			$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/');
+			$this->redirect('/');
 		}
 
       if (!$this->validateProduct($produto)) {
          $this->Session->setFlash('Quantidade de produtos escolhidas é maior do que a disponivel!');
-         $this->redirect('/' . $this->usuario['Usuario']['loja'] . '/');
+         $this->redirect('/');
       }
 
 		$cont = count($this->Session->read('Produto'));
@@ -149,7 +149,7 @@ class LojaController extends AppController {
          $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
       }
 
-		$this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
+		$this->redirect('/cart');
 	}
 
    public function removeProductCart() {
@@ -157,7 +157,7 @@ class LojaController extends AppController {
          $this->Session->delete( 'Produto.' . $this->params['id'] );
       }
 
-      $this->redirect('/' . $this->usuario['Usuario']['loja'] . '/cart');
+      $this->redirect('/cart');
    }
 
 	public function clearCart() {

@@ -80,6 +80,8 @@
   <?php echo $this->Html->script('jquery.maskedinput.min'); ?>
   <?php echo $this->Html->script('jquery.maskMoney'); ?>
   <?php echo $this->Html->script('mascaras'); ?>
+
+  <script data-ad-client="ca-pub-7152383115170558" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 
 <body id="page-top">

@@ -61,5 +61,19 @@
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
 
+    <li class="nav-item">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- bloco-menu-winners -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-7152383115170558"
+            data-ad-slot="8084745989"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </li>
+
 </ul>
 <!-- End of Sidebar -->

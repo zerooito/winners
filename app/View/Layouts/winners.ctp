@@ -22,6 +22,8 @@
   
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
   <link rel="shortcut icon" href="/images/favicon.ico">
+
+  <script data-ad-client="ca-pub-7152383115170558" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head><!--/head-->
 
 <body>

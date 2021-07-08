@@ -864,7 +864,7 @@ class ProdutoController extends AppController{
 		);
 
 		$allProdutos = $this->VendaItensProduto->find('all', $conditions);
-		
+
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
 		{
 			$conditions['offset'] = $_GET['iDisplayStart'];
@@ -896,7 +896,7 @@ class ProdutoController extends AppController{
 			"aaData" => array()
 		);
 
-		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
 			foreach ( $produtos as $i => $produto )
 			{
 				$row = array();

@@ -309,14 +309,22 @@ class VendaController extends AppController {
 		$dados_lancamento = $this->request->data('lancamento');
 		$produtos 	      = $this->request->data('produto');
 
-		if (!$this->validar_itens_venda($produtos) && !$dados_venda['orcamento']) {
-			$this->Session->setFlash('Algum produto adicionado não possui estoque disponivel');
+		$retorno_produtos_validacao = $this->validar_itens_venda($produtos);
+		if ($retorno_produtos_validacao > 0 && !$dados_venda['orcamento']) {
+			if ($retorno_produtos_validacao == 1) {
+				$this->Session->setFlash('Algum produto adicionado não possui estoque disponivel');
+			} else if ($retorno_produtos_validacao == 2) {
+				$this->Session->setFlash('Você não adicionou produtos na venda');
+			} else {
+				$this->Session->setFlash('Ocorreu algum erro ao tentar criar venda');
+			}
+
 			$this->redirect('/venda/adicionar_cadastro');
 		}
 
 		$dados_venda['valor'] = $this->calcular_valor_venda($produtos);
 		$dados_venda['custo'] = $this->calcular_custo_venda($produtos);
-		
+
 		$salvar_venda = $this->salvar_venda($produtos, $dados_lancamento, $dados_venda, $this->instancia);
 		
 		if (!$salvar_venda) {
@@ -341,8 +349,13 @@ class VendaController extends AppController {
 					array('Produto.id' => $item['id_produto'])
 				)
 			);
+			
+			$preco_unitario = $produto[0]['Produto']['preco'];
+			if ($produto[0]['Produto']['preco_promocional'] < $produto[0]['Produto']['preco']) {
+				$preco_unitario = $produto[0]['Produto']['preco_promocional'];
+			}
 
-			$preco += $produto[0]['Produto']['preco'] * $item['quantidade'];
+			$preco += $preco_unitario * $item['quantidade'];
 		}
 
 		return $preco;
@@ -368,6 +381,11 @@ class VendaController extends AppController {
 	public function validar_itens_venda($produtos) {
 		$this->loadModel('Produto');
 
+		if (empty($produtos)) {
+			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
+			return 2;
+		}
+
 		foreach ($produtos as $indice => $item) {
 			$produto = $this->Produto->find('all',
 				array('conditions' =>
@@ -378,11 +396,11 @@ class VendaController extends AppController {
 			$objProdutoEstoqueController = new ProdutoEstoqueController();
 
 			if (!$objProdutoEstoqueController->validar_estoque($produto, $item['quantidade'])) {
-				return false;
+				return 1;
 			}			
 		}
 
-		return true;
+		return 0;
 	}
 
 	public function salvar_venda($produtos, $lancamento, $informacoes, $usuario_id, $loja = false) {
@@ -410,7 +428,7 @@ class VendaController extends AppController {
 		$id_venda = $this->Venda->getLastInsertId();
 
 		$objVendaItensProdutoController = new VendaItensProdutoController();
-
+		
 		if ($objVendaItensProdutoController->adicionar_itens_venda($id_venda, $produtos, $informacoes['orcamento']) === false) {
 			return false;
 		}

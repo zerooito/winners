@@ -547,9 +547,14 @@ class ProdutoController extends AppController{
 			return false;
 		}
 
-		$retorno['Produto']['total'] = $this->calcular_preco_produto_venda($retorno['Produto']['preco'], $this->request->data('qnt'));
+		$preco = $retorno['Produto']['preco'];
+		if ($retorno['Produto']['preco_promocional'] < $preco) {
+			$preco = $retorno['Produto']['preco_promocional'];
+		}
 
-		$retorno['Produto']['preco'] = (float) $retorno['Produto']['preco'];
+		$retorno['Produto']['total'] = $this->calcular_preco_produto_venda($preco, $this->request->data('qnt'));
+
+		$retorno['Produto']['preco'] = (float) $preco;
 		
 		echo json_encode($retorno);
 	}

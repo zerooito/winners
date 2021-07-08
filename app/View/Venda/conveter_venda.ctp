@@ -80,7 +80,7 @@
                                             <input class="form-control moeda" id="valor_pago">
                                         </div>
 
-                                        <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Finalizar Venda</a>
+                                        <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
                                     </div>
                                 </div>
 

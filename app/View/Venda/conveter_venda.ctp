@@ -500,7 +500,12 @@
                 id:  produto_item,
                 qnt: quantidade_produto
             },
-            success: function(data){
+            success: function(data) {
+                if (data['status'] === false) {
+                    alert(data['msg']);
+                    return;
+                }
+
                 var html = '';
                 
                 html += '<tr id="' + data['Produto']['id'] + '">';

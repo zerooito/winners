@@ -544,7 +544,8 @@ class ProdutoController extends AppController{
 		);
 
 		if (!$this->validar_estoque($retorno)) {
-			return false;
+			echo json_encode(['status' => false, 'msg' => $retorno['Produto']['nome'] . ' não possui estoque para a venda']);
+			exit;
 		}
 
 		$preco = $retorno['Produto']['preco'];

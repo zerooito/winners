@@ -548,7 +548,7 @@ class ProdutoController extends AppController{
 		}
 
 		$preco = $retorno['Produto']['preco'];
-		if ($retorno['Produto']['preco_promocional'] < $preco) {
+		if ($retorno['Produto']['preco_promocional'] > 0 && $retorno['Produto']['preco_promocional'] < $preco) {
 			$preco = $retorno['Produto']['preco_promocional'];
 		}
 

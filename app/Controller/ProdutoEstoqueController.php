@@ -13,13 +13,11 @@ class ProdutoEstoqueController extends AppController {
 			return true;
 
 		if ($produto[0]['Produto']['estoque'] <= 0) {
-			$this->Session->setFlash('O Produto ' . $produto[0]['Produto']['name'] . ' selecionado não possui estoque disponivel');
 			return false;
 		}
 
 
 		if ($produto[0]['Produto']['estoque'] < $quantidade) {
-			$this->Session->setFlash('A quantidade para o produto ' . $produto[0]['Produto']['name'] . ' escolhida é maior do que a disponivel');
 			return false;
 		}
 

@@ -351,7 +351,7 @@ class VendaController extends AppController {
 			);
 			
 			$preco_unitario = $produto[0]['Produto']['preco'];
-			if ($produto[0]['Produto']['preco_promocional'] < $produto[0]['Produto']['preco']) {
+			if ($produto[0]['Produto']['preco_promocional'] > 0 && $produto[0]['Produto']['preco_promocional'] < $produto[0]['Produto']['preco']) {
 				$preco_unitario = $produto[0]['Produto']['preco_promocional'];
 			}
 

@@ -100,13 +100,10 @@
             <div class="card-body">
                 <ol>
                     <li>
+                        <p>Controle de entradas e saídas de estoque por venda e por edição de usuário.</p>
+                    </li>   
+                    <li>
                         <p>Módulo de controle de subusuarios.</p>
-                    </li>
-                    <li>
-                        <p>Sistema de cara nova, mudamos toda a interface e usabilidade do sistema para facilitar o uso no seu dia a dia.</p>
-                    </li>
-                    <li>
-                        <p>Correções de bugs.</p>
                     </li>
                     <li>
                         <p>Lançamento da nova versão veja a live <a href="#"> aqui</a>.</p>

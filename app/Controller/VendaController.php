@@ -662,6 +662,7 @@ class VendaController extends AppController {
 		$conditions = array(
 			'conditions' => array(
 				'Venda.id_usuario' => $id_usuario,
+				'Venda.ativo' => 1,
 				'Venda.data_venda >=' => $from,
 				'Venda.data_venda <=' => $to,
 				'Venda.orcamento <>' => 1

@@ -16,6 +16,7 @@ class AppController extends Controller {
 	public $modulos = array();
 	public $instancia = 'winners';
 	public $subusuario = null;
+	public $nome = null;
 
 	public $debug = false;
 
@@ -73,9 +74,11 @@ class AppController extends Controller {
 			
 			$this->instancia = $dados_usuario_root['Usuario']['id'];
 			$this->subusuario = $dados['subusuario_id'];
+			$this->nome = $dados['nome'];
 			$this->verificar_modulos_subusuario($dados_subusuario['SubUsuarios']['id_hieraquia']);
 		} else {
 			$this->instancia = $dados['id'];
+			$this->nome = $dados['nome'];
 			$this->verificar_modulos();
 		}
 		

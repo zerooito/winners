@@ -629,7 +629,7 @@ CREATE TABLE `variacaos` (
   `estoque` int(11) NOT NULL,
   `ativo` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -642,13 +642,14 @@ DROP TABLE IF EXISTS `venda_itens_produtos`;
 CREATE TABLE `venda_itens_produtos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `produto_id` int(11) NOT NULL,
-  `venda_id` int(11) NOT NULL,
+  `venda_id` int(11) NULL,
   `quantidade_produto` int(11) NOT NULL,
+  `motivo` VARCHAR(50) NULL,
   `ativo` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_venda_itens_produtos_1_idx` (`venda_id`),
   CONSTRAINT `fk_venda_itens_produtos_1` FOREIGN KEY (`venda_id`) REFERENCES `vendas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11743 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

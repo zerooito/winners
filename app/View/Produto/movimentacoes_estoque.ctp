@@ -22,7 +22,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Produto</th>
-                                    <th>Venda</th>
+                                    <th>Motivo</th>
                                     <th>Quantidade</th>
                                 </tr>
                             </thead>

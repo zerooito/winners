@@ -485,9 +485,14 @@ class ProdutoController extends AppController{
 		$dados['preco'] = str_replace(',', '', $dados['preco']);
 
 		$this->Produto->id = $id;
+
+		require 'ProdutoEstoqueController.php';
+		$objProdutoEstoqueController = new ProdutoEstoqueController();
+		$produto_atual = $this->Produto->find('all', array('conditions' => array('Produto.id' => $id)));
+
+		$objProdutoEstoqueController->adicionarMovimentacaoEstoque($produto_atual[0]['Produto'], $dados, $this->nome);
 		
 		if ($this->Produto->save($dados)) {
-
 			require 'VariacaoController.php';
 			$objVariacaoController = new VariacaoController();
 			$objVariacaoController->desativar_variacoes($id);
@@ -844,7 +849,7 @@ class ProdutoController extends AppController{
 
 		$this->layout = 'ajax';
 
-		$aColumns = array( 'id', 'produto_id', 'venda_id', 'quantidade_produto' );
+		$aColumns = array( 'id', 'produto_id', 'motivo', 'quantidade_produto' );
 		
 		$conditions = array(
 			'conditions' => array(
@@ -907,7 +912,13 @@ class ProdutoController extends AppController{
 					if ($aColumns[$i] == "produto_id") {
 						$value = $produto['Produto']['nome'];
 					} else if ($aColumns[$i] == "quantidade_produto") {
-						$value = -$produto['VendaItensProduto'][$aColumns[$i]];
+						$value = -$produto['VendaItensProduto'][$aColumns[$i]]; // vendas com estoque positivo é uma devolução
+					} else if ($aColumns[$i] == "motivo") {
+						if (empty($produto['VendaItensProduto']['motivo'])) {
+							$value = 'Venda <a href="#"> #' . $produto['VendaItensProduto']['venda_id'] . '</a>';
+						} else {
+							$value = $produto['VendaItensProduto']['motivo'];
+						}
 					} else {
 						$value = $produto['VendaItensProduto'][$aColumns[$i]];
 					}

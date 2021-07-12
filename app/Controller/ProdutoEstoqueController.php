@@ -96,4 +96,32 @@ class ProdutoEstoqueController extends AppController {
  		}
  	}
 
+	public function adicionarMovimentacaoEstoque($produto_atual, $novos_dados, $responsavel)
+	{
+		$this->loadModel('VendaItensProduto');
+
+		if ($produto_atual['estoque'] === $novos_dados['estoque']) return true;
+
+		if ($novos_dados['estoque'] > $produto_atual['estoque']) {
+			$motivo = 'Entrada por ' . $responsavel;
+		}
+
+		if ($novos_dados['estoque'] < $produto_atual['estoque']) {
+			$motivo = 'Retirada por ' . $responsavel;
+		}
+
+		$quantidade_produto = $produto_atual['estoque'] - $novos_dados['estoque'];
+
+		$dados['produto_id'] 		 = $produto_atual['id'];
+		$dados['quantidade_produto'] = $quantidade_produto;
+		$dados['motivo']			 = $motivo;
+		$dados['ativo']				 = 1;
+		
+		if (!$this->VendaItensProduto->saveAll($dados)) {
+			return false;
+		}
+
+		return true;
+	}
+
 }

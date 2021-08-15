@@ -16,7 +16,7 @@
 		  			</h5>
 				</div>
 				<div class="row center">
-			  		<a href="http://materializecss.com/getting-started.html" class="btn-large waves-effect waves-light custom-color">
+			  		<a href="#" class="btn-large waves-effect waves-light custom-color">
 			  			Começar a Montar
 			  		</a>
 				</div>

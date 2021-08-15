@@ -483,6 +483,7 @@ class ProdutoController extends AppController{
 		$dados['ativo'] = 1;
 		$dados['id_alias'] = $this->id_alias();
 		$dados['preco'] = str_replace(',', '', $dados['preco']);
+		$dados['preco_promocional'] = str_replace(',', '', $dados['preco_promocional']);
 
 		$this->Produto->id = $id;
 
@@ -1003,5 +1004,23 @@ class ProdutoController extends AppController{
 		echo json_encode($data);
 		exit;
     }
+
+	public function fixPromotionItems()
+	{
+		$produtos = $this->Produto->find('all',
+			array(
+				'conditions' => array(
+					'Produto.id_usuario' => 28,
+					'Produto.ativo' => 1
+				)
+			)
+		);
+
+		foreach ($produtos as $produto) {
+			$this->Produto->id = $produto['Produto']['id'];
+			$this->Produto->save(['preco_promocional' => $produto['Produto']['preco']]);
+	
+		}
+	}
 
 }

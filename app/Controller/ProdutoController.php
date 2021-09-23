@@ -985,11 +985,21 @@ class ProdutoController extends AppController{
     {
 		$search = strip_tags(trim($_GET['q'])); 
 
-		$conditions['conditions']['Produto.id_usuario'] = $this->instancia;
-		$conditions['conditions']['Produto.ativo'] = 1;
-		$conditions['conditions']['Produto.nome LIKE '] = '%' . $search . '%';
-
-		$conditions['limit'] = 25;
+		$conditions = [
+			'conditions' => [
+				'Produto.id_usuario' => $this->instancia,
+				'Produto.ativo' => 1,
+				'OR' => [
+					[
+						'Produto.nome LIKE ' => '%' . $search . '%',
+					],
+					[
+						'Produto.sku LIKE ' => '%' . $search . '%'
+					]
+				]
+			],
+			'limit' => 25
+		];
 		
 		$produtos = $this->Produto->find('all', $conditions);
 

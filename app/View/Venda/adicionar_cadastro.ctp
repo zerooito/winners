@@ -50,6 +50,7 @@
                                             <label>Forma de Pagamento</label>
                                             <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
                                                 <option value="dinheiro">Dinheiro</option>
+                                                <option value="pix">Pix</option>
                                                 <option value="cartao_debito">Cartão Debito</option>
                                                 <option value="cartao_credito">Cartão Credito</option>
                                             </select>

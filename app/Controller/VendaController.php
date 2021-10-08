@@ -717,7 +717,8 @@ class VendaController extends AppController {
 		$to   = $_GET['to'];
 
 		$relatorio = $this->obter_relatorio_por_data($from, $to);
-
+		
+		$this->set('pix', $relatorio['pix']);
 		$this->set('dinheiro', $relatorio['dinheiro']);
 		$this->set('cartao_credito', $relatorio['cartao_credito']);
 		$this->set('cartao_debito', $relatorio['cartao_debito']);
@@ -764,6 +765,7 @@ class VendaController extends AppController {
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
 
 		return [
+			'pix' => @$valorTotalPgt['pix'],
 			'dinheiro' => @$valorTotalPgt['dinheiro'],
 			'cartao_credito' => @$valorTotalPgt['cartao_credito'],
 			'cartao_debito' => @$valorTotalPgt['cartao_debito'],

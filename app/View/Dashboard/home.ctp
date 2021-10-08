@@ -100,6 +100,9 @@
             <div class="card-body">
                 <ol>
                     <li>
+                        <p>Adição da forma de pagamento PIX no ponto de venda.</p>
+                    </li>
+                    <li>
                         <p>Controle de entradas e saídas de estoque por venda e por edição de usuário.</p>
                     </li>   
                     <li>

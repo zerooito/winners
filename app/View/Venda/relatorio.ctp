@@ -4,7 +4,7 @@
             <a href="#" class="btn btn-info imprimir">Preparar impressão</a>
             <a href="#" style="display: none;" class="btn btn-success" id="download-txt-sale" download>Imprimir</a>
         </div>
-        <div class="col-lg-4">  
+        <div class="col-lg-3">  
             <div class="text-right">
                 <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
                     <div class="card-block">
@@ -19,7 +19,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">  
+        <div class="col-lg-3">  
+            <div class="text-right">
+                <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
+                    <div class="card-block">
+                        <h2>
+                            <i class="fa fa-qrcode fa-2x"></i>
+                        </h2>
+                        <h4 class="card-title">
+                            R$ <?php echo number_format(@$pix, 2, ',', '.'); ?>
+                        </h4>
+                        <i>Total PIX</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">  
             <div class="text-right">
                 <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
                     <div class="card-block">
@@ -34,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">  
+        <div class="col-lg-3">  
             <div class="text-right">
                 <div class="card text-center h-100 bg-secondary text-white shadow" style="padding:15px;">
                     <div class="card-block">

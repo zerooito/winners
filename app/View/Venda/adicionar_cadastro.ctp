@@ -244,7 +244,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Data</label>
-                                <input type="date" required class="form-control" name="caixa[data_abertura]" id="data_abertura">
+                                <input type="datetime-local" required class="form-control" name="caixa[data_abertura]" id="data_abertura">
                             </div>
                         </div>
                     </div>
@@ -297,13 +297,13 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Data Abertura</label>
-                                <input type="date" required class="form-control" name="caixa[data_abertura]" id="data_abertura_final" readonly="">
+                                <input type="datetime-local" required class="form-control" name="caixa[data_abertura]" id="data_abertura_final" readonly="">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Data Fechamento</label>
-                                <input type="date" required class="form-control" name="caixa[data_fechamento]" id="data_fechamento">
+                                <input type="datetime-local" required class="form-control" name="caixa[data_fechamento]" id="data_fechamento">
                             </div>
                         </div>
                         <input type="hidden" id="id_caixa" name="caixa[id]">

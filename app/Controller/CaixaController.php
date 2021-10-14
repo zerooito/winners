@@ -128,4 +128,126 @@ class CaixaController extends AppController {
 		return (float) $total;
 	}
 
+	public function listar_cadastros()
+	{
+
+		$this->layout = 'wadmin';
+	}
+
+	public function listar_cadastros_ajax()
+	{
+		$this->layout = 'ajax';
+
+		$aColumns = [
+			'id', 'valor_inicial', 'valor_final_total', 
+			'valor_final_cartao', 'valor_final_dinheiro',
+			'data_abertura', 'data_fechamento'
+		];
+		
+		$conditions = array('conditions' =>
+			array(
+				'ativo' => 1,
+				'usuario_id' => $this->instancia
+			)
+		);
+
+		$allCaixa = $this->Caixa->find('all', $conditions); // mudar para count
+		
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('Caixa.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['Caixa.data_abertura LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$caixas = $this->Caixa->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allCaixa),
+			"iTotalRecords" => count($caixas),
+			"aaData" => array()
+		);
+
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {
+			foreach ( $caixas as $i => $caixa )
+			{
+				$row = array();
+
+				for ( $i=0 ; $i < count($aColumns) ; $i++ )
+				{
+					$value = $caixa['Caixa'][$aColumns[$i]];
+
+					if ($aColumns[$i] == 'data_abertura') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = date_format(new DateTime($caixa['Caixa'][$aColumns[$i]]), 'd/m/Y H:i:s');
+						}
+					}
+
+					if ($aColumns[$i] == 'data_fechamento') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = date_format(new DateTime($caixa['Caixa'][$aColumns[$i]]), 'd/m/Y H:i:s');
+						}
+					}
+
+					if ($aColumns[$i] == 'valor_final_cartao') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = 'R$ ' . number_format($caixa['Caixa'][$aColumns[$i]], 2, '.', ',');
+						}
+					}
+
+					if ($aColumns[$i] == 'valor_final_dinheiro') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = 'R$ ' . number_format($caixa['Caixa'][$aColumns[$i]], 2, '.', ',');
+						}
+					}
+
+					if ($aColumns[$i] == 'valor_final_total') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = 'R$ ' . number_format($caixa['Caixa'][$aColumns[$i]], 2, '.', ',');
+						}
+					}
+
+					$row[] = $value;
+				}
+				
+				if (empty($caixa['Caixa']['data_fechamento'])) {
+					$row[] = '<a href="#" class="btn btn-success" title="Fechar Caixa"><i class="fa fa-envelope" aria-hidden="true"></i></a>';
+				} else {
+					$row[] = '<a href="#" class="btn btn-primary" title="Visualizar Dados Caixa"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+				}
+
+				$output['aaData'][] = $row;
+			}
+		}
+
+		echo json_encode($output);
+		exit;
+	}
+
 }

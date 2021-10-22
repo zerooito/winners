@@ -304,6 +304,14 @@ class CaixaController extends AppController {
 						}
 					}
 
+					if ($aColumns[$i] == 'valor_final_outros') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = 'R$ ' . number_format($caixa['Caixa'][$aColumns[$i]], 2, '.', ',');
+						}
+					}
+
 					if ($aColumns[$i] == 'valor_final_total') {
 						if (empty($caixa['Caixa'][$aColumns[$i]])) {
 							$value = ' -- ';

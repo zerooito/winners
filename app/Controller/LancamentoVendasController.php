@@ -1,5 +1,7 @@
 <?php
 
+include 'CaixaController.php';
+
 class LancamentoVendasController extends AppController {
 
 	public function salvar_lancamento($id_venda, $dados, $valor_total, $id_usuario, $orcamento=true) {
@@ -17,6 +19,13 @@ class LancamentoVendasController extends AppController {
 		$lancamento['usuario_id'] = $id_usuario;
 		$lancamento['forma_pagamento'] = $dados['forma_pagamento'];
 		$lancamento['tipo'] = 'receita';
+
+		if ($orcamento == false) {
+			$objCaixaController = new CaixaController();
+			$caixa_atual = $objCaixaController->carregar_caixa_atual($id_usuario);
+
+			$lancamento['caixa_id'] = $caixa_atual['Caixa']['id'];
+		}
 
 		$this->LancamentoVenda->save($lancamento);
 

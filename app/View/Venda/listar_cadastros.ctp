@@ -67,6 +67,14 @@
                         Relatório Período
                     </a>
                     <?php endif; ?>
+
+
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
+                        <a class="btn btn-success" href="/caixa/listar_cadastros" style="color: #FFF;margin-bottom: 10px; width:100%;"> 
+                            <i class="fa fa-desktop" aria-hidden="true"></i>
+                            Histórico de Caixas
+                        </a>
+                    <?php endif; ?>
                 </div>
                 <!-- /.panel-body -->
 

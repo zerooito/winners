@@ -98,8 +98,8 @@ CREATE TABLE `caixas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `usuario_id` int(11) DEFAULT NULL,
   `valor_inicial` float DEFAULT NULL,
-  `data_abertura` date DEFAULT NULL,
-  `data_fechamento` date DEFAULT NULL,
+  `data_abertura` datetime DEFAULT NULL,
+  `data_fechamento` datetime DEFAULT NULL,
   `valor_final_total` float DEFAULT NULL,
   `valor_final_cartao` float DEFAULT NULL,
   `valor_final_dinheiro` float DEFAULT NULL,
@@ -708,3 +708,11 @@ INSERT INTO `modulos` (`id`, `modulo`, `nome_modulo`, `ativo`, `padrao`, `funcao
                       (11, 'orcamento', 'Orçamentos', 1, 0, 'listar_cadastros', 'fa fa-list'),
                       (12, 'asaas', 'Asaas', 1, 1, 'configuracoes', 'fa fa-level-up'),
                       (13, 'financeiro', 'Financeiro', 1, 1, 'listar_cadastros', 'fa fa-sort-amount-up-alt');
+
+ALTER TABLE lancamento_vendas
+ ADD COLUMN caixa_id INT NULL;
+
+ALTER TABLE lancamento_vendas MODIFY COLUMN caixa_id INT NULL,
+ ADD CONSTRAINT caixa_id_lancamento_venda_fk
+ FOREIGN KEY(caixa_id)
+ REFERENCES caixas(id);

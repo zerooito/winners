@@ -211,7 +211,7 @@ class CaixaController extends AppController {
 
 		$aColumns = [
 			'id', 'valor_inicial', 'valor_final_total', 
-			'valor_final_cartao', 'valor_final_dinheiro',
+			'valor_final_cartao', 'valor_final_dinheiro', 'valor_final_outros'
 			'data_abertura', 'data_fechamento'
 		];
 		

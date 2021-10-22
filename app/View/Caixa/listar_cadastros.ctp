@@ -25,6 +25,7 @@
                                     <th>Valor Final Total</th>
                                     <th>Valor Final Cartão</th>
                                     <th>Valor Final Dinheiro</th>
+                                    <th>Valor Final Pix</th>
                                     <th>Data Abertura</th>
                                     <th>Data Fechamento</th>
                                     <th>Ações</th>

@@ -19,6 +19,7 @@ class CaixaController extends AppController {
 
 	public function finalizar_caixa() {
 		$data = $this->request->data['caixa'];
+		$data['valor_final_cartao'] = $data['valor_final_cartao_debito'] + $data['valor_final_cartao_credito'];
 
 		if (!$this->Caixa->save($data)) {
 			$this->Session->setFlash('Ocorreu um erro ao fechar o caixa, tente novamente, caso persista contate o suporte');
@@ -29,20 +30,37 @@ class CaixaController extends AppController {
 		$this->redirect('/venda/adicionar_cadastro');
 	}
 
+	public function caixa_foi_aberto() 
+	{
+		$this->layout = 'ajax';
+
+		$caixaAtual = $this->carregar_caixa_atual();
+
+		if (empty($caixaAtual)) {
+			echo json_encode(['status' => 'nao_aberto', 'data_abertura' => null]);
+			exit;
+		}
+		
+		echo json_encode(['status' => 'aberto', 'data_abertura' => date_format(new DateTime($caixaAtual['Caixa']['data_abertura']), 'd/m/Y H:i:s')]);
+		exit;
+	}
+
 	public function carregar_fechamento_caixa_dia_ajax() 
 	{
 		$this->layout = 'ajax';
 
 		$caixaAtual = $this->carregar_caixa_atual();
 
-		$totalVendas = $this->carregar_total_vendas() + $caixaAtual['Caixa']['valor_inicial'];
+		$totalVendas = $this->carregar_total_vendas($caixaAtual['Caixa']['id']) + $caixaAtual['Caixa']['valor_inicial'];
 
 		$vendido = $totalVendas - $caixaAtual['Caixa']['valor_inicial'];
 
 		$response = [
 			'total_vendas' => (float) $totalVendas,
-			'total_cartao' => (float) $this->carregar_total_por_tipo('cartao'),
-			'total_dinheiro' => (float) $this->carregar_total_por_tipo('dinheiro'),
+			'total_cartao_debito' => (float) $this->carregar_total_por_tipo('cartao_debito', $caixaAtual['Caixa']['id']),
+			'total_cartao_credito' => (float) $this->carregar_total_por_tipo('cartao_credito', $caixaAtual['Caixa']['id']),
+			'total_dinheiro' => (float) $this->carregar_total_por_tipo('dinheiro', $caixaAtual['Caixa']['id']),
+			'total_outros' => (float) $this->carregar_total_por_tipo('pix', $caixaAtual['Caixa']['id']),
 			'caixa_atual' => $caixaAtual,
 			'vendido' => $vendido
 		];
@@ -51,12 +69,36 @@ class CaixaController extends AppController {
 		exit;
 	}
 
-	public function carregar_caixa_atual()
+	public function carregar_fechamento_do_caixa($id) 
+	{
+		$this->layout = 'ajax';
+
+		$caixaAtual = $this->carregar_caixa_por_id($id);
+
+		$totalVendas = $this->carregar_total_vendas($id) + $caixaAtual['Caixa']['valor_inicial'];
+
+		$vendido = $totalVendas - $caixaAtual['Caixa']['valor_inicial'];
+
+		$response = [
+			'total_vendas' => (float) $totalVendas,
+			'total_cartao_debito' => (float) $this->carregar_total_por_tipo('cartao_debito', $id),
+			'total_cartao_credito' => (float) $this->carregar_total_por_tipo('cartao_credito', $id),
+			'total_dinheiro' => (float) $this->carregar_total_por_tipo('dinheiro', $id),
+			'total_outros' => (float) $this->carregar_total_por_tipo('pix', $id),
+			'caixa_atual' => $caixaAtual,
+			'vendido' => $vendido
+		];
+
+		echo json_encode($response);
+		exit;
+	}
+
+	public function carregar_caixa_por_id($id)
 	{
 		$caixa = $this->Caixa->find('first', array(
 				'conditions' => array(
 					'Caixa.usuario_id' => $this->instancia,
-					'Caixa.data_abertura >= ' => date('Y-m-d')
+					'Caixa.id' => $id
 				)
 			)
 		);
@@ -64,7 +106,25 @@ class CaixaController extends AppController {
 		return $caixa;
 	}
 
-	public function carregar_total_por_tipo($tipo)
+	public function carregar_caixa_atual($id_usuario = null)
+	{
+		if (empty($id_usuario) || !isset($id_usuario)) {
+			$id_usuario = $this->instancia;
+		}
+
+		$caixa = $this->Caixa->find('first', array(
+				'conditions' => array(
+					'Caixa.usuario_id' => $id_usuario,
+					'Caixa.data_fechamento' => null
+				),
+				'order' => array('Caixa.data_abertura' => 'desc')
+			)
+		);
+
+		return $caixa;
+	}
+
+	public function carregar_total_por_tipo($tipo, $caixa_id)
 	{
 		$this->loadModel('LancamentoVenda');
 
@@ -81,13 +141,17 @@ class CaixaController extends AppController {
 			),
 			'conditions' => array(
 				'LancamentoVenda.usuario_id' => $this->instancia,
-				'LancamentoVenda.data_pgt' => date('Y-m-d'),
+				'LancamentoVenda.caixa_id' => $caixa_id,
 				'Venda.orcamento <> ' => 1
 			)
 		);
 
-		if ($tipo == 'cartao') {
-			$conditions['conditions']['LancamentoVenda.forma_pagamento <> '] = 'dinheiro';
+		if ($tipo == 'cartao_debito') {
+			$conditions['conditions']['LancamentoVenda.forma_pagamento'] = 'cartao_debito';
+		} else if ($tipo == 'cartao_credito') {
+			$conditions['conditions']['LancamentoVenda.forma_pagamento'] = 'cartao_credito';
+		} else if ($tipo == 'pix') {
+			$conditions['conditions']['LancamentoVenda.forma_pagamento'] = 'pix';
 		} else {
 			$conditions['conditions']['LancamentoVenda.forma_pagamento'] = 'dinheiro';
 		}
@@ -95,7 +159,6 @@ class CaixaController extends AppController {
 		$LancamentoVendas = $this->LancamentoVenda->find('all', $conditions);	
 		
 		$total = 0;
-
 		foreach ($LancamentoVendas as $i => $LancamentoVenda) {
 			$total += $LancamentoVenda['LancamentoVenda']['valor_pago'];
 		}
@@ -103,34 +166,42 @@ class CaixaController extends AppController {
 		return (float) $total;
 	}
 
-	public function carregar_total_vendas()
+	public function carregar_total_vendas($caixa_id)
 	{
 		$this->loadModel('Venda');
+		$this->loadModel('LancamentoVenda');
 
-		$dateInit = date('Y-m-d');
-		$dateEnd  = date('Y-m-d');
-
-		$vendas = $this->Venda->find('all', array(
-				'conditions' => array(
-					'Venda.data_venda' => $dateInit,
-					'Venda.id_usuario' => $this->instancia,
-					'Venda.ativo' => 1,
-					'Venda.orcamento <> ' => 1
-				)
+		$conditions = array(
+			'joins' => array(
+			    array(
+			        'table' => 'vendas',
+			        'alias' => 'Venda',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'LancamentoVenda.venda_id = Venda.id',
+			        ),
+			    )
+			),
+			'conditions' => array(
+				'LancamentoVenda.usuario_id' => $this->instancia,
+				'LancamentoVenda.caixa_id' => $caixa_id,
+				'Venda.orcamento <> ' => 1
 			)
 		);
 
 		$total = 0;
-		foreach ($vendas as $i => $venda) {
-			$total += $venda['Venda']['valor'];
+
+		$LancamentoVendas = $this->LancamentoVenda->find('all', $conditions);	
+		foreach ($LancamentoVendas as $i => $LancamentoVenda) {
+			$total += $LancamentoVenda['LancamentoVenda']['valor_pago'];
 		}
+
 
 		return (float) $total;
 	}
 
 	public function listar_cadastros()
 	{
-
 		$this->layout = 'wadmin';
 	}
 
@@ -217,6 +288,14 @@ class CaixaController extends AppController {
 						}
 					}
 
+					if ($aColumns[$i] == 'valor_inicial') {
+						if (empty($caixa['Caixa'][$aColumns[$i]])) {
+							$value = ' -- ';
+						} else {
+							$value = 'R$ ' . number_format($caixa['Caixa'][$aColumns[$i]], 2, '.', ',');
+						}
+					}
+
 					if ($aColumns[$i] == 'valor_final_dinheiro') {
 						if (empty($caixa['Caixa'][$aColumns[$i]])) {
 							$value = ' -- ';
@@ -237,9 +316,9 @@ class CaixaController extends AppController {
 				}
 				
 				if (empty($caixa['Caixa']['data_fechamento'])) {
-					$row[] = '<a href="#" class="btn btn-success" title="Fechar Caixa"><i class="fa fa-envelope" aria-hidden="true"></i></a>';
+					$row[] = '<a href="javascript:;" class="fechar-caixa btn btn-success"  data-id="' . $caixa['Caixa']['id'] . '" title="Fechar Caixa"><i class="fa fa-envelope" aria-hidden="true"></i></a>';
 				} else {
-					$row[] = '<a href="#" class="btn btn-primary" title="Visualizar Dados Caixa"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+					$row[] = '<a href="javascript:alert(\'Caixa já fechado\');" class="btn btn-primary" data-id="' . $caixa['Caixa']['id'] . '" title="Caixa fechado"><i class="fa fa-check" aria-hidden="true"></i></a>';
 				}
 
 				$output['aaData'][] = $row;

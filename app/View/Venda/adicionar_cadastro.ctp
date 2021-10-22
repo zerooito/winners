@@ -18,11 +18,12 @@
                     (<a href="javascript:;" onclick="closeSales();"> Fechar Caixa </a>) 
                 </div>
                 <div class="panel-body">
+                    <br>
+                    <div class="alert alert-primary" style="display: none;" id="status_caixa"></div> 
                     <form role="form" action="/venda/s_adicionar_cadastro" method="post" id="form-venda">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
-
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Produto</label>
@@ -259,6 +260,7 @@
     </div>
 </div>
 
+
 <!-- Modal -->
 <div class="modal fade" id="endSales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -284,14 +286,26 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Valor Final Cartão</label>
-                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_cartao]" id="valor_final_cartao" readonly="">
+                                <label>Valor Crédito</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_cartao_credito]" id="valor_final_cartao_credito" readonly="">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Valor Final Dinheiro</label>
+                                <label>Valor Débito</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_cartao_debito]" id="valor_final_cartao_debito" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor Dinheiro</label>
                                 <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_dinheiro]" id="valor_final_dinheiro" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Valor PIX (Outros)</label>
+                                <input type="text" required class="moeda form-control" value="0" name="caixa[valor_final_outros]" id="valor_final_outros" readonly="">
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -322,6 +336,7 @@
         </form>
     </div>
 </div>
+
 
 <script type="text/javascript">
 
@@ -441,7 +456,9 @@
                 $('#data_fechamento').val(data['caixa_atual']['Caixa']['data_fechamento']);
                 $('#valor_final_total').val(number_format(data['total_vendas'], 2, ',', '.'));
                 $('#valor_final_dinheiro').val(number_format(data['total_dinheiro'], 2, ',', '.'));
-                $('#valor_final_cartao').val(number_format(data['total_cartao'], 2, ',', '.'));
+                $('#valor_final_cartao_debito').val(number_format(data['total_cartao_debito'], 2, ',', '.'));
+                $('#valor_final_cartao_credito').val(number_format(data['total_cartao_credito'], 2, ',', '.'));
+                $('#valor_final_outros').val(number_format(data['total_outros'], 2, ',', '.'));
                 $('#id_caixa').val(data['caixa_atual']['Caixa']['id']);
 
                 $('#vendido').html('R$ ' + number_format(data['vendido'], 2, ',', '.'));
@@ -552,6 +569,26 @@
         $('#form-venda').submit();
     }
 
+    function caixaEstaAbertoOuFechado() {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/caixa/caixa_foi_aberto",
+            success: function(data) {
+                if (data['status'] == 'nao_aberto') {
+                    $('#status_caixa').show().html('Você ainda não abriu o caixa');
+                }
+
+                if (data['status'] == 'aberto') {
+                    $('#status_caixa').show().html('Você abriu o caixa no dia: ' + data['data_abertura']);
+                }
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        })
+    }
+
     $('#valor_desconto_porcento').change(function(){
         var valor_venda_atual = $('#valor-original').attr('data-preco');
         var valor_desconto    = $('#valor_desconto_porcento').val();
@@ -579,6 +616,7 @@
     });
 
     $(window).load(function(){
+        caixaEstaAbertoOuFechado();
         $('#produto_item').select2({        
             ajax: {
                 url: "/produto/produto_item",

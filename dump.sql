@@ -710,7 +710,7 @@ INSERT INTO `modulos` (`id`, `modulo`, `nome_modulo`, `ativo`, `padrao`, `funcao
                       (13, 'financeiro', 'Financeiro', 1, 1, 'listar_cadastros', 'fa fa-sort-amount-up-alt');
 
 ALTER TABLE lancamento_vendas
- ADD COLUMN caixa_id NULL INT;
+ ADD COLUMN caixa_id INT NULL;
 
 ALTER TABLE lancamento_vendas MODIFY COLUMN caixa_id INT NULL,
  ADD CONSTRAINT caixa_id_lancamento_venda_fk

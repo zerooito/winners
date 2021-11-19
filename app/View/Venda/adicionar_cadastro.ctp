@@ -709,6 +709,7 @@
         $('#desconto').val((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100);
         $('#desconto-label').html(number_format(((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+        $('#restante').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
         $('#valor_desconto_fixo').val('');
     });
@@ -722,6 +723,7 @@
         $('#desconto').val(parseFloat(valor_desconto));
         $('#desconto-label').html(number_format(parseFloat(valor_desconto), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+        $('#restante').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
         $('#valor_desconto_porcento').val('');
     });

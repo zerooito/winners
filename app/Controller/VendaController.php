@@ -602,7 +602,7 @@ class VendaController extends AppController {
 		
 		$ImpressaoFiscalController->userName = $usuario['Usuario']['nome'];
 
-		$dados_lancamento = $this->LancamentoVenda->find('first',
+		$dados_lancamentos = $this->LancamentoVenda->find('all',
 			array('conditions' => 
 				array(
 					'LancamentoVenda.ativo' => 1,
@@ -645,7 +645,13 @@ class VendaController extends AppController {
 		$ImpressaoFiscalController->corpoTxt .= "Valor Total: " . number_format($totalGeral, 2, ',', '.') . "\n\n";
 		$ImpressaoFiscalController->corpoTxt .= "Valor Pago: R$ " . number_format($dados_venda['Venda']['valor'], 2, ',', '.') . "\n";
 		$ImpressaoFiscalController->corpoTxt .= "Desconto: R$ " . number_format($desconto, 2, ',', '.') . "\n\n";
-		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $dados_lancamento['LancamentoVenda']['forma_pagamento'] . "\n\n";
+
+		$formas_pagamentos = '';
+		foreach ($dados_lancamentos as $dados_lancamento) {
+			$formas_pagamentos .= $dados_lancamento['LancamentoVenda']['forma_pagamento'] . ' ';
+		}
+
+		$ImpressaoFiscalController->corpoTxt .= "Forma de Pagamento: " . $formas_pagamentos . "\n\n";
 
 		$file = $ImpressaoFiscalController->gerar_arquivo();
 		

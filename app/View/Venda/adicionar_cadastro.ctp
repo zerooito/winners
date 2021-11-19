@@ -44,6 +44,28 @@
                                 
                                 <hr>
 
+                                <div class="row" style="margin-top: 15px;">
+                                    <div class="col-lg-6">
+                                        <label>Desconto</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon3">%</span>
+                                            <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label>Desconto</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon3">R$</span>
+                                            <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+                                </div>
+
+                                <hr>
+
                                 <div class="row" id="opcoes_pagamento">
                                     <div class="col-lg-12">
                                         <div class="form-group">
@@ -65,81 +87,47 @@
                                                     <br/>
                                                     <div class="row">
                                                         <div class="col-lg-12">
+                                                            <label>Forma de Pagamento</label>
                                                             <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
                                                                 <option value="dinheiro">Dinheiro</option>
                                                                 <option value="pix">Pix</option>
                                                                 <option value="cartao_debito">Cartão Debito</option>
                                                                 <option value="cartao_credito">Cartão Credito</option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" style="margin-top: 15px;">
-                                                        <div class="col-lg-3">
-                                                            <label>Desconto</label>
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-addon" id="sizing-addon3">%</span>
-                                                                <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-lg-3">
-                                                            <label>Desconto</label>
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-addon" id="sizing-addon3">R$</span>
-                                                                <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
-                                                            </div>
-                                                        </div>
-
-                                                        <input type="hidden" value="0" name="venda[desconto]" id="desconto">
-
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>Valor Pago</label>
-                                                                <input class="form-control moeda" id="valor_pago">
-                                                            </div>
-
-                                                            <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div role="tabpanel" class="tab-pane" id="tab-02">
                                                     <br/>
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
-                                                                <option value="dinheiro">Dinheiro</option>
-                                                                <option value="pix">Pix</option>
-                                                                <option value="cartao_debito">Cartão Debito</option>
-                                                                <option value="cartao_credito">Cartão Credito</option>
-                                                            </select>
+                                                    <div class="pagamentos">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label>Forma de Pagamento</label>
+                                                                <select class="form-control forma_pagamento_multiplo" id="forma_pagamento_multiplo0" name="lancamento[forma_pagamento][]">
+                                                                    <option value="dinheiro">Dinheiro</option>
+                                                                    <option value="pix">Pix</option>
+                                                                    <option value="cartao_debito">Cartão Debito</option>
+                                                                    <option value="cartao_credito">Cartão Credito</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Valor Pago</label>
+                                                                    <input class="form-control moeda" id="valor_pago_multiplo0" name="lancamento[valor_pago_multiplo][]">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row" style="margin-top: 15px;">
-                                                        <div class="col-lg-3">
-                                                            <label>Desconto</label>
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-addon" id="sizing-addon3">%</span>
-                                                                <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-lg-3">
-                                                            <label>Desconto</label>
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-addon" id="sizing-addon3">R$</span>
-                                                                <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
-                                                            </div>
-                                                        </div>
-
-                                                        <input type="hidden" value="0" name="venda[desconto]" id="desconto">
-
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>Valor Pago</label>
-                                                                <input class="form-control moeda" id="valor_pago">
-                                                            </div>
-
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-right">
                                                             <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
+                                                            <a href="javascript:;" class="btn btn-success" onclick="add_mais_pagamento();">+ Pagamento</a>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row text-right">
+                                                        <div class="col-lg-12">
+                                                            <span class="badge badge-info" id="restante"></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -401,6 +389,7 @@
 
 
 <script type="text/javascript">
+    var controle_pagamentos = 0;
 
     /* ATALHOS TECLADO */  
     $('body').keydown(function(e){  
@@ -583,6 +572,7 @@
                 var novo_valor_venda = parseFloat(valor_venda_atual) + parseFloat(data['Produto']['total']);
                 
                 $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+                $('#restante').html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
                 $('#valor-original').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
@@ -618,6 +608,45 @@
         $('#troco').attr('data-troco', troco).html('R$ ' + number_format(troco, 2, ',', '.'));
 
         $('#form-venda').attr('action', '/venda/s_adicionar_cadastro');
+    }
+
+    function add_mais_pagamento() {
+        var valor_venda_atual = $('#valor-atual').attr('data-preco').replace(',', '.');
+        var restante = valor_venda_atual;
+
+        if (restante <= 0) {
+            alert('Não existe mais nada a ser pago');
+            return;
+        }
+
+        for (var i = 0; i <= controle_pagamentos; i++) {
+            valor = $('#valor_pago_multiplo' + i).val();
+            restante -= valor;
+        }
+
+        controle_pagamentos++;
+
+        html = '';
+        html += '<div class="row">';
+        html += '    <div class="col-lg-6">';
+        html += '        <label>Forma de Pagamento</label>';
+        html += '        <select class="form-control forma_pagamento_multiplo" id="forma_pagamento_multiplo' + controle_pagamentos + '" name="lancamento[forma_pagamento][]">';
+        html += '            <option value="dinheiro">Dinheiro</option>';
+        html += '            <option value="pix">Pix</option>';
+        html += '            <option value="cartao_debito">Cartão Debito</option>';
+        html += '            <option value="cartao_credito">Cartão Credito</option>';
+        html += '        </select>';
+        html += '    </div>';
+        html += '    <div class="col-lg-6">';
+        html += '        <div class="form-group">';
+        html += '            <label>Valor Pago</label>';
+        html += '            <input class="form-control moeda" id="valor_pago_multiplo' + controle_pagamentos + '" name="lancamento[valor_pago_multiplo][]">';
+        html += '        </div>';
+        html += '    </div>';
+        html += '</div>';
+
+        $('.pagamentos').append(html);
+        $('#restante').html('R$ ' + number_format(restante, 2, ',', '.'));
     }
 
     function continuar_venda() {        

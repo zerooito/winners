@@ -127,23 +127,26 @@ class VendaController extends AppController {
 				for ( $i=0 ; $i < count($aColumns) ; $i++ )
 				{
 					if ($aColumns[$i] == "forma_pagamento") {
-						$lancamento = $this->LancamentoVenda->find('first', array(
+						$lancamentos = $this->LancamentoVenda->find('all', array(
 							'conditions' => array(
 									'LancamentoVenda.venda_id' => $venda['Venda']['id']
 								)
 							)
 						);
 
-						$value = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
-						
-						if (isset($value) && !empty($value))
-							$value = str_replace('_', ' ', $value);
-						
-						if (isset($value) && !empty($value))
-							$value = ucwords($value);
-						
-						$value =  empty($value) ? '' : $value;
-						$value = '<span class="badge badge-success">' . $value . '</span>';
+						$value = '';
+						foreach ($lancamentos as $lancamento) {
+							$pagamento = (isset($lancamento['LancamentoVenda']['forma_pagamento'])) ? $lancamento['LancamentoVenda']['forma_pagamento'] : array();
+							
+							if (isset($pagamento) && !empty($pagamento))
+								$pagamento = str_replace('_', ' ', $pagamento);
+							
+							if (isset($pagamento) && !empty($pagamento))
+								$pagamento = ucwords($pagamento);
+							
+							$value .= '<span class="badge badge-success">' . $pagamento . '</span> ';
+						}
+
 					} else if ($aColumns[$i] == "actions") {
 						$value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
 						$value .= '<i class="far fa-sticky-note"></i>';
@@ -751,15 +754,17 @@ class VendaController extends AppController {
 		$lancamentos = array();
 
 		foreach ($vendas as $i => $venda) {
-			$lancamento =  $this->LancamentoVenda->find('first', array(
+			$lancamentos_all =  $this->LancamentoVenda->find('all', array(
 					'conditions' => array(
 						'LancamentoVenda.venda_id' => $venda['Venda']['id']
 					)
 				)
 			);
 
-			if (!empty($lancamento))
-				$lancamentos[] = $lancamento;
+			foreach ($lancamentos_all as $lancamento) {
+				if (!empty($lancamento))
+					$lancamentos[] = $lancamento;
+			}
 		}
 
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);

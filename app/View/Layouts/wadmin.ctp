@@ -58,11 +58,6 @@
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
-  <script type="text/javascript">
-      $(document).ready(function(){
-          $('select').select2();
-      });
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
 
@@ -215,7 +210,7 @@
   
   <script type="text/javascript">
       $(document).ready(function(){
-          $('select').select2();
+        $('.select2').select2();
       });
   </script>
 

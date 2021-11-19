@@ -27,7 +27,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Produto</label>
-                                            <select class="form-control" id="produto_item"></select>
+                                            <select class="select2 form-control" id="produto_item"></select>
                                         </div>
                                     </div>
 
@@ -45,44 +45,106 @@
                                 <hr>
 
                                 <div class="row" id="opcoes_pagamento">
-
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Forma de Pagamento</label>
-                                            <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
-                                                <option value="dinheiro">Dinheiro</option>
-                                                <option value="pix">Pix</option>
-                                                <option value="cartao_debito">Cartão Debito</option>
-                                                <option value="cartao_credito">Cartão Credito</option>
-                                            </select>
+
+                                           <!-- Tabs navs -->
+                                            <ul class="nav nav-tabs" role="tablist" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <a href="#tab-01" class="nav-link active" aria-controls="tab-01" role="tab" data-toggle="tab">Pagamento Único</a>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <a href="#tab-02" class="nav-link" aria-controls="tab-02" role="tab" data-toggle="tab">Pagamento Múltiplos</a>
+                                                </li>
+                                            </ul>
+                                            <!-- Tabs navs -->
+
+                                            <!-- Tabs content -->
+                                            <div class="tab-content" id="ex1-content">
+                                                <div role="tabpanel" class="tab-pane active" id="tab-01">
+                                                    <br/>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
+                                                                <option value="dinheiro">Dinheiro</option>
+                                                                <option value="pix">Pix</option>
+                                                                <option value="cartao_debito">Cartão Debito</option>
+                                                                <option value="cartao_credito">Cartão Credito</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-top: 15px;">
+                                                        <div class="col-lg-3">
+                                                            <label>Desconto</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon" id="sizing-addon3">%</span>
+                                                                <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <label>Desconto</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon" id="sizing-addon3">R$</span>
+                                                                <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Valor Pago</label>
+                                                                <input class="form-control moeda" id="valor_pago">
+                                                            </div>
+
+                                                            <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="tab-02">
+                                                    <br/>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
+                                                                <option value="dinheiro">Dinheiro</option>
+                                                                <option value="pix">Pix</option>
+                                                                <option value="cartao_debito">Cartão Debito</option>
+                                                                <option value="cartao_credito">Cartão Credito</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-top: 15px;">
+                                                        <div class="col-lg-3">
+                                                            <label>Desconto</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon" id="sizing-addon3">%</span>
+                                                                <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <label>Desconto</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon" id="sizing-addon3">R$</span>
+                                                                <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Valor Pago</label>
+                                                                <input class="form-control moeda" id="valor_pago">
+                                                            </div>
+
+                                                            <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label>Desconto</label>
-                                        <div class="input-group input-group-sm">
-                                            <span class="input-group-addon" id="sizing-addon3">%</span>
-                                            <input type="text" class="form-control" placeholder="%" aria-describedby="sizing-addon3" id="valor_desconto_porcento" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label>Desconto</label>
-                                        <div class="input-group input-group-sm">
-                                            <span class="input-group-addon" id="sizing-addon3">R$</span>
-                                            <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" value="0" name="venda[desconto]" id="desconto">
-
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Valor Pago</label>
-                                            <input class="form-control moeda" id="valor_pago">
-                                        </div>
-
-                                        <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
                                     </div>
                                 </div>
 
@@ -92,7 +154,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Cliente</label>
-                                            <select class="form-control" id="cliente" name="venda[cliente_id]">
+                                            <select class="select2 form-control" id="cliente" name="venda[cliente_id]">
                                                 <option value="">Escolha o Cliente</option>
                                                 <?php foreach ($clientes as $cliente): ?>
                                                     <option value="<?php echo $cliente['Cliente']['id']; ?>">

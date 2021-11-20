@@ -5,7 +5,7 @@ include 'CaixaController.php';
 class LancamentoVendasController extends AppController {
 
 	public function salvar_lancamento($id_venda, $dados, $valor_total, $id_usuario, $orcamento=true) {
-		$lancamento['venda_id']   = $id_venda;
+		$lancamento['venda_id'] = $id_venda;
 		$lancamento['valor'] = $valor_total;
 		
 		if ($orcamento) {
@@ -17,7 +17,6 @@ class LancamentoVendasController extends AppController {
 		$lancamento['data_pgt']   = date('Y-m-d');
 		$lancamento['ativo']	  = 1;
 		$lancamento['usuario_id'] = $id_usuario;
-		$lancamento['forma_pagamento'] = $dados['forma_pagamento'];
 		$lancamento['tipo'] = 'receita';
 
 		if ($orcamento == false) {
@@ -27,7 +26,21 @@ class LancamentoVendasController extends AppController {
 			$lancamento['caixa_id'] = $caixa_atual['Caixa']['id'];
 		}
 
-		$this->LancamentoVenda->save($lancamento);
+		if (count($dados['forma_pagamento_multiplo']) > 1) {
+			foreach ($dados['forma_pagamento_multiplo'] as $i => $forma_pagamento) {
+				$this->LancamentoVenda->create();
+
+				$lancamento['forma_pagamento'] = $forma_pagamento;
+				$lancamento['valor_pago'] = $dados['valor_pago_multiplo'][$i];
+				$lancamento['valor'] = $dados['valor_pago_multiplo'][$i];
+
+				$this->LancamentoVenda->save($lancamento);
+			}
+		} else {
+			$lancamento['forma_pagamento'] = $dados['forma_pagamento'];
+
+			$this->LancamentoVenda->save($lancamento);
+		}
 
 		return true;
  	}

@@ -123,8 +123,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-      $(".js-example-basic-single").select2();
-
       $('#variacao').click(function() {
         var n_variacao = $('#variacoes').data('n-variacao')
           , html       = ''

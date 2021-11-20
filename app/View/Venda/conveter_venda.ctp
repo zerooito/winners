@@ -26,7 +26,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Produto</label>
-                                            <select class="form-control" id="produto_item"></select>
+                                            <select class="select2 form-control" id="produto_item"></select>
                                         </div>
                                     </div>
 
@@ -90,7 +90,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Cliente</label>
-                                            <select class="form-control" id="cliente" name="venda[cliente_id]">
+                                            <select class="select2 form-control" id="cliente" name="venda[cliente_id]">
                                                 <option value="">Escolha o Cliente</option>
                                                 <?php foreach ($clientes as $cliente): ?>
                                                     <option value="<?php echo $cliente['Cliente']['id']; ?>">

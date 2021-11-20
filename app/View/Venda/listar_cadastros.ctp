@@ -154,7 +154,7 @@
                 dataType: "json",
                 url: "/venda/excluir_cadastro",
                 async: true,
-                data: {id: idGlobal},
+                data: { id: idGlobal },
                 success: function(data){
                     swal(
                         'Deletado!',

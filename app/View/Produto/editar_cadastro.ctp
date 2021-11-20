@@ -89,7 +89,7 @@
 
                                 <div class="form-group">
                                     <label>Categoria</label>
-                                    <select class="form-control js-example-basic-single" name="dados[categoria_id]">
+                                    <select class="form-control" name="dados[categoria_id]">
                                         <?php foreach ($categorias as $key => $categoria): ?>
                                         <option 
                                             <?php if ($produto['Produto']['categoria_id'] == $categoria['Categoria']['id']): ?>
@@ -142,8 +142,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-      $(".js-example-basic-single").select2();
-
       $('#variacao').click(function() {
         var n_variacao = $('#variacoes').data('n-variacao')
           , html       = ''

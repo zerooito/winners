@@ -27,7 +27,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Produto</label>
-                                            <select class="form-control" id="produto_item"></select>
+                                            <select class="select2 form-control" id="produto_item"></select>
                                         </div>
                                     </div>
 
@@ -44,21 +44,8 @@
                                 
                                 <hr>
 
-                                <div class="row" id="opcoes_pagamento">
-
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label>Forma de Pagamento</label>
-                                            <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
-                                                <option value="dinheiro">Dinheiro</option>
-                                                <option value="pix">Pix</option>
-                                                <option value="cartao_debito">Cartão Debito</option>
-                                                <option value="cartao_credito">Cartão Credito</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
+                                <div class="row" style="margin-top: 15px;">
+                                    <div class="col-lg-6">
                                         <label>Desconto</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-addon" id="sizing-addon3">%</span>
@@ -66,7 +53,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-6">
                                         <label>Desconto</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-addon" id="sizing-addon3">R$</span>
@@ -75,14 +62,83 @@
                                     </div>
 
                                     <input type="hidden" value="0" name="venda[desconto]" id="desconto">
+                                </div>
 
-                                    <div class="col-lg-6">
+                                <hr>
+
+                                <div class="row" id="opcoes_pagamento">
+                                    <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Valor Pago</label>
-                                            <input class="form-control moeda" id="valor_pago">
-                                        </div>
 
-                                        <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
+                                           <!-- Tabs navs -->
+                                            <ul class="nav nav-tabs" role="tablist" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <a href="#tab-01" class="nav-link active" aria-controls="tab-01" role="tab" data-toggle="tab">Pagamento Único</a>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <a href="#tab-02" class="nav-link" aria-controls="tab-02" role="tab" data-toggle="tab">Pagamento Múltiplos</a>
+                                                </li>
+                                            </ul>
+                                            <!-- Tabs navs -->
+
+                                            <!-- Tabs content -->
+                                            <div class="tab-content" id="ex1-content">
+                                                <div role="tabpanel" class="tab-pane active" id="tab-01">
+                                                    <br/>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <label>Forma de Pagamento</label>
+                                                            <select class="form-control" id="forma_pagamento" name="lancamento[forma_pagamento]">
+                                                                <option value="dinheiro">Dinheiro</option>
+                                                                <option value="pix">Pix</option>
+                                                                <option value="cartao_debito">Cartão Debito</option>
+                                                                <option value="cartao_credito">Cartão Credito</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Valor Pago</label>
+                                                                <input class="form-control moeda" id="valor_pago" name="lancamento[valor_pago]">
+                                                            </div>
+                                                            <a href="javascript:;" class="btn btn-primary" onclick="finalizar_venda();">Calcular Troco</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="tab-02">
+                                                    <br/>
+                                                    <div class="pagamentos">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label>Forma de Pagamento</label>
+                                                                <select class="form-control forma_pagamento_multiplo" id="forma_pagamento_multiplo0" name="lancamento[forma_pagamento_multiplo][]">
+                                                                    <option value="dinheiro">Dinheiro</option>
+                                                                    <option value="pix">Pix</option>
+                                                                    <option value="cartao_debito">Cartão Debito</option>
+                                                                    <option value="cartao_credito">Cartão Credito</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Valor Pago</label>
+                                                                    <input class="form-control moeda" id="valor_pago_multiplo0" name="lancamento[valor_pago_multiplo][]">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-right">
+                                                            <a href="javascript:;" class="btn btn-success" onclick="add_mais_pagamento();">+ Pagamento</a>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row text-right">
+                                                        <div class="col-lg-12">
+                                                            <span class="badge badge-info" id="restante" data-preco="0"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -92,7 +148,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Cliente</label>
-                                            <select class="form-control" id="cliente" name="venda[cliente_id]">
+                                            <select class="select2 form-control" id="cliente" name="venda[cliente_id]">
                                                 <option value="">Escolha o Cliente</option>
                                                 <?php foreach ($clientes as $cliente): ?>
                                                     <option value="<?php echo $cliente['Cliente']['id']; ?>">
@@ -339,6 +395,7 @@
 
 
 <script type="text/javascript">
+    var controle_pagamentos = 0;
 
     /* ATALHOS TECLADO */  
     $('body').keydown(function(e){  
@@ -521,6 +578,7 @@
                 var novo_valor_venda = parseFloat(valor_venda_atual) + parseFloat(data['Produto']['total']);
                 
                 $('#valor-atual').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+                $('#restante').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
                 $('#valor-original').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
@@ -556,6 +614,59 @@
         $('#troco').attr('data-troco', troco).html('R$ ' + number_format(troco, 2, ',', '.'));
 
         $('#form-venda').attr('action', '/venda/s_adicionar_cadastro');
+    }
+
+    function add_mais_pagamento() {
+        var valor_venda_atual = $('#valor-atual').attr('data-preco') * 1.0;
+        var restante = $('#restante').attr('data-preco') * 1.0;
+
+        for (var i = 0; i <= controle_pagamentos; i++) {
+            valor = $('#valor_pago_multiplo' + i).val();
+
+            if (valor == "") {
+                alert('O valor não pode ser vazio.');
+                return;
+            }
+
+            if (valor > restante) {
+                alert('O valor inserido é maior que o valor faltante para pagar.');
+                return;
+            }
+
+            restante -= valor;
+        }
+        
+        if (restante <= 0 || isNaN(restante)) {
+            $('#restante').html('R$ ' + number_format(0, 2, ',', '.'));
+            alert('Não existe mais valor a ser pago.');
+            return;
+        }
+
+        controle_pagamentos++;
+
+        html = '';
+        html += '<div class="row">';
+        html += '    <div class="col-lg-6">';
+        html += '        <label>Forma de Pagamento</label>';
+        html += '        <select class="form-control forma_pagamento_multiplo" id="forma_pagamento_multiplo' + controle_pagamentos + '" name="lancamento[forma_pagamento_multiplo][]">';
+        html += '            <option value="dinheiro">Dinheiro</option>';
+        html += '            <option value="pix">Pix</option>';
+        html += '            <option value="cartao_debito">Cartão Debito</option>';
+        html += '            <option value="cartao_credito">Cartão Credito</option>';
+        html += '        </select>';
+        html += '    </div>';
+        html += '    <div class="col-lg-6">';
+        html += '        <div class="form-group">';
+        html += '            <label>Valor Pago</label>';
+        html += '            <input class="form-control moeda" id="valor_pago_multiplo' + controle_pagamentos + '" name="lancamento[valor_pago_multiplo][]" value="' + number_format(restante, 2, '.', ',') + '">';
+        html += '        </div>';
+        html += '    </div>';
+        html += '</div>';
+
+        $('.pagamentos').append(html);
+        $('#restante').html('R$ ' + number_format(restante, 2, ',', '.'));
+
+        $('.moeda').maskMoney();
     }
 
     function continuar_venda() {        
@@ -598,6 +709,7 @@
         $('#desconto').val((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100);
         $('#desconto-label').html(number_format(((parseFloat(valor_desconto) * parseFloat(valor_venda_atual)) / 100), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+        $('#restante').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
         $('#valor_desconto_fixo').val('');
     });
@@ -611,6 +723,7 @@
         $('#desconto').val(parseFloat(valor_desconto));
         $('#desconto-label').html(number_format(parseFloat(valor_desconto), 2, ',', '.'));
         $('#valor-atual').attr('data-preco', number_format(novo_valor_venda, 2, ',', '.')).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
+        $('#restante').attr('data-preco', novo_valor_venda).html('R$ ' + number_format(novo_valor_venda, 2, ',', '.'));
 
         $('#valor_desconto_porcento').val('');
     });

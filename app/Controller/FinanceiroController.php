@@ -298,7 +298,7 @@ class FinanceiroController extends AppController
 							$value = '<span class="label label-default">Sem Categoria</span>';
 						}
 			
-						if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor']) {
+						if ($lancamento['LancamentoVenda']['valor_pago'] < $lancamento['LancamentoVenda']['valor'] && $lancamento['LancamentoVenda']['caixa_id'] == null) {
 							$btPaid = '<a class="btn btn-success" href="/financeiro/pago/' . $lancamento['LancamentoVenda']['id'] . '"><i class="fa fa-check"></i></a>';
 						} else {
 							$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fas fa-dollar-sign"></i></a>';

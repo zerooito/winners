@@ -32,7 +32,6 @@ class LancamentoVendasController extends AppController {
 
 				$lancamento['forma_pagamento'] = $forma_pagamento;
 				$lancamento['valor_pago'] = $dados['valor_pago_multiplo'][$i];
-				$lancamento['valor'] = $dados['valor_pago_multiplo'][$i];
 
 				$this->LancamentoVenda->save($lancamento);
 			}

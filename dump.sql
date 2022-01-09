@@ -565,11 +565,11 @@ CREATE TABLE `queue_products` (
 -- Table structure for table `subusuarios`
 --
 
-DROP TABLE IF EXISTS `subusuarios`;
+DROP TABLE IF EXISTS `sub_usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subusuarios` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `sub_usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` varchar(255) DEFAULT NULL,
   `id_hieraquia` int(11) DEFAULT NULL,
   `ativo` tinyint(4) DEFAULT NULL,
@@ -607,10 +607,13 @@ CREATE TABLE `usuarios` (
   `folder_view` varchar(50) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
+  `subusuario_id` int(11),
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_sub_usuario_id` (`subusuario_id`) USING BTREE,
+  CONSTRAINT `fk_sub_usuario_id` FOREIGN KEY (`subusuario_id`) REFERENCES `sub_usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -716,3 +719,44 @@ ALTER TABLE lancamento_vendas MODIFY COLUMN caixa_id INT NULL,
  ADD CONSTRAINT caixa_id_lancamento_venda_fk
  FOREIGN KEY(caixa_id)
  REFERENCES caixas(id);
+
+--
+-- Estrutura da tabela `hieraquia_modulos`
+--
+
+CREATE TABLE IF NOT EXISTS `hieraquia_modulos` (
+`id` int(11) NOT NULL,
+  `hieraquia_id` int(11) NOT NULL,
+  `modulo_id` int(11) NOT NULL,
+  `tipo_de_permissao` varchar(25) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `hieraquia_modulos`
+--
+ALTER TABLE `hieraquia_modulos`
+ ADD PRIMARY KEY (`id`), ADD KEY `hieraquia_modulo_hieraquia_id` (`hieraquia_id`), ADD KEY `hieraquia_modulo_modulo_id` (`modulo_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `hieraquia_modulos`
+--
+ALTER TABLE `hieraquia_modulos`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=124;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Limitadores para a tabela `hieraquia_modulos`
+--
+ALTER TABLE `hieraquia_modulos`
+ADD CONSTRAINT `hieraquia_modulo_hieraquia_id` FOREIGN KEY (`hieraquia_id`) REFERENCES `hieraquias` (`id`),
+ADD CONSTRAINT `hieraquia_modulo_modulo_id` FOREIGN KEY (`modulo_id`) REFERENCES `modulos` (`id`);

@@ -47,9 +47,18 @@ exit
 
 ## Subindo a estrutura e os dados do banco
 
-Acesse o PHPMyAdmin da instancia do docker que ficae em:
+Para instalar a estrutura do banco de dados suba o PHPMyAdmin
+
+`docker-compose up -d phpmyadmin`
+
+Acesse o PHPMyAdmin da instancia do docker que fica em:
 
 `http://localhost:8000`
+
+Com o sequinte usuário e senha:
+ 
+ - root
+ - password
 
 Vá até o banco de dados `development` no menu do lado esquerdo. Vá na opção importar no topo e selecione o arquivo `dump.sql` que está na raiz do projeto
 

@@ -67,7 +67,7 @@
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
 	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="/" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
+              <a class="nav-link dropdown-toggle" href="/" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Produtos</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <?php foreach($categorias as $indice => $valor): ?>
               	    <a class="dropdown-item" href="/category/<?php echo $valor['Categoria']['id'] ?>/<?php echo $valor['Categoria']['nome'] ?>"><?php echo $valor['Categoria']['nome'] ?></a>
@@ -124,7 +124,7 @@
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon fa fa-map marker"></span><span class="text">R. Maria Antônieta de Campos Arruda, 268 - Jardim Angelica, Guarulhos - SP, 07260-500</span></li>
-	                <li><a href="http://api.whatsapp.com/send?phone=5511989569254"><span class="icon fa fa-phone"></span><span class="text">+55 11 989569254</span></a></li>
+	                <li><a href="http://api.whatsapp.com/send?phone=<?php echo $usuario['Usuario']['telefone']; ?>"><span class="icon fa fa-phone"></span><span class="text">+55 11 989569254</span></a></li>
 	              </ul>
 	            </div>
             </div>

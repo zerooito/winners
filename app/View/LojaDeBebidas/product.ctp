@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-6 mb-5 ftco-animate">
                 <?php if (isset($produto['Produto']['imagem']) && !empty($produto['Produto']['imagem'])): ?>
-                    <a href="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" class="image-popup prod-img-bg"><img src="uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" class="img-fluid" alt=""></a>
+                    <a href="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" class="image-popup prod-img-bg"><img src="/uploads/produto/imagens/<?php echo $produto['Produto']['imagem'] ?>" class="img-fluid" alt=""></a>
                 <?php else: ?>
                     <a href="/images/imagem404.jpg" class="image-popup prod-img-bg"><img src="/images/imagem404.jpg" class="img-fluid" alt=""></a>
                 <?php endif; ?>

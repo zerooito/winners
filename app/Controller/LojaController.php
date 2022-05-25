@@ -88,7 +88,7 @@ class LojaController extends AppController {
             'Produto.id_usuario' => $this->Session->read('Usuario.id'),
             'Produto.destaque' => 1
          ),
-         'limit' => 9
+         'limit' => 100
       );
 
       if ($id_categoria != null) {

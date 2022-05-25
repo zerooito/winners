@@ -27,7 +27,7 @@
 				<div class="row">
 					<div class="col-md-6 d-flex align-items-center">
 						<p class="mb-0 phone pl-md-2">
-							<a href="api.whatsapp.com/send?phone=<?php echo $usuario['Usuario']['telefone']; ?>" class="mr-2"><span class="fa fa-phone mr-1"></span> <?php echo $usuario['Usuario']['telefone']; ?>
+							<a href="http://api.whatsapp.com/send?phone=<?php echo $usuario['Usuario']['telefone']; ?>" class="mr-2"><span class="fa fa-phone mr-1"></span> <?php echo $usuario['Usuario']['telefone']; ?>
 							</a>
 						</p>
 					</div>
@@ -124,7 +124,7 @@
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon fa fa-map marker"></span><span class="text">R. Maria Antônieta de Campos Arruda, 268 - Jardim Angelica, Guarulhos - SP, 07260-500</span></li>
-	                <li><a href="api.whatsapp.com/send?phone=5511989569254"><span class="icon fa fa-phone"></span><span class="text">+55 11 989569254</span></a></li>
+	                <li><a href="http://api.whatsapp.com/send?phone=5511989569254"><span class="icon fa fa-phone"></span><span class="text">+55 11 989569254</span></a></li>
 	              </ul>
 	            </div>
             </div>

@@ -97,6 +97,7 @@
 		}
 		
 		$caminho = APP . 'Config/Domain/' . $varDominio . '.php';
+
 		if (!file_exists($caminho))
 		{
 			$retorno['is_winners'] = true;
@@ -104,7 +105,7 @@
 		}
 		
 		require($caminho);
-		//pr($dominio);
+
 		$retorno['is_winners'] = false;
 		$retorno['id_usuario'] = $dominio['id_usuario'];
 		$retorno['controller'] = $dominio['controller'];

@@ -13,6 +13,8 @@
 App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
+	private $paymentUrl = 'https://winners-payments-service.herokuapp.com/';
+
 	public $modulos = array();
 	public $instancia = 'winners';
 	public $subusuario = null;
@@ -81,8 +83,130 @@ class AppController extends Controller {
 			$this->nome = $dados['nome'];
 			$this->verificar_modulos();
 		}
+
+		$GLOBALS['qrcode'] = $this->verificar_se_esta_ativo($this->instancia);
 		
 		return true;
+	}
+
+	public function verificar_se_esta_ativo($instancia)
+	{
+		$this->loadModel('Usuario');
+
+		$usuario = $this->Usuario->find('all',
+			array('conditions' => 
+				array(
+					'Usuario.id' => $instancia
+				)
+			)
+		)[0]['Usuario'];
+
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $this->paymentUrl . 'pix/status/' . $instancia,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json'
+			),
+			)
+		);
+
+		$response = json_decode(curl_exec($curl));
+
+		$status_pagamento = $this->atualiza_status_pagamento($instancia);
+
+		if (isset($status_pagamento->status) && !empty($status_pagamento->status) && $status_pagamento->status == 'PAID') {
+			$dados = array(
+				'Usuario.ativo' => '1', 
+				'Usuario.ultimo_pagamento' => date('Y-m-d')
+			);
+			$parametros = array('Usuario.id' => $instancia);
+	
+			$this->Usuario->updateAll($dados, $parametros);
+		} else {
+			if (isset($response->status) && !empty($response->status) && $response->status == 'PENDING') {
+				return $response->qrcode;
+			} else {
+				$pagamento_gerado = $this->gerar_pagamento($instancia, $usuario);
+
+				if (!empty($pagamento_gerado) && isset($pagamento_gerado->qrcode)) {
+					return $pagamento_gerado->qrcode;
+				}
+			}
+		}
+	}
+
+	public function atualiza_status_pagamento($instancia)
+	{
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $this->paymentUrl . 'pix/update_status/' . $instancia,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json'
+			),
+			)
+		);
+
+		return json_decode(curl_exec($curl));
+	}
+
+	/**
+	 * Se o método retorna false quer dizer que o usuário ainda está no tempo mensal do ultimo pagamento
+	 */
+	public function gerar_pagamento($instancia, $usuario)
+	{
+		$curl = curl_init();
+		
+		$data_inicial = $usuario['ultimo_pagamento'];
+		$data_final = date('Y-m-d');
+		$diferenca = strtotime($data_final) - strtotime($data_inicial);
+		$dias = floor($diferenca / (60 * 60 * 24));
+
+		if ($dias >= 30) {
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => $this->paymentUrl . 'pix/qr-code',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_POSTFIELDS => json_encode([
+					'cpf' => $usuario['documento'],
+					'nome' => $usuario['nome'],
+					'valor' => $usuario['valor'],
+					'celular' => $usuario['telefone'],
+					'email' => $usuario['email'],
+					'winners_id' => $instancia
+				]),
+				CURLOPT_HTTPHEADER => array(
+					'Content-Type: application/json'
+				)
+			));
+
+			$dados = array('Usuario.ativo' => '0');
+			$parametros = array('Usuario.id' => $instancia);
+	
+			$this->Usuario->updateAll($dados, $parametros);
+
+			return json_decode(curl_exec($curl));
+		}
+
+		return false;
 	}
 
 	public function verificar_modulos_subusuario($hieraquia_id)

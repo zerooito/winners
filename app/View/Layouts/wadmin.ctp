@@ -159,6 +159,28 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+  <?php if ($GLOBALS['qrcode'] != ""): ?>
+    <!-- Boostrap Payment Modal-->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="paymentModalLabel">Pagamento mensal</h5>
+          </div>
+          <div class="modal-body text-center">
+            Faça o PIX e impeça que o sistema pare de funcionar.
+
+            <img src="<?php echo $GLOBALS['qrcode']; ?>" />
+          </div>
+          <!-- <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            <a class="btn btn-primary" href="/usuario/logout">Sim</a>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -212,6 +234,35 @@
       $(document).ready(function(){
         $('.select2').select2();
       });
+
+      $('#paymentModal').modal({backdrop: 'static', keyboard: false});
+
+      <?php if ($GLOBALS['qrcode'] != ""): ?>
+        poll = function() {
+          $.ajax({
+            url: '/usuario/verifica_se_status_mudou',
+            dataType: 'json',
+            type: 'get',
+            success: function(data) {
+              if (data.status == 'PAID') {
+                Swal.fire(
+                  'Muito Obrigado!',
+                  'Pagamento efetuado com sucesso!',
+                  'success'
+                );
+                $('#paymentModal').modal('toggle');
+              }
+            },
+            error: function() { // error logging
+              console.log('Error!');
+            }
+          });
+        },
+        pollInterval = setInterval(function() { // run function every 2000 ms
+          poll();
+          }, 3000);
+        poll(); // also run function on init
+    <?php endif; ?>
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>

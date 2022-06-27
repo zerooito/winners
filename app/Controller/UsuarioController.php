@@ -81,7 +81,18 @@ class UsuarioController extends AppController{
 		$this->set('resposta', $resposta);
 
 		return $resposta;
-	}			
+	}
+
+	public function verifica_se_status_mudou()
+	{
+		$this->layout = 'ajax';
+
+		$id = $this->Session->Read('Usuario')['id'];
+
+		$status = $this->atualiza_status_pagamento($id);
+
+		echo json_encode($status);
+	}
 
 	//se o email estiver livre retorna false, senão retorna true
 	public function verificar_email($email){
@@ -258,7 +269,6 @@ class UsuarioController extends AppController{
 
 		if(!$retorno) {
 			$this->Session->setFlash('Ocorreu um erro ao salvar as novas infomações, tente novamente!');
-            
             return $this->redirect('/usuario/meus_dados');
 		}
 
@@ -313,20 +323,14 @@ class UsuarioController extends AppController{
 		$abriu = $z->open($template['tmp_name']);
 		
 		if ($abriu === true) {
-
 		    // Listando os nomes dos elementos
 		    for ($i = 0; $i < $z->numFiles; $i++) {
-
         		$nome = $z->getNameIndex($i);
-
 		        $response = $z->extractTo(ROOT . DS . "app/View/");
-
 		    }
 
 		    // Fechando o arquivo
-
 		    $z->close();
-
 		} else {
 		    echo 'Erro: ' . $abriu;
 		}

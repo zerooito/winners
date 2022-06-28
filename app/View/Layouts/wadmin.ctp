@@ -237,26 +237,30 @@
 
       $('#paymentModal').modal({backdrop: 'static', keyboard: false});
 
-      <?php if ($GLOBALS['qrcode'] != ""): ?>
+      <?php if ($GLOBALS['qrcode'] !== NULL): ?>
+        polling_success = false;
         poll = function() {
-          $.ajax({
-            url: '/usuario/verifica_se_status_mudou',
-            dataType: 'json',
-            type: 'get',
-            success: function(data) {
-              if (data.status == 'PAID') {
-                Swal.fire(
-                  'Muito Obrigado!',
-                  'Pagamento efetuado com sucesso!',
-                  'success'
-                );
-                $('#paymentModal').modal('toggle');
+          if (polling_success == false) {
+            $.ajax({
+              url: '/usuario/verifica_se_status_mudou',
+              dataType: 'json',
+              type: 'get',
+              success: function(data) {
+                if (data.status == 'PAID') {
+                  swal(
+                    'Muito Obrigado!',
+                    'Pagamento efetuado com sucesso!',
+                    'success'
+                  );
+                  $('#paymentModal').modal('toggle');
+                  polling_success = true;
+                }
+              },
+              error: function() { // error logging
+                console.log('Error!');
               }
-            },
-            error: function() { // error logging
-              console.log('Error!');
-            }
-          });
+            });
+          }
         },
         pollInterval = setInterval(function() { // run function every 2000 ms
           poll();

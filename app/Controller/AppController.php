@@ -101,6 +101,12 @@ class AppController extends Controller {
 			)
 		)[0]['Usuario'];
 
+		$pagamento_gerado = $this->gerar_pagamento($instancia, $usuario);
+
+		if (!empty($pagamento_gerado) && isset($pagamento_gerado->qrcode)) {
+			return $pagamento_gerado->qrcode;
+		}
+
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -120,24 +126,12 @@ class AppController extends Controller {
 		$response = json_decode(curl_exec($curl));
 
 		$status_pagamento = $this->atualiza_status_pagamento($instancia);
-
+		
 		if (isset($status_pagamento->status) && !empty($status_pagamento->status) && $status_pagamento->status == 'PAID') {
-			$dados = array(
-				'Usuario.ativo' => '1', 
-				'Usuario.ultimo_pagamento' => date('Y-m-d')
-			);
-			$parametros = array('Usuario.id' => $instancia);
-	
-			$this->Usuario->updateAll($dados, $parametros);
+			return NULL;
 		} else {
 			if (isset($response->status) && !empty($response->status) && $response->status == 'PENDING') {
 				return $response->qrcode;
-			} else {
-				$pagamento_gerado = $this->gerar_pagamento($instancia, $usuario);
-
-				if (!empty($pagamento_gerado) && isset($pagamento_gerado->qrcode)) {
-					return $pagamento_gerado->qrcode;
-				}
 			}
 		}
 	}
@@ -160,7 +154,19 @@ class AppController extends Controller {
 			)
 		);
 
-		return json_decode(curl_exec($curl));
+		$response = json_decode(curl_exec($curl));
+
+		if ($response->status == 'PAID') {
+			$dados = array(
+				'id' => $instancia,
+				'ativo' => 1, 
+				'ultimo_pagamento' => $response->payment_date
+			);
+
+			$this->Usuario->save($dados);
+		}
+
+		return $response;
 	}
 
 	/**
@@ -169,9 +175,10 @@ class AppController extends Controller {
 	public function gerar_pagamento($instancia, $usuario)
 	{
 		$curl = curl_init();
-		
+
 		$data_inicial = $usuario['ultimo_pagamento'];
-		$data_final = date('Y-m-d');
+		$data_final = date('Y-m-d H:i:s');
+
 		$diferenca = strtotime($data_final) - strtotime($data_inicial);
 		$dias = floor($diferenca / (60 * 60 * 24));
 
@@ -198,10 +205,12 @@ class AppController extends Controller {
 				)
 			));
 
-			$dados = array('Usuario.ativo' => '0');
-			$parametros = array('Usuario.id' => $instancia);
+			$dados = array(
+				'id' => $instancia,
+				'ativo' => 0
+			);
 	
-			$this->Usuario->updateAll($dados, $parametros);
+			$this->Usuario->save($dados);
 
 			return json_decode(curl_exec($curl));
 		}

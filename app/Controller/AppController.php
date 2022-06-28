@@ -156,7 +156,7 @@ class AppController extends Controller {
 
 		$response = json_decode(curl_exec($curl));
 
-		if ($response->status == 'PAID') {
+		if (isset($response->status) && $response->status == 'PAID') {
 			$dados = array(
 				'id' => $instancia,
 				'ativo' => 1, 

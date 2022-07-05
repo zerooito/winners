@@ -1,3 +1,5 @@
+<?php include('header.ctp'); ?>
+
 <!--? New Arrival Start -->
 <div class="new-arrival">
     <div class="container">

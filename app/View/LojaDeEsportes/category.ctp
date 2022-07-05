@@ -1,3 +1,5 @@
+<?php include('header.ctp'); ?>
+
 <!-- breadcrumb Start-->
 <div class="page-notification">
     <div class="container">

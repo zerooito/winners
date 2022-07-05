@@ -81,7 +81,7 @@
                   <ul class="dropdown-menu">
                     <li><a href="#">Contato</a></li>
                     <li><a href="#">Quem Somos</a></li>
-                    <li><a href="#">Como Comprar</a></li
+                    <li><a href="#">Como Comprar</a></li>
                   </ul>
                 </li>
               </ul>

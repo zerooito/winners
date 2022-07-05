@@ -1,0 +1,220 @@
+
+// Home page Hero
+.slider-height {
+    min-height: 900px;
+    background-repeat:no-repeat ;
+    background-position: center center;
+    background-size: cover;
+    @media #{$lg}{
+        min-height: 680px;
+    }
+    @media #{$md}{
+        min-height: 600px;
+    }
+    @media #{$sm}{
+        min-height: 600px;
+    }
+    @media #{$xs}{
+        min-height:450px;
+    }
+}
+
+// Slider Bg
+    .slider-bg1{
+        background-image: url(../img/banner.jpg);
+    }
+
+// Home Page Heor
+.slider-area{
+    position: relative;
+    .single-slider{
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .hero__caption{
+        @media #{$sm}{
+           padding-top: 100px;
+        }
+        @media #{$xs}{
+        //    padding-top: 100px;
+        }
+        text-align: center;
+        p{
+            color: #fff;
+            font-size: 14px;
+            @media #{$xs}{
+                font-size: 11px;
+            }
+        }
+        h1{
+            font-size: 120px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            text-transform: normal;
+            color:#fff;
+            line-height: 120px;
+            margin-bottom: 39px;
+            @media #{$lg}{
+                font-size: 90px;
+                line-height: 88px;
+            }
+            @media #{$md}{
+                font-size: 78px;
+                line-height: 76px;
+            }
+            @media #{$sm}{
+                font-size: 63px;
+                line-height: 62px;
+            }
+            @media #{$xs}{
+                font-size: 41px;
+                line-height: 1.2;
+                margin-bottom: 20px;
+            }
+        }
+        span{
+            color: #31ff7a;
+            font-size: 60px;
+            line-height: 1.2;
+            font-weight: 400;
+            margin-bottom: 30px;
+            display: block;
+            @media #{$xs}{
+                margin-bottom: 30px;
+                font-size: 56px;
+            }
+        }
+    }
+}
+
+
+// Hero Overly
+.hero-overly {
+    position: relative;
+    z-index: 1;
+    &::before {
+        position: absolute;
+        content: "";
+
+        background: rgba(29, 37, 71,0.1);
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 0;
+        background-repeat: no-repeat;
+    }
+}
+
+
+// Transparent Header
+.header-transparent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9;
+}
+
+// Start Other Page Hero
+.hero-area2 {
+        background-image: url(../img/hero/hero2.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 500px;
+        @media #{$sm}{
+            min-height: 400px;
+        }
+        @media #{$xs}{
+            min-height: 360px;
+        }
+    .hero-cap{
+        h2{
+            color: #fff;
+            font-size: 55px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding-top: 12px;
+            @media #{$sm}{
+                font-size: 43px;
+            }
+            @media #{$xs}{
+                font-size: 32px;
+            }
+        }
+    }
+}
+
+// Another Hero Page
+.slider-area2{
+    .hero-cap{
+        h2{
+            color: #fff;
+            font-size: 50px;
+            font-weight: 800;
+            text-transform: capitalize;
+            line-height: 1;
+            @media #{$sm}{
+                font-size: 50px;
+              }
+            @media #{$xs}{
+                font-size: 27px;
+              }
+        }
+    }
+}
+
+
+// slick dot style
+.dot-style {
+    .slick-dots {
+        text-align: center;
+        bottom: -58px;
+        left: 0;
+        right: 0;
+        position: absolute;
+        li {
+            display: inline-block;
+            margin: 0 4px;
+        }
+        li.slick-active button::before {
+            position: absolute;
+            content: "";
+            height: 25px;
+            width: 25px;
+            border: 1px solid #fff;
+            left: 50%;
+            margin: 0 auto;
+            text-align: center;
+            top: 48%;
+            transform: translateY(-48%) translateX(-48%);
+            border-radius: 50%;
+            line-height: 25px;
+             @include transition(.4s);
+        }
+        button {
+            text-indent: -100000px;
+            height: 10px;
+            width: 10px;
+            border: 0;
+            padding: 0;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-bottom: 112px;
+            background:#fff ;
+        }
+    }
+}
+
+
+.dot-style .slick-dots  .slick-active button{
+    background: #fff;
+    position: relative;
+     @include transition(.4s);
+}
+
+

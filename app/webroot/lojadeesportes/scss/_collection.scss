@@ -1,0 +1,37 @@
+
+.collection{
+
+		padding-top: 220px;
+		padding-bottom: 210px;
+		@media #{$lg}{
+            padding-top: 180px;
+            padding-bottom: 170px;
+		}
+		@media #{$md}{
+            padding-top: 160px;
+            padding-bottom: 150px;
+		}
+		@media #{$sm}{
+            padding-top: 130px;
+            padding-bottom: 120px;
+		}
+		@media #{$xs}{
+            padding-top: 90px;
+            padding-bottom: 80px;
+		}
+
+    .single-question{
+        h2{
+            color: #fff;
+            font-size: 70px;
+            margin-bottom: 21px;
+            line-height:1.2;
+            @media #{$sm}{
+                font-size: 38px;
+            }
+            @media #{$xs}{
+                font-size: 26px;
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.321" height="18.061" viewBox="0 0 14.321 18.061">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="shopping-bag_3_" data-name="shopping-bag (3)" transform="translate(-53.02)">
+    <g id="Group_23" data-name="Group 23" transform="translate(53.02)">
+      <g id="Group_22" data-name="Group 22" transform="translate(0)">
+        <path id="Path_27" data-name="Path 27" class="cls-1" d="M67.332,14.894,66.526,4.731a1.27,1.27,0,0,0-1.261-1.168H63.672V3.491a3.491,3.491,0,0,0-6.982,0v.072H55.1a1.27,1.27,0,0,0-1.261,1.166L53.029,14.9a2.941,2.941,0,0,0,2.932,3.166H64.4a2.941,2.941,0,0,0,2.932-3.167Zm-9.585-11.4a2.433,2.433,0,0,1,4.867,0v.072H57.747ZM65.781,16.4A1.864,1.864,0,0,1,64.4,17H55.961a1.883,1.883,0,0,1-1.877-2.026L54.89,4.811a.207.207,0,0,1,.206-.191h1.593v1.3a.529.529,0,0,0,1.058,0v-1.3h4.867v1.3a.529.529,0,1,0,1.058,0v-1.3h1.593a.208.208,0,0,1,.206.192l.807,10.164A1.864,1.864,0,0,1,65.781,16.4Z" transform="translate(-53.02)"/>
+      </g>
+    </g>
+    <g id="Group_25" data-name="Group 25" transform="translate(57.274 8.475)">
+      <g id="Group_24" data-name="Group 24" transform="translate(0)">
+        <path id="Path_28" data-name="Path 28" class="cls-1" d="M189.687,250.07a.606.606,0,0,0-.857,0l-2.7,2.7-1.04-1.04a.606.606,0,1,0-.857.857l1.468,1.468a.606.606,0,0,0,.857,0l3.133-3.133A.606.606,0,0,0,189.687,250.07Z" transform="translate(-184.052 -249.893)"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,72 @@
+.popular-product{
+    .single-product{
+        position: relative;
+        .location-img{
+            overflow: hidden;
+            position: relative;
+            z-index: 0;
+            &::before{
+            //   position: absolute;
+            //   width: 100%;
+            //   height: 50%;
+            //   bottom: 0;
+            //   content: "";
+            //   @extend %gallery;
+            //   z-index: 1;
+            }
+            img{
+                width: 100%;
+                transform: scale(1);
+                transition: all .5s ease-out 0s;
+            }
+        }
+        .location-details{
+            position: absolute;
+            left: 45px;
+            bottom: 53px;
+            @media #{$md}{
+                left: 32px;
+                bottom: 30px;
+            }
+            @media #{$xs}{
+                left: 19px;
+                bottom: 20px;
+            }
+            @include transition (.4s);
+            p{
+                color: #fff;
+                font-size: 34px;
+                font-weight: 400;
+                display: block;
+                line-height: 44px;
+                margin-bottom: 25px;
+                @media #{$xs}{
+                    font-size: 18px;
+                } 
+                @media #{$lg}{
+                    font-size: 29px;
+                    line-height: 35px;
+                } 
+                @media #{$md}{
+                    font-size: 19px;
+                    line-height: 25px;
+                    margin-bottom: 13px;
+                } 
+                @media #{$xs}{
+                    font-size: 19px;
+                    line-height: 25px;
+                    margin-bottom: 13px;
+                } 
+            }
+
+        }
+    }
+}
+// Hover
+.single-product:hover{
+    .location-img{
+        img{
+            transform: scale(1.1);
+        }
+    }
+}

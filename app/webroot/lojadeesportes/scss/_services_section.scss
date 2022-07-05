@@ -1,0 +1,83 @@
+.categories-area {
+    padding-left: 40px;
+    padding-right: 40px;
+    @media #{$laptop}{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    @media #{$lg}{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    @media #{$md}{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    @media #{$sm}{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    @media #{$xs}{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .single-cat{
+        @include transition(.4s);
+        z-index: 1;
+        .cat-icon{
+            img{
+                margin-bottom: 26px;
+                display: block;
+            }
+        }
+        .cat-cap{
+            h5{
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 12px;
+                display: block;
+                text-transform: capitalize;
+                color: #2B2B2B;
+                font-family: $font_2;
+                @media #{$lg}{
+                    font-size: 17px;
+                }
+                @media #{$sm}{
+                    font-size: 17px;
+                }
+                @media #{$xs}{
+                    font-size: 23px;
+                }
+            }
+            p{
+                color: #57667e;
+                font-size: 16px;
+                @include transition(.2s);
+                @media #{$sm}{
+                    font-size: 15px;
+
+                }
+            }
+            a{
+                color: #1c165c;
+                font-size: 16px;
+                font-weight: 600;
+                @include transition(.2s);
+            }
+        }
+
+
+        // Hover Effect In single 
+        &:hover{
+            .cat-cap{
+                h5{
+                    color: #000;
+                }
+
+            }
+       }
+    }
+}
+
+ 

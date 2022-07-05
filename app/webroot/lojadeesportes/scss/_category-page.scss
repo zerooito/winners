@@ -1,0 +1,213 @@
+.category-area{
+    padding-bottom: 120px;
+    @media #{$xs}{
+       padding-bottom: 70px;
+    }
+    @media #{$sm}{
+       padding-bottom: 70px;
+    }
+    .count{
+        span{
+            color:#001d38;
+            font-size: 18px;
+            @media #{$xs}{
+                margin-bottom: 30px;
+             }
+        }
+    }
+}
+
+.category-listing{
+
+    .single-listing{
+            // input
+            .input-form input {
+                width: 100%;
+                height: 45px;
+                background: #fff;
+                color: #777777;
+                font-size: 18px;
+                font-weight: 400;
+                padding: 9px 33px 9px 18px;
+                border: 1px solid #ededed;
+                border-radius: 5px;
+                position: relative;
+                margin-bottom: 20px;
+            }
+        .select-job-items1, .select-job-items2,{
+            .nice-select {
+                width: 100%;
+                height: 45px;
+                background: #fff;
+                border-radius: 5px;
+                padding: 11px 19px 11px 18px;
+                 color: #616875;
+                 line-height: 20px;
+                border: 1px solid #ededed;
+                margin-bottom: 20px;
+                @media #{$xs}{
+                    padding-left: 25px;
+                }
+                @media #{$sm}{
+                    padding-left: 25px;
+                }
+               .list {
+                    width: 100%;
+                }
+                &.open .list {
+                    width: 100%;
+                    border-radius: 0;
+                    border: 0;
+                }
+                &::after {
+                    border-bottom: 1px solid #a9b6cd;
+                    border-right: 1px solid #a9b6cd;
+                    height: 12px;
+                    width: 12px;
+                    margin-top: -9px;
+                    right: 29px;
+                }
+            }
+        }
+
+        /* check_box Start */
+        .select-Categories{
+            .container {
+                    display: block;
+                    position: relative;
+                    padding-left: 35px;
+                    margin-bottom: 12px;
+                    cursor: pointer;
+                    font-size: 22px;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    color: #666666;
+                    font-size: 16px;
+                    @media #{$xs}{
+                        font-size: 14px;
+                    }
+                }
+            .container input {
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                    height: 0;
+                    width: 0;
+                }
+                .checkmark {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 24px;
+                    width: 24px;
+                    border: 1px solid  #ddd;
+                }
+                .container input:checked ~ .checkmark {
+                    background-color:$theme-color;
+                    border: 2px solid transparent;
+                }
+                .checkmark:after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                }
+            .container input:checked ~ .checkmark:after {
+                    display: block;
+                }
+                .container .checkmark::after {
+                    left: 8px;
+                    top: 1px;
+                    width: 6px;
+                    height: 14px;
+                    border: solid white;
+                    border-width: 0px 2px 2px 0;
+                    -webkit-transform: rotate(45deg);
+                    -ms-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                }
+            }
+            /* check_box Start */
+    }
+}
+
+// Range Style Start
+    .range_item{
+        p{
+            margin-bottom: 0;
+        }
+    }
+    .price_value input {
+        border: 0px;
+        text-align: center;
+        max-width: 50px;
+        background-color: transparent;
+    }
+    .price_value {
+        align-items: center;
+    }
+    .irs-to,
+    .irs-from,
+    .irs-max,
+    .irs-min {
+        display: none;
+    }
+    
+    .price_rangs_aside {
+        .l_w_title {
+        h3 {
+            line-height: 20px;
+            margin-bottom: 0px;
+        }
+        }
+    }
+    .irs-bar {
+        height: 2px;
+        top: 33px;
+        border-top: 1px solid #ff3368;
+        border-bottom: 1px solid #ff3368;
+        background: #ff3368;
+        background: linear-gradient(to top, #ff3368 0%, #ff3368 100%);
+    }
+    .irs-line {
+            height: 2px;
+            top: 33px;
+            /* background: #e8eff1; */
+            background: linear-gradient(to bottom, #ffeaef -50%, #ffeaef 150%);
+            border: 1px solid #ffeaef;
+            border-radius: 16px;
+            -moz-border-radius: 16px;
+    }
+    .irs-slider {
+        height: 15px;
+        width: 15px;
+        border: 1px solid #ff3368;
+        background-color: #ff3368;
+        background:#fff;
+        top: 26px;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+    .product_bar_item{
+        @media #{$tab}{
+        width: 100% !important;
+        }
+    }
+    @media #{$tab}{
+        .product_top_bar{
+        margin-top: 70px;
+        h2{
+            font-size: 25px;
+        }
+        }
+        .product_bar_single {
+        margin-left: 0;
+        margin-right: 5px;
+        }
+        .product_bar_single .nice-select {
+        padding-left: 15px;
+        padding-right: 35px;
+        }
+    }
+  // Range Style End

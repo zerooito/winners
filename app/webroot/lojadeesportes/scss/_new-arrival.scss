@@ -1,0 +1,101 @@
+.new-arrival{
+    padding-top: 50px;
+    padding-bottom: 80px;
+    @media #{$md}{
+        padding-top: 90px;
+        padding-bottom: 80px;
+    }
+    @media #{$sm}{
+        padding-top: 17px;
+        padding-bottom: 60px;
+    }
+    @media #{$xs}{
+        padding-top: 0;
+        padding-bottom: 50px;
+    }
+    &.new-arrival2{
+        padding: 0;
+    }
+    .single-new-arrival{
+        .popular-img{
+            overflow:hidden;
+            position: relative;
+            img {
+                width:100%;
+               }
+            // Favorit items select
+            .favorit-items{
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                opacity: 1;
+                visibility: visible;
+                @include transition(.2s);
+                transform: scale(1);
+                cursor: pointer;
+                span{
+                    color: #333333;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
+                img{
+                    width: 44px;
+                    height: 44px;
+                }
+            }
+           }
+        .popular-caption{
+            border: 1px solid #F6F8FE;
+            padding: 31px 0;
+            @include transition(.3s);
+            h3 {
+                a{
+                    font-weight: 500;
+                    font-size: 20px;
+                    display: block;
+                    margin-bottom: 10px;
+                    @include transition(.3s);
+                    text-decoration: underline transparent;
+                    font-family: $font_2;
+                    @media #{$sm}{
+                        font-size:17px;
+                    }
+                    @media #{$xs}{
+                        font-size:20px;
+                    }
+                }
+
+            }
+            .rating{
+            i{
+                font-size: 15px;
+                color: #FBBA42;
+            }
+            }
+            span {
+                color:#444444;
+                font-size:18px;
+                font-weight:500;
+                display:block;
+            }
+        }
+    }
+}
+
+
+
+.single-new-arrival:hover .popular-img .favorit-items{
+    opacity: 1;
+    visibility: visible;
+    right: 20px; 
+    transform: scale(1.08);
+   }
+.single-new-arrival:hover .popular-caption{
+    -webkit-box-shadow: 0 13px 36px rgba(29, 37, 71,0.05);
+    h3{
+        a{
+            color: inherit;
+            text-decoration: underline;
+        }
+    }
+   }

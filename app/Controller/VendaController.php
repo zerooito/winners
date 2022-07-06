@@ -90,7 +90,7 @@ class VendaController extends AppController {
 			)
 		);
 
-		$todasVendas = $this->Venda->find('all',
+		$todasVendas = $this->Venda->find('count',
 			$conditions,
 			array('order' => array('Venda.id DESC'))
 		);
@@ -116,7 +116,7 @@ class VendaController extends AppController {
 		{
 			$conditions['conditions']['Venda.id LIKE '] = '%' . $_GET['sSearch'] . '%';
 		}
-		
+
 		$vendas = $this->Venda->find('all', $conditions);
 
 		$output = array(

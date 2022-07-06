@@ -304,7 +304,7 @@ class FinanceiroController extends AppController
 							$btPaid = '<a class="btn btn-primary" href="javascript:alert(\'Lançamento já foi pago\');"><i class="fas fa-dollar-sign"></i></a>';
 						}
 					} else {
-						$value = $lancamento['LancamentoVenda'][$aColumns[$i]];
+						$value = isset($lancamento['LancamentoVenda'][$aColumns[$i]]) && !empty($lancamento['LancamentoVenda'][$aColumns[$i]]) ? $lancamento['LancamentoVenda'][$aColumns[$i]] : 'Sem informação';
 					}
 
 					if ($aColumns[$i] == "venda_id") {
@@ -331,7 +331,7 @@ class FinanceiroController extends AppController
 					}
 
 					if ($aColumns[$i] == "descricao") {
-						$value = $lancamento['LancamentoVenda'][$aColumns[$i]] ? $lancamento['LancamentoVenda'][$aColumns[$i]] : 'Sem descrição';
+						$value = isset($lancamento['LancamentoVenda'][$aColumns[$i]]) && !empty($lancamento['LancamentoVenda'][$aColumns[$i]]) ? $lancamento['LancamentoVenda'][$aColumns[$i]] : 'Sem descrição';
 					}
 					
 					$row[] = $value;

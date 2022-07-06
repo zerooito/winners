@@ -91,6 +91,8 @@ class AppController extends Controller {
 
 	public function verificar_se_esta_ativo($instancia)
 	{
+
+		return NULL;
 		$this->loadModel('Usuario');
 
 		$usuario = $this->Usuario->find('all',
@@ -138,6 +140,7 @@ class AppController extends Controller {
 
 	public function atualiza_status_pagamento($instancia)
 	{
+		return NULL;
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(

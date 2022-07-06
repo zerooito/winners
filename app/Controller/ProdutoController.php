@@ -540,14 +540,19 @@ class ProdutoController extends AppController{
 	public function carregar_dados_venda_ajax() {
 		$this->layout = 'ajax';
 
-		$retorno = $this->Produto->find('first', 
-			array('conditions' => 
-				array('Produto.ativo' => 1,
-					  'Produto.id_usuario' => $this->instancia,
-					  'Produto.id' => $this->request->data('id')
-				)
-			)
-		);
+		$conditions = [
+			'fields' => [
+				'Produto.id', 'Produto.nome', 'Produto.sku',
+				'Produto.preco', 'Produto.preco_promocional',
+				'Produto.estoque', 'Produto.id_usuario'
+			],
+			'conditions' => [
+				'Produto.ativo' => 1,
+				'Produto.id' => $this->request->data('id')
+			]
+		];
+
+		$retorno = $this->Produto->find('first', $conditions);
 
 		if (!$this->validar_estoque($retorno)) {
 			echo json_encode(['status' => false, 'msg' => $retorno['Produto']['nome'] . ' não possui estoque para a venda']);
@@ -569,9 +574,11 @@ class ProdutoController extends AppController{
 	public function getUserActive($id) {
 		$this->loadModel('Usuario');
 
-		$user = $this->Usuario->find('all', 
-			array('conditions' => 
-				array('Usuario.id' => $id)
+		$user = $this->Usuario->find('all', array(
+				array('fields' => array('Usuario.sale_without_stock')),
+				array('conditions' => 
+					array('Usuario.id' => $id)
+				)
 			)
 		);
 		
@@ -986,6 +993,7 @@ class ProdutoController extends AppController{
 		$search = strip_tags(trim($_GET['q'])); 
 
 		$conditions = [
+			'fields' => ['Produto.id', 'Produto.nome', 'Produto.sku'],
 			'conditions' => [
 				'Produto.id_usuario' => $this->instancia,
 				'Produto.ativo' => 1,
@@ -998,7 +1006,7 @@ class ProdutoController extends AppController{
 					]
 				]
 			],
-			'limit' => 25
+			'limit' => 20
 		];
 		
 		$produtos = $this->Produto->find('all', $conditions);

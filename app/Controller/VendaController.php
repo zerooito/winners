@@ -76,11 +76,17 @@ class VendaController extends AppController {
 
 		$this->loadModel('LancamentoVenda');
 
-		$conditions = array('conditions' =>
-			array(
-				'Venda.ativo' => 1,
-				'Venda.id_usuario' => $this->instancia,
-				'Venda.orcamento' => 0
+		$conditions = array(
+			array('fields' => array(
+				'Venda.id', 'Venda.valor', 'Venda.forma_pagamento',
+				'Venda.data_venda'
+			)),
+			array('conditions' =>
+				array(
+					'Venda.ativo' => 1,
+					'Venda.id_usuario' => $this->instancia,
+					'Venda.orcamento' => 0
+				)
 			)
 		);
 
@@ -128,6 +134,10 @@ class VendaController extends AppController {
 				{
 					if ($aColumns[$i] == "forma_pagamento") {
 						$lancamentos = $this->LancamentoVenda->find('all', array(
+							array('fields' => array(
+								'LancamentoVenda.venda_id', 'LancamentoVenda.forma_pagamento',
+								'Lancamento.id'
+							)),
 							'conditions' => array(
 									'LancamentoVenda.venda_id' => $venda['Venda']['id']
 								)

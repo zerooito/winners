@@ -560,6 +560,11 @@
                 }
 
                 var html = '';
+
+                if ($('#' + + data['Produto']['id']).length > 0) {
+                    alert('Produto já adicionado');
+                    return;
+                }
                 
                 html += '<tr id="' + data['Produto']['id'] + '">';
                 html +=    '<input type="hidden" name="produto[' + data['Produto']['id'] + '][id_produto]" value="' + data['Produto']['id'] + '"/>';
@@ -584,8 +589,8 @@
 
                 $('#quantidade_produto').val('');
 
-                $('#valor_desconto_porcento').removeAttr('disabled')
-                $('#valor_desconto_fixo').removeAttr('disabled')
+                $('#valor_desconto_porcento').removeAttr('disabled');
+                $('#valor_desconto_fixo').removeAttr('disabled');
             }
         });
     }

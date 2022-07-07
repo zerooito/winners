@@ -1,18 +1,16 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Categoria Banners - Listar Cadastros</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Categoria Banner - Listar Cadastros</h1>
     </div>
-    <!-- /.row -->
+
+    <!-- Content Row -->
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Listagem das categorias dos Banners
-                </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -36,8 +34,8 @@
                                     <td class="center"><?php echo $categoria['CategoriaBanner']['height'] ?>px</td>
                                     <td class="center"><?php echo $categoria['CategoriaBanner']['width'] ?>px</td>
                                     <td class="center">
-                                        <button onclick="remover_categoria(<?php echo $categoria['CategoriaBanner']['id'] ?>);" type="button" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></button>
-                                        <button onclick="editar_cadastro(<?php echo $categoria['CategoriaBanner']['id'] ?>);" type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>
+                                        <button onclick="editar_cadastro(<?php echo $categoria['CategoriaBanner']['id'] ?>);" type="button" class="btn btn-info"><i class="fa fa-edit"></i></button>
+                                        <button onclick="remover_categoria(<?php echo $categoria['CategoriaBanner']['id'] ?>);" type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
                                     </td>
                                 </tr>   
                             <?php
@@ -61,7 +59,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/categoria_banner/adicionar_cadastro" style="color: #FFF;"> Adicionar categoria</a></i>
+                    <a href="/categoria_banner/adicionar_cadastro" style="color: #FFF;width:100%;" class="btn btn-primary"><i class="fa fa-plus"></i> Adicionar categoria</a>
                 </div>
                 <!-- /.panel-body -->
             </div>

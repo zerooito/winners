@@ -216,7 +216,7 @@
   $('#cep').change(function() {
     var cep_destino = $(this).val()
       , cep_origem  = '07252-000'
-      , url         = '/calcTransportAjax';
+      , url         = '/loja/calcTransportAjax';
 
       $.ajax({
         url: url,

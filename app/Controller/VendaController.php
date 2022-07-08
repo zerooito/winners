@@ -78,19 +78,8 @@ class VendaController extends AppController {
 		$this->loadModel('LancamentoVenda');
 
 		$conditions = array(
-			'joins' => array(
-			    array(
-			        'table' => 'lancamento_vendas',
-			        'alias' => 'LancamentoVenda',
-			        'type' => 'LEFT',
-			        'conditions' => array(
-			            'LancamentoVenda.venda_id = Venda.id',
-			        ),
-			    )
-			),
 			'fields' => array(
-				'Venda.id', 'Venda.valor', 'LancamentoVenda.forma_pagamento',
-				'Venda.data_venda'
+				'Venda.id', 'Venda.valor', 'Venda.data_venda'
 			),
 			'conditions' => array(
 				'Venda.ativo' => 1,

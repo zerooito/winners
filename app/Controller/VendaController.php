@@ -74,27 +74,36 @@ class VendaController extends AppController {
 
 		$aColumns = array( 'id', 'valor', 'forma_pagamento', 'data_venda', 'actions' );
 
+		$this->loadModel('Venda');
 		$this->loadModel('LancamentoVenda');
 
 		$conditions = array(
-			array('fields' => array(
-				'Venda.id', 'Venda.valor', 'Venda.forma_pagamento',
+			'joins' => array(
+			    array(
+			        'table' => 'lancamento_vendas',
+			        'alias' => 'LancamentoVenda',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'LancamentoVenda.venda_id = Venda.id',
+			        ),
+			    )
+			),
+			'fields' => array(
+				'Venda.id', 'Venda.valor', 'LancamentoVenda.forma_pagamento',
 				'Venda.data_venda'
-			)),
-			array('conditions' =>
-				array(
-					'Venda.ativo' => 1,
-					'Venda.id_usuario' => $this->instancia,
-					'Venda.orcamento' => 0
-				)
+			),
+			'conditions' => array(
+				'Venda.ativo' => 1,
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.orcamento' => 0
+			),
+			'order' => array(
+				'Venda.id DESC'
 			)
 		);
 
-		$todasVendas = $this->Venda->find('count',
-			$conditions,
-			array('order' => array('Venda.id DESC'))
-		);
-		
+		$todasVendas = $this->Venda->find('count', $conditions);
+
 		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
 		{
 			$conditions['offset'] = $_GET['iDisplayStart'];
@@ -114,7 +123,7 @@ class VendaController extends AppController {
 
 		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
 		{
-			$conditions['conditions']['Venda.id LIKE '] = '%' . $_GET['sSearch'] . '%';
+			$conditions['conditions']['Venda.id'] = '%' . $_GET['sSearch'] . '%';
 		}
 
 		$vendas = $this->Venda->find('all', $conditions);

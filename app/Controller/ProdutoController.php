@@ -575,10 +575,8 @@ class ProdutoController extends AppController{
 		$this->loadModel('Usuario');
 
 		$user = $this->Usuario->find('all', array(
-				array('fields' => array('Usuario.sale_without_stock')),
-				array('conditions' => 
-					array('Usuario.id' => $id)
-				)
+				'fields' => array('Usuario.sale_without_stock'),
+				'conditions' => array('Usuario.id' => $id)
 			)
 		);
 		

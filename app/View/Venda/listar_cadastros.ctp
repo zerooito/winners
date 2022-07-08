@@ -91,15 +91,17 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Imprimir Cupom Fiscal</h4>
+        <h4 class="modal-title" id="myModalLabel">Imprimir Cupom não Fiscal</h4>
       </div>
       <div class="modal-body text-center">
-        <h3>Deseja imprimir cupom fiscal da venda</h3>
+        <h3>Deseja imprimir cupom não fiscal da venda</h3>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <a href="javascript:;" class="btn btn-success" id="download-txt-sale" download>Imprimir</a>
-      </div>
+        <div class="modal-footer">
+            <input type="hidden" value="" id="venda_impressaso_nao_fiscal_id" />
+            <a class="btn btn-info" href="javascript:printNotaNaoFiscal();">Preparar Impressão</a>
+            <a href="javascript:;" style="display: none;" class="btn btn-success" id="download-txt-sale" download>Pronto Para Imprimir</a>
+            <a class="btn btn-danger" href="javascript:hideModalNota();">Cancelar</a>
+        </div>
     </div>
   </div>
 </div>
@@ -168,7 +170,9 @@
         });
     }
 
-    function printNotaNaoFiscal(id) {
+    function printNotaNaoFiscal() {
+        var id = $('#venda_impressaso_nao_fiscal_id').val();
+
         $.ajax({
             type: "get",
             dataType: "json",
@@ -179,11 +183,46 @@
             },
             success: function(data){
                 url = '/uploads/venda/fiscal/' + data['file'];
-                $('#download-txt-sale').attr('href', url);
-                $('#showModalCupomFiscal').modal('show');
+                $('#download-txt-sale').css('display', 'initial').attr('href', url);
             }
         });
 
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/clear_session_venda/" + id,
+            error: function(data){
+                console.log(data);
+            },
+            success: function(data){
+                console.log(data);
+            }
+        });
+    }
+
+    function hideModalNota() {
+        var id = $('#venda_impressaso_nao_fiscal_id').val();
+        $('#showModalCupomFiscal').modal('hide');
+
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/venda/clear_session_venda/" + id,
+            error: function(data){
+                console.log(data);
+            },
+            success: function(data){
+                console.log(data);
+            }
+        });
+
+        $('#venda_impressaso_nao_fiscal_id').val('');
+    }
+
+    function showModalPrintNota(id) {
+        $('#download-txt-sale').hide();
+        $('#venda_impressaso_nao_fiscal_id').val(id);
+        $('#showModalCupomFiscal').modal('show');
     }
 
     function openInNewTab(url) {

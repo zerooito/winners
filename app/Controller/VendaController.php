@@ -158,7 +158,7 @@ class VendaController extends AppController {
 						}
 
 					} else if ($aColumns[$i] == "actions") {
-						$value = '<a href="javascript:printNotaNaoFiscal(' . $venda['Venda']['id'] . ');" target="_blank" class="btn btn-info">';
+						$value = '<a href="javascript:showModalPrintNota(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" class="btn btn-info show-modal-cupom">';
 						$value .= '<i class="far fa-sticky-note"></i>';
 						$value .= '</a> ';
 

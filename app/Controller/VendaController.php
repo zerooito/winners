@@ -119,8 +119,8 @@ class VendaController extends AppController {
 
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),
-			"iTotalDisplayRecords" => count($todasVendas),
-			"iTotalRecords" => count($vendas),
+			"iTotalDisplayRecords" => count($vendas),
+			"iTotalRecords" => count($todasVendas),
 			"aaData" => array()
 		);
 

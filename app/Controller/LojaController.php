@@ -15,7 +15,9 @@ use FastShipping\Lib\Shipping;
 class LojaController extends AppController {
 	public $layout = 'lojaexemplo';	
 
-  protected $usuario;
+   protected $usuario;
+
+   const CATEGORIA_BANNER_HOME = "Principal";
 
 	public function beforeFilter(){
     $lojaSession = $this->Session->read('Usuario.loja');
@@ -42,7 +44,7 @@ class LojaController extends AppController {
     {
       $loja = $this->params['loja'];
       if (empty($loja)) { 
-	$loja = $GLOBALS['information']['loja'];
+	      $loja = $GLOBALS['information']['loja'];
       }
     }
 
@@ -68,8 +70,8 @@ class LojaController extends AppController {
         exit;
       }
 
-      $this->Session->write('Usuario.id', $this->usuario['Usuario']['id']);//gambi temporaria
-      $this->Session->write('Usuario.loja', $this->usuario['Usuario']['loja']);//gambi temporaria
+      $this->Session->write('Usuario.id', $this->usuario['Usuario']['id']); //gambi temporaria
+      $this->Session->write('Usuario.loja', $this->usuario['Usuario']['loja']); //gambi temporaria
 
       $this->set('usuario', $this->usuario);
 
@@ -104,10 +106,15 @@ class LojaController extends AppController {
 	   return $produtos;
 	}
 
-   public function loadBanners($id_banner = null) {
+   public function loadBanners($nome_categoria_banner = null) {
       $this->loadModel('Banner');
+      $this->loadModel('CategoriaBanner');
 
       $params = array(
+         'fields' => array(
+            'CategoriaBanner.nome', 'CategoriaBanner.width', 'CategoriaBanner.height', 
+            'Banner.nome_banner', 'Banner.src'
+         ),
          'joins' => array(
              array(
                  'table' => 'categoria_banners',
@@ -120,7 +127,8 @@ class LojaController extends AppController {
          ),
          'conditions' => array(
             'Banner.ativo' => 1,
-            'Banner.usuario_id' => $this->Session->read('Usuario.id')
+            'Banner.usuario_id' => $this->Session->read('Usuario.id'),
+            'CategoriaBanner.nome' => $nome_categoria_banner
          )
       );
 
@@ -175,8 +183,9 @@ class LojaController extends AppController {
       foreach ($productsSession as $indice => $item) {
          $produto =  $this->Produto->find('all', 
             array('conditions' => 
-               array('Produto.ativo' => 1,
-                    'Produto.id' => $item['id']
+               array(
+                  'Produto.ativo' => 1,
+                  'Produto.id' => $item['id']
                )
             )
          );
@@ -217,8 +226,9 @@ class LojaController extends AppController {
       $this->loadModel('Categoria');
 
       $params = array('conditions' => 
-         array('ativo' => 1,
-              'usuario_id' => $this->Session->read('Usuario.id')
+         array(
+            'ativo' => 1,
+            'usuario_id' => $this->Session->read('Usuario.id')
          )
       );
 
@@ -242,8 +252,14 @@ class LojaController extends AppController {
      
       $usuario_id = $this->Session->read('Usuario.id');
 
+      $dados_lancamento = array(
+         'forma_pagamento_multiplo' => [],
+         'forma_pagamento' => 'pagseguro',
+         'loja' => true
+      );
+
       $loja = true;
-      $retorno_venda = $objVenda->salvar_venda($productsSale, array('forma_pagamento' => 'pagseguro'), array('valor' => $valor_frete + $products['total']), $usuario_id, $loja);
+      $retorno_venda = $objVenda->salvar_venda($productsSale, $dados_lancamento, array('valor' => $valor_frete + $products['total']), $usuario_id, $loja);
       
       $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
    }
@@ -285,7 +301,7 @@ class LojaController extends AppController {
    public function searchAndressByCep($cep) {
       $this->layout = 'ajax';
 
-      $curl = curl_init('http://cep.correiocontrol.com.br/'.$cep.'.js');
+      $curl = curl_init('http://cep.correiocontrol.com.br/' . $cep . '.js');
 
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       
@@ -461,7 +477,7 @@ class LojaController extends AppController {
 	*/
 	public function index() {
       $this->set('usuario', $this->usuario);
-      $this->set('banners', $this->loadBanners());
+      $this->set('banners', $this->loadBanners(self::CATEGORIA_BANNER_HOME));
       $this->set('categorias', $this->loadCategoriesProducts());
       $this->set('produtos', $this->loadProducts());
       
@@ -498,6 +514,7 @@ class LojaController extends AppController {
       $products = $this->loadProducts($id);
 
       $this->set('categorias', $this->loadCategoriesProducts());
+      $this->set('banners', $this->loadBanners($nome));
       $this->set('produtos', $products);
       $this->set('nameCategory', $nome);
 

@@ -1,4 +1,4 @@
-<?php include('header.ctp'); ?>
+<?php require('header.ctp'); ?>
 
 <!-- breadcrumb Start-->
 <div class="page-notification">
@@ -16,6 +16,7 @@
     </div>
 </div>
 <!-- breadcrumb End-->
+
 <!--?  Details start -->
 <div class="directory-details pt-padding">
     <div class="container">
@@ -46,7 +47,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="form-wrapper">
-                    <form id="contact-form" action="/fairplayonline/addCart" method="post">
+                    <form id="contact-form" action="/addCart" method="post">
                         <div class="row">
                             <div class="col-lg-12">
                                 <h2>R$ <?php echo number_format($produto['Produto']['preco'], '2', ',', '.') ?></h2>

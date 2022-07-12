@@ -10,10 +10,11 @@
             </div>
         </div>
     </div>
+
     <!-- Preloader Start-->
     <header>
         <!-- Header Start -->
-        <div class="header-area ">
+        <div class="header-area">
             <div class="main-header header-sticky">
                 <div class="container-fluid">
                     <div class="menu-wrapper d-flex align-items-center justify-content-between">
@@ -24,6 +25,7 @@
                                   <img src="<?php echo $usuario['Usuario']['logo']; ?>" alt="<?php echo $usuario['Usuario']['nome']; ?>" width="54">
                                 </a>
                             </div>
+
                             <!-- Main-menu -->
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
@@ -77,6 +79,7 @@
         </div>
         <!-- Header End -->
     </header>
+    
     <!-- header end -->
     <main>
         <!--? Hero Area Start-->
@@ -110,19 +113,25 @@
                 <!-- /End mobile  Menu-->
 
                 <div class="slider-active dot-style">
-                    <!-- Single -->
-                    <div class="single-slider slider-bg1 hero-overly slider-height d-flex align-items-center">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-xl-8 col-lg-9">
-                                    <!-- Hero Caption -->
-                                    <div class="hero__caption">
-                                        <h1><?php echo $usuario['Usuario']['nome'] ?></h1>
+                    <?php if (isset($banners) && !empty($banners)): ?>
+                        <?php foreach ($banners as $i => $banner): ?>
+                            <div 
+                                class="single-slider slider-bg<?php echo $i ?> hero-overly slider-height d-flex align-items-center"
+                                style="background-image: url(/uploads/banner/imagens/<?php echo $banner['Banner']['src'] ?>);"
+                            >
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-xl-8 col-lg-9">
+                                            <!-- Hero Caption -->
+                                            <div class="hero__caption">
+                                                <h1><?php echo $banner['Banner']['nome_banner'] ?></h1>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

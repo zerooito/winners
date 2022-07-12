@@ -1,18 +1,16 @@
 
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Banner - Listar Cadastros</h1>
-        </div>
-        <!-- /.col-lg-12 -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Banner - Listar Cadastros</h1>
     </div>
-    <!-- /.row -->
+
+    <!-- Content Row -->
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Listagem dos Banners
-                </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -57,11 +55,9 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"><a href="/categoria_banner/adicionar_cadastro" style="color: #FFF;"> Adicionar categoria</a></i></button>
+                    <a href="/categoria_banner/listar_cadastros" style="margin-bottom: 10px; width:100%;color: #FFF;" class="btn btn-primary"><i class="fa fa-plus"></i> Categoria de Banners</a>
 
-                    <br>
-
-                    <button type="button" class="btn btn-info" style="margin-top:10px;"><i class="fa fa-plus"><a href="/banner/adicionar_cadastro" style="color: #FFF;"> Adicionar Banner</a></i></button>
+                    <a href="/banner/adicionar_cadastro"  style="margin-bottom: 10px; width:100%;color: #FFF;" class="btn btn-info"><i class="fa fa-plus"></i> Adicionar Banner</a>
                 </div>
                 <!-- /.panel-body -->
             </div>

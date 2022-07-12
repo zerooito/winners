@@ -1,4 +1,4 @@
-<?php include('header.ctp'); ?>
+<?php require('header.ctp'); ?>
 
 <!-- breadcrumb Start-->
 <div class="page-notification">

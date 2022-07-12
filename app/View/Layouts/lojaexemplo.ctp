@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Home | E-Shopper</title>
+    <title>    
+      <?php echo $usuario['Usuario']['nome']; ?>
+    </title>
     <link href="/loja/loja_exemplo/css/bootstrap.min.css" rel="stylesheet">
     <link href="/loja/loja_exemplo/css/font-awesome.min.css" rel="stylesheet">
     <link href="/loja/loja_exemplo/css/prettyPhoto.css" rel="stylesheet">

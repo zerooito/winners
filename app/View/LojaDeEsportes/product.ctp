@@ -1,4 +1,4 @@
-<?php include('header.ctp'); ?>
+<?php require('header.ctp'); ?>
 
 <!-- breadcrumb Start-->
 <div class="page-notification">
@@ -16,6 +16,7 @@
     </div>
 </div>
 <!-- breadcrumb End-->
+
 <!--?  Details start -->
 <div class="directory-details pt-padding">
     <div class="container">

@@ -10,10 +10,11 @@
             </div>
         </div>
     </div>
+
     <!-- Preloader Start-->
     <header>
         <!-- Header Start -->
-        <div class="header-area ">
+        <div class="header-area">
             <div class="main-header header-sticky">
                 <div class="container-fluid">
                     <div class="menu-wrapper d-flex align-items-center justify-content-between">
@@ -24,6 +25,7 @@
                                   <img src="<?php echo $usuario['Usuario']['logo']; ?>" alt="<?php echo $usuario['Usuario']['nome']; ?>" width="54">
                                 </a>
                             </div>
+
                             <!-- Main-menu -->
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
@@ -77,6 +79,7 @@
         </div>
         <!-- Header End -->
     </header>
+    
     <!-- header end -->
     <main>
         <!--? Hero Area Start-->

@@ -121,7 +121,7 @@ class BannerController extends AppController {
 	public function uploadImage(&$image, $categoriaBanner) {
 		$type = substr($image['name'], -4);
 		
-		$nameImage = uniqid() . md5($image['name']) . $type;
+		$nameImage = uniqid() . md5($image['name']) . '.' . $type;
 
 		$dir = APP . 'webroot/uploads/banner/imagens/';
 		
@@ -132,15 +132,10 @@ class BannerController extends AppController {
 		$valida = $oImg->valida();
 		
 		if ($valida == 'OK') {
-			
 			$oImg->redimensiona($categoriaBanner['CategoriaBanner']['width'], $categoriaBanner['CategoriaBanner']['height'], 'crop');
-		    
 		    $oImg->grava($dir . $nameImage);
-
 		} else {
-
 			die($valida);
-
 		}
 		
 		if (!$returnUpload)

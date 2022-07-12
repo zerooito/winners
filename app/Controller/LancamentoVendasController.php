@@ -19,12 +19,16 @@ class LancamentoVendasController extends AppController {
 		$lancamento['usuario_id'] = $id_usuario;
 		$lancamento['tipo'] = 'receita';
 
-		if ($orcamento == false) {
+		if ($orcamento == false && !isset($lancamento['loja'])) {
 			$objCaixaController = new CaixaController();
 			$caixa_atual = $objCaixaController->carregar_caixa_atual($id_usuario);
 
-			$lancamento['caixa_id'] = $caixa_atual['Caixa']['id'];
+			if (isset($caixa_atual) && !empty($caixa_atual)) {
+				$lancamento['caixa_id'] = $caixa_atual['Caixa']['id'];
+			}
 		}
+
+		unset($lancamento['loja']);
 
 		if (count($dados['forma_pagamento_multiplo']) > 1) {
 			foreach ($dados['forma_pagamento_multiplo'] as $i => $forma_pagamento) {

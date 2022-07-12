@@ -23,6 +23,14 @@ RUN apt-get update && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   a2enmod rewrite
 
+RUN apt-get update && apt-get install -y \ 
+    libfreetype6-dev libjpeg62-turbo-dev \ 
+    libgd-dev libpng-dev
+    RUN docker-php-ext-configure gd \ 
+    --with-freetype-dir=/usr/include/ \ 
+    --with-jpeg-dir=/usr/include/
+    RUN docker-php-ext-install gd
+
 COPY . /var/www/html
 
 RUN composer install

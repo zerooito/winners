@@ -75,7 +75,7 @@
 							<h4 class="text-right">Total <strong>R$ <?php echo number_format($total, 2, ',', '.') ?></strong></h4>
 						</div>
 						<div class="col-xs-3">
-							<button onclick="window.location.href = '/fairplayonline/checkout'" type="button" class="btn btn-success btn-block">
+							<button onclick="window.location.href = '/checkout'" type="button" class="btn btn-success btn-block">
 								Continuar
 							</button>
 						</div>

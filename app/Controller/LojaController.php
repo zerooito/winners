@@ -21,7 +21,7 @@ class LojaController extends AppController {
 
 	public function beforeFilter(){
     $lojaSession = $this->Session->read('Usuario.loja');
-    
+
     if (isset($lojaSession))
     {
       if (isset($this->params['loja']))
@@ -151,10 +151,11 @@ class LojaController extends AppController {
 
 		$cont = count($this->Session->read('Produto'));
 
-		$this->Session->write('Produto.'.$produto['id'].'.id' , $produto['id']);
-      $this->Session->write('Produto.'.$produto['id'].'.quantidade' , $produto['quantidade']);
+		$this->Session->write('Produto.' . $produto['id'] . '.id' , $produto['id']);
+      $this->Session->write('Produto.' . $produto['id'] . '.quantidade' , round($produto['quantidade']));
+
       if (isset($produto['variacao']) && !empty($produto['variacao'])) {
-         $this->Session->write('Produto.'.$produto['id'].'.variacao', $produto['variacao']);
+         $this->Session->write('Produto.' . $produto['id'] . '.variacao', $produto['variacao']);
       }
 
 		$this->redirect('/cart');
@@ -177,6 +178,10 @@ class LojaController extends AppController {
       $this->loadModel('Variacao');
 
       $productsSession = $this->Session->read('Produto');
+      
+      if (empty($productsSession) || !isset($productsSession)) {
+         return array('products_cart' => [], 'total' => 0.0);
+      }
 
       (float) $total = 0.00;
       $produtos      = array();
@@ -259,12 +264,21 @@ class LojaController extends AppController {
       );
 
       $loja = true;
-      $retorno_venda = $objVenda->salvar_venda($productsSale, $dados_lancamento, array('valor' => $valor_frete + $products['total']), $usuario_id, $loja);
+      if (!empty($this->Session->read('Cupom.valor_com_desconto'))) {
+         $total = $this->Session->read('Cupom.valor_com_desconto');
+         $desconto = $products['total'] - $total;
+      } else {
+         $total = 0;
+         $desconto = 0;
+      }
+      $valorFinal = $valor_frete + $total; // remover valor de frente colocando numa label especifica
+
+      $retorno_venda = $objVenda->salvar_venda($productsSale, $dados_lancamento, array('valor' => $valorFinal, 'desconto' => $desconto), $usuario_id, $loja);
       
-      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id']);
+      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $total, $valor_frete, $retorno_venda['id']);
    }
 
-   public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id) {
+   public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id, $desconto) {
       $pagamento = new PagamentoController('PagseguroController');   
 
       $pagamento->setToken($this->usuario['Usuario']['token_pagseguro']);
@@ -319,14 +333,13 @@ class LojaController extends AppController {
       $cep_origem  = $this->request->data('cep_origem');
    
       $dataProducts = $this->loadProductsAndValuesCart();
-   
+
       (float) $peso = 0;
       foreach ($dataProducts['products_cart'] as $i => $product) {
          $peso += $product['Produto']['peso_bruto'] * $product['Produto']['quantidade'];
       }
    
       $fretes = $this->transport($cep_destino, $this->usuario['Usuario']['cep_origem'], $peso);
-   
       $disponiveis = array();
    
       $cont = 0;
@@ -342,8 +355,18 @@ class LojaController extends AppController {
       }
    
       $this->Session->write('Frete.valor', $disponiveis[$cont - 1]['valor']);
-   
-      (float) $total = $disponiveis[$cont - 1]['valor'] + $dataProducts['total'];
+      
+      if (!empty($this->Session->read('Cupom.valor_com_desconto'))) {
+         $valor_com_desconto = $this->Session->read('Cupom.valor_com_desconto');
+      } else {
+         $valor_com_desconto = 0;
+      }
+
+      if ($valor_com_desconto > 0) {
+         (float) $total = ($disponiveis[$cont - 1]['valor'] + $valor_com_desconto);
+      } else {
+         (float) $total = ($disponiveis[$cont - 1]['valor'] + $dataProducts['total']);
+      }
    
       $total = number_format($total, 2, ',', '.');
    
@@ -406,15 +429,27 @@ class LojaController extends AppController {
       $valor  = $this->request->data('valor');
          
       $objCupom = new CupomController();
-      $novo_valor = $objCupom->utilizar_cupom($cupom, $valor, $this->Session->read('Usuario.id'));
+      $produtos = $this->loadProductsAndValuesCart();
+      $valor_com_desconto = $objCupom->utilizar_cupom($cupom, $produtos['total'], $this->Session->read('Usuario.id'));
 
-      if (!$novo_valor)
+      $this->Session->write('Cupom.valor_com_desconto', number_format($valor_com_desconto, 2, '.', ','));
+
+      if (!empty($this->Session->read('Frete.valor'))) {
+         $freteValor = $this->Session->read('Frete.valor');
+      } else {
+         $freteValor = 0;
+      }
+      
+      if (!$valor_com_desconto)
       {
          echo json_encode(false);
          exit();
       }
 
-      echo json_encode($novo_valor);
+      echo json_encode([
+         'desconto' => number_format($produtos['total'] - $valor_com_desconto, 2, '.', ','), 
+         'total' => number_format($valor_com_desconto + $freteValor, 2, '.', ',')
+      ]);
       exit();
    }
 
@@ -475,6 +510,34 @@ class LojaController extends AppController {
 	/**
 	* Views
 	*/
+	public function about() {
+      $this->set('usuario', $this->usuario);
+      $this->set('categorias', $this->loadCategoriesProducts());
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/about');
+	}
+
+	public function termsOfUse() {
+      $this->set('usuario', $this->usuario);
+      $this->set('categorias', $this->loadCategoriesProducts());
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/termsOfUse');
+	}
+
+   public function policyDelivery() {
+      $this->set('usuario', $this->usuario);
+      $this->set('categorias', $this->loadCategoriesProducts());
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/policyDelivery');
+	}
+
+   public function policyDevolution() {
+      $this->set('usuario', $this->usuario);
+      $this->set('categorias', $this->loadCategoriesProducts());
+
+      $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/policyDevolution');
+	}
+
 	public function index() {
       $this->set('usuario', $this->usuario);
       $this->set('banners', $this->loadBanners(self::CATEGORIA_BANNER_HOME));
@@ -502,6 +565,9 @@ class LojaController extends AppController {
 
       $this->set('products', $products['products_cart']);
       $this->set('total', $products['total']);
+      $this->set('desconto', 0.00);
+
+      $this->Session->write('Cupom.desconto', 0.00);
 
       $this->render('/' . $this->usuario['Usuario']['folder_view'] . '/checkout');
    }

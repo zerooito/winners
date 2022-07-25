@@ -5,6 +5,14 @@ Router::connect('/:loja', array('controller' => 'loja', 'action' => 'index'));
 
 Router::connect('/:loja/produto/:id', array('controller' => 'loja', 'action' => 'product'));
 
+Router::connect('/:loja/sobre', array('controller' => 'loja', 'action' => 'about'));
+
+Router::connect('/:loja/termos-de-uso', array('controller' => 'loja', 'action' => 'termsOfUse'));
+
+Router::connect('/:loja/politica-de-envio', array('controller' => 'loja', 'action' => 'policyDelivery'));
+
+Router::connect('/:loja/politica-de-devolucao', array('controller' => 'loja', 'action' => 'policyDevolution'));
+
 Router::connect('/:loja/addCart',   array('controller' => 'loja', 'action' => 'addCart'));
 
 Router::connect('/:loja/clearCart',   array('controller' => 'loja', 'action' => 'clearCart'));

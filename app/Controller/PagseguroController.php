@@ -13,6 +13,7 @@ class PagseguroController extends AppController implements GatewayInterface
     private $client = array();    
     private $reference;
     private $valor_frete;
+    private $desconto;
 
     public function __construct()
     {
@@ -26,6 +27,7 @@ class PagseguroController extends AppController implements GatewayInterface
     {
         $this->paymentRequest->setReference($this->reference);
         $this->paymentRequest->setShippingCost($this->valor_frete);
+        //$this->paymentRequest->setExtraAmount(-$this->desconto);
 
 
         // Set the url used by PagSeguro to redirect user after checkout process ends

@@ -20,7 +20,7 @@
                 </a></li>
                 <li class="active"><a href="#step-2">
                     <h4 class="list-group-item-heading">Passo 2</h4>
-                    <p class="list-group-item-text text-white">Identificação</p>
+                    <p class="list-group-item-text text-white">Revisão</p>
                 </a></li>
             </ul>
         </div>
@@ -39,42 +39,49 @@
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>CEP</label>
-                    <input class='form-control cep' type='text' name="endereco[cep]" id="cep" required>
+                    <input class='form-control cep' type='text' name="endereco[cep]" id="cep" required />
                   </div>
                 </div>
               
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Endereço</label>
-                    <input class='form-control' type='text' name="endereco[endereco]" id="endereco" readonly>
+                    <input class='form-control' type='text' name="endereco[endereco]" id="endereco" />
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Nº</label>
-                    <input class='form-control' type='text' name="endereco[numero]" required>
+                    <input class='form-control' type='text' name="endereco[complemento]" />
+                  </div>
+                </div>
+
+                <div class='form-row'>
+                  <div class='col-xs-12 form-group required'>
+                    <label class='control-label'>Complemento</label>
+                    <input class='form-control' type='text' name="endereco[numero]" required />
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Bairro</label>
-                    <input class='form-control' type='text' name="endereco[bairro]" id="bairro" readonly>
+                    <input class='form-control' type='text' name="endereco[bairro]" id="bairro" />
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Cidade</label>
-                    <input class='form-control' type='text' name="endereco[cidade]" id="cidade" readonly>
+                    <input class='form-control' type='text' name="endereco[cidade]" id="cidade" />
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Estado</label>
-                    <input class='form-control' type='text' name="endereco[estado]" id="estado" readonly>
+                    <input class='form-control' type='text' name="endereco[estado]" id="estado" />
                   </div>
                 </div>
               </div>
@@ -89,35 +96,28 @@
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Nome</label>
-                    <input class='form-control' type='text' name="cliente[nome]" required>
+                    <input class='form-control' type='text' name="cliente[nome]" required />
                   </div>
                 </div>
               
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>E-mail</label>
-                    <input class='form-control' type='email' name="cliente[email]" required>
-                  </div>
-                </div>
-
-                <div class='form-row'>
-                  <div class='col-xs-12 form-group required'>
-                    <label class='control-label'>DDD</label>
-                    <input class='form-control' type='text' name="cliente[ddd]" required>
+                    <input class='form-control' type='email' name="cliente[email]" required />
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Telefone</label>
-                    <input class='form-control' type='text' name="cliente[telefone]" required>
+                    <input class='form-control' type='text' name="cliente[telefone]" placeholder="(11) 99998888" required />
                   </div>
                 </div>
 
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>CPF</label>
-                    <input class='form-control' type='text' name="cliente[cpf]" id="cpf" required>
+                    <input class='form-control' type='text' name="cliente[cpf]" id="cpf" required />
                   </div>
                 </div>
               </div>
@@ -130,7 +130,7 @@
                 <div class='form-row'>
                   <div class='col-xs-12 form-group required'>
                     <label class='control-label'>Cupom:</label>
-                    <input class='form-control' type='text' name="cupom[codigo]" id="cupom" required>
+                    <input class='form-control' type='text' name="cupom[codigo]" id="cupom" />
                   </div>
                 </div>
               </div>
@@ -146,9 +146,9 @@
                   <h5><span class="glyphicon glyphicon-shopping-cart"></span> Checkout</h5>
                 </div>
                 <div class="col-xs-12">
-                  <button type="button" class="btn btn-primary btn-sm btn-block">
+                  <a href="/" class="btn btn-primary btn-sm btn-block">
                     <span class="glyphicon glyphicon-share-alt"></span> Continue comprando
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -178,6 +178,12 @@
                 </div>
                 <div class="col-xs-6">
                   <h4>R$ <?php echo number_format($total, 2, ',', '.') ?></h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4 class="text-right"><strong>Desconto:</strong> </h4>
+                </div>
+                <div class="col-xs-6">
+                  <h4 id="desconto">R$ <?php echo number_format($desconto, 2, ',', '.') ?></h4>
                 </div>
                 <div class="col-xs-6">
                   <h4 class="text-right"><strong>Total:</strong> </h4>
@@ -233,6 +239,24 @@
         }
       });
   });
+
+  $('#cupom').keyup(function(){
+    $.ajax({
+      url: '/loja/useCoupon',
+      data: {
+        cupom: $(this).val()
+      },
+      dataType: 'json',
+      method: "POST",
+      success: function(data) {
+        console.log(data);
+        if (data != false) {
+          $('#desconto').html('R$ ' + data['desconto']);
+          $('#total').html('R$ ' + data['total']);
+        }
+      }
+    })
+  })
 
   function atualizacep(cep){
       cep = cep.replace(/\D/g,"")

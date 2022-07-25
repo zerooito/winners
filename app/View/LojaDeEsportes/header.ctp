@@ -41,7 +41,7 @@
                                                 <?php endforeach; ?>
                                             </ul>
                                         </li>
-                                        <li><a href="/contato">Contato</a></li>
+                                        <li><a href="https://api.whatsapp.com/send?phone=55<?php echo $usuario['Usuario']['telefone'] ?>" target="_blank">Contato</a></li>
                                     </ul>
                                 </nav>
                             </div>   
@@ -62,8 +62,9 @@
                                     </li>
                                     <li>
                                         <div class="card-stor">
-                                            <img src="/lojadeesportes/img/gallery/card.svg" alt="">
-                                            <span>0</span>
+                                            <a href="/cart">
+                                                <img src="/lojadeesportes/img/gallery/card.svg" alt="">
+                                            </a>
                                         </div>
                                     </li>
                                 </ul>

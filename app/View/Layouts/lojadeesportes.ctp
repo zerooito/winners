@@ -131,7 +131,7 @@
                 <ul>
                     <li><a href="/termos-de-uso">Termos de Uso</a></li>
                     <li><a href="/politica-de-troca">Politica de Troca</a></li>
-                    <li><a href="/politica-de-envio">Politica de Envio</a></li>
+                    <li><a href="/termos-de-uso#delivery">Politica de Envio</a></li>
                 </ul>
             </div>
         </div>

@@ -91,7 +91,6 @@ class AppController extends Controller {
 
 	public function verificar_se_esta_ativo($instancia)
 	{
-
 		return NULL;
 		$this->loadModel('Usuario');
 

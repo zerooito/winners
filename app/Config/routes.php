@@ -31,7 +31,7 @@
 	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
 	$dominio = verificar_dominio();
-	//pr($dominio);exit;
+
 	if ($dominio['is_winners']) {
 		Router::connect('/', array('controller' => 'home', 'action' => 'index'));
 	} else {
@@ -46,7 +46,7 @@
 	Router::connect('/clientes-erp-ecommerce-software-sob-medida-winners', array('controller' => 'home', 'action' => 'cases'));
 	Router::connect('/quero-saber-como-funciona-winners-opensource', array('controller' => 'home', 'action' => 'contact'));
 	Router::connect('/cadastre-se', array('controller' => 'home', 'action' => 'register'));
-	
+
 	require($caminho);
 /**
  * Load all plugin routes. See the CakePlugin documentation on
@@ -95,7 +95,7 @@
 			header('Location: https://fastshipping.ciawn.com.br');
 			exit();
 		}
-		
+
 		$caminho = APP . 'Config/Domain/' . $varDominio . '.php';
 
 		if (!file_exists($caminho))

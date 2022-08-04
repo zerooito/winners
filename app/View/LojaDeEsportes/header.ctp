@@ -104,8 +104,10 @@
                             </li>
                             <li>
                                 <div class="card-stor">
-                                    <img src="/lojadeesportes/img/gallery/card.svg" alt="">
-                                    <span>0</span>
+                                    <a href="/cart">
+                                        <img src="/lojadeesportes/img/gallery/card.svg" alt="">
+                                        <span>0</span>
+                                    </a>
                                 </div>
                             </li>
                         </ul>

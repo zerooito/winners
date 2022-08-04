@@ -27,7 +27,7 @@ class PagseguroController extends AppController implements GatewayInterface
     {
         $this->paymentRequest->setReference($this->reference);
         $this->paymentRequest->setShippingCost($this->valor_frete);
-        //$this->paymentRequest->setExtraAmount(-$this->desconto);
+        $this->paymentRequest->setExtraAmount(-$this->desconto);
 
 
         // Set the url used by PagSeguro to redirect user after checkout process ends
@@ -182,6 +182,11 @@ class PagseguroController extends AppController implements GatewayInterface
     public function getReference()
     {
         return $this->reference;
+    }
+
+    public function setExtraAmount($desconto)
+    {
+        $this->desconto = $desconto;
     }
 
     public function setValorFrete($valor_frete)

@@ -118,6 +118,11 @@ class PagamentoController
 		return $this->gateway->setClienteGateway();
 	}
 
+	public function setExtraAmount($desconto)
+	{
+		$this->gateway->setExtraAmount($desconto);
+	}
+
 	public function finalizarPedido()
 	{
 		return $this->gateway->finalizarPedido();

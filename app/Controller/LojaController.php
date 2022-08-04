@@ -273,9 +273,9 @@ class LojaController extends AppController {
       }
       $valorFinal = $valor_frete + $total; // remover valor de frente colocando numa label especifica
 
-      $retorno_venda = $objVenda->salvar_venda($productsSale, $dados_lancamento, array('valor' => $valorFinal, 'desconto' => $desconto), $usuario_id, $loja);
-      
-      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $total, $valor_frete, $retorno_venda['id']);
+      $retorno_venda = $objVenda->salvar_venda($productsSale, $dados_lancamento, array('valor' => $valorFinal, 'desconto' => $desconto, 'orcamento' => 0), $usuario_id, $loja);
+
+      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $total, $valor_frete, $retorno_venda['id'], $desconto);
    }
 
    public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id, $desconto) {
@@ -294,6 +294,8 @@ class LojaController extends AppController {
       $pagamento->setReference('#' . $id);
       
       $pagamento->setValorFrete($shipping);
+
+      $pagamento->setExtraAmount($desconto);
 
       return $this->redirect($pagamento->finalizarPedido());
    }

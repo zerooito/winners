@@ -67,19 +67,57 @@ class VendaController extends AppController {
 
 	public function listar_cadastros() {
 		$this->layout = 'wadmin';
+
+		$this->loadModel('StatusVenda');
+		$status = $this->StatusVenda->find('all', array(
+			array('fields' => array(
+				'StatusVenda.id', 'StatusVenda.text',
+				'StatusVenda.color', 'StatusVenda.id_usuario'
+			)),
+			'conditions' => array(
+					'StatusVenda.ativo' => 1,
+					'StatusVenda.id_usuario' => $this->instancia
+				)
+			)
+		);
+
+		$this->set('status', $status);
+	}
+
+	public function mudar_status() {
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/venda/listar_cadastros');
+		}
+
+		$dados = $this->request->data('venda');
+
+		$this->loadModel('Venda');
+
+		$this->Venda->id = $dados['id'];
+		unset($dados['id']);
+
+		if ($this->Venda->save($dados)) {
+			$this->Session->setFlash('Status da venda editada com Sucesso!','default','good');
+            return $this->redirect('/venda/listar_cadastros');
+		} else {
+			$this->Session->setFlash('Erro ao atualizar o status da venda!','default','good');
+            return $this->redirect('/venda/listar_cadastros');
+		}
 	}
 
 	public function listar_cadastros_ajax() {
 		$this->layout = 'ajax';
 
-		$aColumns = array( 'id', 'valor', 'forma_pagamento', 'data_venda', 'actions' );
+		$aColumns = array( 'id', 'valor', 'forma_pagamento', 'status_venda', 'data_venda', 'actions' );
 
 		$this->loadModel('Venda');
 		$this->loadModel('LancamentoVenda');
+		$this->loadModel('StatusVenda');
 
 		$conditions = array(
 			'fields' => array(
-				'Venda.id', 'Venda.valor', 'Venda.data_venda'
+				'Venda.id', 'Venda.valor', 'Venda.data_venda', 'Venda.status_venda_id' 
 			),
 			'conditions' => array(
 				'Venda.ativo' => 1,
@@ -154,13 +192,32 @@ class VendaController extends AppController {
 							
 							$value .= '<span class="badge badge-success">' . $pagamento . '</span> ';
 						}
+					} else if ($aColumns[$i] == "status_venda") {
+						$status = $this->StatusVenda->find('all', array(
+							array('fields' => array(
+								'StatusVenda.id', 'StatusVenda.text',
+								'StatusVenda.color'
+							)),
+							'conditions' => array(
+									'StatusVenda.id' => $venda['Venda']['status_venda_id']
+								)
+							)
+						);
 
+						if (!empty($status)) {
+							$value = '<span class="badge badge-success" style="background-color: ' . $status[0]['StatusVenda']['color'] . '; ">' . $status[0]['StatusVenda']['text'] . '</span>';
+						} else {
+							$value = '<span class="badge badge-success">[PDV] Concluido</span>';
+						}
 					} else if ($aColumns[$i] == "actions") {
 						$value = '<a href="javascript:showModalPrintNota(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" class="btn btn-info show-modal-cupom">';
 						$value .= '<i class="far fa-sticky-note"></i>';
 						$value .= '</a> ';
 
-						$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';
+						if ($this->PermissoesHelper->usuario_possui_permissao_para('venda', 'write')) {
+							$value .= ' <a onclick="mudar_status_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-warning"><i class="text-white fas fa-edit"></i></a>';
+							$value .= ' <a onclick="remover_venda(' . $venda['Venda']['id'] . ');" id="' . $venda['Venda']['id'] . '" type="button" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';	
+						}				
 					} else if ($aColumns[$i] == "valor") { 
 						$value = 'R$ ' . number_format($venda['Venda'][$aColumns[$i]], 2, ',', '.');
 					} else {
@@ -431,6 +488,21 @@ class VendaController extends AppController {
 		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
 		$informacoes['orcamento']  = @$informacoes['orcamento'];
 		
+		if ($loja) {
+			$this->loadModel('StatusVenda');
+
+			$conditions = array(
+				'conditions' => array(
+					'StatusVenda.ativo' => 1,
+					'StatusVenda.text' => 'Pendente'
+				)
+			);
+	
+			$status = $this->StatusVenda->find('all', $conditions);
+	
+			$informacoes['status_venda_id'] = $status[0]['StatusVenda']['id'];
+		}
+
 		if (!$this->Venda->save($informacoes)) {
 			$this->Session->setFlash('Ocorreu algum erro ao salvar a venda');
 			return false;

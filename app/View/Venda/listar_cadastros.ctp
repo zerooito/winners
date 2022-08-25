@@ -20,6 +20,7 @@
                                     <th>#ID</th>
                                     <th>Valor</th>
                                     <th>Forma de Pagamento</th>
+                                    <th>Status Venda</th>
                                     <th>Data Venda</th>
                                     <th>Ações</th>
                                 </tr>
@@ -48,6 +49,15 @@
                     > 
                         <i class="fa fa-plus"></i>
                         Adicionar venda
+                    </a>
+                    <?php endif; ?>
+
+                    <?php if ($this->Permissoes->usuario_possui_permissao_para('venda', 'read')): ?>
+                    <a href="/status_venda/listar_cadastros" class="btn btn-info" 
+                        style="margin-bottom: 10px; width:100%;color: #FFF;"
+                    > 
+                        <i class="fa-solid fa-bars"></i>
+                        Status de venda
                     </a>
                     <?php endif; ?>
 
@@ -84,8 +94,39 @@
     </div>
 </div>
 
-<!-- Modal -->
+<div class="modal fade" id="showModalStatusVenda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form action="/venda/mudar_status" method="POST">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Mudar Status Venda</h4>
+        </div>
+        <div class="modal-body text-center">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="nome">Status</label>
+                    <select class="form-control" name="venda[status_venda_id]">
+                        <option value="">Escolha o novo status</option>
+                        <?php foreach ($status as $state): ?>
+                            <option value="<?php echo $state['StatusVenda']['id'] ?>"><?php echo $state['StatusVenda']['text'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="hidden" class="form-control" id="venda_id_status_id" value="" name="venda[id]" />
+                </div>
+            </div>
+        </div>
+            <div class="modal-footer">
+                <input type="hidden" value="" id="venda_status_id" />
+                <button type="submit" class="btn btn-success" id="venda-status-id-btn">Confirmar</button>
+                <a class="btn btn-danger text-white" type="button" class="close" data-dismiss="modal" aria-label="Close">Cancelar</a>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
 
+<!-- Modal -->
 <div class="modal fade" id="showModalCupomFiscal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -198,6 +239,16 @@
                 console.log(data);
             }
         });
+    }
+
+    function mudar_status_venda(id) {
+        $('#venda_id_status_id').val(id);
+        $('#showModalStatusVenda').modal('show');
+    }
+
+    function hideModelStatusVenda() {
+        var id = $('#venda_id_status_id').val();
+        $('#showModalStatusVenda').modal('hide');
     }
 
     function hideModalNota() {

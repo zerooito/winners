@@ -138,6 +138,8 @@ class LojaController extends AppController {
    } 
 
 	public function addCart() {
+      $this->Session->write('Cupom.valor_com_desconto', null);
+
 		$produto = $this->request->data('produto');
 		
 		if (empty($produto)) {
@@ -264,18 +266,17 @@ class LojaController extends AppController {
       );
 
       $loja = true;
+      $desconto = 0;
       if (!empty($this->Session->read('Cupom.valor_com_desconto'))) {
          $total = $this->Session->read('Cupom.valor_com_desconto');
          $desconto = $products['total'] - $total;
-      } else {
-         $total = 0;
-         $desconto = 0;
       }
-      $valorFinal = $valor_frete + $total; // remover valor de frente colocando numa label especifica
+
+      $valorFinal = $valor_frete + $products['total']; // remover valor de frente colocando numa label especifica
 
       $retorno_venda = $objVenda->salvar_venda($productsSale, $dados_lancamento, array('valor' => $valorFinal, 'desconto' => $desconto, 'orcamento' => 0), $usuario_id, $loja);
 
-      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $total, $valor_frete, $retorno_venda['id'], $desconto);
+      $this->paymentPagSeguro($products['products_cart'], $andress, $client, $products['total'], $valor_frete, $retorno_venda['id'], $desconto);
    }
 
    public function paymentPagSeguro($products, $andress, $client, $total, $shipping, $id, $desconto) {

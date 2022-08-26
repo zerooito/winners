@@ -494,7 +494,8 @@ class VendaController extends AppController {
 			$conditions = array(
 				'conditions' => array(
 					'StatusVenda.ativo' => 1,
-					'StatusVenda.text' => 'Pendente'
+					'StatusVenda.text' => 'Pendente',
+					'StatusVenda.id_usuario' => $this->instancia
 				)
 			);
 	

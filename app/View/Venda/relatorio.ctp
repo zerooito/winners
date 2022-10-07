@@ -1,3 +1,4 @@
+
 <div id="page-wrapper">
     <div class="row" style="margin:10px;">
         <div class="col-lg-12 pull-right" style="text-align: right;margin-bottom: 5px;">
@@ -110,6 +111,48 @@
                         <i><b>Total:</b> Custo - Faturamento</i>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12" style="margin-top: 25px">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTables-relatorio-produtos">
+                    <thead>
+                        <tr>
+                            <th>Venda</th>
+                            <th>Valor Venda</th>
+                            <th>Nome Produto</th>
+                            <th>Quantidade Vendida</th>
+                            <th>Estoque Atual</th>
+                            <th>Preço Produto</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>    
+                        <?php $lastVendaId = -1; ?>
+                        
+                        <?php foreach (@$produtos_vendidos as $venda_id => $produto): ?>
+                            <?php foreach($produto['produto'] as $prod): ?>
+                            <tr>
+                                <?php if ($lastVendaId != $venda_id): ?>
+                                    <?php $lastVendaId = $venda_id; ?>
+                                    <td valign="center" rowspan="<?php echo count($produto['produto']) ?>">#<?php echo $venda_id ?></td>
+                                <?php endif; ?>
+                                <td><?php echo $produto['valor_venda'] ?></td>
+                                <td><?php echo $prod['nome'] ?></td>
+                                <td><?php echo $prod['quantidade_vendida'] ?></td>
+                                <td><?php echo $prod['estoque_atual'] ?></td>
+                                <td>R$ <?php echo number_format($prod['preco'], 2, ',', '.'); ?></td>
+                                <td class="center">
+                                    <a class="btn btn-primary" target="_blank" href="/produto/movimentacoes_estoque/<?php echo $prod['produto_id'] ?>">
+                                        <i class="fa fa-bars"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

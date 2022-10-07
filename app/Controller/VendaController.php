@@ -815,6 +815,7 @@ class VendaController extends AppController {
 		$this->set('valorTotalVendasPeriodo', $relatorio['valorTotalVendasPeriodo']);
 		$this->set('totalCustoPeriodo', $relatorio['totalCustoPeriodo']);
 		$this->set('totalLucro', $relatorio['totalLucro']);
+		$this->set('produtos_vendidos', $relatorio['produtos_vendidos']);
 	}
 
 	public function obter_relatorio_por_data($from, $to)
@@ -829,16 +830,41 @@ class VendaController extends AppController {
 				'Venda.data_venda >=' => $from,
 				'Venda.data_venda <=' => $to,
 				'Venda.orcamento <>' => 1
-			)
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'venda_itens_produtos',
+			        'alias' => 'VendaItensProduto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Venda.id = VendaItensProduto.venda_id',
+			        ),
+			    ),
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Produto.id = VendaItensProduto.produto_id',
+			        ),
+			    )
+			),
+			'fields' => array(
+				'VendaItensProduto.*', 'Venda.*', 'Produto.nome',
+				'Produto.estoque', 'Produto.preco', 'Produto.preco_promocional'
+			),
+			'order' => array('Venda.id' => 'desc')
 		);
 
 		$vendas = $this->Venda->find('all', $conditions);
-
+		
 		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
 
 		$totalCustoPeriodo = $this->calcularTotalCustoProdutosPeriodo($vendas);
 
 		$lancamentos = array();
+
+		$produtosVendidos = array();
 
 		foreach ($vendas as $i => $venda) {
 			$lancamentos_all =  $this->LancamentoVenda->find('all', array(
@@ -852,6 +878,16 @@ class VendaController extends AppController {
 				if (!empty($lancamento))
 					$lancamentos[] = $lancamento;
 			}
+
+			$produtosVendidos[$venda['Venda']['id']]['produto'][] = [
+				'nome' => $venda['Produto']['nome'],
+				'quantidade_vendida' => $venda['VendaItensProduto']['quantidade_produto'],
+				'estoque_atual' => $venda['Produto']['estoque'],
+				'produto_id' => $venda['VendaItensProduto']['produto_id'],
+				'preco' => ($venda['Produto']['preco'] > $venda['Produto']['preco_promocional']) ? $venda['Produto']['preco_promocional'] : $venda['Produto']['preco']
+			];
+
+			$produtosVendidos[$venda['Venda']['id']]['valor_venda'] = $venda['Venda']['valor'];
 		}
 
 		$valorTotalPgt = $this->calcularTotalVendas($lancamentos);
@@ -863,7 +899,8 @@ class VendaController extends AppController {
 			'cartao_debito' => @$valorTotalPgt['cartao_debito'],
 			'valorTotalVendasPeriodo' => $valorTotalVendasPeriodo,
 			'totalCustoPeriodo' => $totalCustoPeriodo,
-			'totalLucro' => $valorTotalVendasPeriodo - $totalCustoPeriodo
+			'totalLucro' => $valorTotalVendasPeriodo - $totalCustoPeriodo,
+			'produtos_vendidos' => $produtosVendidos
 		];
 	}
 

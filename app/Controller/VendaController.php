@@ -820,9 +820,41 @@ class VendaController extends AppController {
 
 	public function obter_relatorio_por_data($from, $to)
 	{
-
 		$this->loadModel('Venda');
 		$this->loadModel('LancamentoVenda');
+
+		$conditions = array(
+			'conditions' => array(
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.data_venda >=' => $from,
+				'Venda.data_venda <=' => $to,
+				'Venda.orcamento <>' => 1
+			)
+		);
+
+		$vendas = $this->Venda->find('all', $conditions);
+		
+		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
+
+		$totalCustoPeriodo = $this->calcularTotalCustoProdutosPeriodo($vendas);
+
+		$lancamentos = array();
+
+		$produtosVendidos = array();
+
+		foreach ($vendas as $i => $venda) {
+			$lancamentos_all =  $this->LancamentoVenda->find('all', array(
+					'conditions' => array(
+						'LancamentoVenda.venda_id' => $venda['Venda']['id']
+					)
+				)
+			);
+
+			foreach ($lancamentos_all as $lancamento) {
+				if (!empty($lancamento))
+					$lancamentos[] = $lancamento;
+			}
+		}
 
 		$conditions = array(
 			'conditions' => array(
@@ -856,29 +888,9 @@ class VendaController extends AppController {
 			'order' => array('Venda.id' => 'desc')
 		);
 
-		$vendas = $this->Venda->find('all', $conditions);
-		
-		$valorTotalVendasPeriodo = $this->calcularValorTotalVendas($vendas);
+		$vendasComProdutos = $this->Venda->find('all', $conditions);
 
-		$totalCustoPeriodo = $this->calcularTotalCustoProdutosPeriodo($vendas);
-
-		$lancamentos = array();
-
-		$produtosVendidos = array();
-
-		foreach ($vendas as $i => $venda) {
-			$lancamentos_all =  $this->LancamentoVenda->find('all', array(
-					'conditions' => array(
-						'LancamentoVenda.venda_id' => $venda['Venda']['id']
-					)
-				)
-			);
-
-			foreach ($lancamentos_all as $lancamento) {
-				if (!empty($lancamento))
-					$lancamentos[] = $lancamento;
-			}
-
+		foreach ($vendasComProdutos as $i => $venda) {
 			$produtosVendidos[$venda['Venda']['id']]['produto'][] = [
 				'nome' => $venda['Produto']['nome'],
 				'quantidade_vendida' => $venda['VendaItensProduto']['quantidade_produto'],

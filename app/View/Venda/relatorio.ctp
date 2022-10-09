@@ -137,8 +137,8 @@
                                 <?php if ($lastVendaId != $venda_id): ?>
                                     <?php $lastVendaId = $venda_id; ?>
                                     <td valign="center" rowspan="<?php echo count($produto['produto']) ?>">#<?php echo $venda_id ?></td>
+                                    <td valign="center" rowspan="<?php echo count($produto['produto']) ?>">R$ <?php echo number_format($produto['valor_venda'], 2, ',', '.') ?></td>
                                 <?php endif; ?>
-                                <td><?php echo $produto['valor_venda'] ?></td>
                                 <td><?php echo $prod['nome'] ?></td>
                                 <td><?php echo $prod['quantidade_vendida'] ?></td>
                                 <td><?php echo $prod['estoque_atual'] ?></td>

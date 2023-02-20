@@ -66,15 +66,16 @@
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                         <div class="dropdown-header">Dropdown Header:</div>
                         <a class="dropdown-item" href="#">Action</a>
                         <a class="dropdown-item" href="#">Another action</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                    </div> -->
                     </div>
                 </div>
+                
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
@@ -89,32 +90,34 @@
         </div>
     </div>
 
+
     <!-- Content Row -->
     <div class="row">
-        <div class="col-lg-12 mb-4">
-            <!-- Approach -->
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Novidades do sistema</h6>
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Categorias de produtos mais vendidos</h6>
+                    <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div> -->
+                    </div>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body">
+                    <canvas id="graphBarsCategory" style="width:100%"></canvas>
+                </div>
             </div>
-            <div class="card-body">
-                <ol>
-                    <li>
-                        <p>Adição da forma de pagamento PIX no ponto de venda.</p>
-                    </li>
-                    <li>
-                        <p>Controle de entradas e saídas de estoque por venda e por edição de usuário.</p>
-                    </li>   
-                    <li>
-                        <p>Módulo de controle de subusuarios.</p>
-                    </li>
-                    <li>
-                        <p>Lançamento da nova versão veja a live <a href="#"> aqui</a>.</p>
-                    </li>
-                </ol>
-            </div>
-            </div>
-
         </div>
     </div>
 
@@ -226,6 +229,53 @@
                 }
             );
         }
+
+        var ctxGraphsBar = document.getElementById('graphBarsCategory');
+        function addRecoveryCategories(data) {
+            var graphBarsCategory = new Chart(ctxGraphsBar, {
+            type: 'bar',
+            data: {
+                labels: data['labels'],
+                datasets: [{
+                    label: '# Produtos mais Vendidos por Categoria',
+                    data: data['data'],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return 'R$' + tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         $.getJSON("/venda/recoverDataToDashboardOneMonth", addData);
+        $.getJSON("/venda/recoverCategoryProductsByMonth", addRecoveryCategories);
     });
 </script>

@@ -636,6 +636,79 @@ class VendaController extends AppController {
 		echo json_encode($resposta);
 	}
 
+
+	public function recoverCategoryProductsByMonth($id_usuario = null) {
+		if (is_null($id_usuario)) {
+			$id_usuario = $this->instancia;
+		}
+
+		$this->layout = 'ajax';
+
+		$labels = [];
+		$conditions = array(
+			'conditions' => array(
+				'Venda.id_usuario' => $this->instancia,
+				'Venda.orcamento <>' => 1
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'venda_itens_produtos',
+			        'alias' => 'VendaItensProduto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Venda.id = VendaItensProduto.venda_id',
+			        ),
+			    ),
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Produto.id = VendaItensProduto.produto_id',
+			        ),
+			    ),
+			    array(
+			        'table' => 'categorias',
+			        'alias' => 'Categoria',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Categoria.id = Produto.categoria_id',
+			        ),
+			    )
+			),
+			'fields' => array(
+				'VendaItensProduto.*', 'Venda.*', 'Produto.nome', 'Categoria.*',
+				'Produto.estoque', 'Produto.preco', 'Produto.preco_promocional'
+			),
+			'order' => array('Venda.id' => 'desc'),
+			'limit' => 100
+		);
+
+		$vendasComProdutos = $this->Venda->find('all', $conditions);
+		
+		foreach ($vendasComProdutos as $venda) {
+			if (!in_array($venda['Categoria']['nome'], $labels)) {
+				$labels[] = $venda['Categoria']['nome'];
+			}
+		}
+
+		foreach ($labels as $i => $label) {
+			$resposta[$i] = 0;
+			foreach ($vendasComProdutos as $venda) {
+				if ($venda['Categoria']['nome'] == $label) {
+					$resposta[$i] += $venda['Venda']['valor'];
+				}
+			}
+		}
+
+		$resposta = [
+			'labels' => $labels,
+			'data' => $resposta
+		];
+
+		echo json_encode($resposta);
+	}
+
 	public function excluir_cadastro() {
 		if (!$this->PermissoesHelper->usuario_possui_permissao_para('venda', 'read')) {
 			echo json_encode(false);

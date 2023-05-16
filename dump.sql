@@ -763,3 +763,47 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=124;
 ALTER TABLE `hieraquia_modulos`
 ADD CONSTRAINT `hieraquia_modulo_hieraquia_id` FOREIGN KEY (`hieraquia_id`) REFERENCES `hieraquias` (`id`),
 ADD CONSTRAINT `hieraquia_modulo_modulo_id` FOREIGN KEY (`modulo_id`) REFERENCES `modulos` (`id`);
+
+--
+-- Estrutura para tabela `custos_produtos`
+--
+
+CREATE TABLE `custos_produtos` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(50) NOT NULL,
+  `valor` decimal(10,4) NOT NULL,
+  `data` date NOT NULL,
+  `produto_id` int(11) NOT NULL,
+  `ativo` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `custos_produtos`
+--
+ALTER TABLE `custos_produtos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `custos_produtos_produto_id` (`produto_id`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `custos_produtos`
+--
+ALTER TABLE `custos_produtos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `custos_produtos`
+--
+ALTER TABLE `custos_produtos`
+  ADD CONSTRAINT `custos_produtos_produto_id` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`);

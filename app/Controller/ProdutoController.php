@@ -90,6 +90,7 @@ class ProdutoController extends AppController{
 				$btEdit = '<a class="btn btn-info" href="/produto/editar_cadastro/' . $produto['Produto']['id'] . '"><i class="text-white fas fa-pencil-alt"></i></a>';
 				$btMove = '<a class="btn btn-primary" href="/produto/movimentacoes_estoque/' . $produto['Produto']['id'] . '"><i class="fa fa-bars"></i></a>';
 				$btImage = '<a class="btn btn-primary" href="/produto/imagens/' . $produto['Produto']['id'] . '"><i class="fas fa-images"></i></a>';
+				$btImage = '<a class="btn btn-success" href="/produto/custos_adicionais/' . $produto['Produto']['id'] . '"><i class="fas fa-plus"></i></a>';
 				$btDelete = '<a class="btn btn-danger" href="javascript:remover_produto(' . $produto['Produto']['id'] . ');"><i class="fas fa-trash"></i></a>';
 
 				$row[] = $btEdit . ' ' . $btMove . ' ' . $btImage . ' ' . $btDelete;
@@ -1021,22 +1022,147 @@ class ProdutoController extends AppController{
 		exit;
     }
 
-	public function fixPromotionItems()
-	{
-		$produtos = $this->Produto->find('all',
-			array(
-				'conditions' => array(
-					'Produto.id_usuario' => 28,
-					'Produto.ativo' => 1
+	public function custos_adicionais($id){
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/listar_cadastros');
+		}
+
+		$produto = $this->Produto->find('all', 
+			array('conditions' => 
+				array('ativo' => 1,
+					'id' => $id
 				)
 			)
 		);
 
-		foreach ($produtos as $produto) {
-			$this->Produto->id = $produto['Produto']['id'];
-			$this->Produto->save(['preco_promocional' => $produto['Produto']['preco']]);
-	
+
+		$this->set('produto', $produto[0]);
+		$this->layout = 'wadmin';
+	}
+
+	public function adicionar_custo($id)
+	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/custos_adicionais/' . $id);
 		}
+
+		$custo = $this->request->data['custo'];
+		$custo['produto_id'] = $id;
+		$custo['ativo'] = 1;
+		$custo['valor'] = str_replace(',', '', $custo['valor']);
+
+		$this->loadModel('CustosProduto');
+
+		if ($this->CustosProduto->save($custo)) {
+			$this->Session->setFlash('Custo adicionado com sucesso!');
+			return $this->redirect('/produto/custos_adicionais/' . $id);
+		} 
+
+		$this->Session->setFlash('Ocorreu algum erro ao criar o custo, tente novamente!');
+		return $this->redirect('/produto/custos_adicionais/' . $id);
+	}
+
+
+	public function remover_custo($id)
+	{
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('produto', 'write')) {
+			$this->Session->setFlash('Você não possui acesso a esta área do sistema');
+			return $this->redirect('/produto/custos_adicionais/' . $id);
+		}
+		
+		$this->loadModel('CustosProduto');
+
+		$this->CustosProduto->id = $id;
+		if ($this->CustosProduto->save(['ativo' => 0])) {
+			echo json_encode(['success' => true]);
+			exit;
+		} 
+
+		echo json_encode(['success' => false]);
+		exit;
+	}
+
+	public function listar_custos_adicionais($produtoId) {
+		$this->loadModel('CustosProduto');
+
+		$this->layout = 'ajax';
+
+		$aColumns = array( 'id', 'valor', 'descricao', 'data', 'acoes' );
+		
+		$conditions = array(
+			'conditions' => array(
+				'CustosProduto.ativo' => 1,
+				'CustosProduto.produto_id' => $produtoId
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'produtos',
+			        'alias' => 'Produto',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'CustosProduto.produto_id = Produto.id',
+			        ),
+			    )
+			),
+	        'fields' => array('CustosProduto.*, Produto.nome, Produto.id'),
+		);
+
+		$allProdutos = $this->CustosProduto->find('all', $conditions);
+
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$conditions['offset'] = $_GET['iDisplayStart'];
+			$conditions['limit'] = $_GET['iDisplayLength'];
+		}
+
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			for ( $i=0 ; $i < intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_' . intval($_GET['iSortCol_' . $i]) ] == "true" )
+				{
+					$conditions['order'] = array('CustosProduto.' . $aColumns[intval($_GET['iSortCol_' . $i])] => $_GET['sSortDir_'.$i]);
+				}
+			}
+		}
+
+		if ( isset( $_GET['sSearch'] ) && !empty( $_GET['sSearch'] ) )
+		{
+			$conditions['conditions']['CustosProduto.id LIKE '] = '%' . $_GET['sSearch'] . '%';
+		}
+		
+		$produtos = $this->CustosProduto->find('all', $conditions);
+
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalDisplayRecords" => count($allProdutos),
+			"iTotalRecords" => count($produtos),
+			"aaData" => array()
+		);
+
+		if ($this->PermissoesHelper->usuario_possui_permissao_para('produto', 'read')) {
+			foreach ( $produtos as $i => $produto ) {
+				$row = array();
+
+				for ( $i=0 ; $i < count($aColumns) ; $i++ ) {	
+					if ($aColumns[$i] == "acoes") {
+						$value = '<a href="javascript:removerCusto(' . $produto['CustosProduto']['id'] . ');" class="btn btn-danger"><i class="text-white fas fa-trash"></i></a>';
+					} else if ($aColumns[$i] == "valor") {
+						$value = 'R$ ' . number_format($produto['CustosProduto'][$aColumns[$i]], 2);
+					} else {
+						$value = $produto['CustosProduto'][$aColumns[$i]];
+					}
+					$row[] = $value;
+				}
+
+				$output['aaData'][] = $row;
+			}
+		}
+		
+		echo json_encode($output);
+		exit;
 	}
 
 }

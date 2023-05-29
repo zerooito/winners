@@ -431,6 +431,7 @@ class VendaController extends AppController {
 
 	public function calcular_custo_venda($produtos) {
 		$this->loadModel('Produto');
+		$this->loadModel('CustosProduto');
 
 		(float) $custo = 0.00;
 		foreach ($produtos as $indice => $item) {
@@ -440,7 +441,21 @@ class VendaController extends AppController {
 				)
 			);
 
+			$custos_adicionais = $this->CustosProduto->find('all', array('conditions' =>
+					array(
+						'CustosProduto.produto_id' => $item['id_produto'],
+						'CustosProduto.ativo' => 1
+					)
+				)
+			);
+
 			$custo += $produto[0]['Produto']['custo'] * $item['quantidade'];
+
+			if (isset($custos_adicionais) && !empty($custos_adicionais)) {
+				foreach ($custos_adicionais as $custo_adicional) {
+					$custo += $custo_adicional['CustosProduto']['valor']; // custos adicionais não são multiplicados pela quantidade de itens
+				}
+			}
 		}
 
 		return $custo;
@@ -487,7 +502,7 @@ class VendaController extends AppController {
 		$informacoes['desconto']   = (float) @$informacoes['desconto'];
 		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
 		$informacoes['orcamento']  = @$informacoes['orcamento'];
-		
+
 		if ($loja) {
 			$this->loadModel('StatusVenda');
 

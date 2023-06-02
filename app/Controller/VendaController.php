@@ -258,6 +258,8 @@ class VendaController extends AppController {
 			)
 		);
 
+		$this->set('funcionarios', $this->carregar_funcionarios($this->instancia));
+
 		$this->loadModel('Produto');
 
 		$this->set('produtos', $this->Produto->find('all',
@@ -270,6 +272,38 @@ class VendaController extends AppController {
 		);
 
 		$this->set('vendaId', $this->Session->read('UltimoIdVendaSalvo'));
+	}
+
+	public function carregar_funcionarios($usuario_id)
+	{
+		$this->loadModel('Funcionario');
+
+		$query = array (
+			'joins' => array(
+			    array(
+			        'table' => 'sub_usuarios',
+			        'alias' => 'SubUsuario',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'SubUsuario.id = Funcionario.subusuario_id',
+			        ),
+			    ),
+			    array(
+			        'table' => 'usuarios',
+			        'alias' => 'Usuario',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'Funcionario.subusuario_id = Usuario.subusuario_id',
+			        ),
+			    )
+			),
+	        'conditions' => array('Funcionario.usuario_id' => $usuario_id, 'Funcionario.ativo' => 1),
+	        'fields' => array('Usuario.*, Funcionario.*, SubUsuario.*'),
+		);
+
+		$funcionarios = $this->Funcionario->find('all', $query);
+
+		return $funcionarios;
 	}
 
 	public function conveter_venda($vendaId) {
@@ -496,12 +530,12 @@ class VendaController extends AppController {
 
 		unset($informacoes['id_cliente']);
 
-		$informacoes['data_venda'] = date('Y-m-d');
-		$informacoes['id_usuario'] = $this->instancia != 'winners' ? $this->instancia : $usuario_id;
-		$informacoes['ativo']	   = 1;
-		$informacoes['desconto']   = (float) @$informacoes['desconto'];
-		$informacoes['valor']	   = $informacoes['valor'] - $informacoes['desconto'];
-		$informacoes['orcamento']  = @$informacoes['orcamento'];
+		$informacoes['data_venda'] 		= date('Y-m-d');
+		$informacoes['id_usuario'] 		= $this->instancia != 'winners' ? $this->instancia : $usuario_id;
+		$informacoes['ativo']	   		= 1;
+		$informacoes['desconto']   		= (float) @$informacoes['desconto'];
+		$informacoes['valor']	   		= $informacoes['valor'] - $informacoes['desconto'];
+		$informacoes['orcamento']  		= @$informacoes['orcamento'];
 
 		if ($loja) {
 			$this->loadModel('StatusVenda');

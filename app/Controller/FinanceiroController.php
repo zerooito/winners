@@ -2,6 +2,7 @@
 
 class FinanceiroController extends AppController 
 {
+	const FUNCIONARIO_CATEGORIA_LANCAMENTO = 'Funcionario';   
 
 	public function listar_cadastros()
 	{
@@ -310,11 +311,13 @@ class FinanceiroController extends AppController
 					if ($aColumns[$i] == "venda_id") {
 						$value = '<span class="badge badge-info">Desconhecido</span>';
 
-						if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'receita') {
+						$lancamentoTipoReceita = isset($lancamento['LancamentoCategoria']['tipo']) && $lancamento['LancamentoCategoria']['tipo'] == 'receita';
+						$lancamentoTipoVenda = isset($lancamento['LancamentoVenda']['venda_id']) && !empty($lancamento['LancamentoVenda']['venda_id']);
+						if ($lancamentoTipoReceita || $lancamentoTipoVenda) {
 							$value = '<span class="badge badge-success">Receita</span>'; 
 						}
 
-						if (isset($lancamento['LancamentoVenda']['tipo']) && $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
+						if (isset($lancamento['LancamentoCategoria']['tipo']) && $lancamento['LancamentoCategoria']['tipo'] == 'despesa') {
 							$value = '<span class="badge badge-warning">Despesa</span>'; 
 						}
 					}
@@ -445,6 +448,43 @@ class FinanceiroController extends AppController
 
 		$this->Session->setFlash('Lançamento inserido com sucesso!');
 		return $this->redirect('/financeiro/listar_cadastros');
+	}
+
+	public function buscarOuCriarCategoriaDespesaFinanceiro($usuarioId)
+	{
+		$this->loadModel('LancamentoCategoria');
+
+		$categoria = $this->categoria_funcionario($usuarioId);
+
+		if (!empty($categoria)) 
+			return $categoria;
+
+		$dados = [
+			'ativo' => 1,
+			'usuario_id' => $usuarioId,
+			'tipo' => 'despesa',
+			'nome' => self::FUNCIONARIO_CATEGORIA_LANCAMENTO
+		];
+
+		$this->LancamentoCategoria->save($dados);
+
+		return $this->categoria_funcionario($usuarioId);
+	}
+
+	private function categoria_funcionario($usuarioId)
+	{
+		$query = array('conditions' =>
+			array(
+				'LancamentoCategoria.ativo' => 1,
+				'LancamentoCategoria.usuario_id' => $usuarioId,
+				'LancamentoCategoria.nome' => self::FUNCIONARIO_CATEGORIA_LANCAMENTO,
+				'LancamentoCategoria.tipo' => 'despesa'
+			),
+		);
+
+		$categoria = $this->LancamentoCategoria->find('first', $query);
+
+		return $categoria;
 	}
 
 }

@@ -155,8 +155,6 @@ class HieraquiaController extends AppController {
 			return $this->redirect('/hieraquia/listar_cadastros');
 		}
 
-		$this->loadModel('SubUsuarios');
-
 		$dados = $this->request->data('dados');
 
 		if ($dados['password'] != $dados['password_confirm']) {
@@ -171,8 +169,24 @@ class HieraquiaController extends AppController {
 
 		unset($dados['password_confirm']);
 
+		$usuario = $this->salvar_subusuario($dados, $this->instancia);
+
+		if (!$usuario) {
+			$this->Session->setFlash('Ocorreu algum erro, tente novamente ou contate o suporte.');
+			return $this->redirect('/hieraquia/adicionar_subusuario');
+		}
+		
+		$this->Session->setFlash('Usuario ' . $dados['email'] . ' foi cadastrado com sucesso.');
+		return $this->redirect('/hieraquia/listar_subusuarios');
+	}
+
+	public function salvar_subusuario($dados, $usuario_id) 
+	{
+		$this->loadModel('Usuario');
+		$this->loadModel('SubUsuarios');
+
 		$dados_subusuario = [
-			'id_usuario' => $this->instancia,
+			'id_usuario' => $usuario_id,
 			'id_hieraquia' => $dados['hieraquia_id'],
 			'ativo' => 1
 		];
@@ -194,13 +208,7 @@ class HieraquiaController extends AppController {
 		];
 		$usuario = $this->Usuario->save($dados_usuario);
 
-		if (!$usuario) {
-			$this->Session->setFlash('Ocorreu algum erro, tente novamente ou contate o suporte.');
-			return $this->redirect('/hieraquia/adicionar_subusuario');
-		}
-		
-		$this->Session->setFlash('Usuario ' . $dados['email'] . ' foi cadastrado com sucesso.');
-		return $this->redirect('/hieraquia/listar_subusuarios');
+		return $usuario;
 	}
 
 	public function verificar_email($email)

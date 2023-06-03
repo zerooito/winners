@@ -833,6 +833,8 @@ CREATE TABLE `funcionarios` (
 -- Índices para tabelas despejadas
 --
 
+-- Migration para o modulo de funcionarios
+
 --
 -- Índices de tabela `funcionarios`
 --
@@ -891,3 +893,4 @@ ALTER TABLE pagamento_funcionarios MODIFY COLUMN funcionario_id INT NULL,
  ADD CONSTRAINT pagamento_funcionarios_id_fk
  FOREIGN KEY(funcionario_id)
  REFERENCES funcionarios(id);
+

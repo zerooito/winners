@@ -293,6 +293,23 @@ class UsuarioController extends AppController{
     	$this->set('usuario', $dadosUsuario);
 	}
 
+	public function contas() {
+		$this->verificar_acesso();
+
+		$this->layout = 'wadmin';
+
+		$dadosUsuario = $this->Usuario->find('all', array(
+				'conditions' => array(
+					'Usuario.id' => $this->instancia
+				)
+			)
+		);
+
+		$this->set('contas', []);
+    	$this->set('modulos', $this->modulos);
+    	$this->set('usuario', $dadosUsuario);
+	}
+
 	public function new_token() {
 		$this->verificar_acesso();
 

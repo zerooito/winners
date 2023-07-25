@@ -115,6 +115,10 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Dados Pessoais
                 </a>
+                <a class="dropdown-item" href="/usuario/contas">
+                  <i class="fas fa-university fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Minhas Contas
+                </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

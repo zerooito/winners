@@ -894,3 +894,46 @@ ALTER TABLE pagamento_funcionarios MODIFY COLUMN funcionario_id INT NULL,
  FOREIGN KEY(funcionario_id)
  REFERENCES funcionarios(id);
 
+--- Migration Contas e Cartao de Credito
+
+CREATE TABLE contas (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  usuario_id INT,
+  nome VARCHAR(20),
+  saldo DECIMAL(10,4),
+  principal TINYINT,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE bandeiras_cartao_creditos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100),
+  logo VARCHAR(255)
+);
+
+INSERT INTO bandeiras_cartao_creditos (nome) VALUES
+  ('Visa'),
+  ('Mastercard'),
+  ('American Express'),
+  ('Discover'),
+  ('Diners Club'),
+  ('JCB'),
+  ('UnionPay'),
+  ('Maestro'),
+  ('Elo'),
+  ('Hipercard'),
+  ('Hiper'),
+  ('Outros');
+
+CREATE TABLE cartoes_creditos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  usuario_id INT,
+  nome VARCHAR(20),
+  limite DECIMAL(10,4),
+  valor DECIMAL(10,4),
+  data_pagamento DATE,
+  data_virada_fatura DATE,
+  bandeira_id INT,
+  FOREIGN KEY (bandeira_id) REFERENCES bandeiras_cartao_creditos(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);

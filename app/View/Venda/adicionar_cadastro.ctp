@@ -57,7 +57,7 @@
                                         <label>Desconto</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-addon" id="sizing-addon3">R$</span>
-                                            <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                            <input type="text" class="form-control" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
                                         </div>
                                     </div>
 

@@ -916,7 +916,8 @@ class VendaController extends AppController {
 				'Venda.id_usuario' => $this->instancia,
 				'Venda.data_venda >=' => $from,
 				'Venda.data_venda <=' => $to,
-				'Venda.orcamento <>' => 1
+				'Venda.orcamento <>' => 1,
+				'Venda.ativo' => 1
 			)
 		);
 
@@ -949,7 +950,8 @@ class VendaController extends AppController {
 				'Venda.id_usuario' => $this->instancia,
 				'Venda.data_venda >=' => $from,
 				'Venda.data_venda <=' => $to,
-				'Venda.orcamento <>' => 1
+				'Venda.orcamento <>' => 1,
+				'Venda.ativo' => 1
 			),
 			'joins' => array(
 			    array(

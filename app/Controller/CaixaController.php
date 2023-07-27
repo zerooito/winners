@@ -7,6 +7,7 @@ class CaixaController extends AppController {
 
 		$data['usuario_id'] = $this->instancia;
 		$data['ativo']		= 1;
+		$data['valor_inicial'] = $this->remove_first_point(str_replace(',', '', $data['valor_inicial']));
 
 		if (!$this->Caixa->save($data)) {
 			$this->Session->setFlash('Ocorreu um erro ao abrir o caixa, tente novamente, caso persista contate o suporte');
@@ -20,7 +21,13 @@ class CaixaController extends AppController {
 	public function finalizar_caixa() {
 		$data = $this->request->data['caixa'];
 		$data['valor_final_cartao'] = $data['valor_final_cartao_debito'] + $data['valor_final_cartao_credito'];
-
+		$data['valor_final_total'] = $this->remove_first_point(str_replace(',', '.', $data['valor_final_total']));
+		$data['valor_final_dinheiro'] = $this->remove_first_point(str_replace(',', '.', $data['valor_final_dinheiro']));
+		$data['valor_final_cartao_debito'] = $this->remove_first_point(str_replace(',', '.', $data['valor_final_cartao_debito']));
+		$data['valor_final_cartao_credito'] = $this->remove_first_point(str_replace(',', '.', $data['valor_final_cartao_credito']));
+		$data['valor_final_outros'] = $this->remove_first_point(str_replace(',', '.', $data['valor_final_outros']));
+		$data['valor_inicial'] = $this->remove_first_point(str_replace(',', '.', $data['valor_inicial']));
+		
 		if (!$this->Caixa->save($data)) {
 			$this->Session->setFlash('Ocorreu um erro ao fechar o caixa, tente novamente, caso persista contate o suporte');
 			$this->redirect('/venda/adicionar_cadastro');
@@ -335,6 +342,26 @@ class CaixaController extends AppController {
 
 		echo json_encode($output);
 		exit;
+	}
+
+	private function remove_first_point($originalString)
+	{
+
+		$occurrencesCount = substr_count($originalString, ".");
+
+		if ($occurrencesCount <= 1) {
+			return $originalString;
+		}
+
+		$position = strpos($originalString, ".");
+
+		if ($position !== false) {
+			$modifiedString = substr($originalString, 0, $position) . substr($originalString, $position + 1);
+		} else {
+			$modifiedString = $originalString;
+		}
+
+		return $modifiedString;
 	}
 
 }

@@ -487,6 +487,7 @@ class ProdutoController extends AppController{
 		$dados['id_alias'] = $this->id_alias();
 		$dados['preco'] = str_replace(',', '', $dados['preco']);
 		$dados['preco_promocional'] = str_replace(',', '', $dados['preco_promocional']);
+		$dados['custo'] = str_replace(',', '', $dados['custo']);
 
 		$this->Produto->id = $id;
 

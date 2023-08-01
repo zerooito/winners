@@ -807,3 +807,90 @@ ALTER TABLE `custos_produtos`
 --
 ALTER TABLE `custos_produtos`
   ADD CONSTRAINT `custos_produtos_produto_id` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`);
+
+
+CREATE TABLE `funcionarios` (
+  `id` int(11) NOT NULL,
+  `salario` decimal(10,4) NOT NULL,
+  `comissao` double(10,2) NOT NULL,
+  `cpf` varchar(18) NULL,
+  `rg` varchar(18) NULL,
+  `data_nascimento` date NULL,
+  `celular` varchar(15) NULL,
+  `cep` varchar(10) NULL,
+  `endereco` varchar(100) NULL,
+  `bairro` varchar(60) NULL,
+  `numero` varchar(10) NULL,
+  `complemento` varchar(50) NULL,
+  `cidade` varchar(50) NULL,
+  `estado` varchar(10) NULL,
+  `usuario_id` int(11) NOT NULL,
+  `subusuario_id` int(11) NOT NULL,
+  `ativo` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Índices para tabelas despejadas
+--
+
+-- Migration para o modulo de funcionarios
+
+--
+-- Índices de tabela `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `funcionarios_usuario_id` (`usuario_id`),
+  ADD KEY `funcionarios_sub_usuario_id` (`subusuario_id`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  ADD CONSTRAINT `funcionarios_sub_usuario_id` FOREIGN KEY (`subusuario_id`) REFERENCES `sub_usuarios` (`id`),
+  ADD CONSTRAINT `funcionarios_usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+
+ALTER TABLE vendas
+ ADD COLUMN funcionario_id INT NULL;
+
+ALTER TABLE vendas MODIFY COLUMN funcionario_id INT NULL,
+ ADD CONSTRAINT funcionario_id_fk
+ FOREIGN KEY(funcionario_id)
+ REFERENCES funcionarios(id);
+
+CREATE TABLE `pagamento_funcionarios` (
+  `id` int(11) NOT NULL,
+  `total_vendas` decimal(10,4) NOT NULL,
+  `salario` double(10,2) NOT NULL,
+  `comissao` double(10,2) NOT NULL,
+  `total_pago` varchar(18) NULL,
+  `data` date NOT NULL,
+  `ativo` tinyint(4) NOT NULL,
+  `vendas` BLOB NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `pagamento_funcionarios` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+
+
+ALTER TABLE pagamento_funcionarios
+ ADD COLUMN funcionario_id INT NULL;
+
+ALTER TABLE pagamento_funcionarios MODIFY COLUMN funcionario_id INT NULL,
+ ADD CONSTRAINT pagamento_funcionarios_id_fk
+ FOREIGN KEY(funcionario_id)
+ REFERENCES funcionarios(id);
+

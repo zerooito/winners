@@ -428,8 +428,9 @@ class FinanceiroController extends AppController
 		$transacao = $this->request->data('transacao');
 
 		$transacao['valor_pago'] = 0;
+		$transacao['valor'] = str_replace(',', '', $transacao['valor']);
 		if ($transacao['pago'] == 1) {
-			$transacao['valor_pago'] = $transacao['valor'];
+			$transacao['valor_pago'] = str_replace(',', '', $transacao['valor']);
 		}
 		unset($transacao['pago']);
 

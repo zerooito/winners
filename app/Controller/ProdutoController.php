@@ -378,6 +378,8 @@ class ProdutoController extends AppController{
 		$dados['destaque'] = 0;
 		$dados['id_alias'] = $this->id_alias();
 		$dados['preco'] = str_replace(',', '', $dados['preco']);
+		$dados['preco_promocional'] = str_replace(',', '', $dados['preco_promocional']);
+		$dados['custo'] = str_replace(',', '', $dados['custo']);
 
 		if($this->Produto->save($dados)) {
 			$produto_id = $this->Produto->getLastInsertId();

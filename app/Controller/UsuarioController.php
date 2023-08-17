@@ -295,6 +295,7 @@ class UsuarioController extends AppController{
 
 	public function contas() {
 		$this->verificar_acesso();
+		$this->loadModel('Contas');
 
 		$this->layout = 'wadmin';
 
@@ -305,7 +306,15 @@ class UsuarioController extends AppController{
 			)
 		);
 
-		$this->set('contas', []);
+		$contas = $this->Contas->find('all', array(
+				'conditions' => array(
+					'Contas.usuario_id' => $this->instancia,
+					'Contas.ativo' => 1,
+				)
+			)
+		);
+
+		$this->set('contas', $contas);
     	$this->set('modulos', $this->modulos);
     	$this->set('usuario', $dadosUsuario);
 	}

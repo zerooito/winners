@@ -42,8 +42,19 @@ class LancamentoVendasController extends AppController {
 		} else {
 			$lancamento['forma_pagamento'] = $dados['forma_pagamento'];
 
-			$this->LancamentoVenda->save($lancamento);
+			$lancamento_venda = $this->LancamentoVenda->save($lancamento);
 		}
+
+		$this->loadModel('ExtratoContas');
+
+		$extrato_conta = [
+			'usuario_id' => $lancamento_venda['LancamentoVenda']['usuario_id'],
+			'valor' => $lancamento_venda['LancamentoVenda']['valor'],
+			'financeiro_id' => $lancamento_venda['LancamentoVenda']['id'],
+			'ativo' => 1,
+		];
+
+		$this->ExtratoContas->save($extrato_conta);
 
 		return true;
  	}

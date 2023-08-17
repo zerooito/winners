@@ -902,6 +902,7 @@ CREATE TABLE contas (
   nome VARCHAR(20),
   saldo DECIMAL(10,4),
   principal TINYINT,
+  ativo TINYINT,
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
@@ -937,3 +938,13 @@ CREATE TABLE cartoes_creditos (
   FOREIGN KEY (bandeira_id) REFERENCES bandeiras_cartao_creditos(id),
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE extrato_contas (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  usuario_id INT,
+  valor DECIMAL(10, 4),
+  financeiro_id INT,
+  ativo TINYINT,
+  FOREIGN KEY (financeiro_id) REFERENCES lancamento_vendas(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+)

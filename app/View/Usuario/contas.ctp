@@ -12,8 +12,12 @@
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Bradesco (principal)</h5>
-                        <p class="card-text">R$ 35.655,75.</p>
+                        <?php if ($conta['Contas']['principal'] == true): ?>
+                            <h5 class="card-title"><?php echo $conta['Contas']['nome'] ?> (principal)</h5>
+                        <?php else: ?>
+                            <h5 class="card-title"><?php echo $conta['Contas']['nome'] ?></h5>
+                        <?php endif; ?>
+                        <p class="card-text">R$ <?php echo number_format($conta['Contas']['saldo'], 2, ',', '.') ?></p>
                         <a href="javascript:;" class="btn btn-primary">Ver Detalhes</a>
                     </div>
                 </div>
@@ -24,7 +28,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Conta Não Encontrada?</h5>
                     <p class="card-text">R$ 0.00.</p>
-                    <a href="javascript:;" class="btn btn-success">Adicionar Conta</a>
+                    <a href="javascript:$('#addConta').modal('show');" class="btn btn-success">Adicionar Conta</a>
                 </div>
             </div>
         </div>
@@ -46,15 +50,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nome">Nome:</label>
-                        <input type="text" class="form-control" id="nome" name="contas[nome]">
+                        <input type="text" class="form-control" id="nome" name="dados[nome]">
                     </div>
                     <div class="form-group">
                         <label for="nome">Saldo:</label>
-                        <input type="text" class="form-control moeda" id="saldo" name="contas[saldo]">
+                        <input type="text" class="form-control moeda" id="saldo" name="dados[saldo]">
                     </div>
                     <div class="form-group">
                         <label for="nome">Principal:</label>
-                        <select type="principal" class="form-control" id="principal" name="contas[principal]">
+                        <select type="principal" class="form-control" id="principal" name="dados[principal]">
                             <option value="0">Não</option>
                             <option value="1">Sim</option>
                         </select>

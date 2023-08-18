@@ -226,7 +226,7 @@
                         <div class="form-group">
                             <label for="conta">Contas:</label>
                             <select class="form-control" name="transacao[conta_id]" style="width:100%;">
-                                <option value="">Sem Conta</option>
+                                <option value="-1">Sem Conta</option>
                                 <?php foreach ($contas as $conta): ?>
                                     <option value="<?php echo $conta['Contas']['id'] ?>"><?php echo $conta['Contas']['nome'] ?></option>
                                 <?php endforeach; ?>

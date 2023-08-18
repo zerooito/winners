@@ -901,6 +901,9 @@ CREATE TABLE contas (
   usuario_id INT,
   nome VARCHAR(20),
   saldo DECIMAL(10,4),
+  taxa_debito DECIMAL(10,4) NULL,
+  taxa_credito DECIMAL(10,4) NULL,
+  taxa_outros DECIMAL(10,4) NULL,
   principal TINYINT,
   ativo TINYINT,
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
@@ -943,6 +946,7 @@ CREATE TABLE extrato_contas (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT,
   valor DECIMAL(10, 4),
+  descricao VARCHAR(50) NULL,
   financeiro_id INT,
   conta_id INT,
   ativo TINYINT,

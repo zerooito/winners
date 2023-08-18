@@ -19,6 +19,7 @@
                         <?php endif; ?>
                         <p class="card-text">R$ <?php echo number_format($conta['Contas']['saldo'], 2, ',', '.') ?></p>
                         <a href="javascript:;" class="btn btn-primary">Ver Detalhes</a>
+                        <a href="javascript:depositarValor('<?php echo $conta['Contas']['id'] ?>', '<?php echo $conta['Contas']['nome'] ?>');" class="btn btn-danger">Depositar/Retirar</a>
                     </div>
                 </div>
             </div>
@@ -35,6 +36,44 @@
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="addDeposito" role="dialog" aria-labelledby="myModalLabel">
+    <form class="form" action="/contas/depositar" method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Depositar ou Retirar Valor <span id="conta-nome-deposito"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nome">Ação:</label>
+                        <select name="dados[acao]" class="form-control">
+                            <option value="retirar">Retirar</option>
+                            <option value="depositar">Depositar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nome">Valor:</label>
+                        <input type="text" class="form-control moeda" id="deposito" name="dados[valor]">
+                    </div>
+                    <div class="form-group">
+                        <label for="nome">Descrição:</label>
+                        <input type="text" class="form-control" name="dados[descricao]">
+                    </div>
+                    <input type="hidden" value="" name="dados[conta_id]" id="conta-id-deposito" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="addConta" role="dialog" aria-labelledby="myModalLabel">
@@ -55,6 +94,18 @@
                     <div class="form-group">
                         <label for="nome">Saldo:</label>
                         <input type="text" class="form-control moeda" id="saldo" name="dados[saldo]">
+                    </div>
+                    <div class="form-group">
+                        <label for="nome">Taxa Débito(%):</label>
+                        <input type="text" class="form-control moeda" name="dados[taxa_debito]">
+                    </div>
+                    <div class="form-group">
+                        <label for="nome">Taxa Crédito(%):</label>
+                        <input type="text" class="form-control moeda" name="dados[taxa_credito]">
+                    </div>
+                    <div class="form-group">
+                        <label for="nome">Taxa Outros (Pix)(%):</label>
+                        <input type="text" class="form-control moeda" name="dados[taxa_outros]">
                     </div>
                     <div class="form-group">
                         <label for="nome">Principal:</label>
@@ -78,3 +129,11 @@
         margin-bottom: 25px !important;
     }
 </style>
+
+<script type="text/javascript">
+    function depositarValor(id, nome) {
+        $('#conta-nome-deposito').html(nome)
+        $('#conta-id-deposito').val(id);
+        $('#addDeposito').modal('show');
+    }
+</script>

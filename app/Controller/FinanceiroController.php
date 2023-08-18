@@ -468,20 +468,88 @@ class FinanceiroController extends AppController
 			return $this->redirect('/financeiro/listar_cadastros');
 		}
 
-		$this->loadModel('ExtratoContas');
-
-		$extrato_contas = [
-			'usuario_id' => $financeiro_record['LancamentoVenda']['usuario_id'],
-			'valor' => $financeiro_record['LancamentoVenda']['valor'],
-			'financeiro_id' => $financeiro_record['LancamentoVenda']['id'],
-			'conta_id' => $conta_id,
-			'ativo' => 1
-		];
-
-		$this->ExtratoContas->save($extrato_contas);
+		$this->atualizarContaEAdicionarExtrato($conta_id, $financeiro_record);
 
 		$this->Session->setFlash('Lançamento inserido com sucesso!');
 		return $this->redirect('/financeiro/listar_cadastros');
+	}
+
+	public function atualizarContaEAdicionarExtrato($contaId, $lancamento)
+	{
+		$this->loadModel('ExtratoContas');
+		$this->loadModel('Contas');
+		$this->ExtratoContas->create();
+
+		if ($contaId == -1) {
+			return true;
+		}
+
+		if ($contaId === null) {
+			$conta = $this->Contas->find('first', array(
+				'conditions' => array(
+						'usuario_id' => $lancamento['LancamentoVenda']['usuario_id'],
+						'ativo' => 1,
+						'principal' => 1
+					)
+				)
+			);
+
+			$contaId = $conta['Contas']['id'];
+		} else {
+			$conta = $this->Contas->find('first', array(
+				'conditions' => array(
+					'id' => $contaId
+				)
+			));
+		}
+		
+		if (isset($lancamento['LancamentoVenda']['forma_pagamento']) && !empty($lancamento['LancamentoVenda']['forma_pagamento'])) {
+			$valor = $this->calcularNovoValorTaxa($lancamento['LancamentoVenda']['valor_pago'], $lancamento['LancamentoVenda']['forma_pagamento'], $conta['Contas']);
+		} else {
+			$valor = $lancamento['LancamentoVenda']['valor_pago'];
+		}
+
+		if ($lancamento['LancamentoVenda']['tipo'] == 'receita') {
+			$descricao = 'Movimentação feita no dia ' . date('d-m-Y H:i:s') . ' adicionando o valor de R$ ' . number_format($valor, 2, ',', '.');
+		} else {
+			$descricao = 'Movimentação feita no dia ' . date('d-m-Y H:i:s') . ' retirando o valor de R$ ' . number_format($valor, 2, ',', '.');
+		}
+
+		$extrato_conta = [
+			'usuario_id' => $lancamento['LancamentoVenda']['usuario_id'],
+			'valor' => $valor,
+			'financeiro_id' => $lancamento['LancamentoVenda']['id'],
+			'descricao' => $descricao,
+			'conta_id' => $contaId,
+			'ativo' => 1,
+		];
+
+		$this->ExtratoContas->save($extrato_conta);
+
+		if ($lancamento['LancamentoVenda']['tipo'] == 'receita') {
+			$this->Contas->id = $conta['Contas']['id'];
+			$this->Contas->save(['saldo' => $conta['Contas']['saldo'] + $valor]);
+		} else {
+			$this->Contas->id = $conta['Contas']['id'];
+			$this->Contas->save(['saldo' => $conta['Contas']['saldo'] - $valor]);
+		}
+	}
+
+	public function calcularNovoValorTaxa($valor, $formaPagamento, $conta)
+	{
+		if ($formaPagamento == 'cartao_debito' && $conta['taxa_debito'] > 0) {
+			return ($valor * $conta['taxa_debito']) - $valor;
+		}
+
+		if ($formaPagamento == 'cartao_credito' && $conta['taxa_credito'] > 0) {
+			return ($valor * $conta['taxa_credito']) - $valor;
+		}
+
+		if ($formaPagamento == 'pix' && $conta['taxa_outros'] > 0) {
+			return ($valor * $conta['taxa_outros']) - $valor;
+		}
+
+		return $valor;
 	}
 
 	public function buscarOuCriarCategoriaDespesaFinanceiro($usuarioId)

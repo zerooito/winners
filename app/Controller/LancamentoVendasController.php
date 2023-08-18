@@ -1,6 +1,7 @@
 <?php
 
 include 'CaixaController.php';
+include 'FinanceiroController.php';
 
 class LancamentoVendasController extends AppController {
 
@@ -37,35 +38,22 @@ class LancamentoVendasController extends AppController {
 				$lancamento['forma_pagamento'] = $forma_pagamento;
 				$lancamento['valor_pago'] = $dados['valor_pago_multiplo'][$i];
 
-				$this->LancamentoVenda->save($lancamento);
+				$lancamento_record = $this->LancamentoVenda->save($lancamento);
+
+				if ($forma_pagamento != 'dinheiro') {
+					$objFinanceiroController = new FinanceiroController();
+					$objFinanceiroController->atualizarContaEAdicionarExtrato(null, $lancamento_record);
+				}
 			}
 		} else {
 			$lancamento['forma_pagamento'] = $dados['forma_pagamento'];
-
 			$lancamento_venda = $this->LancamentoVenda->save($lancamento);
+
+			if ($dados['forma_pagamento'] != 'dinheiro') {
+				$objFinanceiroController = new FinanceiroController();
+				$objFinanceiroController->atualizarContaEAdicionarExtrato(null, $lancamento_venda);
+			}
 		}
-
-		$this->loadModel('ExtratoContas');
-		$this->loadModel('Contas');
-
-		$conta_principal = $this->Contas->find('first', array(
-			'conditions' => array(
-					'usuario_id' => $lancamento_venda['LancamentoVenda']['usuario_id'],
-					'ativo' => 1,
-					'principal' => 1
-				)
-			)
-		);
-
-		$extrato_conta = [
-			'usuario_id' => $lancamento_venda['LancamentoVenda']['usuario_id'],
-			'valor' => $lancamento_venda['LancamentoVenda']['valor'],
-			'financeiro_id' => $lancamento_venda['LancamentoVenda']['id'],
-			'conta_id' => $conta_principal['Contas']['id'],
-			'ativo' => 1,
-		];
-
-		$this->ExtratoContas->save($extrato_conta);
 
 		return true;
  	}

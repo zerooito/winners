@@ -224,6 +224,15 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="conta">Contas:</label>
+                            <select class="form-control" name="transacao[conta_id]" style="width:100%;">
+                                <option value="">Sem Conta</option>
+                                <?php foreach ($contas as $conta): ?>
+                                    <option value="<?php echo $conta['Contas']['id'] ?>"><?php echo $conta['Contas']['nome'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="categoria">Categoria:</label>
                             <select class="form-control" name="transacao[lancamento_categoria_id]" id="categoria-transacao" style="width:100%;"></select>
                         </div>
@@ -259,6 +268,31 @@
 
 <script type="text/javascript">
     $(window).load(function(){
+        $('#categoria-conta').select2({
+            dropdownParent: "#addContas",
+            placeholder: 'Escolha a conta',
+            ajax: {
+                url: "/financeiro/carregar_contas",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // parse the results into the format expected by Select2.
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+
         $('#categorias, #categoria-transacao').select2({
             dropdownParent: "#addTransacao",
             placeholder: 'Escolha a categoria',

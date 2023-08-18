@@ -320,12 +320,14 @@ class FuncionarioController extends AppController{
 		$html .= '					</tr>';
 		$html .= '';
 		$vendas = json_decode($pagamentoFuncionario['PagamentoFuncionario']['vendas']);
-		foreach ($vendas as $i => $venda) {
-			$html .= '					<tr>';
-			$html .= '						<td>#' . $venda->Venda->id . '</td>';
-			$html .= '						<td>' . date('d/m/Y', strtotime($venda->Venda->data_venda)) . '</td>';
-			$html .= '						<td>R$ ' . number_format($venda->Venda->valor, 2, ',', '.') . '</td>';
-			$html .= '					</tr>';
+		if (!empty($vendas)) {
+			foreach ($vendas as $i => $venda) {
+				$html .= '					<tr>';
+				$html .= '						<td>#' . $venda->Venda->id . '</td>';
+				$html .= '						<td>' . date('d/m/Y', strtotime($venda->Venda->data_venda)) . '</td>';
+				$html .= '						<td>R$ ' . number_format($venda->Venda->valor, 2, ',', '.') . '</td>';
+				$html .= '					</tr>';
+			}
 		}
 		$html .= '				</table>';
 		$html .= '			</td>';

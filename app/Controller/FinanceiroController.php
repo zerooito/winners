@@ -16,6 +16,24 @@ class FinanceiroController extends AppController
 		$this->layout = 'wadmin';
 
 		$this->set('lancamentos', $this->carregar_lancamentos_periodo());
+		$this->set('contas', $this->carregar_contas());
+	}
+
+	public function carregar_contas()
+	{
+		$this->loadModel('Contas');
+
+		$conditions = array(
+			'conditions' => array(
+				'Contas.ativo' => 1,
+				'Contas.usuario_id' => $this->instancia
+			),
+			'limit' => 50
+		);
+
+		$contas = $this->Contas->find('all', $conditions);
+
+		return $contas;
 	}
 
 	public function carregar_lancamentos_periodo()
@@ -317,7 +335,7 @@ class FinanceiroController extends AppController
 							$value = '<span class="badge badge-success">Receita</span>'; 
 						}
 
-						if (isset($lancamento['LancamentoCategoria']['tipo']) && $lancamento['LancamentoCategoria']['tipo'] == 'despesa') {
+						if ((isset($lancamento['LancamentoCategoria']['tipo']) && $lancamento['LancamentoCategoria']['tipo'] == 'despesa') || $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
 							$value = '<span class="badge badge-warning">Despesa</span>'; 
 						}
 					}
@@ -438,6 +456,8 @@ class FinanceiroController extends AppController
 
 		$transacao['ativo'] = 1;
 		$transacao['usuario_id'] = $this->instancia;
+		$conta_id = $transacao['conta_id'];
+		unset($transacao['conta_id']);
 
 		$this->loadModel('LancamentoVenda');
 
@@ -445,6 +465,12 @@ class FinanceiroController extends AppController
 			$this->Session->setFlash('Ocorreu um erro ao cadastrar o lançamento');
 			return $this->redirect('/financeiro/listar_cadastros');
 		}
+		pr($transacao);
+		pr($conta_id);exit;
+		$extrato_contas = [
+			'usuario_id' => $transacao['usuario_id'],
+			'valor' => str_replace(',', '', $transacao['valor']),
+		]
 
 		$this->Session->setFlash('Lançamento inserido com sucesso!');
 		return $this->redirect('/financeiro/listar_cadastros');

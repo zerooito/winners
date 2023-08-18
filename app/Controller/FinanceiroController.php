@@ -494,6 +494,10 @@ class FinanceiroController extends AppController
 				)
 			);
 
+			if (!isset($conta) || empty($conta)) {
+				return true;
+			}
+
 			$contaId = $conta['Contas']['id'];
 		} else {
 			$conta = $this->Contas->find('first', array(
@@ -501,6 +505,10 @@ class FinanceiroController extends AppController
 					'id' => $contaId
 				)
 			));
+
+			if (!isset($conta) || empty($conta)) {
+				return true;
+			}
 		}
 		
 		if (isset($lancamento['LancamentoVenda']['forma_pagamento']) && !empty($lancamento['LancamentoVenda']['forma_pagamento'])) {

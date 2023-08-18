@@ -18,7 +18,7 @@
                             <h5 class="card-title"><?php echo $conta['Contas']['nome'] ?></h5>
                         <?php endif; ?>
                         <p class="card-text">R$ <?php echo number_format($conta['Contas']['saldo'], 2, ',', '.') ?></p>
-                        <a href="javascript:;" class="btn btn-primary">Ver Detalhes</a>
+                        <a href="/contas/extrato/<?php echo $conta['Contas']['id'] ?>" class="btn btn-primary">Ver Extrato</a>
                         <a href="javascript:depositarValor('<?php echo $conta['Contas']['id'] ?>', '<?php echo $conta['Contas']['nome'] ?>');" class="btn btn-danger">Depositar/Retirar</a>
                     </div>
                 </div>

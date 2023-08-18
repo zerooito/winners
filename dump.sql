@@ -946,7 +946,7 @@ CREATE TABLE extrato_contas (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT,
   valor DECIMAL(10, 4),
-  descricao VARCHAR(50) NULL,
+  descricao VARCHAR(255) NULL,
   financeiro_id INT,
   conta_id INT,
   ativo TINYINT,

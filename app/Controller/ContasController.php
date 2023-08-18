@@ -69,4 +69,48 @@ class ContasController extends AppController {
 		}
 	}
 
+	public function extrato($id)
+	{
+		$this->layout = 'wadmin';
+
+		$this->loadModel('ExtratoContas');
+		$this->loadModel('Contas');
+		$this->loadModel('LancamentoVenda');
+
+		$conditions = array(
+			'conditions' => array(
+				'ExtratoContas.ativo' => 1,
+				'ExtratoContas.usuario_id' => $this->instancia,
+				'Contas.id' => $id
+			),
+			'joins' => array(
+			    array(
+			        'table' => 'contas',
+			        'alias' => 'Contas',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'ExtratoContas.conta_id = Contas.id',
+			        ),
+			    ),
+			    array(
+			        'table' => 'lancamento_vendas',
+			        'alias' => 'LancamentoVenda',
+			        'type' => 'LEFT',
+			        'conditions' => array(
+			            'ExtratoContas.financeiro_id = LancamentoVenda.id',
+			        ),
+			    ),
+			),
+			'fields' => array(
+				'LancamentoVenda.*', 'Contas.*', 'ExtratoContas.*'
+			),
+			'limit' => 100,
+			'order' => array('ExtratoContas.id' => 'desc')
+		);
+
+		$extrato_contas = $this->ExtratoContas->find('all', $conditions);
+
+		$this->set('extrato_contas', $extrato_contas);
+	}
+
 }

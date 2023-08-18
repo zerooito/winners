@@ -57,7 +57,7 @@
                                         <label>Desconto</label>
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-addon" id="sizing-addon3">R$</span>
-                                            <input type="text" class="form-control moeda" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
+                                            <input type="text" class="form-control" placeholder="R$" aria-describedby="sizing-addon3" id="valor_desconto_fixo" disabled>
                                         </div>
                                     </div>
 
@@ -522,7 +522,7 @@
             url: "/caixa/carregar_fechamento_caixa_dia_ajax",
             success: function(data) {
                 $('#data_abertura_final').val(data['caixa_atual']['Caixa']['data_abertura']);
-                $('#valor_inicial_final').val(number_format(data['caixa_atual']['Caixa']['valor_inicial'],2,',','.'));
+                $('#valor_inicial_final').val(number_format(data['caixa_atual']['Caixa']['valor_inicial'],2, ',', '.'));
                 $('#data_fechamento').val(data['caixa_atual']['Caixa']['data_fechamento']);
                 $('#valor_final_total').val(number_format(data['total_vendas'], 2, ',', '.'));
                 $('#valor_final_dinheiro').val(number_format(data['total_dinheiro'], 2, ',', '.'));

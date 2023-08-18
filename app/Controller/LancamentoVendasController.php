@@ -46,11 +46,22 @@ class LancamentoVendasController extends AppController {
 		}
 
 		$this->loadModel('ExtratoContas');
+		$this->loadModel('Contas');
+
+		$conta_principal = $this->Contas->find('first', array(
+			'conditions' => array(
+					'usuario_id' => $lancamento_venda['LancamentoVenda']['usuario_id'],
+					'ativo' => 1,
+					'principal' => 1
+				)
+			)
+		);
 
 		$extrato_conta = [
 			'usuario_id' => $lancamento_venda['LancamentoVenda']['usuario_id'],
 			'valor' => $lancamento_venda['LancamentoVenda']['valor'],
 			'financeiro_id' => $lancamento_venda['LancamentoVenda']['id'],
+			'conta_id' => $conta_principal['Contas']['id'],
 			'ativo' => 1,
 		];
 

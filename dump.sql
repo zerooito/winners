@@ -944,7 +944,11 @@ CREATE TABLE extrato_contas (
   usuario_id INT,
   valor DECIMAL(10, 4),
   financeiro_id INT,
+  conta_id INT,
   ativo TINYINT,
   FOREIGN KEY (financeiro_id) REFERENCES lancamento_vendas(id),
+  FOREIGN KEY (conta_id) REFERENCES contas(id),
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-)
+);
+
+ALTER TABLE `lancamento_vendas` ADD `tipo` VARCHAR(50) NOT NULL AFTER `caixa_id`;

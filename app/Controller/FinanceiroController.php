@@ -335,7 +335,7 @@ class FinanceiroController extends AppController
 							$value = '<span class="badge badge-success">Receita</span>'; 
 						}
 
-						if ((isset($lancamento['LancamentoCategoria']['tipo']) && $lancamento['LancamentoCategoria']['tipo'] == 'despesa') || $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
+						if ((isset($lancamento['LancamentoCategoria']['tipo']) && @$lancamento['LancamentoCategoria']['tipo'] == 'despesa') || $lancamento['LancamentoVenda']['tipo'] == 'despesa') {
 							$value = '<span class="badge badge-warning">Despesa</span>'; 
 						}
 					}
@@ -462,16 +462,23 @@ class FinanceiroController extends AppController
 
 		$this->loadModel('LancamentoVenda');
 
-		if (!$this->LancamentoVenda->save($transacao)) {
+		$financeiro_record = $this->LancamentoVenda->save($transacao);
+		if (!$financeiro_record) {
 			$this->Session->setFlash('Ocorreu um erro ao cadastrar o lançamento');
 			return $this->redirect('/financeiro/listar_cadastros');
 		}
-		pr($transacao);
-		pr($conta_id);exit;
+
+		$this->loadModel('ExtratoContas');
+
 		$extrato_contas = [
-			'usuario_id' => $transacao['usuario_id'],
-			'valor' => str_replace(',', '', $transacao['valor']),
-		]
+			'usuario_id' => $financeiro_record['LancamentoVenda']['usuario_id'],
+			'valor' => $financeiro_record['LancamentoVenda']['valor'],
+			'financeiro_id' => $financeiro_record['LancamentoVenda']['id'],
+			'conta_id' => $conta_id,
+			'ativo' => 1
+		];
+
+		$this->ExtratoContas->save($extrato_contas);
 
 		$this->Session->setFlash('Lançamento inserido com sucesso!');
 		return $this->redirect('/financeiro/listar_cadastros');

@@ -210,11 +210,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="date">Data de Vencimento:</label>
-                            <input type="date" class="form-control" id="data_vencimento" name="transacao[data_vencimento]">
+                            <input type="date" class="form-control" id="data_vencimento" name="transacao[data_vencimento]" required>
                         </div>
                         <div class="form-group">
                             <label for="date">Data de Pagamento:</label>
-                            <input type="date" class="form-control" id="data_pgt" name="transacao[data_pgt]">
+                            <input type="date" class="form-control" id="data_pgt" name="transacao[data_pgt]" required>
                         </div>
                         <div class="form-group">
                             <label for="tipo">Tipo: </label>

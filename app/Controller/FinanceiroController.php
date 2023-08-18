@@ -538,15 +538,15 @@ class FinanceiroController extends AppController
 	public function calcularNovoValorTaxa($valor, $formaPagamento, $conta)
 	{
 		if ($formaPagamento == 'cartao_debito' && $conta['taxa_debito'] > 0) {
-			return ($valor * $conta['taxa_debito']) - $valor;
+			return $valor - ($valor * ($conta['taxa_debito'] / 100));
 		}
 
 		if ($formaPagamento == 'cartao_credito' && $conta['taxa_credito'] > 0) {
-			return ($valor * $conta['taxa_credito']) - $valor;
+			return $valor - ($valor * ($conta['taxa_credito'] / 100));
 		}
 
 		if ($formaPagamento == 'pix' && $conta['taxa_outros'] > 0) {
-			return ($valor * $conta['taxa_outros']) - $valor;
+			return $valor - ($valor * ($conta['taxa_outros'] / 100));
 		}
 
 		return $valor;

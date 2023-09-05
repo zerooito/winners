@@ -27,6 +27,8 @@
                         <div class="text-white-50 small">Pago</div>
                     </div>
                 </div>
+
+                <small>As informações listadas são referentes ao ano <?php echo date('Y'); ?> para informações de outros periodos utilize os filtros abaixo.</small>
             </div>
         </div>
     </div>

@@ -44,8 +44,10 @@ class FinanceiroController extends AppController
 		$conditions = array('conditions' =>
 			array(
 				'LancamentoVenda.ativo' => 1,
-				'LancamentoVenda.usuario_id' => $this->instancia
-			),
+				'LancamentoVenda.usuario_id' => $this->instancia,
+				'LancamentoVenda.data_pgt >=' => date('Y-m-d', strtotime("01-01-Y")),
+				'LancamentoVenda.data_pgt <=' => date('Y-m-d')
+ 			),
 		);
 
 		$lancamentos = $this->LancamentoVenda->find('all', $conditions);

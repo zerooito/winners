@@ -119,15 +119,14 @@ class StatusVendaController extends AppController
 
 		$this->loadModel('StatusVenda');
 
-		$id = $this->request->data('id');
+		$this->StatusVenda->id = $this->request->data('id');
 
 		$dados = array('ativo' => '0');
-		$parametros = array('id' => $id);
 
-		if ($this->StatusVenda->updateAll($dados, $parametros)) {
-			$this->Session->setFlash('Status venda excluida com Sucesso!','default','good');
+		if ($this->StatusVenda->save($dados)) {
+			$this->Session->setFlash('Status venda excluida com Sucesso!', 'default', 'good');
 		} else {
-			$this->Session->setFlash('Erro ao excluir categoria!','default','good');
+			$this->Session->setFlash('Erro ao excluir categoria!', 'default', 'good');
 		}
 
 		return $this->redirect('/status_venda/listar_cadastros');

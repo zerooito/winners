@@ -40,66 +40,56 @@ class FinanceiroController extends AppController
 	{
 		$this->loadModel('LancamentoVenda');
 		$this->loadModel('LancamentoCategoria');
+		
+		if (!$this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
+			return [];
+		}
 
-		$conditions = array('conditions' =>
-			array(
-				'LancamentoVenda.ativo' => 1,
-				'LancamentoVenda.usuario_id' => $this->instancia,
-				'LancamentoVenda.data_pgt >=' => date('Y-m-d', strtotime("01-01-Y")),
-				'LancamentoVenda.data_pgt <=' => date('Y-m-d')
- 			),
-		);
+		$primeiro_dia_ano = date('Y-01-01');
+		$dia_atual = date('Y-m-d');
+		$query = "
+			SELECT 
+				SUM(valor_pago) as total_pago 
+			FROM 
+				lancamento_vendas 
+			WHERE
+				ativo = 1 AND
+				usuario_id = $this->instancia AND
+				data_pgt >=  '$primeiro_dia_ano' AND
+				data_pgt <= '$dia_atual'
+				AND tipo = 'despesa'
+		";
 
-		$lancamentos = $this->LancamentoVenda->find('all', $conditions);
+		$lancamentos_pagos = $this->LancamentoVenda->query($query);
+		$pago = $lancamentos_pagos[0][0]['total_pago'];
+
+		$query = "
+			SELECT SUM(valor_a_pagar) AS total_a_pagar
+			FROM (
+				SELECT
+					CASE
+						WHEN valor_pago < valor THEN valor
+						ELSE 0
+					END AS valor_a_pagar
+				FROM
+					lancamento_vendas
+				WHERE
+					ativo = 1
+					AND usuario_id = $this->instancia
+					AND data_pgt >= '$primeiro_dia_ano'
+					AND data_pgt <= '$dia_atual'
+					AND tipo = 'despesa'
+			) AS subquery;
+		";
+		$lancamentos_a_pagar = $this->LancamentoVenda->query($query);
+		$a_pagar = $lancamentos_a_pagar[0][0]['total_a_pagar'];
 		
 		$a_receber = 0;
-		$a_pagar = 0;
-		$pago = 0;
 		$total = 0;
 		$total_entradas = 0;
 		$total_saidas = 0;
-
-		if ($this->PermissoesHelper->usuario_possui_permissao_para('financeiro', 'read')) {
-			foreach ($lancamentos as $i => $lancamento)
-			{
-				$categoria = $this->LancamentoCategoria->find('first', array('conditions' =>
-						array(
-							'LancamentoCategoria.ativo' => 1,
-							'LancamentoCategoria.usuario_id' => $this->instancia,
-							'LancamentoCategoria.id' => !empty($lancamento['LancamentoVenda']['lancamento_categoria_id']) ? $lancamento['LancamentoVenda']['lancamento_categoria_id'] : ''
-						)
-					)
-				);
-
-				$lancamentos[$i]['Categoria'] = isset($categoria['LancamentoCategoria']) ? $categoria['LancamentoCategoria'] : array();
-
-				if (empty($categoria) || $categoria['LancamentoCategoria']['tipo'] == "receita") {
-					if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
-						$a_receber += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
-					}
-
-					// if ($lancamento['LancamentoVenda']['valor'] >= $lancamento['LancamentoVenda']['valor_pago']) {
-					// 	$total_entradas += $lancamento['LancamentoVenda']['valor'];
-					// }
-				}
-
-				if (empty($categoria))
-					continue;
-
-				if ($categoria['LancamentoCategoria']['tipo'] == "despesa") {
-					if ($lancamento['LancamentoVenda']['valor'] > $lancamento['LancamentoVenda']['valor_pago']) {
-						$a_pagar += $lancamento['LancamentoVenda']['valor'] - $lancamento['LancamentoVenda']['valor_pago'];
-					} else {
-						$pago += $lancamento['LancamentoVenda']['valor'];
-						// $total_saidas += $lancamento['LancamentoVenda']['valor'];
-					}
-				}
-
-			}
-		}
 			
 		$data = [
-			'lancamentos' => $lancamentos,
 			'a_receber' => $a_receber,
 			'a_pagar' => $a_pagar,
 			'pago' => $pago,

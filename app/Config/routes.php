@@ -46,6 +46,7 @@
 	Router::connect('/clientes-erp-ecommerce-software-sob-medida-winners', array('controller' => 'home', 'action' => 'cases'));
 	Router::connect('/quero-saber-como-funciona-winners-opensource', array('controller' => 'home', 'action' => 'contact'));
 	Router::connect('/cadastre-se', array('controller' => 'home', 'action' => 'register'));
+	Router::connect('/politica-privacidade', array('controller' => 'home', 'action' => 'privacyPolicy'));
 
 	require($caminho);
 /**

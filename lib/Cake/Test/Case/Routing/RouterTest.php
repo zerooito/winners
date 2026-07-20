@@ -2,25 +2,25 @@
 /**
  * RouterTest file
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Routing
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Router', 'Routing');
 App::uses('CakeResponse', 'Network');
 
 if (!defined('FULL_BASE_URL')) {
-	define('FULL_BASE_URL', 'http://cakephp.org');
+	define('FULL_BASE_URL', 'https://cakephp.org');
 }
 
 /**
@@ -191,6 +191,28 @@ class RouterTest extends CakeTestCase {
 	}
 
 /**
+ * testMapResources with custom connectOptions
+ */
+	public function testMapResourcesConnectOptions() {
+		App::build(array(
+			'Plugin' => array(
+				CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS
+			)
+		));
+		CakePlugin::load('TestPlugin');
+		App::uses('TestRoute', 'TestPlugin.Routing/Route');
+		Router::mapResources('Posts', array(
+			'connectOptions' => array(
+				'routeClass' => 'TestPlugin.TestRoute',
+				'foo' => '^(bar)$',
+			),
+		));
+		$route = end(Router::$routes);
+		$this->assertInstanceOf('TestRoute', $route);
+		$this->assertEquals('^(bar)$', $route->options['foo']);
+	}
+
+/**
  * Test mapResources with a plugin and prefix.
  *
  * @return void
@@ -216,7 +238,7 @@ class RouterTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 		$this->assertEquals(array('test_plugin'), $resources);
 
-		$resources = Router::mapResources('Posts', array('prefix' => 'api'));
+		Router::mapResources('Posts', array('prefix' => 'api'));
 
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$result = Router::parse('/api/posts');
@@ -975,6 +997,23 @@ class RouterTest extends CakeTestCase {
 	}
 
 /**
+ * Test that URL's fail to parse when they are prefixed with //
+ *
+ * @return void
+ */
+	public function testUrlParseFailureDoubleSlash() {
+		Router::connect('/posts', array('controller' => 'posts', 'action' => 'index'));
+		$result = Router::parse('/posts');
+		$this->assertEquals(
+			array('pass' => array(), 'named' => array(), 'plugin' => null, 'controller' => 'posts', 'action' => 'index'),
+			$result
+		);
+
+		$result = Router::parse('//posts');
+		$this->assertEquals(array(), $result);
+	}
+
+/**
  * testUrlParsing method
  *
  * @return void
@@ -1540,7 +1579,7 @@ class RouterTest extends CakeTestCase {
 		$request->base = '/';
 		Router::setRequestInfo($request);
 
-		$result = Router::parse('/admin/controller/index/type:whatever');
+		Router::parse('/admin/controller/index/type:whatever');
 		$result = Router::url(array('type' => 'new'));
 		$expected = "/admin/controller/index/type:new";
 		$this->assertEquals($expected, $result);
@@ -2299,10 +2338,10 @@ class RouterTest extends CakeTestCase {
 			'named' => array(), 'pass' => array(),
 			'param1' => '1', 'param2' => '2',
 		);
-		$this->assertEquals(Router::getParams(), $expected);
-		$this->assertEquals(Router::getParam('controller'), false);
-		$this->assertEquals(Router::getParam('param1'), '1');
-		$this->assertEquals(Router::getParam('param2'), '2');
+		$this->assertEquals($expected, Router::getParams());
+		$this->assertEquals(false, Router::getParam('controller'));
+		$this->assertEquals('1', Router::getParam('param1'));
+		$this->assertEquals('2', Router::getParam('param2'));
 
 		Router::reload();
 
@@ -2312,8 +2351,8 @@ class RouterTest extends CakeTestCase {
 			'plugin' => null, 'controller' => 'pages', 'action' => 'display',
 			'named' => array(), 'pass' => array(),
 		);
-		$this->assertEquals(Router::getParams(), $expected);
-		$this->assertEquals(Router::getParams(true), $expected);
+		$this->assertEquals($expected, Router::getParams());
+		$this->assertEquals($expected, Router::getParams(true));
 	}
 
 /**
@@ -2415,7 +2454,7 @@ class RouterTest extends CakeTestCase {
  * @return void
  */
 	public function testCustomRouteException() {
-		Router::connect('/:controller', array(), array('routeClass' => 'Object'));
+		Router::connect('/:controller', array(), array('routeClass' => 'CakeObject'));
 	}
 
 /**
@@ -2425,9 +2464,8 @@ class RouterTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testRouterReverse() {
+	public function testReverseToken() {
 		Router::$initialized = true;
-
 		$params = array(
 			'controller' => 'posts',
 			'action' => 'view',
@@ -2442,17 +2480,21 @@ class RouterTest extends CakeTestCase {
 		);
 		$result = Router::reverse($params);
 		$this->assertEquals('/posts/view/1', $result);
+	}
 
+	public function testReverseNamed() {
 		$params = array(
 			'controller' => 'posts',
 			'action' => 'index',
 			'pass' => array(1),
 			'named' => array('page' => 1, 'sort' => 'Article.title', 'direction' => 'desc'),
-			'url' => array()
+			'url' => array(),
 		);
 		$result = Router::reverse($params);
 		$this->assertEquals('/posts/index/1/page:1/sort:Article.title/direction:desc', $result);
+	}
 
+	public function testReverseLocalized() {
 		Router::connect('/:lang/:controller/:action/*', array(), array('lang' => '[a-z]{3}'));
 		$params = array(
 			'lang' => 'eng',
@@ -2460,11 +2502,14 @@ class RouterTest extends CakeTestCase {
 			'action' => 'view',
 			'pass' => array(1),
 			'named' => array(),
-			'url' => array('url' => 'eng/posts/view/1')
+			'url' => array('url' => 'eng/posts/view/1'),
 		);
 		$result = Router::reverse($params);
 		$this->assertEquals('/eng/posts/view/1', $result);
+	}
 
+	public function testReverseArrayQuery() {
+		Router::connect('/:lang/:controller/:action/*', array(), array('lang' => '[a-z]{3}'));
 		$params = array(
 			'lang' => 'eng',
 			'controller' => 'posts',
@@ -2473,11 +2518,14 @@ class RouterTest extends CakeTestCase {
 			'named' => array(),
 			'url' => array('url' => 'eng/posts/view/1', 'foo' => 'bar', 'baz' => 'quu'),
 			'paging' => array(),
-			'models' => array()
+			'models' => array(),
 		);
 		$result = Router::reverse($params);
 		$this->assertEquals('/eng/posts/view/1?foo=bar&baz=quu', $result);
+	}
 
+	public function testReverseCakeRequestQuery() {
+		Router::connect('/:lang/:controller/:action/*', array(), array('lang' => '[a-z]{3}'));
 		$request = new CakeRequest('/eng/posts/view/1');
 		$request->addParams(array(
 			'lang' => 'eng',
@@ -2490,17 +2538,62 @@ class RouterTest extends CakeTestCase {
 		$result = Router::reverse($request);
 		$expected = '/eng/posts/view/1?test=value';
 		$this->assertEquals($expected, $result);
+	}
 
+	public function testReverseFull() {
+		Router::connect('/:lang/:controller/:action/*', array(), array('lang' => '[a-z]{3}'));
 		$params = array(
 			'lang' => 'eng',
 			'controller' => 'posts',
 			'action' => 'view',
 			'pass' => array(1),
 			'named' => array(),
-			'url' => array('url' => 'eng/posts/view/1')
+			'url' => array('url' => 'eng/posts/view/1'),
 		);
 		$result = Router::reverse($params, true);
 		$this->assertRegExp('/^http(s)?:\/\//', $result);
+	}
+
+	public function testReverseToArrayNamed() {
+		$params = array(
+			'controller' => 'posts',
+			'action' => 'index',
+			'pass' => array(123),
+			'named' => array('page' => 123, 'sort' => 'Article.title', 'direction' => 'desc'),
+			'url' => array(),
+		);
+		$result = Router::reverseToArray($params);
+		$expected = array(
+			'controller' => 'posts',
+			'action' => 'index',
+			123,
+			'page' => 123,
+			'sort' => 'Article.title',
+			'direction' => 'desc',
+		);
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testReverseToArrayCakeRequestQuery() {
+		$request = new CakeRequest('/posts/view/123');
+		$request->addParams(array(
+			'controller' => 'posts',
+			'action' => 'view',
+			'pass' => array(123),
+			'named' => array(),
+		));
+		$request->query = array('url' => 'eng/posts/view/123', 'test' => 'value');
+		$result = Router::reverseToArray($request);
+		$expected = array(
+			'plugin' => null,
+			'controller' => 'posts',
+			'action' => 'view',
+			123,
+			'?' => array(
+				'test' => 'value',
+			),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -2762,7 +2855,7 @@ class RouterTest extends CakeTestCase {
  * @return void
  */
 	public function testSettingInvalidDefaultRouteException() {
-		Router::defaultRouteClass('Object');
+		Router::defaultRouteClass('CakeObject');
 	}
 
 /**

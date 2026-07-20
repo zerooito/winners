@@ -2,18 +2,18 @@
 /**
  * HtmlHelperTest file
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Controller', 'Controller');
@@ -23,9 +23,10 @@ App::uses('HtmlHelper', 'View/Helper');
 App::uses('FormHelper', 'View/Helper');
 App::uses('ClassRegistry', 'Utility');
 App::uses('Folder', 'Utility');
+App::uses('CakePlugin', 'Core');
 
 if (!defined('FULL_BASE_URL')) {
-	define('FULL_BASE_URL', 'http://cakephp.org');
+	define('FULL_BASE_URL', 'https://cakephp.org');
 }
 
 /**
@@ -45,7 +46,7 @@ class TheHtmlTestController extends Controller {
 /**
  * uses property
  *
- * @var mixed null
+ * @var mixed
  */
 	public $uses = null;
 }
@@ -443,8 +444,8 @@ class HtmlHelperTest extends CakeTestCase {
 		$result = $this->Html->image('test.gif', array('pathPrefix' => '/my/custom/path/'));
 		$this->assertTags($result, array('img' => array('src' => '/my/custom/path/test.gif', 'alt' => '')));
 
-		$result = $this->Html->image('test.gif', array('pathPrefix' => 'http://cakephp.org/assets/img/'));
-		$this->assertTags($result, array('img' => array('src' => 'http://cakephp.org/assets/img/test.gif', 'alt' => '')));
+		$result = $this->Html->image('test.gif', array('pathPrefix' => 'https://cakephp.org/assets/img/'));
+		$this->assertTags($result, array('img' => array('src' => 'https://cakephp.org/assets/img/test.gif', 'alt' => '')));
 
 		$result = $this->Html->image('test.gif', array('pathPrefix' => '//cakephp.org/assets/img/'));
 		$this->assertTags($result, array('img' => array('src' => '//cakephp.org/assets/img/test.gif', 'alt' => '')));
@@ -553,6 +554,40 @@ class HtmlHelperTest extends CakeTestCase {
 	}
 
 /**
+ * testBase64ImageTag method
+ *
+ * @return void
+ */
+	public function testBase64ImageTag() {
+		$this->Html->request->webroot = '';
+
+		$result = $this->Html->image('cake.icon.png', array('base64' => true));
+		$this->assertTags($result, array(
+			'img' => array(
+				'src' => 'preg:/data:image\/png;base64,(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})/',
+				'alt' => ''
+			)));
+
+		$result = $this->Html->image('/img/cake.icon.png', array('base64' => true));
+		$this->assertTags($result, array(
+			'img' => array(
+				'src' => 'preg:/data:image\/png;base64,(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})/',
+				'alt' => ''
+			)));
+	}
+
+/**
+ * testLoadConfigWrongFile method
+ *
+ * @return void
+ * @expectedException InvalidArgumentException
+ */
+	public function testBase64InvalidArgumentException() {
+		$this->Html->request->webroot = '';
+		$this->Html->image('non-existent-image.png', array('base64' => true));
+	}
+
+/**
  * test theme assets in main webroot path
  *
  * @return void
@@ -643,8 +678,8 @@ class HtmlHelperTest extends CakeTestCase {
 		$expected['link']['href'] = '/my/custom/path/cake.generic.css';
 		$this->assertTags($result, $expected);
 
-		$result = $this->Html->css('cake.generic', array('pathPrefix' => 'http://cakephp.org/assets/css/'));
-		$expected['link']['href'] = 'http://cakephp.org/assets/css/cake.generic.css';
+		$result = $this->Html->css('cake.generic', array('pathPrefix' => 'https://cakephp.org/assets/css/'));
+		$expected['link']['href'] = 'https://cakephp.org/assets/css/cake.generic.css';
 		$this->assertTags($result, $expected);
 
 		$previousConfig = Configure::read('App.cssBaseUrl');
@@ -691,6 +726,31 @@ class HtmlHelperTest extends CakeTestCase {
 			'style' => array('type' => 'text/css'),
 			'preg:/@import url\(.*css\/screen\.css\);/',
 			'/style'
+		);
+		$this->assertTags($result, $expected);
+	}
+
+/**
+ * Test css() with once option.
+ *
+ * @return void
+ */
+	public function testCssLinkOnce() {
+		Configure::write('Asset.filter.css', false);
+
+		$result = $this->Html->css('screen', array('once' => true));
+		$expected = array(
+			'link' => array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => 'preg:/.*css\/screen\.css/')
+		);
+		$this->assertTags($result, $expected);
+
+		$result = $this->Html->css('screen', array('once' => true));
+		$this->assertEquals('', $result);
+
+		// Default is once=false
+		$result = $this->Html->css('screen');
+		$expected = array(
+			'link' => array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => 'preg:/.*css\/screen\.css/')
 		);
 		$this->assertTags($result, $expected);
 	}
@@ -874,6 +934,22 @@ class HtmlHelperTest extends CakeTestCase {
 	}
 
 /**
+ * Resource names must be treated differently for css() and script()
+ *
+ * @return void
+ */
+	public function testBufferedCssAndScriptWithIdenticalResourceName() {
+		$this->View->expects($this->at(0))
+			->method('append')
+			->with('css', $this->stringContains('test.min.css'));
+		$this->View->expects($this->at(1))
+			->method('append')
+			->with('script', $this->stringContains('test.min.js'));
+		$this->Html->css('test.min', array('inline' => false));
+		$this->Html->script('test.min', array('inline' => false));
+	}
+
+/**
  * test timestamp enforcement for script tags.
  *
  * @return void
@@ -906,7 +982,7 @@ class HtmlHelperTest extends CakeTestCase {
 	public function testPluginScriptTimestamping() {
 		CakePlugin::load('TestPlugin');
 
-		$pluginPath = App::pluginPath('TestPlugin');
+		$pluginPath = CakePlugin::path('TestPlugin');
 		$pluginJsPath = $pluginPath . 'webroot/js';
 		$this->skipIf(!is_writable($pluginJsPath), $pluginJsPath . ' is not Writable, timestamp testing has been skipped.');
 
@@ -993,9 +1069,9 @@ class HtmlHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
-		$result = $this->Html->script('foo3', array('pathPrefix' => 'http://cakephp.org/assets/js/'));
+		$result = $this->Html->script('foo3', array('pathPrefix' => 'https://cakephp.org/assets/js/'));
 		$expected = array(
-			'script' => array('type' => 'text/javascript', 'src' => 'http://cakephp.org/assets/js/foo3.js')
+			'script' => array('type' => 'text/javascript', 'src' => 'https://cakephp.org/assets/js/foo3.js')
 		);
 		$this->assertTags($result, $expected);
 
@@ -1424,6 +1500,28 @@ class HtmlHelperTest extends CakeTestCase {
 			'Fourth'
 		);
 		$this->assertTags($result, $expected);
+
+		$this->Html->addCrumb('Zeroth', '#zeroth', array('prepend' => true));
+
+		$result = $this->Html->getCrumbs();
+		$expected = array(
+			array('a' => array('href' => '#zeroth')),
+			'Zeroth',
+			'/a',
+			'&raquo;',
+			array('a' => array('href' => '#first')),
+			'First',
+			'/a',
+			'&raquo;',
+			array('a' => array('href' => '#second')),
+			'Second',
+			'/a',
+			'&raquo;',
+			array('a' => array('href' => '#third')),
+			'Third',
+			'/a',
+		);
+		$this->assertTags($result, $expected);
 	}
 
 /**
@@ -1713,7 +1811,6 @@ class HtmlHelperTest extends CakeTestCase {
 
 		$result = $this->Html->meta('keywords', 'these, are, some, meta, keywords');
 		$this->assertTags($result, array('meta' => array('name' => 'keywords', 'content' => 'these, are, some, meta, keywords')));
-		$this->assertRegExp('/\s+\/>$/', $result);
 
 		$result = $this->Html->meta('description', 'this is the meta description');
 		$this->assertTags($result, array('meta' => array('name' => 'description', 'content' => 'this is the meta description')));
@@ -1884,6 +1981,21 @@ class HtmlHelperTest extends CakeTestCase {
 		$result = $this->Html->tableCells($tr, array('class' => 'odd'), array('class' => 'even'), false, false);
 		$expected = "<tr class=\"odd\"><td>td content 1</td> <td>td content 2</td> <td>td content 3</td></tr>\n<tr class=\"even\"><td>td content 1</td> <td>td content 2</td> <td>td content 3</td></tr>\n<tr class=\"odd\"><td>td content 1</td> <td>td content 2</td> <td>td content 3</td></tr>";
 		$this->assertEquals($expected, $result);
+
+		$tr = array(
+			'td content 1',
+			'td content 2',
+			array('td content 3', array('class' => 'foo'))
+		);
+		$result = $this->Html->tableCells($tr, null, null, true);
+		$expected = array(
+			'<tr',
+			array('td' => array('class' => 'column-1')), 'td content 1', '/td',
+			array('td' => array('class' => 'column-2')), 'td content 2', '/td',
+			array('td' => array('class' => 'foo column-3')), 'td content 3', '/td',
+			'/tr'
+		);
+		$this->assertTags($result, $expected);
 	}
 
 /**

@@ -2,18 +2,18 @@
 /**
  * CakeRequest Test case file.
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Routing.Route
  * @since         CakePHP(tm) v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeRoute', 'Routing/Route');
@@ -874,6 +874,23 @@ class CakeRouteTest extends CakeTestCase {
 	}
 
 /**
+ * Test match() with trailing ** style routes.
+ *
+ * @return void
+ */
+	public function testMatchTrailing() {
+		$route = new CakeRoute('/pages/**', array('controller' => 'pages', 'action' => 'display'));
+		$id = 'test/ spaces/漢字/la†în';
+		$result = $route->match(array(
+			'controller' => 'pages',
+			'action' => 'display',
+			$id
+		));
+		$expected = '/pages/test/%20spaces/%E6%BC%A2%E5%AD%97/la%E2%80%A0%C3%AEn';
+		$this->assertEquals($expected, $result);
+	}
+
+/**
  * test restructuring args with pass key
  *
  * @return void
@@ -958,6 +975,36 @@ class CakeRouteTest extends CakeTestCase {
 		$result = $route->parse('/weblog');
 		$expected = array('section' => 'weblog', 'plugin' => 'blogs', 'controller' => 'posts', 'action' => 'index', 'pass' => array(), 'named' => array());
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test for __set_state magic method on CakeRoute
+ *
+ * @return void
+ */
+	public function testSetState() {
+		$route = CakeRoute::__set_state(array(
+			'keys' => array(),
+			'options' => array(),
+			'defaults' => array(
+				'controller' => 'pages',
+				'action' => 'display',
+				'home',
+			),
+			'template' => '/',
+			'_greedy' => false,
+			'_compiledRoute' => null,
+			'_headerMap' => array (
+				'type' => 'content_type',
+				'method' => 'request_method',
+				'server' => 'server_name',
+			),
+		));
+		$this->assertInstanceOf('CakeRoute', $route);
+		$this->assertSame('/', $route->match(array('controller' => 'pages', 'action' => 'display', 'home')));
+		$this->assertFalse($route->match(array('controller' => 'pages', 'action' => 'display', 'about')));
+		$expected = array('controller' => 'pages', 'action' => 'display', 'pass' => array('home'), 'named' => array());
+		$this->assertEquals($expected, $route->parse('/'));
 	}
 
 }

@@ -2,27 +2,28 @@
 /**
  * CommandListShellTest file
  *
- * CakePHP :  Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP :  Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP Project
  * @package       Cake.Test.Case.Console.Command
  * @since         CakePHP v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CommandListShell', 'Console/Command');
 App::uses('ConsoleOutput', 'Console');
 App::uses('ConsoleInput', 'Console');
 App::uses('Shell', 'Console');
+App::uses('CommandTask', 'Console/Command/Task');
 
 /**
- * Class TestStringOutput
+ * TestStringOutput
  *
  * @package       Cake.Test.Case.Console.Command
  */
@@ -37,7 +38,7 @@ class TestStringOutput extends ConsoleOutput {
 }
 
 /**
- * Class CommandListShellTest
+ * CommandListShellTest
  *
  * @package       Cake.Test.Case.Console.Command
  */
@@ -65,6 +66,12 @@ class CommandListShellTest extends CakeTestCase {
 
 		$this->Shell = $this->getMock(
 			'CommandListShell',
+			array('in', '_stop', 'clear'),
+			array($out, $out, $in)
+		);
+
+		$this->Shell->Command = $this->getMock(
+			'CommandTask',
 			array('in', '_stop', 'clear'),
 			array($out, $out, $in)
 		);
@@ -96,7 +103,7 @@ class CommandListShellTest extends CakeTestCase {
 		$expected = "/\[.*TestPluginTwo.*\] example, welcome/";
 		$this->assertRegExp($expected, $output);
 
-		$expected = "/\[.*CORE.*\] acl, api, bake, command_list, console, i18n, schema, server, test, testsuite, upgrade/";
+		$expected = "/\[.*CORE.*\] acl, api, bake, command_list, completion, console, i18n, schema, server, test, testsuite, upgrade/";
 		$this->assertRegExp($expected, $output);
 
 		$expected = "/\[.*app.*\] sample/";

@@ -2,18 +2,18 @@
 /**
  * SessionTest file
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Model.Datasource
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeSession', 'Model/Datasource');
@@ -21,24 +21,24 @@ App::uses('DatabaseSession', 'Model/Datasource/Session');
 App::uses('CacheSession', 'Model/Datasource/Session');
 
 /**
- * Class TestCakeSession
+ * TestCakeSession
  *
  * @package       Cake.Test.Case.Model.Datasource
  */
 class TestCakeSession extends CakeSession {
 
 	public static function setUserAgent($value) {
-		self::$_userAgent = $value;
+		static::$_userAgent = $value;
 	}
 
 	public static function setHost($host) {
-		self::_setHost($host);
+		static::_setHost($host);
 	}
 
 }
 
 /**
- * Class TestCacheSession
+ * TestCacheSession
  *
  * @package       Cake.Test.Case.Model.Datasource
  */
@@ -51,7 +51,7 @@ class TestCacheSession extends CacheSession {
 }
 
 /**
- * Class TestDatabaseSession
+ * TestDatabaseSession
  *
  * @package       Cake.Test.Case.Model.Datasource
  */
@@ -86,7 +86,7 @@ class CakeSessionTest extends CakeTestCase {
  */
 	public static function setupBeforeClass() {
 		// Make sure garbage colector will be called
-		self::$_gcDivisor = ini_get('session.gc_divisor');
+		static::$_gcDivisor = ini_get('session.gc_divisor');
 		ini_set('session.gc_divisor', '1');
 	}
 
@@ -97,7 +97,7 @@ class CakeSessionTest extends CakeTestCase {
  */
 	public static function teardownAfterClass() {
 		// Revert to the default setting
-		ini_set('session.gc_divisor', self::$_gcDivisor);
+		ini_set('session.gc_divisor', static::$_gcDivisor);
 	}
 
 /**
@@ -114,7 +114,6 @@ class CakeSessionTest extends CakeTestCase {
 			'cookieTimeout' => 120,
 			'ini' => array(),
 		));
-		TestCakeSession::init();
 	}
 
 /**
@@ -281,7 +280,7 @@ class CakeSessionTest extends CakeTestCase {
  * @return void
  */
 	public function testReadyEmpty() {
-		$this->assertFalse(TestCakeSession::read(''));
+		$this->assertNull(TestCakeSession::read(''));
 	}
 
 /**
@@ -308,9 +307,9 @@ class CakeSessionTest extends CakeTestCase {
  * @return void
  */
 	public function testWriteEmptyKey() {
-		$this->assertFalse(TestCakeSession::write('', 'graham'));
-		$this->assertFalse(TestCakeSession::write('', ''));
-		$this->assertFalse(TestCakeSession::write(''));
+		$this->assertTrue(TestCakeSession::write('', 'graham'));
+		$this->assertTrue(TestCakeSession::write('', ''));
+		$this->assertTrue(TestCakeSession::write(''));
 	}
 
 /**
@@ -327,6 +326,28 @@ class CakeSessionTest extends CakeTestCase {
 			array('values'),
 			TestCakeSession::read('Some.string.array')
 		);
+	}
+
+/**
+ * Test consuming session data.
+ *
+ * @return void
+ */
+	public function testConsume() {
+		TestCakeSession::write('Some.string', 'value');
+		TestCakeSession::write('Some.array', array('key1' => 'value1', 'key2' => 'value2'));
+		$this->assertEquals('value', TestCakeSession::read('Some.string'));
+		$value = TestCakeSession::consume('Some.string');
+		$this->assertEquals('value', $value);
+		$this->assertFalse(TestCakeSession::check('Some.string'));
+		$value = TestCakeSession::consume('');
+		$this->assertNull($value);
+		$value = TestCakeSession::consume(null);
+		$this->assertNull($value);
+		$value = TestCakeSession::consume('Some.array');
+		$expected = array('key1' => 'value1', 'key2' => 'value2');
+		$this->assertEquals($expected, $value);
+		$this->assertFalse(TestCakeSession::check('Some.array'));
 	}
 
 /**
@@ -372,9 +393,45 @@ class CakeSessionTest extends CakeTestCase {
 		$this->assertTrue(TestCakeSession::check('Delete'));
 
 		$this->assertTrue(TestCakeSession::write('Clearing.sale', 'everything must go'));
+		$this->assertFalse(TestCakeSession::delete(''));
+		$this->assertTrue(TestCakeSession::check('Clearing.sale'));
+		$this->assertFalse(TestCakeSession::delete(null));
+		$this->assertTrue(TestCakeSession::check('Clearing.sale'));
+
 		$this->assertTrue(TestCakeSession::delete('Clearing'));
 		$this->assertFalse(TestCakeSession::check('Clearing.sale'));
 		$this->assertFalse(TestCakeSession::check('Clearing'));
+	}
+
+/**
+ * test delete
+ *
+ * @return void
+ */
+	public function testDeleteEmptyString() {
+		TestCakeSession::write('', 'empty string');
+		$this->assertTrue(TestCakeSession::delete(''));
+		$this->assertFalse(TestCakeSession::check(''));
+	}
+
+/**
+ * testClear method
+ *
+ * @return void
+ */
+	public function testClear() {
+		$this->assertTrue(TestCakeSession::write('Delete.me', 'Clearing out'));
+		TestCakeSession::clear(false);
+		$this->assertFalse(TestCakeSession::check('Delete.me'));
+		$this->assertFalse(TestCakeSession::check('Delete'));
+
+		TestCakeSession::write('Some.string', 'value');
+		TestCakeSession::clear(false);
+		$this->assertNull(TestCakeSession::read('Some'));
+
+		TestCakeSession::write('Some.string.array', array('values'));
+		TestCakeSession::clear(false);
+		$this->assertFalse(TestCakeSession::read());
 	}
 
 /**
@@ -430,7 +487,8 @@ class CakeSessionTest extends CakeTestCase {
  * @return void
  */
 	public function testCheckEmpty() {
-		$this->assertFalse(TestCakeSession::check());
+		$this->assertFalse(TestCakeSession::check(''));
+		$this->assertFalse(TestCakeSession::check(null));
 	}
 
 /**
@@ -441,10 +499,10 @@ class CakeSessionTest extends CakeTestCase {
 	public function testKeyExploit() {
 		$key = "a'] = 1; phpinfo(); \$_SESSION['a";
 		$result = TestCakeSession::write($key, 'haxored');
-		$this->assertTrue($result);
+		$this->assertFalse($result);
 
 		$result = TestCakeSession::read($key);
-		$this->assertEquals('haxored', $result);
+		$this->assertNull($result);
 	}
 
 /**
@@ -453,6 +511,10 @@ class CakeSessionTest extends CakeTestCase {
  * @return void
  */
 	public function testReadingSavedEmpty() {
+		TestCakeSession::write('', 'empty string');
+		$this->assertTrue(TestCakeSession::check(''));
+		$this->assertEquals('empty string', TestCakeSession::read(''));
+
 		TestCakeSession::write('SessionTestCase', 0);
 		$this->assertEquals(0, TestCakeSession::read('SessionTestCase'));
 
@@ -464,7 +526,23 @@ class CakeSessionTest extends CakeTestCase {
 		$this->assertFalse(TestCakeSession::read('SessionTestCase'));
 
 		TestCakeSession::write('SessionTestCase', null);
-		$this->assertEquals(null, TestCakeSession::read('SessionTestCase'));
+		$this->assertNull(TestCakeSession::read('SessionTestCase'));
+	}
+
+/**
+ * Test te cacheLimiter settings.
+ *
+ * @return void
+ */
+	public function testCacheLimiter() {
+		Configure::write('Session.cacheLimiter', 'public');
+		TestCakeSession::start();
+		$this->assertSame('public', session_cache_limiter());
+
+		Configure::write('Session.cacheLimiter', 'private');
+		TestCakeSession::destroy();
+		TestCakeSession::start();
+		$this->assertSame('private', session_cache_limiter());
 	}
 
 /**

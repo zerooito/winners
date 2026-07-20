@@ -4,18 +4,18 @@
  *
  * Holds several tests
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Core
  * @since         CakePHP(tm) v 1.2.0.5432
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('PhpReader', 'Configure');
@@ -69,6 +69,7 @@ class ConfigureTest extends CakeTestCase {
 
 /**
  * Test to ensure bootrapping doesn't overwrite prior configs set under 'App' key
+ *
  * @return void
  */
 	public function testBootstrap() {
@@ -149,6 +150,39 @@ class ConfigureTest extends CakeTestCase {
 	}
 
 /**
+ * Test the consume method.
+ *
+ * @return void
+ */
+	public function testConsume() {
+		$this->assertNull(Configure::consume('DoesNotExist'), 'Should be null on empty value');
+		Configure::write('Test', array('key' => 'value', 'key2' => 'value2'));
+
+		$result = Configure::consume('Test.key');
+		$this->assertEquals('value', $result);
+
+		$result = Configure::read('Test.key2');
+		$this->assertEquals('value2', $result, 'Other values should remain.');
+
+		$result = Configure::consume('Test');
+		$expected = array('key2' => 'value2');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * testConsumeEmpty
+ *
+ * @return void
+ */
+	public function testConsumeEmpty() {
+		Configure::write('Test', array('key' => 'value', 'key2' => 'value2'));
+		$result = Configure::consume('');
+		$this->assertNull($result);
+		$result = Configure::consume(null);
+		$this->assertNull($result);
+	}
+
+/**
  * test setting display_errors with debug.
  *
  * @return void
@@ -175,7 +209,7 @@ class ConfigureTest extends CakeTestCase {
 
 		Configure::delete('SomeName.someKey');
 		$result = Configure::read('SomeName.someKey');
-		$this->assertTrue($result === null);
+		$this->assertNull($result);
 
 		Configure::write('SomeName', array('someKey' => 'myvalue', 'otherKey' => 'otherValue'));
 
@@ -188,10 +222,10 @@ class ConfigureTest extends CakeTestCase {
 		Configure::delete('SomeName');
 
 		$result = Configure::read('SomeName.someKey');
-		$this->assertTrue($result === null);
+		$this->assertNull($result);
 
 		$result = Configure::read('SomeName.otherKey');
-		$this->assertTrue($result === null);
+		$this->assertNull($result);
 	}
 
 /**
@@ -245,7 +279,8 @@ class ConfigureTest extends CakeTestCase {
  * @return void
  */
 	public function testCheckEmpty() {
-		$this->assertFalse(Configure::check());
+		$this->assertFalse(Configure::check(''));
+		$this->assertFalse(Configure::check(null));
 	}
 
 /**
@@ -416,10 +451,16 @@ class ConfigureTest extends CakeTestCase {
  *
  * @expectedException PHPUnit_Framework_Error
  * @return void
+ * @throws PHPUnit_Framework_Error
  */
 	public function testReaderExceptionOnIncorrectClass() {
 		$reader = new StdClass();
-		Configure::config('test', $reader);
+
+		try {
+			Configure::config('test', $reader);
+		} catch (TypeError $e) {
+			throw new PHPUnit_Framework_Error('Raised an error', 100, __FILE__, __LINE__);
+		}
 	}
 
 /**
@@ -435,6 +476,8 @@ class ConfigureTest extends CakeTestCase {
 	}
 
 /**
+ * testDumpNoAdapter
+ *
  * @expectedException ConfigureException
  * @return void
  */

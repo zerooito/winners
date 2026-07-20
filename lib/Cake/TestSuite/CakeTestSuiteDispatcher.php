@@ -2,22 +2,38 @@
 /**
  * CakeTestSuiteDispatcher controls dispatching TestSuite web based requests.
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.TestSuite
  * @since         CakePHP(tm) v 1.3
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+/**
+ * Path to the tests directory of the app.
+ */
+if (!defined('TESTS')) {
+	define('TESTS', APP . 'Test' . DS);
+}
+
+/**
+ * Path to the test cases directory of CakePHP.
+ */
 define('CORE_TEST_CASES', CAKE . 'Test' . DS . 'Case');
-define('APP_TEST_CASES', TESTS . 'Case');
+
+/**
+ * Path to the test cases directory of the app.
+ */
+if (!defined('APP_TEST_CASES')) {
+	define('APP_TEST_CASES', TESTS . 'Case');
+}
 
 App::uses('CakeTestSuiteCommand', 'TestSuite');
 
@@ -37,7 +53,7 @@ class CakeTestSuiteDispatcher {
 		'codeCoverage' => false,
 		'case' => null,
 		'core' => false,
-		'app' => true,
+		'app' => false,
 		'plugin' => null,
 		'output' => 'html',
 		'show' => 'groups',
@@ -63,7 +79,7 @@ class CakeTestSuiteDispatcher {
 /**
  * boolean to set auto parsing of params.
  *
- * @var boolean
+ * @var bool
  */
 	protected $_paramsParsed = false;
 
@@ -130,17 +146,35 @@ class CakeTestSuiteDispatcher {
 /**
  * Checks for the existence of the test framework files
  *
- * @return boolean true if found, false otherwise
+ * @return bool true if found, false otherwise
  */
 	public function loadTestFramework() {
 		if (class_exists('PHPUnit_Framework_TestCase')) {
 			return true;
 		}
-		foreach (App::path('vendors') as $vendor) {
+		$phpunitPath = 'phpunit' . DS . 'phpunit';
+		if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+			$composerGlobalDir[] = env('APPDATA') . DS . 'Composer' . DS . 'vendor' . DS;
+		} else {
+			$composerGlobalDir[] = env('HOME') . DS . '.composer' . DS . 'vendor' . DS;
+		}
+		$vendors = array_merge(App::path('vendors'), $composerGlobalDir);
+		foreach ($vendors as $vendor) {
 			$vendor = rtrim($vendor, DS);
-			if (is_dir($vendor . DS . 'PHPUnit')) {
+			if (is_dir($vendor . DS . $phpunitPath)) {
+				ini_set('include_path', $vendor . DS . $phpunitPath . PATH_SEPARATOR . ini_get('include_path'));
+				break;
+			} elseif (is_dir($vendor . DS . 'PHPUnit')) {
 				ini_set('include_path', $vendor . PATH_SEPARATOR . ini_get('include_path'));
 				break;
+			} elseif (is_file($vendor . DS . 'phpunit.phar')) {
+				$backup = $GLOBALS['_SERVER']['SCRIPT_NAME'];
+				$GLOBALS['_SERVER']['SCRIPT_NAME'] = '-';
+				ob_start();
+				$included = include_once $vendor . DS . 'phpunit.phar';
+				ob_end_clean();
+				$GLOBALS['_SERVER']['SCRIPT_NAME'] = $backup;
+				return $included;
 			}
 		}
 		include 'PHPUnit' . DS . 'Autoload.php';
@@ -238,7 +272,7 @@ class CakeTestSuiteDispatcher {
 		restore_error_handler();
 
 		try {
-			self::time();
+			static::time();
 			$command = new CakeTestSuiteCommand('CakeTestLoader', $commandArgs);
 			$command->run($options);
 		} catch (MissingConnectionException $exception) {
@@ -252,8 +286,8 @@ class CakeTestSuiteDispatcher {
 /**
  * Sets a static timestamp
  *
- * @param boolean $reset to set new static timestamp.
- * @return integer timestamp
+ * @param bool $reset to set new static timestamp.
+ * @return int timestamp
  */
 	public static function time($reset = false) {
 		static $now;
@@ -271,7 +305,7 @@ class CakeTestSuiteDispatcher {
  * @return string formatted date
  */
 	public static function date($format) {
-		return date($format, self::time());
+		return date($format, static::time());
 	}
 
 }

@@ -2,18 +2,18 @@
 /**
  * CakeLogTest file
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Log
  * @since         CakePHP(tm) v 1.2.0.5432
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeLog', 'Log');
@@ -124,27 +124,20 @@ class CakeLogTest extends CakeTestCase {
 	}
 
 /**
- * Test that CakeLog autoconfigures itself to use a FileLogger with the LOGS dir.
- * When no streams are there.
+ * Test that CakeLog does not auto create logs when no streams are there to listen.
  *
  * @return void
  */
-	public function testAutoConfig() {
+	public function testNoStreamListenting() {
 		if (file_exists(LOGS . 'error.log')) {
 			unlink(LOGS . 'error.log');
 		}
-		CakeLog::write(LOG_WARNING, 'Test warning');
-		$this->assertTrue(file_exists(LOGS . 'error.log'));
+		$res = CakeLog::write(LOG_WARNING, 'Test warning');
+		$this->assertFalse($res);
+		$this->assertFalse(file_exists(LOGS . 'error.log'));
 
 		$result = CakeLog::configured();
-		$this->assertEquals(array('default'), $result);
-
-		$testMessage = 'custom message';
-		CakeLog::write('custom', $testMessage);
-		$content = file_get_contents(LOGS . 'custom.log');
-		$this->assertContains($testMessage, $content);
-		unlink(LOGS . 'error.log');
-		unlink(LOGS . 'custom.log');
+		$this->assertEquals(array(), $result);
 	}
 
 /**
@@ -195,6 +188,10 @@ class CakeLogTest extends CakeTestCase {
  * @return void
  */
 	public function testLogFileWriting() {
+		CakeLog::config('file', array(
+			'engine' => 'File',
+			'path' => LOGS
+		));
 		if (file_exists(LOGS . 'error.log')) {
 			unlink(LOGS . 'error.log');
 		}
@@ -515,6 +512,11 @@ class CakeLogTest extends CakeTestCase {
 	public function testBogusTypeAndScope() {
 		$this->_resetLogConfig();
 		$this->_deleteLogs();
+
+		CakeLog::config('file', array(
+			'engine' => 'File',
+			'path' => LOGS
+		));
 
 		CakeLog::write('bogus', 'bogus message');
 		$this->assertTrue(file_exists(LOGS . 'bogus.log'));

@@ -1,16 +1,16 @@
 <?php
 /**
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @since         CakePHP(tm) v 1.2.0.5669
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Model', 'Model');
@@ -28,7 +28,7 @@ class TranslateBehaviorTest extends CakeTestCase {
 /**
  * autoFixtures property
  *
- * @var boolean
+ * @var bool
  */
 	public $autoFixtures = false;
 
@@ -528,6 +528,29 @@ class TranslateBehaviorTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+	public function testMissingTranslationLeftJoin() {
+		$this->loadFixtures('Translate', 'TranslatedItem');
+		$expected = array(
+			'TranslatedItem' => Array (
+				'id' => '1',
+				'translated_article_id' => '1',
+				'slug' => 'first_translated',
+				'locale' => 'rus',
+				'content' => '',
+				'title' => '',
+			),
+		);
+
+		$TestModel = new TranslatedItemLeftJoin();
+		$TestModel->locale = 'rus';
+		$result = $TestModel->read(null, 1);
+		$this->assertEquals($expected, $result);
+
+		$TestModel->locale = array('rus');
+		$result = $TestModel->read(null, 1);
+		$this->assertEquals($expected, $result);
+	}
+
 /**
  * testTranslatedFindList method
  *
@@ -720,6 +743,54 @@ class TranslateBehaviorTest extends CakeTestCase {
 	}
 
 /**
+ * testSaveAssociatedAtomic method
+ *
+ * @return void
+ */
+	public function testSaveAssociatedAtomic() {
+		$this->loadFixtures('Translate', 'TranslatedItem');
+
+		$TestModel = new TranslatedItem();
+		$data = array(
+			'slug' => 'fourth_translated',
+			'title' => array(
+				'eng' => 'Title #4'
+			),
+			'content' => array(
+				'eng' => 'Content #4'
+			),
+			'translated_article_id' => 1,
+		);
+		$Mock = $this->getMockForModel('TranslateTestModel', array('save'));
+		$TestModel->Behaviors->Translate->runtime[$TestModel->alias]['model'] = $Mock;
+
+		$with = array(
+			'TranslateTestModel' => array (
+				'model' => 'TranslatedItem',
+				'foreign_key' => '4',
+				'field' => 'content',
+				'locale' => 'eng',
+				'content' => 'Content #4',
+			)
+		);
+		$Mock->expects($this->at(0))->method('save')->with($with, array('atomic' => false));
+
+		$with = array(
+			'TranslateTestModel' => array (
+				'model' => 'TranslatedItem',
+				'foreign_key' => '4',
+				'field' => 'title',
+				'locale' => 'eng',
+				'content' => 'Title #4',
+			)
+		);
+		$Mock->expects($this->at(1))->method('save')->with($with, array('atomic' => false));
+
+		$TestModel->create();
+		$TestModel->saveAssociated($data, array('atomic' => false));
+	}
+
+/**
  * Test that saving only some of the translated fields allows the record to be found again.
  *
  * @return void
@@ -894,7 +965,7 @@ class TranslateBehaviorTest extends CakeTestCase {
 
 		$TestModel = new TranslatedItem();
 		$TestModel->locale = 'eng';
-		$TestModel->validate['title'] = 'notEmpty';
+		$TestModel->validate['title'] = 'notBlank';
 		$data = array('TranslatedItem' => array(
 			'id' => 1,
 			'title' => array('eng' => 'New Title #1', 'deu' => 'Neue Titel #1', 'cze' => 'Novy Titulek #1'),
@@ -1073,6 +1144,16 @@ class TranslateBehaviorTest extends CakeTestCase {
 		$TestModel->bindTranslation($translations);
 
 		$result = $TestModel->find('first');
+		$TestModel->find('first', array(
+			'fields' => array(
+				'TranslatedItem.title',
+			),
+		));
+		$TestModel->find('first', array(
+			'fields' => array(
+				'TranslatedItem.title',
+			),
+		));
 		$this->assertArrayHasKey('Title', $result);
 		$this->assertArrayHasKey('content', $result['Title'][0]);
 		$this->assertArrayNotHasKey('title', $result);
@@ -1372,4 +1453,170 @@ class TranslateBehaviorTest extends CakeTestCase {
 		$this->assertEquals('name', $results[0]['TranslateTestModel']['field']);
 	}
 
+	public function testBeforeFindAllI18nConditions() {
+		$this->skipIf(!$this->db instanceof Mysql, 'This test is only compatible with Mysql.');
+		$dbName = $this->db->config['database'];
+
+		$this->loadFixtures('TranslateArticle', 'TranslatedArticle', 'User');
+		$TestModel = new TranslatedArticle();
+		$TestModel->cacheQueries = false;
+		$TestModel->locale = 'eng';
+		$expected = array(
+			'conditions' => array(
+				'NOT' => array('I18n__title.content' => ''),
+			),
+			'fields' => null,
+			'joins' => array(
+				array(
+					'type' => 'INNER',
+					'alias' => 'I18n__title',
+					'table' => (object)array(
+						'tablePrefix' => '',
+						'table' => 'article_i18n',
+						'schemaName' => $dbName,
+					),
+					'conditions' => array(
+						'TranslatedArticle.id' => (object)array(
+							'type' => 'identifier',
+							'value' => 'I18n__title.foreign_key',
+						),
+						'I18n__title.model' => 'TranslatedArticle',
+						'I18n__title.field' => 'title',
+						'I18n__title.locale' => 'eng',
+					),
+				),
+				array(
+					'type' => 'INNER',
+					'alias' => 'I18n__body',
+					'table' => (object)array(
+						'tablePrefix' => '',
+						'table' => 'article_i18n',
+						'schemaName' => $dbName,
+					),
+					'conditions' => array(
+						'TranslatedArticle.id' => (object)array(
+							'type' => 'identifier',
+							'value' => 'I18n__body.foreign_key',
+						),
+						'I18n__body.model' => 'TranslatedArticle',
+						'I18n__body.field' => 'body',
+						'I18n__body.locale' => 'eng',
+					),
+				),
+			),
+			'limit' => 2,
+			'offset' => null,
+			'order' => array(
+				'TranslatedArticle.id' => 'ASC',
+			),
+			'page' => 1,
+			'group' => null,
+			'callbacks' => true,
+			'recursive' => 0,
+		);
+		$query = array(
+			'conditions' => array(
+				'NOT' => array(
+					'I18n__title.content' => '',
+				),
+			),
+			'fields' => null,
+			'joins' => array(),
+			'limit' => 2,
+			'offset' => null,
+			'order' => array(
+				'TranslatedArticle.id' => 'ASC',
+			),
+			'page' => 1,
+			'group' => null,
+			'callbacks' => true,
+			'recursive' => 0,
+		);
+		$TranslateBehavior = ClassRegistry::getObject('TranslateBehavior');
+		$result = $TranslateBehavior->beforeFind($TestModel, $query);
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testBeforeFindCountI18nConditions() {
+		$this->skipIf(!$this->db instanceof Mysql, 'This test is only compatible with Mysql.');
+		$dbName = $this->db->config['database'];
+
+		$this->loadFixtures('TranslateArticle', 'TranslatedArticle', 'User');
+		$TestModel = new TranslatedArticle();
+		$TestModel->cacheQueries = false;
+		$TestModel->locale = 'eng';
+		$expected = array(
+			'conditions' => array(
+				'NOT' => array('I18n__title.content' => ''),
+			),
+			'fields' => 'COUNT(DISTINCT(`TranslatedArticle`.`id`)) AS count',
+			'joins' => array(
+				array(
+					'type' => 'INNER',
+					'alias' => 'TranslateArticleModel',
+					'table' => (object)array(
+						'tablePrefix' => '',
+						'table' => 'article_i18n',
+						'schemaName' => $dbName,
+					),
+					'conditions' => array(
+						'`TranslatedArticle`.`id`' => (object)array(
+							'type' => 'identifier',
+							'value' => '`TranslateArticleModel`.`foreign_key`',
+						),
+						'`TranslateArticleModel`.`model`' => 'TranslatedArticle',
+						'`TranslateArticleModel`.`locale`' => 'eng',
+					),
+				),
+				array(
+					'type' => 'INNER',
+					'alias' => 'I18n__title',
+					'table' => (object)array(
+						'tablePrefix' => '',
+						'table' => 'article_i18n',
+						'schemaName' => $dbName,
+					),
+					'conditions' => array(
+						'TranslatedArticle.id' => (object)array(
+							'type' => 'identifier',
+							'value' => 'I18n__title.foreign_key',
+						),
+						'I18n__title.model' => 'TranslatedArticle',
+						'I18n__title.field' => 'title',
+						'I18n__title.locale' => 'eng',
+					),
+				),
+			),
+			'limit' => 2,
+			'offset' => null,
+			'order' => array(
+				0 => false,
+			),
+			'page' => 1,
+			'group' => null,
+			'callbacks' => true,
+			'recursive' => 0,
+		);
+		$query = array(
+			'conditions' => array(
+				'NOT' => array(
+					'I18n__title.content' => '',
+				)
+			),
+			'fields' => 'COUNT(*) AS `count`',
+			'joins' => array(),
+			'limit' => 2,
+			'offset' => null,
+			'order' => array(
+				0 => false
+			),
+			'page' => 1,
+			'group' => null,
+			'callbacks' => true,
+			'recursive' => 0,
+		);
+		$TranslateBehavior = ClassRegistry::getObject('TranslateBehavior');
+		$result = $TranslateBehavior->beforeFind($TestModel, $query);
+		$this->assertEquals($expected, $result);
+	}
 }

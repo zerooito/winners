@@ -4,17 +4,17 @@
  *
  * This Shell allows the running of test suites via the cake command line
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html
  * @since         CakePHP(tm) v 1.2.0.4433
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Shell', 'Console');
@@ -38,20 +38,21 @@ class TestShell extends Shell {
 	protected $_dispatcher = null;
 
 /**
- * get the option parser for the test suite.
+ * Gets the option parser instance and configures it.
  *
- * @return void
+ * @return ConsoleOptionParser
  */
 	public function getOptionParser() {
 		$parser = new ConsoleOptionParser($this->name);
-		$parser->description(array(
-			__d('cake_console', 'The CakePHP Testsuite allows you to run test cases from the command line'),
-		))->addArgument('category', array(
+
+		$parser->description(
+			__d('cake_console', 'The CakePHP Testsuite allows you to run test cases from the command line')
+		)->addArgument('category', array(
 			'help' => __d('cake_console', 'The category for the test, or test file, to test.'),
-			'required' => false,
+			'required' => false
 		))->addArgument('file', array(
 			'help' => __d('cake_console', 'The path to the file, or test file, to test.'),
-			'required' => false,
+			'required' => false
 		))->addOption('log-junit', array(
 			'help' => __d('cake_console', '<file> Log test execution in JUnit XML format to file.'),
 			'default' => false
@@ -70,6 +71,9 @@ class TestShell extends Shell {
 		))->addOption('coverage-clover', array(
 			'help' => __d('cake_console', '<file> Write code coverage data in Clover XML format.'),
 			'default' => false
+		))->addOption('coverage-text', array(
+			'help' => __d('cake_console', 'Output code coverage report in Text format.'),
+			'boolean' => true
 		))->addOption('testdox-html', array(
 			'help' => __d('cake_console', '<file> Write agile documentation in HTML format to file.'),
 			'default' => false
@@ -151,11 +155,12 @@ class TestShell extends Shell {
 			'default' => false
 		))->addOption('directive', array(
 			'help' => __d('cake_console', 'key[=value] Sets a php.ini value.'),
+			'short' => 'd',
 			'default' => false
 		))->addOption('fixture', array(
-			'help' => __d('cake_console', 'Choose a custom fixture manager.'),
+			'help' => __d('cake_console', 'Choose a custom fixture manager.')
 		))->addOption('debug', array(
-			'help' => __d('cake_console', 'More verbose output.'),
+			'help' => __d('cake_console', 'More verbose output.')
 		));
 
 		return $parser;
@@ -178,11 +183,11 @@ class TestShell extends Shell {
 /**
  * Parse the CLI options into an array CakeTestDispatcher can use.
  *
- * @return array Array of params for CakeTestDispatcher
+ * @return array|null Array of params for CakeTestDispatcher or null.
  */
 	protected function _parseArgs() {
 		if (empty($this->args)) {
-			return;
+			return null;
 		}
 		$params = array(
 			'core' => false,
@@ -221,6 +226,7 @@ class TestShell extends Shell {
 		$options = array();
 		$params = $this->params;
 		unset($params['help']);
+		unset($params['quiet']);
 
 		if (!empty($params['no-colors'])) {
 			unset($params['no-colors'], $params['colors']);
@@ -232,7 +238,11 @@ class TestShell extends Shell {
 			if ($value === false) {
 				continue;
 			}
-			$options[] = '--' . $param;
+			if ($param === 'directive') {
+				$options[] = '-d';
+			} else {
+				$options[] = '--' . $param;
+			}
 			if (is_string($value)) {
 				$options[] = $value;
 			}
@@ -281,8 +291,8 @@ class TestShell extends Shell {
 	public function available() {
 		$params = $this->_parseArgs();
 		$testCases = CakeTestLoader::generateTestList($params);
-		$app = $params['app'];
-		$plugin = $params['plugin'];
+		$app = isset($params['app']) ? $params['app'] : null;
+		$plugin = isset($params['plugin']) ? $params['plugin'] : null;
 
 		$title = "Core Test Cases:";
 		$category = 'core';
@@ -333,9 +343,9 @@ class TestShell extends Shell {
 /**
  * Find the test case for the passed file. The file could itself be a test.
  *
- * @param string $file
- * @param string $category
- * @param boolean $throwOnMissingFile
+ * @param string $file The file to map.
+ * @param string $category The test file category.
+ * @param bool $throwOnMissingFile Whether or not to throw an exception.
  * @return array array(type, case)
  * @throws Exception
  */
@@ -350,23 +360,19 @@ class TestShell extends Shell {
 		}
 
 		$testFile = $testCase = null;
-
+		$testCaseFolder = str_replace(APP, '', APP_TEST_CASES);
 		if (preg_match('@Test[\\\/]@', $file)) {
-
 			if (substr($file, -8) === 'Test.php') {
-
 				$testCase = substr($file, 0, -8);
 				$testCase = str_replace(DS, '/', $testCase);
-
-				if ($testCase = preg_replace('@.*Test\/Case\/@', '', $testCase)) {
-
+				$testCaseFolderEscaped = str_replace('/', '\/', $testCaseFolder);
+				$testCase = preg_replace('@.*' . $testCaseFolderEscaped . '\/@', '', $testCase);
+				if (!empty($testCase)) {
 					if ($category === 'core') {
 						$testCase = str_replace('lib/Cake', '', $testCase);
 					}
-
 					return $testCase;
 				}
-
 				throw new Exception(__d('cake_dev', 'Test case %s cannot be run via this shell', $testFile));
 			}
 		}
@@ -387,11 +393,11 @@ class TestShell extends Shell {
 		}
 
 		if ($category === 'app') {
-			$testFile = str_replace(APP, APP . 'Test/Case/', $file) . 'Test.php';
+			$testFile = str_replace(APP, APP_TEST_CASES . '/', $file) . 'Test.php';
 		} else {
 			$testFile = preg_replace(
 				"@((?:plugins|Plugin)[\\/]{$category}[\\/])(.*)$@",
-				'\1Test/Case/\2Test.php',
+				'\1' . $testCaseFolder . '/\2Test.php',
 				$file
 			);
 		}
@@ -402,15 +408,14 @@ class TestShell extends Shell {
 
 		$testCase = substr($testFile, 0, -8);
 		$testCase = str_replace(DS, '/', $testCase);
-		$testCase = preg_replace('@.*Test/Case/@', '', $testCase);
-
+		$testCase = preg_replace('@.*' . $testCaseFolder . '/@', '', $testCase);
 		return $testCase;
 	}
 
 /**
  * For the given file, what category of test is it? returns app, core or the name of the plugin
  *
- * @param string $file
+ * @param string $file The file to map.
  * @return string
  */
 	protected function _mapFileToCategory($file) {

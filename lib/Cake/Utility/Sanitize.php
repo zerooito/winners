@@ -4,18 +4,18 @@
  *
  * Helpful methods to make unsafe strings usable.
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('ConnectionManager', 'Model');
@@ -27,16 +27,16 @@ App::uses('ConnectionManager', 'Model');
  * and all of the above on arrays.
  *
  * @package       Cake.Utility
- * @deprecated    Deprecated since version 2.4
+ * @deprecated    3.0.0 Deprecated since version 2.4
  */
 class Sanitize {
 
 /**
  * Removes any non-alphanumeric characters.
  *
- * @param string $string String to sanitize
+ * @param string|array $string String to sanitize
  * @param array $allowed An array of additional characters that are not to be removed.
- * @return string Sanitized string
+ * @return string|array Sanitized string
  */
 	public static function paranoid($string, $allowed = array()) {
 		$allow = null;
@@ -72,7 +72,7 @@ class Sanitize {
 		$db = ConnectionManager::getDataSource($connection);
 		$string = $db->value($string, 'string');
 		$start = 1;
-		if ($string{0} === 'N') {
+		if ($string[0] === 'N') {
 			$start = 2;
 		}
 
@@ -104,14 +104,14 @@ class Sanitize {
 				$defaultCharset = 'UTF-8';
 			}
 		}
-		$default = array(
+		$defaults = array(
 			'remove' => false,
 			'charset' => $defaultCharset,
 			'quotes' => ENT_QUOTES,
 			'double' => true
 		);
 
-		$options = array_merge($default, $options);
+		$options += $defaults;
 
 		if ($options['remove']) {
 			$string = strip_tags($string);
@@ -184,7 +184,7 @@ class Sanitize {
  *
  * Will remove all `<b>`, `<p>`, and `<div>` tags from the $dirty string.
  *
- * @param string $str,... String to sanitize
+ * @param string $str String to sanitize.
  * @return string sanitized String
  */
 	public static function stripTags($str) {
@@ -224,7 +224,7 @@ class Sanitize {
 			$options = array('connection' => $options);
 		}
 
-		$options = array_merge(array(
+		$options += array(
 			'connection' => 'default',
 			'odd_spaces' => true,
 			'remove_html' => false,
@@ -234,7 +234,7 @@ class Sanitize {
 			'unicode' => true,
 			'escape' => true,
 			'backslash' => true
-		), $options);
+		);
 
 		if (is_array($data)) {
 			foreach ($data as $key => $val) {

@@ -1,17 +1,17 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Routing.Route
  * @since         CakePHP(tm) v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeResponse', 'Network');
@@ -43,7 +43,7 @@ class RedirectRoute extends CakeRoute {
 /**
  * Flag for disabling exit() when this route parses a URL.
  *
- * @var boolean
+ * @var bool
  */
 	public $stop = true;
 
@@ -64,7 +64,7 @@ class RedirectRoute extends CakeRoute {
  * redirection
  *
  * @param string $url The URL to parse
- * @return boolean False on failure
+ * @return bool False on failure
  */
 	public function parse($url) {
 		$params = parent::parse($url);
@@ -113,7 +113,7 @@ class RedirectRoute extends CakeRoute {
  * Stop execution of the current script. Wraps exit() making
  * testing easier.
  *
- * @param integer|string $status see http://php.net/exit for values
+ * @param int|string $code See http://php.net/exit for values
  * @return void
  */
 	protected function _stop($code = 0) {

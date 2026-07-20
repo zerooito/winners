@@ -4,18 +4,18 @@
  *
  * Provides management and interface for interacting with collections of behaviors.
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Model
  * @since         CakePHP(tm) v 1.2.0.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('ObjectCollection', 'Utility');
@@ -54,8 +54,8 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener {
 /**
  * Attaches a model object and loads a list of behaviors
  *
- * @param string $modelName
- * @param array $behaviors
+ * @param string $modelName Model name.
+ * @param array $behaviors Behaviors list.
  * @return void
  */
 	public function init($modelName, $behaviors = array()) {
@@ -71,10 +71,10 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener {
 /**
  * Backwards compatible alias for load()
  *
- * @param string $behavior
- * @param array $config
- * @return void
- * @deprecated Will be removed in 3.0. Replaced with load().
+ * @param string $behavior Behavior name.
+ * @param array $config Configuration options.
+ * @return bool true.
+ * @deprecated 3.0.0 Will be removed in 3.0. Replaced with load().
  */
 	public function attach($behavior, $config = array()) {
 		return $this->load($behavior, $config);
@@ -86,18 +86,18 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener {
  * can still be used as normal.
  *
  * You can alias your behavior as an existing behavior by setting the 'className' key, i.e.,
- * {{{
+ * ```
  * public $actsAs = array(
  *   'Tree' => array(
  *     'className' => 'AliasedTree'
  *   );
  * );
- * }}}
+ * ```
  * All calls to the `Tree` behavior would use `AliasedTree` instead.
  *
  * @param string $behavior CamelCased name of the behavior to load
  * @param array $config Behavior configuration parameters
- * @return boolean True on success, false on failure
+ * @return bool True on success.
  * @throws MissingBehaviorException when a behavior could not be found.
  */
 	public function load($behavior, $config = array()) {
@@ -201,7 +201,7 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener {
  *
  * @param string $name Name of behavior
  * @return void
- * @deprecated Will be removed in 3.0. Use unload instead.
+ * @deprecated 3.0.0 Will be removed in 3.0. Use unload instead.
  */
 	public function detach($name) {
 		return $this->unload($name);
@@ -216,7 +216,7 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener {
  * @param Model $model The model the method was originally called on.
  * @param string $method The method called.
  * @param array $params Parameters for the called method.
- * @param boolean $strict If methods are not found, trigger an error.
+ * @param bool $strict If methods are not found, trigger an error.
  * @return array All methods for all behaviors attached to this object
  */
 	public function dispatchMethod($model, $method, $params = array(), $strict = false) {
@@ -254,7 +254,7 @@ class BehaviorCollection extends ObjectCollection implements CakeEventListener {
  * also check mappedMethods.
  *
  * @param string $method The method to find.
- * @param boolean $callback Return the callback for the method.
+ * @param bool $callback Return the callback for the method.
  * @return mixed If $callback is false, a boolean will be returned, if its true, an array
  *   containing callback information will be returned. For mapped methods the array will have 3 elements.
  */

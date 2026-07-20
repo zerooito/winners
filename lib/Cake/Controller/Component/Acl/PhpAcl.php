@@ -2,18 +2,18 @@
 /**
  * PHP configuration based AclInterface implementation
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Controller.Component.Acl
  * @since         CakePHP(tm) v 2.1
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -22,19 +22,19 @@
  *
  * @package Cake.Controller.Component.Acl
  */
-class PhpAcl extends Object implements AclInterface {
+class PhpAcl extends CakeObject implements AclInterface {
 
 /**
  * Constant for deny
  *
- * @var boolean
+ * @var bool
  */
 	const DENY = false;
 
 /**
  * Constant for allow
  *
- * @var boolean
+ * @var bool
  */
 	const ALLOW = true;
 
@@ -68,8 +68,8 @@ class PhpAcl extends Object implements AclInterface {
  */
 	public function __construct() {
 		$this->options = array(
-			'policy' => self::DENY,
-			'config' => APP . 'Config' . DS . 'acl.php',
+			'policy' => static::DENY,
+			'config' => CONFIG . 'acl.php',
 		);
 	}
 
@@ -81,7 +81,7 @@ class PhpAcl extends Object implements AclInterface {
  */
 	public function initialize(Component $Component) {
 		if (!empty($Component->settings['adapter'])) {
-			$this->options = array_merge($this->options, $Component->settings['adapter']);
+			$this->options = $Component->settings['adapter'] + $this->options;
 		}
 
 		App::uses('PhpReader', 'Configure');
@@ -124,7 +124,7 @@ class PhpAcl extends Object implements AclInterface {
  * @param string $aro ARO The requesting object identifier.
  * @param string $aco ACO The controlled object identifier.
  * @param string $action Action (defaults to *)
- * @return boolean Success
+ * @return bool Success
  */
 	public function allow($aro, $aco, $action = "*") {
 		return $this->Aco->access($this->Aro->resolve($aro), $aco, $action, 'allow');
@@ -136,7 +136,7 @@ class PhpAcl extends Object implements AclInterface {
  * @param string $aro ARO The requesting object identifier.
  * @param string $aco ACO The controlled object identifier.
  * @param string $action Action (defaults to *)
- * @return boolean Success
+ * @return bool Success
  */
 	public function deny($aro, $aco, $action = "*") {
 		return $this->Aco->access($this->Aro->resolve($aro), $aco, $action, 'deny');
@@ -148,7 +148,7 @@ class PhpAcl extends Object implements AclInterface {
  * @param string $aro ARO The requesting object identifier.
  * @param string $aco ACO The controlled object identifier.
  * @param string $action Action (defaults to *)
- * @return boolean Success
+ * @return bool Success
  */
 	public function inherit($aro, $aco, $action = "*") {
 		return false;
@@ -161,7 +161,7 @@ class PhpAcl extends Object implements AclInterface {
  * @param string $aro ARO
  * @param string $aco ACO
  * @param string $action Action
- * @return boolean true if access is granted, false otherwise
+ * @return bool true if access is granted, false otherwise
  */
 	public function check($aro, $aco, $action = "*") {
 		$allow = $this->options['policy'];
@@ -196,7 +196,6 @@ class PhpAcl extends Object implements AclInterface {
 
 /**
  * Access Control Object
- *
  */
 class PhpAco {
 
@@ -252,7 +251,7 @@ class PhpAco {
 			}
 
 			foreach ($root as $node => $elements) {
-				$pattern = '/^' . str_replace(array_keys(self::$modifiers), array_values(self::$modifiers), $node) . '$/';
+				$pattern = '/^' . str_replace(array_keys(static::$modifiers), array_values(static::$modifiers), $node) . '$/';
 
 				if ($node == $aco[$level] || preg_match($pattern, $aco[$level])) {
 					// merge allow/denies with $path of current level
@@ -361,7 +360,6 @@ class PhpAco {
 
 /**
  * Access Request Object
- *
  */
 class PhpAro {
 
@@ -407,9 +405,9 @@ class PhpAro {
 /**
  * Constructor
  *
- * @param array $aro
- * @param array $map
- * @param array $aliases
+ * @param array $aro The aro data
+ * @param array $map The identifier mappings
+ * @param array $aliases The aliases to map.
  */
 	public function __construct(array $aro = array(), array $map = array(), array $aliases = array()) {
 		if (!empty($map)) {
@@ -494,7 +492,7 @@ class PhpAro {
 				return $this->aliases[$mapped];
 			}
 		}
-		return self::DEFAULT_ROLE;
+		return static::DEFAULT_ROLE;
 	}
 
 /**
@@ -546,7 +544,7 @@ class PhpAro {
  * @return void
  */
 	public function addAlias(array $alias) {
-		$this->aliases = array_merge($this->aliases, $alias);
+		$this->aliases = $alias + $this->aliases;
 	}
 
 /**

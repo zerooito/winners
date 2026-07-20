@@ -2,17 +2,17 @@
 /**
  * ConsoleInputOption file
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -48,7 +48,7 @@ class ConsoleInputOption {
 /**
  * Is the option a boolean option. Boolean options do not consume a parameter.
  *
- * @var boolean
+ * @var bool
  */
 	protected $_boolean;
 
@@ -72,7 +72,7 @@ class ConsoleInputOption {
  * @param string|array $name The long name of the option, or an array with all the properties.
  * @param string $short The short alias for this option
  * @param string $help The help text for this option
- * @param boolean $boolean Whether this option is a boolean option. Boolean options don't consume extra tokens
+ * @param bool $boolean Whether this option is a boolean option. Boolean options don't consume extra tokens
  * @param string $default The default value for this option.
  * @param array $choices Valid choices for this option.
  * @throws ConsoleException
@@ -118,7 +118,7 @@ class ConsoleInputOption {
 /**
  * Generate the help for this this option.
  *
- * @param integer $width The width to make the name of the option.
+ * @param int $width The width to make the name of the option.
  * @return string
  */
 	public function help($width = 0) {
@@ -168,7 +168,7 @@ class ConsoleInputOption {
 /**
  * Check if this option is a boolean option
  *
- * @return boolean
+ * @return bool
  */
 	public function isBoolean() {
 		return (bool)$this->_boolean;
@@ -177,8 +177,8 @@ class ConsoleInputOption {
 /**
  * Check that a value is a valid choice for this option.
  *
- * @param string $value
- * @return boolean
+ * @param string $value The choice to validate.
+ * @return bool
  * @throws ConsoleException
  */
 	public function validChoice($value) {
@@ -205,10 +205,11 @@ class ConsoleInputOption {
 		$option->addAttribute('name', '--' . $this->_name);
 		$short = '';
 		if (strlen($this->_short)) {
-			$short = $this->_short;
+			$short = '-' . $this->_short;
 		}
-		$option->addAttribute('short', '-' . $short);
-		$option->addAttribute('boolean', $this->_boolean);
+		$option->addAttribute('short', $short);
+		$option->addAttribute('help', $this->_help);
+		$option->addAttribute('boolean', (int)$this->_boolean);
 		$option->addChild('default', $this->_default);
 		$choices = $option->addChild('choices');
 		foreach ($this->_choices as $valid) {

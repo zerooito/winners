@@ -1,4 +1,3 @@
-version: '2'
 services:
   web:
     build: .
@@ -10,9 +9,9 @@ services:
       - db
 
   db:
-    image: mysql:5.6
+    image: mysql:8.0
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - data:/var/lib/mysql
     environment:
@@ -23,12 +22,14 @@ services:
     depends_on:
       - db
     image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
     restart: always
     ports:
       - "8000:80"
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: password 
+      PMA_PORT: 3306
+      PMA_ABSOLUTE_URI: http://localhost:8000/
 
 volumes:
   data:

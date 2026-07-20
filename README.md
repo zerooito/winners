@@ -10,7 +10,7 @@
 ## Dependências
 
  - Git
- - PHP 5.6
+ - PHP 7.4
  - Mysql 5
  - Composer
 

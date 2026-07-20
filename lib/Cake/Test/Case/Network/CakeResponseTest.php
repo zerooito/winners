@@ -1,24 +1,24 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Network
  * @since         CakePHP(tm) v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeResponse', 'Network');
 App::uses('CakeRequest', 'Network');
 
 /**
- * Class CakeResponseTest
+ * CakeResponseTest
  *
  * @package       Cake.Test.Case.Network
  */
@@ -67,6 +67,21 @@ class CakeResponseTest extends CakeTestCase {
 		$this->assertEquals('my-custom-charset', $response->charset());
 		$this->assertEquals('audio/mpeg', $response->type());
 		$this->assertEquals(203, $response->statusCode());
+
+		$options = array(
+			'body' => 'This is the body',
+			'charset' => 'my-custom-charset',
+			'type' => 'mp3',
+			'status' => '422',
+			'statusCodes' => array(
+				422 => 'Unprocessable Entity'
+			)
+		);
+		$response = new CakeResponse($options);
+		$this->assertEquals($options['body'], $response->body());
+		$this->assertEquals($options['charset'], $response->charset());
+		$this->assertEquals($response->getMimeType($options['type']), $response->type());
+		$this->assertEquals($options['status'], $response->statusCode());
 	}
 
 /**
@@ -149,9 +164,13 @@ class CakeResponseTest extends CakeTestCase {
 		$headers += array('Location' => 'http://example.com');
 		$this->assertEquals($headers, $response->header());
 
-		//Headers with the same name are overwritten
+		// Headers with the same name are overwritten
 		$response->header('Location', 'http://example2.com');
 		$headers = array('Location' => 'http://example2.com');
+		$this->assertEquals($headers, $response->header());
+
+		$response->header('Date', null);
+		$headers += array('Date' => null);
 		$this->assertEquals($headers, $response->header());
 
 		$response->header(array('WWW-Authenticate' => 'Negotiate'));
@@ -358,7 +377,7 @@ class CakeResponseTest extends CakeTestCase {
  * @return void
  */
 	public function testCompress() {
-		if (php_sapi_name() !== 'cli') {
+		if (PHP_SAPI !== 'cli') {
 			$this->markTestSkipped('The response compression can only be tested in cli.');
 		}
 
@@ -389,7 +408,7 @@ class CakeResponseTest extends CakeTestCase {
 	public function testHttpCodes() {
 		$response = new CakeResponse();
 		$result = $response->httpCodes();
-		$this->assertEquals(40, count($result));
+		$this->assertEquals(41, count($result));
 
 		$result = $response->httpCodes(100);
 		$expected = array(100 => 'Continue');
@@ -402,7 +421,7 @@ class CakeResponseTest extends CakeTestCase {
 
 		$result = $response->httpCodes($codes);
 		$this->assertTrue($result);
-		$this->assertEquals(42, count($response->httpCodes()));
+		$this->assertEquals(43, count($response->httpCodes()));
 
 		$result = $response->httpCodes(381);
 		$expected = array(381 => 'Unicorn Moved');
@@ -411,7 +430,7 @@ class CakeResponseTest extends CakeTestCase {
 		$codes = array(404 => 'Sorry Bro');
 		$result = $response->httpCodes($codes);
 		$this->assertTrue($result);
-		$this->assertEquals(42, count($response->httpCodes()));
+		$this->assertEquals(43, count($response->httpCodes()));
 
 		$result = $response->httpCodes(404);
 		$expected = array(404 => 'Sorry Bro');
@@ -476,7 +495,7 @@ class CakeResponseTest extends CakeTestCase {
 		if (!extension_loaded("zlib")) {
 			$this->markTestSkipped('Skipping further tests for outputCompressed as zlib extension is not loaded');
 		}
-		if (php_sapi_name() !== 'cli') {
+		if (PHP_SAPI !== 'cli') {
 			$this->markTestSkipped('Testing outputCompressed method with compression enabled done only in cli');
 		}
 
@@ -551,7 +570,7 @@ class CakeResponseTest extends CakeTestCase {
 		$response->send();
 
 		ob_start();
-		$response = $this->getMock('CakeResponse', array('_sendHeader', '_sendContent'));
+		$this->getMock('CakeResponse', array('_sendHeader', '_sendContent'));
 		$goofyOutput = 'I am goofily sending output in the controller';
 		echo $goofyOutput;
 		$response = $this->getMock('CakeResponse', array('_sendHeader', '_sendContent'));
@@ -736,7 +755,7 @@ class CakeResponseTest extends CakeTestCase {
 		$response = new CakeResponse;
 		$response->sharable(true, 3600);
 		$headers = $response->header();
-		$this->assertEquals('public, s-maxage=3600', $headers['Cache-Control']);
+		$this->assertEquals('public, max-age=3600', $headers['Cache-Control']);
 
 		$response = new CakeResponse;
 		$response->sharable(false, 3600);
@@ -1065,6 +1084,82 @@ class CakeResponseTest extends CakeTestCase {
 	}
 
 /**
+ * Test CORS
+ *
+ * @dataProvider corsData
+ * @param CakeRequest $request
+ * @param string $origin
+ * @param string|array $domains
+ * @param string|array $methods
+ * @param string|array $headers
+ * @param string|bool $expectedOrigin
+ * @param string|bool $expectedMethods
+ * @param string|bool $expectedHeaders
+ * @return void
+ */
+	public function testCors($request, $origin, $domains, $methods, $headers, $expectedOrigin, $expectedMethods = false, $expectedHeaders = false) {
+		$_SERVER['HTTP_ORIGIN'] = $origin;
+
+		$response = $this->getMock('CakeResponse', array('header'));
+
+		$method = $response->expects(!$expectedOrigin ? $this->never() : $this->at(0))->method('header');
+		$expectedOrigin && $method->with('Access-Control-Allow-Origin', $expectedOrigin ? $expectedOrigin : $this->anything());
+
+		$i = 1;
+		if ($expectedMethods) {
+			$response->expects($this->at($i++))
+				->method('header')
+				->with('Access-Control-Allow-Methods', $expectedMethods ? $expectedMethods : $this->anything());
+		}
+		if ($expectedHeaders) {
+			$response->expects($this->at($i++))
+				->method('header')
+				->with('Access-Control-Allow-Headers', $expectedHeaders ? $expectedHeaders : $this->anything());
+		}
+
+		$response->cors($request, $domains, $methods, $headers);
+		unset($_SERVER['HTTP_ORIGIN']);
+	}
+
+/**
+ * Feed for testCors
+ *
+ * @return array
+ */
+	public function corsData() {
+		$fooRequest = new CakeRequest();
+
+		$secureRequest = $this->getMock('CakeRequest', array('is'));
+		$secureRequest->expects($this->any())
+			->method('is')
+			->with('ssl')
+			->will($this->returnValue(true));
+
+		return array(
+			array($fooRequest, null, '*', '', '', false, false),
+			array($fooRequest, 'http://www.foo.com', '*', '', '', '*', false),
+			array($fooRequest, 'http://www.foo.com', 'www.foo.com', '', '', 'http://www.foo.com', false),
+			array($fooRequest, 'http://www.foo.com', '*.foo.com', '', '', 'http://www.foo.com', false),
+			array($fooRequest, 'http://www.foo.com', 'http://*.foo.com', '', '', 'http://www.foo.com', false),
+			array($fooRequest, 'http://www.foo.com', 'https://www.foo.com', '', '', false, false),
+			array($fooRequest, 'http://www.foo.com', 'https://*.foo.com', '', '', false, false),
+			array($fooRequest, 'http://www.foo.com', array('*.bar.com', '*.foo.com'), '', '', 'http://www.foo.com', false),
+
+			array($secureRequest, 'https://www.bar.com', 'www.bar.com', '', '', 'https://www.bar.com', false),
+			array($secureRequest, 'https://www.bar.com', 'http://www.bar.com', '', '', false, false),
+			array($secureRequest, 'https://www.bar.com', '*.bar.com', '', '', 'https://www.bar.com', false),
+
+			array($fooRequest, 'http://www.foo.com', '*', 'GET', '', '*', 'GET'),
+			array($fooRequest, 'http://www.foo.com', '*.foo.com', 'GET', '', 'http://www.foo.com', 'GET'),
+			array($fooRequest, 'http://www.foo.com', '*.foo.com', array('GET', 'POST'), '', 'http://www.foo.com', 'GET, POST'),
+
+			array($fooRequest, 'http://www.foo.com', '*', '', 'X-CakePHP', '*', false, 'X-CakePHP'),
+			array($fooRequest, 'http://www.foo.com', '*', '', array('X-CakePHP', 'X-MyApp'), '*', false, 'X-CakePHP, X-MyApp'),
+			array($fooRequest, 'http://www.foo.com', '*', array('GET', 'OPTIONS'), array('X-CakePHP', 'X-MyApp'), '*', 'GET, OPTIONS', 'X-CakePHP, X-MyApp'),
+		);
+	}
+
+/**
  * testFileNotFound
  *
  * @expectedException NotFoundException
@@ -1076,14 +1171,40 @@ class CakeResponseTest extends CakeTestCase {
 	}
 
 /**
- * test file with ..
+ * test file with ../
  *
  * @expectedException NotFoundException
+ * @expectedExceptionMessage The requested file contains `..` and will not be read.
  * @return void
  */
-	public function testFileWithPathTraversal() {
+	public function testFileWithForwardSlashPathTraversal() {
 		$response = new CakeResponse();
 		$response->file('my/../cat.gif');
+	}
+
+/**
+ * test file with ..\
+ *
+ * @expectedException NotFoundException
+ * @expectedExceptionMessage The requested file contains `..` and will not be read.
+ * @return void
+ */
+	public function testFileWithBackwardSlashPathTraversal() {
+		$response = new CakeResponse();
+		$response->file('my\..\cat.gif');
+	}
+
+/**
+ * Although unlikely, a file may contain dots in its filename.
+ * This should be allowed, as long as the dots doesn't specify a path (../ or ..\)
+ *
+ * @expectedException NotFoundException
+ * @execptedExceptionMessageRegExp #The requested file .+my/Some..cat.gif was not found or not readable#
+ * @return void
+ */
+	public function testFileWithDotsInFilename() {
+		$response = new CakeResponse();
+		$response->file('my/Some..cat.gif');
 	}
 
 /**
@@ -1109,6 +1230,10 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(1))
 			->method('header')
+			->with('Accept-Ranges', 'bytes');
+
+		$response->expects($this->at(2))
+			->method('header')
 			->with('Content-Length', 38);
 
 		$response->expects($this->once())->method('_clearBuffer');
@@ -1124,7 +1249,7 @@ class CakeResponseTest extends CakeTestCase {
 		$result = $response->send();
 		$output = ob_get_clean();
 		$this->assertEquals("/* this is the test asset css file */\n", $output);
-		$this->assertTrue($result !== false);
+		$this->assertNotSame(false, $result);
 	}
 
 /**
@@ -1158,11 +1283,11 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(2))
 			->method('header')
-			->with('Accept-Ranges', 'bytes');
+			->with('Content-Transfer-Encoding', 'binary');
 
 		$response->expects($this->at(3))
 			->method('header')
-			->with('Content-Transfer-Encoding', 'binary');
+			->with('Accept-Ranges', 'bytes');
 
 		$response->expects($this->at(4))
 			->method('header')
@@ -1181,7 +1306,7 @@ class CakeResponseTest extends CakeTestCase {
 		$result = $response->send();
 		$output = ob_get_clean();
 		$this->assertEquals("some_key = some_value\nbool_key = 1\n", $output);
-		$this->assertTrue($result !== false);
+		$this->assertNotSame(false, $result);
 		if ($currentUserAgent !== null) {
 			$_SERVER['HTTP_USER_AGENT'] = $currentUserAgent;
 		}
@@ -1223,11 +1348,11 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(3))
 			->method('header')
-			->with('Accept-Ranges', 'bytes');
+			->with('Content-Transfer-Encoding', 'binary');
 
 		$response->expects($this->at(4))
 			->method('header')
-			->with('Content-Transfer-Encoding', 'binary');
+			->with('Accept-Ranges', 'bytes');
 
 		$response->expects($this->at(5))
 			->method('header')
@@ -1245,7 +1370,7 @@ class CakeResponseTest extends CakeTestCase {
 		$result = $response->send();
 		$output = ob_get_clean();
 		$this->assertEquals("some_key = some_value\nbool_key = 1\n", $output);
-		$this->assertTrue($result !== false);
+		$this->assertNotSame(false, $result);
 		if ($currentUserAgent !== null) {
 			$_SERVER['HTTP_USER_AGENT'] = $currentUserAgent;
 		}
@@ -1287,11 +1412,11 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(3))
 			->method('header')
-			->with('Accept-Ranges', 'bytes');
+			->with('Content-Transfer-Encoding', 'binary');
 
 		$response->expects($this->at(4))
 			->method('header')
-			->with('Content-Transfer-Encoding', 'binary');
+			->with('Accept-Ranges', 'bytes');
 
 		$response->expects($this->at(5))
 			->method('header')
@@ -1311,7 +1436,7 @@ class CakeResponseTest extends CakeTestCase {
 		$result = $response->send();
 		$output = ob_get_clean();
 		$this->assertEquals("some_key = some_value\nbool_key = 1\n", $output);
-		$this->assertTrue($result !== false);
+		$this->assertNotSame(false, $result);
 		if ($currentUserAgent !== null) {
 			$_SERVER['HTTP_USER_AGENT'] = $currentUserAgent;
 		}
@@ -1340,6 +1465,10 @@ class CakeResponseTest extends CakeTestCase {
 			->method('type')
 			->with('ini')
 			->will($this->returnValue(false));
+
+		$response->expects($this->at(1))
+			->method('header')
+			->with('Accept-Ranges', 'bytes');
 
 		$response->expects($this->never())
 			->method('download');
@@ -1493,11 +1622,11 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(2))
 			->method('header')
-			->with('Accept-Ranges', 'bytes');
+			->with('Content-Transfer-Encoding', 'binary');
 
 		$response->expects($this->at(3))
 			->method('header')
-			->with('Content-Transfer-Encoding', 'binary');
+			->with('Accept-Ranges', 'bytes');
 
 		$response->expects($this->at(4))
 			->method('header')
@@ -1548,11 +1677,11 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(2))
 			->method('header')
-			->with('Accept-Ranges', 'bytes');
+			->with('Content-Transfer-Encoding', 'binary');
 
 		$response->expects($this->at(3))
 			->method('header')
-			->with('Content-Transfer-Encoding', 'binary');
+			->with('Accept-Ranges', 'bytes');
 
 		$response->expects($this->at(4))
 			->method('header')
@@ -1577,15 +1706,186 @@ class CakeResponseTest extends CakeTestCase {
 		$output = ob_get_clean();
 		$this->assertEquals(206, $response->statusCode());
 		$this->assertEquals("is the test asset ", $output);
-		$this->assertTrue($result !== false);
+		$this->assertNotSame(false, $result);
+	}
+
+/**
+ * Provider for invalid range header values.
+ *
+ * @return array
+ */
+	public function invalidFileRangeProvider() {
+		return array(
+			// malformed range
+			array(
+				'bytes=0,38'
+			),
+
+			// malformed punctuation
+			array(
+				'bytes: 0 - 32'
+			),
+			array(
+				'garbage: poo - poo'
+			),
+		);
 	}
 
 /**
  * Test invalid file ranges.
  *
+ * @dataProvider invalidFileRangeProvider
  * @return void
  */
-	public function testFileRangeInvalid() {
+	public function testFileRangeInvalid($range) {
+		$_SERVER['HTTP_RANGE'] = $range;
+		$response = $this->getMock('CakeResponse', array(
+			'_sendHeader',
+			'_isActive',
+		));
+
+		$response->file(
+			CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor' . DS . 'css' . DS . 'test_asset.css',
+			array('download' => true)
+		);
+
+		$expected = array(
+			'Content-Disposition' => 'attachment; filename="test_asset.css"',
+			'Content-Transfer-Encoding' => 'binary',
+			'Accept-Ranges' => 'bytes',
+			'Content-Range' => 'bytes 0-37/38',
+			'Content-Length' => 38,
+		);
+		$this->assertEquals($expected, $response->header());
+	}
+
+/**
+ * Test backwards file range
+ *
+ * @return void
+ */
+	public function testFileRangeReversed() {
+		$_SERVER['HTTP_RANGE'] = 'bytes=30-5';
+		$response = $this->getMock('CakeResponse', array(
+			'_sendHeader',
+			'_isActive',
+		));
+
+		$response->file(
+			CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor' . DS . 'css' . DS . 'test_asset.css',
+			array('download' => true)
+		);
+
+		$expected = array(
+			'Content-Disposition' => 'attachment; filename="test_asset.css"',
+			'Content-Transfer-Encoding' => 'binary',
+			'Accept-Ranges' => 'bytes',
+			'Content-Range' => 'bytes 0-37/38',
+		);
+		$this->assertEquals($expected, $response->header());
+		$this->assertEquals(416, $response->statusCode());
+	}
+
+/**
+ * testFileRangeOffsetsNoDownload method
+ *
+ * @dataProvider rangeProvider
+ * @return void
+ */
+	public function testFileRangeOffsetsNoDownload($range, $length, $offsetResponse) {
+		$_SERVER['HTTP_RANGE'] = $range;
+		$response = $this->getMock('CakeResponse', array(
+			'header',
+			'type',
+			'_sendHeader',
+			'_isActive',
+			'_clearBuffer',
+			'_flushBuffer'
+		));
+
+		$response->expects($this->at(1))
+			->method('header')
+			->with('Accept-Ranges', 'bytes');
+
+		$response->expects($this->at(2))
+			->method('header')
+			->with(array(
+				'Content-Length' => $length,
+				'Content-Range' => $offsetResponse,
+			));
+
+		$response->expects($this->any())
+			->method('_isActive')
+			->will($this->returnValue(true));
+
+		$response->file(
+			CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor' . DS . 'css' . DS . 'test_asset.css',
+			array('download' => false)
+		);
+
+		ob_start();
+		$response->send();
+		ob_get_clean();
+	}
+
+/**
+ * testFileRangeNoDownload method
+ *
+ * @return void
+ */
+	public function testFileRangeNoDownload() {
+		$_SERVER['HTTP_RANGE'] = 'bytes=8-25';
+		$response = $this->getMock('CakeResponse', array(
+			'header',
+			'type',
+			'_sendHeader',
+			'_setContentType',
+			'_isActive',
+			'_clearBuffer',
+			'_flushBuffer'
+		));
+
+		$response->expects($this->exactly(1))
+			->method('type')
+			->with('css')
+			->will($this->returnArgument(0));
+
+		$response->expects($this->at(1))
+			->method('header')
+			->with('Accept-Ranges', 'bytes');
+
+		$response->expects($this->at(2))
+			->method('header')
+			->with(array(
+				'Content-Length' => 18,
+				'Content-Range' => 'bytes 8-25/38',
+			));
+
+		$response->expects($this->once())->method('_clearBuffer');
+
+		$response->expects($this->any())
+			->method('_isActive')
+			->will($this->returnValue(true));
+
+		$response->file(
+			CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor' . DS . 'css' . DS . 'test_asset.css',
+			array('download' => false)
+		);
+
+		ob_start();
+		$result = $response->send();
+		$output = ob_get_clean();
+		$this->assertEquals(206, $response->statusCode());
+		$this->assertEquals("is the test asset ", $output);
+		$this->assertNotSame(false, $result);
+	}
+
+/**
+ * testFileRangeInvalidNoDownload method
+ *
+ * @return void
+ */
+	public function testFileRangeInvalidNoDownload() {
 		$_SERVER['HTTP_RANGE'] = 'bytes=30-2';
 		$response = $this->getMock('CakeResponse', array(
 			'header',
@@ -1599,17 +1899,9 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->expects($this->at(1))
 			->method('header')
-			->with('Content-Disposition', 'attachment; filename="test_asset.css"');
-
-		$response->expects($this->at(2))
-			->method('header')
 			->with('Accept-Ranges', 'bytes');
 
-		$response->expects($this->at(3))
-			->method('header')
-			->with('Content-Transfer-Encoding', 'binary');
-
-		$response->expects($this->at(4))
+		$response->expects($this->at(2))
 			->method('header')
 			->with(array(
 				'Content-Range' => 'bytes 0-37/38',
@@ -1617,11 +1909,11 @@ class CakeResponseTest extends CakeTestCase {
 
 		$response->file(
 			CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor' . DS . 'css' . DS . 'test_asset.css',
-			array('download' => true)
+			array('download' => false)
 		);
 
 		$this->assertEquals(416, $response->statusCode());
-		$result = $response->send();
+		$response->send();
 	}
 
 /**

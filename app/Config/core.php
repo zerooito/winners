@@ -225,6 +225,12 @@
 	Configure::write('Session.timeout', '99999999999999');
 
 /**
+ * Use OpenSSL for encryption instead of mcrypt.
+ * OpenSSL is more secure and maintained, while mcrypt is deprecated.
+ */
+	Configure::write('Security.useOpenSsl', true);
+
+/**
  * A random string used in security hashing methods.
  */
 	Configure::write('Security.salt', 'DYhG93b0qyJfIfds2guVoUubWwvniR2G0FgaC9mi');

@@ -33,10 +33,10 @@
 		if ($this->request->is('post')) {
 			$this->BakeArticle->create();
 			if ($this->BakeArticle->save($this->request->data)) {
-				$this->Session->setFlash(__('The bake article has been saved.'));
+				$this->Flash->success(__('The bake article has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The bake article could not be saved. Please, try again.'));
+				$this->Flash->error(__('The bake article could not be saved. Please, try again.'));
 			}
 		}
 		$bakeTags = $this->BakeArticle->BakeTag->find('list');
@@ -56,10 +56,10 @@
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->BakeArticle->save($this->request->data)) {
-				$this->Session->setFlash(__('The bake article has been saved.'));
+				$this->Flash->success(__('The bake article has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The bake article could not be saved. Please, try again.'));
+				$this->Flash->error(__('The bake article could not be saved. Please, try again.'));
 			}
 		} else {
 			$options = array('conditions' => array('BakeArticle.' . $this->BakeArticle->primaryKey => $id));
@@ -77,15 +77,14 @@
  * @return void
  */
 	public function delete($id = null) {
-		$this->BakeArticle->id = $id;
-		if (!$this->BakeArticle->exists()) {
+		if (!$this->BakeArticle->exists($id)) {
 			throw new NotFoundException(__('Invalid bake article'));
 		}
-		$this->request->onlyAllow('post', 'delete');
-		if ($this->BakeArticle->delete()) {
-			$this->Session->setFlash(__('The bake article has been deleted.'));
+		$this->request->allowMethod('post', 'delete');
+		if ($this->BakeArticle->delete($id)) {
+			$this->Flash->success(__('The bake article has been deleted.'));
 		} else {
-			$this->Session->setFlash(__('The bake article could not be deleted. Please, try again.'));
+			$this->Flash->error(__('The bake article could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}

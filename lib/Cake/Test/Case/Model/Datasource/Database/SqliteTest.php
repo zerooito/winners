@@ -2,18 +2,18 @@
 /**
  * DboSqliteTest file
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Model.Datasource.Database
  * @since         CakePHP(tm) v 1.2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Model', 'Model');
@@ -68,7 +68,7 @@ class SqliteTest extends CakeTestCase {
 /**
  * Do not automatically load fixtures for each test, they will be loaded manually using CakeTestCase::loadFixtures
  *
- * @var boolean
+ * @var bool
  */
 	public $autoFixtures = false;
 
@@ -168,7 +168,13 @@ class SqliteTest extends CakeTestCase {
 		$dbName = 'db' . rand() . '$(*%&).db';
 		$this->assertFalse(file_exists(TMP . $dbName));
 
-		$db = new Sqlite(array_merge($this->Dbo->config, array('database' => TMP . $dbName)));
+		try {
+			$db = new Sqlite(array_merge($this->Dbo->config, array('database' => TMP . $dbName)));
+		} catch (MissingConnectionException $e) {
+			// This might be caused by NTFS file systems, where '*' is a forbidden character. Repeat without this character.
+			$dbName = str_replace('*', '', $dbName);
+			$db = new Sqlite(array_merge($this->Dbo->config, array('database' => TMP . $dbName)));
+		}
 		$this->assertTrue(file_exists(TMP . $dbName));
 
 		$db->execute("CREATE TABLE test_list (id VARCHAR(255));");
@@ -255,6 +261,28 @@ class SqliteTest extends CakeTestCase {
 		);
 		$result = $this->Dbo->buildColumn($data);
 		$expected = '"testName" integer(10) DEFAULT 10 NOT NULL';
+		$this->assertEquals($expected, $result);
+
+		$data = array(
+			'name' => 'testName',
+			'type' => 'smallinteger',
+			'length' => 6,
+			'default' => 6,
+			'null' => false,
+		);
+		$result = $this->Dbo->buildColumn($data);
+		$expected = '"testName" smallint(6) DEFAULT 6 NOT NULL';
+		$this->assertEquals($expected, $result);
+
+		$data = array(
+			'name' => 'testName',
+			'type' => 'tinyinteger',
+			'length' => 4,
+			'default' => 4,
+			'null' => false,
+		);
+		$result = $this->Dbo->buildColumn($data);
+		$expected = '"testName" tinyint(4) DEFAULT 4 NOT NULL';
 		$this->assertEquals($expected, $result);
 
 		$data = array(
@@ -365,11 +393,35 @@ class SqliteTest extends CakeTestCase {
 				'default' => '',
 				'length' => '5,2',
 			),
+			'decimal_field' => array(
+				'type' => 'decimal',
+				'null' => true,
+				'default' => '0.000',
+				'length' => '6,3',
+			),
 			'huge_int' => array(
 				'type' => 'biginteger',
 				'null' => true,
 				'default' => null,
 				'length' => 20,
+			),
+			'normal_int' => array(
+				'type' => 'integer',
+				'null' => true,
+				'default' => null,
+				'length' => null
+			),
+			'small_int' => array(
+				'type' => 'smallinteger',
+				'null' => true,
+				'default' => null,
+				'length' => null
+			),
+			'tiny_int' => array(
+				'type' => 'tinyinteger',
+				'null' => true,
+				'default' => null,
+				'length' => null
 			),
 			'bool' => array(
 				'type' => 'boolean',
@@ -417,6 +469,40 @@ class SqliteTest extends CakeTestCase {
 	}
 
 /**
+ * Test that describe ignores `default current_timestamp` in timestamp columns.
+ *
+ * @return void
+ */
+	public function testDescribeHandleCurrentTimestamp() {
+		$name = $this->Dbo->fullTableName('timestamp_default_values');
+		$sql = <<<SQL
+CREATE TABLE $name (
+	id INT NOT NULL,
+	phone VARCHAR(10),
+	limit_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+);
+SQL;
+		$this->Dbo->execute($sql);
+		$model = new Model(array(
+			'table' => 'timestamp_default_values',
+			'ds' => 'test',
+			'alias' => 'TimestampDefaultValue'
+		));
+		$result = $this->Dbo->describe($model);
+		$this->Dbo->execute('DROP TABLE ' . $name);
+
+		$this->assertNull($result['limit_date']['default']);
+
+		$schema = new CakeSchema(array(
+			'connection' => 'test',
+			'testdescribes' => $result
+		));
+		$result = $this->Dbo->createSchema($schema);
+		$this->assertContains('"limit_date" timestamp NOT NULL', $result);
+	}
+
+/**
  * Test virtualFields with functions.
  *
  * @return void
@@ -460,6 +546,7 @@ class SqliteTest extends CakeTestCase {
  * @return void
  */
 	public function testNestedTransaction() {
+		$this->Dbo->useNestedTransactions = true;
 		$this->skipIf($this->Dbo->nestedTransactionSupported() === false, 'The Sqlite version do not support nested transaction');
 
 		$this->loadFixtures('User');
@@ -512,4 +599,92 @@ class SqliteTest extends CakeTestCase {
 		$this->assertNotContains($scientificNotation, $result);
 	}
 
+/**
+ * Test that fields are parsed out in a reasonable fashion.
+ *
+ * @return void
+ */
+	public function testFetchRowColumnParsing() {
+		$this->loadFixtures('User');
+		$sql = 'SELECT "User"."id", "User"."user", "User"."password", "User"."created", (1 + 1) AS "two" ' .
+			'FROM "users" AS "User" WHERE ' .
+			'"User"."id" IN (SELECT MAX("id") FROM "users") ' .
+			'OR "User.id" IN (5, 6, 7, 8)';
+		$result = $this->Dbo->fetchRow($sql);
+
+		$expected = array(
+			'User' => array(
+				'id' => 4,
+				'user' => 'garrett',
+				'password' => '5f4dcc3b5aa765d61d8327deb882cf99',
+				'created' => '2007-03-17 01:22:23'
+			),
+			0 => array(
+				'two' => 2
+			)
+		);
+		$this->assertEquals($expected, $result);
+
+		$sql = 'SELECT "User"."id", "User"."user" ' .
+			'FROM "users" AS "User" WHERE "User"."id" = 4 ' .
+			'UNION ' .
+			'SELECT "User"."id", "User"."user" ' .
+			'FROM "users" AS "User" WHERE "User"."id" = 3';
+		$result = $this->Dbo->fetchRow($sql);
+
+		$expected = array(
+			'User' => array(
+				'id' => 3,
+				'user' => 'larry',
+			),
+		);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test parsing more complex field names.
+ *
+ * @return void
+ */
+	public function testFetchColumnRowParsingMoreComplex() {
+		$this->loadFixtures('User');
+		$sql = 'SELECT
+			COUNT(*) AS User__count,
+			COUNT(CASE id WHEN 2 THEN 1 ELSE NULL END) as User__case,
+			AVG(CAST("User"."id" AS BIGINT)) AS User__bigint
+			FROM "users" AS "User"
+			WHERE "User"."id" > 0';
+		$result = $this->Dbo->fetchRow($sql);
+
+		$expected = array(
+			'0' => array(
+				'User__count' => '4',
+				'User__case' => '1',
+				'User__bigint' => '2.5',
+			),
+		);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test Sqlite Datasource doesn't support locking hint
+ *
+ * @return void
+ */
+	public function testBuildStatementWithoutLockingHint() {
+		$model = new TestModel();
+		$sql = $this->Dbo->buildStatement(
+			array(
+				'fields' => array('id'),
+				'table' => 'users',
+				'alias' => 'User',
+				'order' => array('id'),
+				'limit' => 1,
+				'lock' => true,
+			),
+			$model
+		);
+		$expected = 'SELECT id FROM users AS "User"   WHERE 1 = 1   ORDER BY "id" ASC  LIMIT 1';
+		$this->assertEquals($expected, $sql);
+	}
 }

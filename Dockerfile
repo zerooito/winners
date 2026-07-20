@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:7.4-apache
 
 WORKDIR /var/www/html
 
@@ -6,16 +6,16 @@ COPY ./default.conf /etc/apache2/sites-available/000-default.conf
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN apt-get update && apt-get install -y libmcrypt-dev libpng-dev libzip-dev zip unzip \
-    mysql-client libmagickwand-dev --no-install-recommends \
-    && docker-php-ext-configure zip --with-libzip \
+RUN apt-get update && apt-get install -y libpng-dev libzip-dev zip unzip \
+    default-mysql-client libmagickwand-dev libmcrypt-dev --no-install-recommends \
+    && docker-php-ext-configure zip \
     && docker-php-ext-install zip \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && docker-php-ext-install mcrypt gd
+    && pecl install imagick mcrypt-1.0.9 \
+    && docker-php-ext-enable imagick mcrypt \
+    && docker-php-ext-install gd
 
 RUN apt-get update && \
-  apt-get -y install curl git libicu-dev libpq-dev zlib1g-dev && \
+  apt-get -y install curl git libicu-dev libpq-dev zlib1g-dev libonig-dev && \
   docker-php-ext-install intl mbstring pcntl pdo_mysql pdo_pgsql && \
   usermod -u 1000 www-data && \
   usermod -a -G users www-data && \
@@ -23,14 +23,14 @@ RUN apt-get update && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   a2enmod rewrite
 
-RUN apt-get update && apt-get install -y \ 
-    libfreetype6-dev libjpeg62-turbo-dev \ 
-    libgd-dev libpng-dev
-    RUN docker-php-ext-configure gd \ 
-    --with-freetype-dir=/usr/include/ \ 
-    --with-jpeg-dir=/usr/include/
-    RUN docker-php-ext-install gd
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev libjpeg62-turbo-dev \
+    libgd-dev libpng-dev \
+    && docker-php-ext-configure gd \
+    --with-freetype=/usr/include/ \
+    --with-jpeg=/usr/include/ \
+    && docker-php-ext-install gd
 
 COPY . /var/www/html
 
-RUN composer install
+RUN git config --global --add safe.directory /var/www/html && composer install

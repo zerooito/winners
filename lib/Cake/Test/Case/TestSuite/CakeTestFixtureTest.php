@@ -2,18 +2,18 @@
 /**
  * CakeTestFixture file
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.TestSuite
  * @since         CakePHP(tm) v 1.2.0.4667
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('DboSource', 'Model/Datasource');
@@ -231,7 +231,6 @@ class CakeTestFixtureTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$methods = array_diff(get_class_methods('DboSource'), array('enabled'));
-		$methods[] = 'connect';
 
 		$this->criticDb = $this->getMock('DboSource', $methods);
 		$this->criticDb->fullDebug = true;
@@ -471,7 +470,7 @@ class CakeTestFixtureTest extends CakeTestCase {
  * @param string $table
  * @param string $fields
  * @param string $values
- * @return boolean true
+ * @return bool true
  */
 	public function insertCallback($table, $fields, $values) {
 		$this->insertMulti['table'] = $table;
@@ -534,7 +533,7 @@ class CakeTestFixtureTest extends CakeTestCase {
  */
 	public function testInsertInvalid() {
 		$Fixture = new InvalidTestFixture();
-		$return = $Fixture->insert($this->criticDb);
+		$Fixture->insert($this->criticDb);
 	}
 
 /**

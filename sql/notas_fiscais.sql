@@ -1,0 +1,105 @@
+-- Migration: Notas Fiscais (NF-e / NFC-e)
+-- Tabela de configuracao da API NotaAs
+CREATE TABLE `nota_fiscal_configuracaos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `api_key` varchar(255) DEFAULT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_nf_config_usuario` (`usuario_id`),
+  CONSTRAINT `fk_nf_config_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Tabela principal de notas fiscais
+CREATE TABLE `nota_fiscals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoice_id` varchar(100) DEFAULT NULL COMMENT 'UUID retornado pela API NotaAs',
+  `modelo` int(11) NOT NULL DEFAULT 55 COMMENT '55=NFe, 65=NFCe',
+  `numero_nf` int(11) DEFAULT NULL,
+  `serie` int(11) DEFAULT NULL,
+  `chave_acesso` varchar(44) DEFAULT NULL,
+  `natureza_operacao` varchar(100) NOT NULL DEFAULT 'Venda de mercadoria',
+  `destino_operacao` int(11) NOT NULL DEFAULT 1 COMMENT '1=Interna, 2=Interestadual, 3=Exterior',
+  `status` varchar(20) NOT NULL DEFAULT 'queued' COMMENT 'queued,processing,issued,error,cancelled,inutilized',
+  `c_stat` int(11) DEFAULT NULL,
+  `x_motivo` varchar(255) DEFAULT NULL,
+  `protocolo` varchar(100) DEFAULT NULL,
+  `valor_total` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `cpf_cnpj_destinatario` varchar(20) DEFAULT NULL,
+  `nome_destinatario` varchar(200) NOT NULL,
+  `ie_destinatario` varchar(20) DEFAULT NULL,
+  `indicador_ie` int(11) DEFAULT NULL COMMENT '1=Contribuinte, 2=Isento, 9=Na.contribuinte',
+  `email_destinatario` varchar(150) DEFAULT NULL,
+  `logradouro_destinatario` varchar(200) NOT NULL,
+  `numero_destinatario` varchar(20) DEFAULT 'SN',
+  `complemento_destinatario` varchar(100) DEFAULT NULL,
+  `bairro_destinatario` varchar(100) NOT NULL,
+  `codigo_municipio_destinatario` int(11) NOT NULL COMMENT 'Codigo IBGE 7 digitos',
+  `cidade_destinatario` varchar(100) NOT NULL,
+  `uf_destinatario` varchar(2) NOT NULL,
+  `cep_destinatario` varchar(8) NOT NULL,
+  `presenca_comprador` int(11) NOT NULL DEFAULT 1,
+  `informacoes_complementares` text DEFAULT NULL,
+  `venda_id` int(11) DEFAULT NULL,
+  `cliente_id` int(11) DEFAULT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `data_emissao` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_nf_usuario` (`id_usuario`),
+  KEY `fk_nf_venda` (`venda_id`),
+  KEY `fk_nf_cliente` (`cliente_id`),
+  CONSTRAINT `fk_nf_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `fk_nf_venda` FOREIGN KEY (`venda_id`) REFERENCES `vendas` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_nf_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Itens da nota fiscal
+CREATE TABLE `nota_fiscal_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nota_fiscal_id` int(11) NOT NULL,
+  `produto_id` int(11) DEFAULT NULL,
+  `descricao` varchar(200) NOT NULL,
+  `ncm` varchar(8) NOT NULL,
+  `cfop` varchar(4) NOT NULL DEFAULT '5102',
+  `valor_total` decimal(10,2) NOT NULL,
+  `quantidade` int(11) NOT NULL DEFAULT 1,
+  `valor_unitario` decimal(10,2) DEFAULT NULL,
+  `unidade` varchar(5) NOT NULL DEFAULT 'UN',
+  `codigo` varchar(50) DEFAULT NULL,
+  `cst` varchar(3) DEFAULT NULL,
+  `csosn` varchar(4) DEFAULT NULL,
+  `aliquota_icms` decimal(5,2) DEFAULT NULL,
+  `desconto` decimal(10,2) DEFAULT 0.00,
+  `ean` varchar(14) DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_nf_item_nota` (`nota_fiscal_id`),
+  KEY `fk_nf_item_produto` (`produto_id`),
+  CONSTRAINT `fk_nf_item_nota` FOREIGN KEY (`nota_fiscal_id`) REFERENCES `nota_fiscals` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_nf_item_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Pagamentos da nota fiscal
+CREATE TABLE `nota_fiscal_pagamentos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nota_fiscal_id` int(11) NOT NULL,
+  `tipo_pagamento` varchar(2) NOT NULL COMMENT '01=Dinheiro,03=Credito,04=Debito,17=PIX,99=Outros',
+  `valor` decimal(10,2) NOT NULL,
+  `tipo_integracao` int(11) DEFAULT NULL COMMENT '1=Integrado(TEF),2=Nao integrado(POS)',
+  `bandeira` varchar(2) DEFAULT NULL,
+  `autorizacao` varchar(128) DEFAULT NULL,
+  `cnpj_pagamento` varchar(14) DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_nf_pag_nota` (`nota_fiscal_id`),
+  CONSTRAINT `fk_nf_pag_nota` FOREIGN KEY (`nota_fiscal_id`) REFERENCES `nota_fiscals` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

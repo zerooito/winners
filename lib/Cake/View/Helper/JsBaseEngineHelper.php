@@ -1,17 +1,17 @@
 <?php
 /**
- * CakePHP :  Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP :  Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppHelper', 'View/Helper');
@@ -128,7 +128,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 		$defaultOptions = array(
 			'prefix' => '', 'postfix' => '',
 		);
-		$options = array_merge($defaultOptions, $options);
+		$options += $defaultOptions;
 
 		return $options['prefix'] . json_encode($data) . $options['postfix'];
 	}
@@ -137,7 +137,8 @@ abstract class JsBaseEngineHelper extends AppHelper {
  * Converts a PHP-native variable of any type to a JSON-equivalent representation
  *
  * @param mixed $val A PHP variable to be converted to JSON
- * @param boolean $quoteString If false, leaves string values unquoted
+ * @param bool $quoteString If false, leaves string values unquoted
+ * @param string $key Key name.
  * @return string a JavaScript-safe/JSON representation of $val
  */
 	public function value($val = array(), $quoteString = null, $key = 'value') {
@@ -195,7 +196,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 		$length = strlen($string);
 		$return = '';
 		for ($i = 0; $i < $length; ++$i) {
-			$ord = ord($string{$i});
+			$ord = ord($string[$i]);
 			switch (true) {
 				case $ord == 0x08:
 					$return .= '\b';
@@ -215,10 +216,10 @@ abstract class JsBaseEngineHelper extends AppHelper {
 				case $ord == 0x22:
 				case $ord == 0x2F:
 				case $ord == 0x5C:
-					$return .= '\\' . $string{$i};
+					$return .= '\\' . $string[$i];
 					break;
 				case (($ord >= 0x20) && ($ord <= 0x7F)):
-					$return .= $string{$i};
+					$return .= $string[$i];
 					break;
 				case (($ord & 0xE0) == 0xC0):
 					if ($i + 1 >= $length) {
@@ -226,7 +227,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 						$return .= '?';
 						break;
 					}
-					$charbits = $string{$i} . $string{$i + 1};
+					$charbits = $string[$i] . $string[$i + 1];
 					$char = Multibyte::utf8($charbits);
 					$return .= sprintf('\u%04s', dechex($char[0]));
 					$i += 1;
@@ -237,7 +238,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 						$return .= '?';
 						break;
 					}
-					$charbits = $string{$i} . $string{$i + 1} . $string{$i + 2};
+					$charbits = $string[$i] . $string[$i + 1] . $string[$i + 2];
 					$char = Multibyte::utf8($charbits);
 					$return .= sprintf('\u%04s', dechex($char[0]));
 					$i += 2;
@@ -248,7 +249,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 						$return .= '?';
 						break;
 					}
-					$charbits = $string{$i} . $string{$i + 1} . $string{$i + 2} . $string{$i + 3};
+					$charbits = $string[$i] . $string[$i + 1] . $string[$i + 2] . $string[$i + 3];
 					$char = Multibyte::utf8($charbits);
 					$return .= sprintf('\u%04s', dechex($char[0]));
 					$i += 3;
@@ -259,7 +260,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 						$return .= '?';
 						break;
 					}
-					$charbits = $string{$i} . $string{$i + 1} . $string{$i + 2} . $string{$i + 3} . $string{$i + 4};
+					$charbits = $string[$i] . $string[$i + 1] . $string[$i + 2] . $string[$i + 3] . $string[$i + 4];
 					$char = Multibyte::utf8($charbits);
 					$return .= sprintf('\u%04s', dechex($char[0]));
 					$i += 4;
@@ -270,7 +271,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 						$return .= '?';
 						break;
 					}
-					$charbits = $string{$i} . $string{$i + 1} . $string{$i + 2} . $string{$i + 3} . $string{$i + 4} . $string{$i + 5};
+					$charbits = $string[$i] . $string[$i + 1] . $string[$i + 2] . $string[$i + 3] . $string[$i + 4] . $string[$i + 5];
 					$char = Multibyte::utf8($charbits);
 					$return .= sprintf('\u%04s', dechex($char[0]));
 					$i += 5;
@@ -284,7 +285,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
  * Create javascript selector for a CSS rule
  *
  * @param string $selector The selector that is targeted
- * @return JsBaseEngineHelper instance of $this. Allows chained methods.
+ * @return self instance of $this. Allows chained methods.
  */
 	abstract public function get($selector);
 
@@ -475,7 +476,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 	abstract public function serializeForm($options = array());
 
 /**
- * Parse an options assoc array into an JavaScript object literal.
+ * Parse an options assoc array into a JavaScript object literal.
  * Similar to object() but treats any non-integer value as a string,
  * does not include `{ }`
  *

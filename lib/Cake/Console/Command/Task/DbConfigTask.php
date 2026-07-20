@@ -2,17 +2,17 @@
 /**
  * The DbConfig Task handles creating and updating the database.php
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 1.2
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppShell', 'Console/Command');
@@ -64,7 +64,7 @@ class DbConfigTask extends AppShell {
  * @return void
  */
 	public function initialize() {
-		$this->path = APP . 'Config' . DS;
+		$this->path = CONFIG;
 	}
 
 /**
@@ -199,11 +199,11 @@ class DbConfigTask extends AppShell {
 /**
  * Output verification message and bake if it looks good
  *
- * @param array $config
- * @return boolean True if user says it looks good, false otherwise
+ * @param array $config The config data.
+ * @return bool True if user says it looks good, false otherwise
  */
 	protected function _verify($config) {
-		$config = array_merge($this->_defaultConfig, $config);
+		$config += $this->_defaultConfig;
 		extract($config);
 		$this->out();
 		$this->hr();
@@ -247,7 +247,7 @@ class DbConfigTask extends AppShell {
  * Assembles and writes database.php
  *
  * @param array $configs Configuration settings to use
- * @return boolean Success
+ * @return bool Success
  */
 	public function bake($configs) {
 		if (!is_dir($this->path)) {
@@ -264,7 +264,7 @@ class DbConfigTask extends AppShell {
 			$temp = get_class_vars(get_class($db));
 
 			foreach ($temp as $configName => $info) {
-				$info = array_merge($this->_defaultConfig, $info);
+				$info += $this->_defaultConfig;
 
 				if (!isset($info['schema'])) {
 					$info['schema'] = null;
@@ -307,7 +307,7 @@ class DbConfigTask extends AppShell {
 		$out .= "class DATABASE_CONFIG {\n\n";
 
 		foreach ($configs as $config) {
-			$config = array_merge($this->_defaultConfig, $config);
+			$config += $this->_defaultConfig;
 			extract($config);
 
 			if (strpos($datasource, 'Database/') === false) {
@@ -368,15 +368,18 @@ class DbConfigTask extends AppShell {
 	}
 
 /**
- * get the option parser
+ * Gets the option parser instance and configures it.
  *
  * @return ConsoleOptionParser
  */
 	public function getOptionParser() {
 		$parser = parent::getOptionParser();
-		return $parser->description(
-				__d('cake_console', 'Bake new database configuration settings.')
-			);
+
+		$parser->description(
+			__d('cake_console', 'Bake new database configuration settings.')
+		);
+
+		return $parser;
 	}
 
 }

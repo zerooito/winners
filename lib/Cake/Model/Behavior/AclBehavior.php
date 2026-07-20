@@ -4,18 +4,18 @@
  *
  * Enables objects to easily tie into an ACL system
  *
- * CakePHP :  Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP :  Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP Project
  * @package       Cake.Model.Behavior
  * @since         CakePHP v 1.2.0.4487
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('ModelBehavior', 'Model');
@@ -28,7 +28,7 @@ App::uses('Hash', 'Utility');
  * Enables objects to easily tie into an ACL system
  *
  * @package       Cake.Model.Behavior
- * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html
+ * @link https://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html
  */
 class AclBehavior extends ModelBehavior {
 
@@ -42,8 +42,8 @@ class AclBehavior extends ModelBehavior {
 /**
  * Sets up the configuration for the model, and loads ACL models if they haven't been already
  *
- * @param Model $model
- * @param array $config
+ * @param Model $model Model using this behavior.
+ * @param array $config Configuration options.
  * @return void
  */
 	public function setup(Model $model, $config = array()) {
@@ -70,18 +70,18 @@ class AclBehavior extends ModelBehavior {
 /**
  * Retrieves the Aro/Aco node for this model
  *
- * @param Model $model
+ * @param Model $model Model using this behavior.
  * @param string|array|Model $ref Array with 'model' and 'foreign_key', model object, or string value
  * @param string $type Only needed when Acl is set up as 'both', specify 'Aro' or 'Aco' to get the correct node
  * @return array
- * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html#node
+ * @link https://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html#node
  */
 	public function node(Model $model, $ref = null, $type = null) {
 		if (empty($type)) {
 			$type = $this->_typeMaps[$this->settings[$model->name]['type']];
 			if (is_array($type)) {
 				trigger_error(__d('cake_dev', 'AclBehavior is setup with more then one type, please specify type parameter for node()'), E_USER_WARNING);
-				return null;
+				return array();
 			}
 		}
 		if (empty($ref)) {
@@ -93,8 +93,8 @@ class AclBehavior extends ModelBehavior {
 /**
  * Creates a new ARO/ACO node bound to this record
  *
- * @param Model $model
- * @param boolean $created True if this is a new record
+ * @param Model $model Model using this behavior.
+ * @param bool $created True if this is a new record
  * @param array $options Options passed from Model::save().
  * @return void
  */
@@ -104,7 +104,7 @@ class AclBehavior extends ModelBehavior {
 			$types = array($types);
 		}
 		foreach ($types as $type) {
-			$parent = $model->parentNode();
+			$parent = $model->parentNode($type);
 			if (!empty($parent)) {
 				$parent = $this->node($model, $parent, $type);
 			}
@@ -125,7 +125,7 @@ class AclBehavior extends ModelBehavior {
 /**
  * Destroys the ARO/ACO node bound to the deleted record
  *
- * @param Model $model
+ * @param Model $model Model using this behavior.
  * @return void
  */
 	public function afterDelete(Model $model) {

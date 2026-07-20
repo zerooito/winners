@@ -2,18 +2,18 @@
 /**
  * ConsoleInput file.
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Console
  * @since         CakePHP(tm) v 2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -37,7 +37,7 @@ class ConsoleInput {
  * 2. Handle we are attached to must be stdin.
  * Allows rich editing with arrow keys and history when inputting a string.
  *
- * @var boolean
+ * @var bool
  */
 	protected $_canReadline;
 
@@ -70,8 +70,8 @@ class ConsoleInput {
 /**
  * Checks if data is available on the stream
  *
- * @param integer $timeout An optional time to wait for data
- * @return boolean True for data available, false otherwise
+ * @param int $timeout An optional time to wait for data
+ * @return bool True for data available, false otherwise
  */
 	public function dataAvailable($timeout = 0) {
 		$readFds = array($this->_input);

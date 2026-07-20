@@ -2,18 +2,18 @@
 /**
  * CakeValidationRuleTest file
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/view/1196/Testing>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.Model.Validator
  * @since         CakePHP(tm) v 2.2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('CakeValidationRule', 'Model/Validator');
@@ -28,7 +28,7 @@ class CakeValidationRuleTest extends CakeTestCase {
 /**
  * Auxiliary method to test custom validators
  *
- * @return boolean
+ * @return bool
  */
 	public function myTestRule() {
 		return false;
@@ -37,7 +37,7 @@ class CakeValidationRuleTest extends CakeTestCase {
 /**
  * Auxiliary method to test custom validators
  *
- * @return boolean
+ * @return bool
  */
 	public function myTestRule2() {
 		return true;
@@ -58,7 +58,7 @@ class CakeValidationRuleTest extends CakeTestCase {
  * @return void
  */
 	public function testIsValid() {
-		$def = array('rule' => 'notEmpty', 'message' => 'Can not be empty');
+		$def = array('rule' => 'notBlank', 'message' => 'Can not be empty');
 		$data = array(
 			'fieldName' => ''
 		);
@@ -122,19 +122,19 @@ class CakeValidationRuleTest extends CakeTestCase {
  * @return void
  */
 	public function testIsRequired() {
-		$def = array('rule' => 'notEmpty', 'required' => true);
+		$def = array('rule' => 'notBlank', 'required' => true);
 		$Rule = new CakeValidationRule($def);
 		$this->assertTrue($Rule->isRequired());
 
-		$def = array('rule' => 'notEmpty', 'required' => false);
+		$def = array('rule' => 'notBlank', 'required' => false);
 		$Rule = new CakeValidationRule($def);
 		$this->assertFalse($Rule->isRequired());
 
-		$def = array('rule' => 'notEmpty', 'required' => 'create');
+		$def = array('rule' => 'notBlank', 'required' => 'create');
 		$Rule = new CakeValidationRule($def);
 		$this->assertTrue($Rule->isRequired());
 
-		$def = array('rule' => 'notEmpty', 'required' => 'update');
+		$def = array('rule' => 'notBlank', 'required' => 'update');
 		$Rule = new CakeValidationRule($def);
 		$this->assertFalse($Rule->isRequired());
 
@@ -156,14 +156,14 @@ class CakeValidationRuleTest extends CakeTestCase {
 		$Rule = new CakeValidationRule($def);
 		$this->assertFalse($Rule->isEmptyAllowed());
 
-		$def = array('rule' => 'notEmpty', 'allowEmpty' => false, 'on' => 'update');
+		$def = array('rule' => 'notBlank', 'allowEmpty' => false, 'on' => 'update');
 		$Rule = new CakeValidationRule($def);
 		$this->assertTrue($Rule->isEmptyAllowed());
 
 		$Rule->isUpdate(true);
 		$this->assertFalse($Rule->isEmptyAllowed());
 
-		$def = array('rule' => 'notEmpty', 'allowEmpty' => false, 'on' => 'create');
+		$def = array('rule' => 'notBlank', 'allowEmpty' => false, 'on' => 'create');
 		$Rule = new CakeValidationRule($def);
 		$this->assertFalse($Rule->isEmptyAllowed());
 

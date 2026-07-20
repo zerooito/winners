@@ -894,7 +894,7 @@ ALTER TABLE pagamento_funcionarios MODIFY COLUMN funcionario_id INT NULL,
  FOREIGN KEY(funcionario_id)
  REFERENCES funcionarios(id);
 
---- Migration Contas e Cartao de Credito
+-- Migration Contas e Cartao de Credito
 
 CREATE TABLE contas (
   id INT PRIMARY KEY AUTO_INCREMENT,
